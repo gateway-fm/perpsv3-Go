@@ -1,28 +1,55 @@
+# generate go files for all contracts
 generate-contracts-all: generate-contracts-goerli generate-contracts-optimism
+
+# generate go files for goerli net contracts
 generate-contracts-goerli: generate-core-goerli generate-spot_market-goerli generate-preps_market-goerli
+
+# generate fo giles for optimism net contracts
 generate-contracts-optimism: generate-core-optimism generate-spot_market-optimism
 
+# generate go file for SynthetixCore contract on goerli net
 generate-core-goerli:
-	go run ./utils/getAbis/get-abis.go --get ./Synthetix-Gitbook-v3/for-developers/abis/420-SynthetixCore.json
-	abigen --abi=./contracts/420-SynthetixCore.json --pkg=contracts --out=./contracts/core-goerli.go
+	go run ./utils/getAbis/get-abis.go --get-mkdir ./Synthetix-Gitbook-v3/for-developers/abis/420-SynthetixCore.json ./contracts/coreGoerli
+	abigen --abi=./contracts/420-SynthetixCore.json --pkg=coreGoerli --out=./contracts/coreGoerli/contract.go
 	go run ./utils/getAbis/get-abis.go --rm ./contracts/420-SynthetixCore.json
 
+# generate go file for SpotMarket contract on goerli net
 generate-spot_market-goerli:
-	go run ./utils/getAbis/get-abis.go --get ./Synthetix-Gitbook-v3/for-developers/abis/420-SpotMarket.json
-	abigen --abi=./contracts/420-SpotMarket.json --pkg=contracts --out=./contracts/spot-market-goerli.go
+	go run ./utils/getAbis/get-abis.go --get-mkdir ./Synthetix-Gitbook-v3/for-developers/abis/420-SpotMarket.json ./contracts/spotMarketGoerli
+	abigen --abi=./contracts/420-SpotMarket.json --pkg=spotMarketGoerli --out=./contracts/spotMarketGoerli/contract.go
 	go run ./utils/getAbis/get-abis.go --rm ./contracts/420-SpotMarket.json
 
+# generate go file for PrepsMarket contract on goerli net
 generate-preps_market-goerli:
-	go run ./utils/getAbis/get-abis.go --get ./Synthetix-Gitbook-v3/for-developers/abis/420-PerpsMarket.json
-	abigen --abi=./contracts/420-PerpsMarket.json --pkg=contracts --out=./contracts/preps-market-goerli.go
+	go run ./utils/getAbis/get-abis.go --get-mkdir ./Synthetix-Gitbook-v3/for-developers/abis/420-PerpsMarket.json ./contracts/prepsMarketGoerli
+	abigen --abi=./contracts/420-PerpsMarket.json --pkg=prepsMarketGoerli --out=./contracts/prepsMarketGoerli/comtract.go
 	go run ./utils/getAbis/get-abis.go --rm ./contracts/420-PerpsMarket.json
 
+# generate go file for SynthetixCore contract on optimism net
 generate-core-optimism:
-	go run ./utils/getAbis/get-abis.go --get ./Synthetix-Gitbook-v3/for-developers/abis/10-SynthetixCore.json
-	abigen --abi=./contracts/10-SynthetixCore.json --pkg=contracts --out=./contracts/core-optimism.go
+	go run ./utils/getAbis/get-abis.go --get-mkdir ./Synthetix-Gitbook-v3/for-developers/abis/10-SynthetixCore.json ./contracts/coreOptimism
+	abigen --abi=./contracts/10-SynthetixCore.json --pkg=coreOptimism --out=./contracts/coreOptimism/contract.go
 	go run ./utils/getAbis/get-abis.go --rm ./contracts/10-SynthetixCore.json
 
+# generate go file for SpotMarket contract on optimism net
 generate-spot_market-optimism:
-	go run ./utils/getAbis/get-abis.go --get ./Synthetix-Gitbook-v3/for-developers/abis/10-SpotMarket.json
-	abigen --abi=./contracts/10-SpotMarket.json --pkg=contracts --out=./contracts/spot-market-optimism.go
+	go run ./utils/getAbis/get-abis.go --get-mkdir ./Synthetix-Gitbook-v3/for-developers/abis/10-SpotMarket.json ./contracts/spotMarketOptimism
+	abigen --abi=./contracts/10-SpotMarket.json --pkg=spotMarketOptimism --out=./contracts/spotMarketOptimism/contract.go
 	go run ./utils/getAbis/get-abis.go --rm ./contracts/10-SpotMarket.json
+
+# update Synthetix-Gitbook-v3 subtree
+update-subtree:
+	git subtree pull --prefix Synthetix-Gitbook-v3 git@github.com:Synthetixio/Synthetix-Gitbook-v3.git en --squash
+
+tidy:
+	go mod tidy
+
+test:
+	go test ./...
+
+test-coverage:
+	go test -coverprofile=coverage.out ./...
+	go tool cover -html=coverage.out
+
+lint:
+	golint ./......

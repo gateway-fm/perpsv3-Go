@@ -18,13 +18,12 @@ func main() {
 
 		switch args[1] {
 		case "--get":
-			for i := 2; i < len(args); i++ {
-				getABI(args[i])
-			}
+			getABI(args[2])
+		case "--get-mkdir":
+			getABI(args[2])
+			mkdir(args[3])
 		case "--rm":
-			for i := 2; i < len(args); i++ {
-				removeABI(args[i])
-			}
+			removeABI(args[2])
 		default:
 			fmt.Println("get-abis util: invalid command")
 		}
@@ -32,6 +31,11 @@ func main() {
 	} else {
 		fmt.Println("get-abis util: no command or args")
 	}
+}
+
+// mkdir creates new directory if it is not exists
+func mkdir(name string) {
+	_ = os.Mkdir(name, os.ModePerm)
 }
 
 // getABI is used to get ABI from given path and write proper ABI file in ./contracts/
