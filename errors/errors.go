@@ -13,6 +13,8 @@ var (
 	InvalidContractAddrErr = fmt.Errorf("contract address invalid")
 	//InitContractErr is used when error occurred while contract initialization
 	InitContractErr = fmt.Errorf("contract initialization error")
+	// FilterErr is used when error occurred while filtering contract
+	FilterErr = fmt.Errorf("contract filter error")
 )
 
 func GetDialRPCErr(err error) error {
@@ -21,4 +23,8 @@ func GetDialRPCErr(err error) error {
 
 func GetInitContractErr(err error) error {
 	return fmt.Errorf("%w: %w", InitContractErr, err)
+}
+
+func GetFilterErr(err error, contract string) error {
+	return fmt.Errorf("%v %w: %w", contract, FilterErr, err)
 }

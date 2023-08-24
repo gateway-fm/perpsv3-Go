@@ -65,7 +65,7 @@ func (p *Perpsv3) init() error {
 		return err
 	}
 
-	p.service = services.NewService(rpcClient, core, spotMarket)
+	p.service = services.NewService(rpcClient, core, p.config.CoreContractFirstBlock, spotMarket, p.config.CoreContractFirstBlock)
 
 	return nil
 }
