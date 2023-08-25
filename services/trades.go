@@ -2,13 +2,15 @@ package services
 
 import (
 	"context"
-	"log"
+	"math/big"
 
 	"github.com/ethereum/go-ethereum/accounts/abi/bind"
 	"github.com/gateway-fm/perpsv3-Go/errors"
+	"github.com/gateway-fm/perpsv3-Go/models"
+	"github.com/gateway-fm/perpsv3-Go/pkg/logger"
 )
 
-func (s *Service) RetrieveTrades(fromBlock uint64, toBLock *uint64) error {
+func (s *Service) RetrieveTrades(fromBlock uint64, toBLock *uint64) ([]models.Trade, error) {
 	if fromBlock == 0 {
 		fromBlock = s.spotMarketFirstBlock
 	}
@@ -19,24 +21,34 @@ func (s *Service) RetrieveTrades(fromBlock uint64, toBLock *uint64) error {
 		Context: context.Background(),
 	}
 
-	iterator, err := s.spotMarket.FilterOrderSettled(opts, nil, nil, nil)
+	iterator, err := s.perpsMarket.FilterOrderSettled(opts, nil, nil, nil)
 	if err != nil {
-		return errors.GetFilterErr(err, "spot market")
+		logger.Log().WithField("layer", "Service-RetrieveTrades").Errorf("error get iterator: %v", err.Error())
+		return nil, errors.GetFilterErr(err, "perps market")
 	}
+
+	var trades []models.Trade
 
 	for iterator.Next() {
-
-		log.Println("iterator next")
-
 		if iterator.Error() != nil {
-			return errors.GetFilterErr(err, "spot market")
+			logger.Log().WithField("layer", "Service-RetrieveTrades").Errorf("iterator error: %v", err.Error())
+			return nil, errors.GetFilterErr(err, "perps market")
+		}
+		trade := models.Trade{}
+
+		blockNumber := iterator.Event.Raw.BlockNumber
+
+		block, err := s.rpcClient.BlockByNumber(context.Background(), big.NewInt(int64(blockNumber)))
+		if err != nil {
+			logger.Log().WithField("layer", "Service-RetrieveTrades").Errorf(
+				"get block:%v by number error: %v", blockNumber, err.Error(),
+			)
+			return nil, errors.GetFilterErr(err, "perps market")
 		}
 
-		log.Println(iterator.Event)
+		trade.ParseFromEvent(iterator.Event, block.Time())
+		trades = append(trades, trade)
 	}
 
-	//owner, _ := s.spotMarket.Owner(nil)
-	//log.Println(owner)
-
-	return nil
+	return trades, nil
 }

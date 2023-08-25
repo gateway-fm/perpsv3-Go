@@ -22,7 +22,7 @@ generate-spot_market-goerli:
 # generate go file for PerpsMarket contract on goerli net
 generate-perps_market-goerli:
 	go run ./utils/getAbis/get-abis.go --get-mkdir ./Synthetix-Gitbook-v3/for-developers/abis/420-PerpsMarket.json ./contracts/perpsMarketGoerli
-	abigen --abi=./contracts/420-PerpsMarket.json --pkg=perpsMarketGoerli --out=./contracts/perpsMarketGoerli/comtract.go
+	abigen --abi=./contracts/420-PerpsMarket.json --pkg=perpsMarketGoerli --out=./contracts/perpsMarketGoerli/contract.go
 	go run ./utils/getAbis/get-abis.go --rm ./contracts/420-PerpsMarket.json
 
 # generate go file for SynthetixCore contract on optimism net
@@ -56,3 +56,4 @@ test-coverage:
 
 lint:
 	golint ./......
+

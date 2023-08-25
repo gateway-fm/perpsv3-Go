@@ -5,6 +5,7 @@ import (
 	"github.com/ethereum/go-ethereum/ethclient"
 	"github.com/gateway-fm/perpsv3-Go/config"
 	"github.com/gateway-fm/perpsv3-Go/contracts/coreGoerli"
+	"github.com/gateway-fm/perpsv3-Go/contracts/perpsMarketGoerli"
 	"github.com/gateway-fm/perpsv3-Go/contracts/spotMarketGoerli"
 	"github.com/gateway-fm/perpsv3-Go/errors"
 	"github.com/gateway-fm/perpsv3-Go/pkg/logger"
@@ -65,15 +66,28 @@ func (p *Perpsv3) init() error {
 		return err
 	}
 
-	p.service = services.NewService(rpcClient, core, p.config.CoreContractFirstBlock, spotMarket, p.config.CoreContractFirstBlock)
+	perpsMarket, err := p.getGoerliPerpsMarket()
+	if err != nil {
+		return err
+	}
+
+	p.service = services.NewService(
+		rpcClient,
+		core,
+		p.config.FirstContractBlocks.Core,
+		spotMarket,
+		p.config.FirstContractBlocks.SpotMarket,
+		perpsMarket,
+		p.config.FirstContractBlocks.PerpsMarket,
+	)
 
 	return nil
 }
 
 // getGoerliSpotMarketContract is used to get spot market contract instance deployed on goerli test net
 func (p *Perpsv3) getGoerliSpotMarketContract() (*spotMarketGoerli.SpotMarketGoerli, error) {
-	if p.config.SpotMarketContractAddress != "" {
-		addr, err := getAddr(p.config.SpotMarketContractAddress, "spot market")
+	if p.config.ContractAddresses.SpotMarket != "" {
+		addr, err := getAddr(p.config.ContractAddresses.SpotMarket, "spot market")
 		if err != nil {
 			return nil, err
 		}
@@ -93,8 +107,8 @@ func (p *Perpsv3) getGoerliSpotMarketContract() (*spotMarketGoerli.SpotMarketGoe
 
 // getGoerliCoreContract is used to get core contract instance deployed on goerli test net
 func (p *Perpsv3) getGoerliCoreContract() (*coreGoerli.CoreGoerli, error) {
-	if p.config.CoreContractAddress != "" {
-		addr, err := getAddr(p.config.CoreContractAddress, "core")
+	if p.config.ContractAddresses.Core != "" {
+		addr, err := getAddr(p.config.ContractAddresses.Core, "core")
 		if err != nil {
 			return nil, err
 		}
@@ -108,6 +122,27 @@ func (p *Perpsv3) getGoerliCoreContract() (*coreGoerli.CoreGoerli, error) {
 		return contract, nil
 	} else {
 		logger.Log().WithField("layer", "Init").Errorf("no core contract address")
+		return nil, errors.BlankContractAddrErr
+	}
+}
+
+// getGoerliPerpsMarket is used to get perps market contract instance deployed on goerli test net
+func (p *Perpsv3) getGoerliPerpsMarket() (*perpsMarketGoerli.PerpsMarketGoerli, error) {
+	if p.config.ContractAddresses.PerpsMarket != "" {
+		addr, err := getAddr(p.config.ContractAddresses.PerpsMarket, "core")
+		if err != nil {
+			return nil, err
+		}
+
+		contract, err := perpsMarketGoerli.NewPerpsMarketGoerli(addr, p.rpcClient)
+		if err != nil {
+			logger.Log().WithField("layer", "Init").Errorf("error getting perps market contract: %v", err.Error())
+			return nil, errors.GetInitContractErr(err)
+		}
+
+		return contract, nil
+	} else {
+		logger.Log().WithField("layer", "Init").Errorf("no perps market contract address")
 		return nil, errors.BlankContractAddrErr
 	}
 }

@@ -15,6 +15,8 @@ var (
 	InitContractErr = fmt.Errorf("contract initialization error")
 	// FilterErr is used when error occurred while filtering contract
 	FilterErr = fmt.Errorf("contract filter error")
+	// ListenEventErr is used when error occurred while event listening
+	ListenEventErr = fmt.Errorf("event listen error")
 )
 
 func GetDialRPCErr(err error) error {
@@ -27,4 +29,8 @@ func GetInitContractErr(err error) error {
 
 func GetFilterErr(err error, contract string) error {
 	return fmt.Errorf("%v %w: %w", contract, FilterErr, err)
+}
+
+func GetEventListenErr(err error, event string) error {
+	return fmt.Errorf("%v %w: %w", event, ListenEventErr, err)
 }
