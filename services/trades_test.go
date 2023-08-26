@@ -16,7 +16,7 @@ import (
 )
 
 func TestService_RetrieveTrades_OnChain(t *testing.T) {
-	rpc := os.Getenv("TEST_PRC")
+	rpc := os.Getenv("TEST_RPC")
 	if rpc == "" {
 		log.Fatal("no rpc in env vars")
 	}
