@@ -71,7 +71,7 @@ func (s *basicSubscription) Close() {
 
 type TradeSubscription struct {
 	*basicSubscription
-	trades         chan *models.Trade
+	Trades         chan *models.Trade
 	contractTrades chan *perpsMarketGoerli.PerpsMarketGoerliOrderSettled
 }
 
@@ -79,7 +79,7 @@ func newTradeSubscription(contractSubscription event.Subscription, contractTrade
 	return &TradeSubscription{
 		basicSubscription: newBasicSubscription(contractSubscription),
 		contractTrades:    contractTradesChannel,
-		trades:            make(chan *models.Trade),
+		Trades:            make(chan *models.Trade),
 	}
 }
 
@@ -87,7 +87,7 @@ func (s *TradeSubscription) listen() {
 	for {
 		select {
 		case <-s.stop:
-			close(s.trades)
+			close(s.Trades)
 			close(s.contractTrades)
 			return
 		case err := <-s.contractSubscription.Err():
@@ -98,7 +98,7 @@ func (s *TradeSubscription) listen() {
 			// TODO should fetch block number
 			trade := models.GetTradeFromEvent(orderSettled, 0)
 
-			s.trades <- trade
+			s.Trades <- trade
 		}
 	}
 }
