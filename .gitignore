@@ -2,3 +2,5 @@
 .idea
 mocks
 coverage.out
+
+local/
