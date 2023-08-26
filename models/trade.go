@@ -43,22 +43,24 @@ type Trade struct {
 	TransactionHash  string
 }
 
-// ParseFromEvent is used to parse Trade model data from given event and block timestamp
-func (t *Trade) ParseFromEvent(event *perpsMarketGoerli.PerpsMarketGoerliOrderSettled, time uint64) {
-	t.MarketID = event.MarketId.Uint64()
-	t.AccountID = event.AccountId.Uint64()
-	t.FillPrice = event.FillPrice
-	t.PnL = event.Pnl
-	t.AccruedFunding = event.AccruedFunding
-	t.SizeDelta = event.SizeDelta
-	t.NewSize = event.NewSize
-	t.TotalFees = event.TotalFees
-	t.ReferralFees = event.ReferralFees
-	t.CollectedFees = event.CollectedFees
-	t.SettlementReward = event.SettlementReward
-	t.TrackingCode = event.TrackingCode
-	t.Settler = event.Settler
-	t.BlockNumber = event.Raw.BlockNumber
-	t.BlockTimestamp = time
-	t.TransactionHash = event.Raw.TxHash.Hex()
+// GetTradeFromEvent is used to get new Trade from given event and block timestamp
+func GetTradeFromEvent(event *perpsMarketGoerli.PerpsMarketGoerliOrderSettled, time uint64) *Trade {
+	return &Trade{
+		MarketID:         event.MarketId.Uint64(),
+		AccountID:        event.AccountId.Uint64(),
+		FillPrice:        event.FillPrice,
+		PnL:              event.Pnl,
+		AccruedFunding:   event.AccruedFunding,
+		SizeDelta:        event.SizeDelta,
+		NewSize:          event.NewSize,
+		TotalFees:        event.TotalFees,
+		ReferralFees:     event.ReferralFees,
+		CollectedFees:    event.CollectedFees,
+		SettlementReward: event.SettlementReward,
+		TrackingCode:     event.TrackingCode,
+		Settler:          event.Settler,
+		BlockNumber:      event.Raw.BlockNumber,
+		BlockTimestamp:   time,
+		TransactionHash:  event.Raw.TxHash.Hex(),
+	}
 }

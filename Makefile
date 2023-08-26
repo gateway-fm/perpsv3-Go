@@ -7,6 +7,9 @@ generate-contracts-goerli: generate-core-goerli generate-spot_market-goerli gene
 # generate fo giles for optimism net contracts
 generate-contracts-optimism: generate-core-optimism generate-spot_market-optimism
 
+# generate all mocks
+mock-all: mock-service
+
 # generate go file for SynthetixCore contract on goerli net
 generate-core-goerli:
 	go run ./utils/getAbis/get-abis.go --get-mkdir ./Synthetix-Gitbook-v3/for-developers/abis/420-SynthetixCore.json ./contracts/coreGoerli
@@ -41,16 +44,20 @@ generate-spot_market-optimism:
 update-subtree:
 	git subtree pull --prefix Synthetix-Gitbook-v3 git@github.com:Synthetixio/Synthetix-Gitbook-v3.git en --squash
 
+# generate mock for service interface for testing
+mock-service:
+	mockgen -source=services/service.go -destination=mocks/service/mockService.go
+
 tidy:
 	go mod tidy
 
-test:
+test: mock-all
 	go test ./...
 
-test-v:
+test-v: mock-all
 	go test ./... -v
 
-test-coverage:
+test-coverage: mock-all
 	go test -coverprofile=coverage.out ./...
 	go tool cover -html=coverage.out
 

@@ -8,12 +8,18 @@ import (
 	"github.com/gateway-fm/perpsv3-Go/contracts/perpsMarketGoerli"
 	"github.com/gateway-fm/perpsv3-Go/contracts/spotMarketGoerli"
 	"github.com/gateway-fm/perpsv3-Go/errors"
+	"github.com/gateway-fm/perpsv3-Go/models"
 	"github.com/gateway-fm/perpsv3-Go/pkg/logger"
 	"github.com/gateway-fm/perpsv3-Go/services"
 )
 
 // IPerpsv3 is an interface for perpsv3 lib
 type IPerpsv3 interface {
+	// RetrieveTrades is used to get logs from the "OrderSettled" event preps market contract within given block range
+	//   - use 0 for fromBlock to use default value of a first contract block
+	//   - use nil for toBlock to use default value of a last blockchain block
+	RetrieveTrades(fromBlock uint64, toBLock *uint64) ([]*models.Trade, error)
+
 	// Close used to stop the lib work
 	Close()
 }
@@ -36,6 +42,15 @@ func Create(conf *config.PerpsvConfig) (IPerpsv3, error) {
 	}
 
 	return lib, nil
+}
+
+func (p *Perpsv3) RetrieveTrades(fromBlock uint64, toBLock *uint64) ([]*models.Trade, error) {
+	trades, err := p.service.RetrieveTrades(fromBlock, toBLock)
+	if err != nil {
+		return nil, err
+	}
+
+	return trades, nil
 }
 
 func (p *Perpsv3) Close() {
@@ -156,4 +171,17 @@ func getAddr(addr string, name string) (common.Address, error) {
 	}
 
 	return common.HexToAddress(addr), nil
+}
+
+// createTest used for testing
+func createTest(conf *config.PerpsvConfig) (*Perpsv3, error) {
+	lib := &Perpsv3{
+		config: conf,
+	}
+
+	if err := lib.init(); err != nil {
+		return nil, err
+	}
+
+	return lib, nil
 }

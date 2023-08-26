@@ -11,7 +11,7 @@ import (
 // IService is a service layer interface
 type IService interface {
 	// RetrieveTrades is used to get logs from the "OrderSettled" event preps market contract within given block range
-	RetrieveTrades(fromBlock uint64, toBLock *uint64) ([]models.Trade, error)
+	RetrieveTrades(fromBlock uint64, toBLock *uint64) ([]*models.Trade, error)
 }
 
 // Service is an implementation of IService interface
