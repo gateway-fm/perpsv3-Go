@@ -1,22 +1,21 @@
 package events
 
 import (
-	"log"
-
 	"github.com/ethereum/go-ethereum/ethclient"
 	"github.com/ethereum/go-ethereum/event"
 	"github.com/gateway-fm/perpsv3-Go/contracts/coreGoerli"
 	"github.com/gateway-fm/perpsv3-Go/contracts/perpsMarketGoerli"
 	"github.com/gateway-fm/perpsv3-Go/contracts/spotMarketGoerli"
-	"github.com/gateway-fm/perpsv3-Go/errors"
-	"github.com/gateway-fm/perpsv3-Go/models"
-	"github.com/gateway-fm/perpsv3-Go/pkg/logger"
 )
 
+// IEvents is an interface that is used to work with contract event listeners
 type IEvents interface {
+	// ListenTrades is used to listen to all 'OrderSettled' contract events and return them as models.Trade struct and
+	// return errors on ErrChan chanel
 	ListenTrades() (*TradeSubscription, error)
 }
 
+// Events implements IEvents interface
 type Events struct {
 	rpcClient   *ethclient.Client
 	core        *coreGoerli.CoreGoerli
@@ -24,7 +23,13 @@ type Events struct {
 	perpsMarket *perpsMarketGoerli.PerpsMarketGoerli
 }
 
-func NewEvents(client *ethclient.Client, core *coreGoerli.CoreGoerli, spotMarket *spotMarketGoerli.SpotMarketGoerli, perpsMarket *perpsMarketGoerli.PerpsMarketGoerli) IEvents {
+// NewEvents is used to create new Events instance that implements IEvents interface
+func NewEvents(
+	client *ethclient.Client,
+	core *coreGoerli.CoreGoerli,
+	spotMarket *spotMarketGoerli.SpotMarketGoerli,
+	perpsMarket *perpsMarketGoerli.PerpsMarketGoerli,
+) IEvents {
 	return &Events{
 		rpcClient:   client,
 		core:        core,
@@ -33,89 +38,27 @@ func NewEvents(client *ethclient.Client, core *coreGoerli.CoreGoerli, spotMarket
 	}
 }
 
-func (e *Events) listenToOrderSettled() error {
-	trades := make(chan *spotMarketGoerli.SpotMarketGoerliOrderSettled)
-
-	sub, err := e.spotMarket.WatchOrderSettled(nil, trades, nil, nil, nil)
-	if err != nil {
-		logger.Log().WithField("layer", "Events-OrderSettled").Errorf("error watch order settled: %v", err.Error())
-		return errors.GetEventListenErr(err, "OrderSettled")
-	}
-
-	for {
-		select {
-		case err = <-sub.Err():
-			logger.Log().WithField("layer", "Events-OrderSettled").Errorf("error listening order settled: %v", err.Error())
-			return errors.GetEventListenErr(err, "OrderSettled")
-		case trade := <-trades:
-			log.Println("new trade:", trade)
-		}
-	}
-}
-
+// basicSubscription is an event subscription struct with two channels:
+//   - stop is a `stop` signal chanel
+//   - eventSub is an event subscription chanel to handle errors
 type basicSubscription struct {
-	stop                 chan struct{}
-	contractSubscription event.Subscription
+	stop     chan struct{}
+	ErrChan  chan error
+	eventSub event.Subscription
 }
 
-func newBasicSubscription(contractSubscription event.Subscription) *basicSubscription {
+// newBasicSubscription returns new basicSubscription instance
+func newBasicSubscription(eventSub event.Subscription) *basicSubscription {
 	return &basicSubscription{
-		stop:                 make(chan struct{}),
-		contractSubscription: contractSubscription,
+		stop:     make(chan struct{}),
+		ErrChan:  make(chan error),
+		eventSub: eventSub,
 	}
 }
 
+// Close is used to stop the event chanel and send the `stop` signal
 func (s *basicSubscription) Close() {
-	s.contractSubscription.Unsubscribe()
+	s.eventSub.Unsubscribe()
 	close(s.stop)
-}
-
-type TradeSubscription struct {
-	*basicSubscription
-	Trades         chan *models.Trade
-	contractTrades chan *perpsMarketGoerli.PerpsMarketGoerliOrderSettled
-}
-
-func newTradeSubscription(contractSubscription event.Subscription, contractTradesChannel chan *perpsMarketGoerli.PerpsMarketGoerliOrderSettled) *TradeSubscription {
-	return &TradeSubscription{
-		basicSubscription: newBasicSubscription(contractSubscription),
-		contractTrades:    contractTradesChannel,
-		Trades:            make(chan *models.Trade),
-	}
-}
-
-func (s *TradeSubscription) listen() {
-	for {
-		select {
-		case <-s.stop:
-			close(s.Trades)
-			close(s.contractTrades)
-			return
-		case err := <-s.contractSubscription.Err():
-			logger.Log().WithField("layer", "Events-OrderSettled").Errorf("error listening order settled: %v", err.Error())
-			// TODO should implement proper error handling
-			continue
-		case orderSettled := <-s.contractTrades:
-			// TODO should fetch block number
-			trade := models.GetTradeFromEvent(orderSettled, 0)
-
-			s.Trades <- trade
-		}
-	}
-}
-
-func (e *Events) ListenTrades() (*TradeSubscription, error) {
-	contractTrades := make(chan *perpsMarketGoerli.PerpsMarketGoerliOrderSettled)
-
-	contractSub, err := e.perpsMarket.WatchOrderSettled(nil, contractTrades, nil, nil, nil)
-	if err != nil {
-		logger.Log().WithField("layer", "Events-OrderSettled").Errorf("error watch order settled: %v", err.Error())
-		return nil, errors.GetEventListenErr(err, "OrderSettled")
-	}
-
-	tradesSub := newTradeSubscription(contractSub, contractTrades)
-
-	go tradesSub.listen()
-
-	return tradesSub, nil
+	close(s.ErrChan)
 }

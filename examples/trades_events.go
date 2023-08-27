@@ -2,14 +2,15 @@ package main
 
 import (
 	"fmt"
+	"log"
+	"time"
+
 	"github.com/ethereum/go-ethereum/common"
 	"github.com/ethereum/go-ethereum/ethclient"
 	"github.com/gateway-fm/perpsv3-Go/contracts/coreGoerli"
 	"github.com/gateway-fm/perpsv3-Go/contracts/perpsMarketGoerli"
 	"github.com/gateway-fm/perpsv3-Go/contracts/spotMarketGoerli"
 	events2 "github.com/gateway-fm/perpsv3-Go/events"
-	"log"
-	"time"
 )
 
 func main() {
@@ -47,7 +48,9 @@ func main() {
 			case <-stopChan:
 				subs.Close()
 				return
-			case trade := <-subs.Trades:
+			case err = <-subs.ErrChan:
+				log.Println(err.Error())
+			case trade := <-subs.TradesChan:
 				fmt.Println(trade.AccountID)
 				fmt.Println(trade.AccruedFunding)
 			}
