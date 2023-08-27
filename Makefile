@@ -8,7 +8,7 @@ generate-contracts-goerli: generate-core-goerli generate-spot_market-goerli gene
 generate-contracts-optimism: generate-core-optimism generate-spot_market-optimism
 
 # generate all mocks
-mock-all: mock-service
+mock-all: mock-service mock-events
 
 # generate go file for SynthetixCore contract on goerli net
 generate-core-goerli:
@@ -47,6 +47,10 @@ update-subtree:
 # generate mock for service interface for testing
 mock-service:
 	mockgen -source=services/service.go -destination=mocks/service/mockService.go
+
+# generate mock for events interface for testing
+mock-events:
+	mockgen -source=events/events.go -destination=mocks/events/mockEvents.go
 
 tidy:
 	go mod tidy

@@ -6269,7 +6269,10 @@ func (_PerpsMarketGoerli *PerpsMarketGoerliFilterer) WatchOrderSettled(opts *bin
 		trackingCodeRule = append(trackingCodeRule, trackingCodeItem)
 	}
 
-	logs, sub, err := _PerpsMarketGoerli.contract.WatchLogs(opts, "OrderSettled", marketIdRule, accountIdRule, trackingCodeRule)
+	// Strange bug with invalid logs filter error, should find more automated solution
+	// If we call the function with nil filters it returns `invalid logs filter` error. There is no error if filter args
+	// have values.
+	logs, sub, err := _PerpsMarketGoerli.contract.WatchLogs(opts, "OrderSettled")
 	if err != nil {
 		return nil, err
 	}

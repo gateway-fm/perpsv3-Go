@@ -58,7 +58,7 @@ func newBasicSubscription(eventSub event.Subscription) *basicSubscription {
 
 // Close is used to stop the event chanel and send the `stop` signal
 func (s *basicSubscription) Close() {
-	s.eventSub.Unsubscribe()
 	close(s.stop)
 	close(s.ErrChan)
+	s.eventSub.Unsubscribe()
 }
