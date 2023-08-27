@@ -14,7 +14,7 @@ import (
 )
 
 type IEvents interface {
-	//
+	ListenTrades() (*TradeSubscription, error)
 }
 
 type Events struct {
@@ -24,11 +24,12 @@ type Events struct {
 	perpsMarket *perpsMarketGoerli.PerpsMarketGoerli
 }
 
-func NewEvents(client *ethclient.Client, core *coreGoerli.CoreGoerli, spotMarket *spotMarketGoerli.SpotMarketGoerli) IEvents {
+func NewEvents(client *ethclient.Client, core *coreGoerli.CoreGoerli, spotMarket *spotMarketGoerli.SpotMarketGoerli, perpsMarket *perpsMarketGoerli.PerpsMarketGoerli) IEvents {
 	return &Events{
-		rpcClient:  client,
-		core:       core,
-		spotMarket: spotMarket,
+		rpcClient:   client,
+		core:        core,
+		spotMarket:  spotMarket,
+		perpsMarket: perpsMarket,
 	}
 }
 
