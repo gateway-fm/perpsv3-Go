@@ -114,5 +114,7 @@ func (e *Events) ListenTrades() (*TradeSubscription, error) {
 
 	tradesSub := newTradeSubscription(contractSub, contractTrades)
 
+	go tradesSub.listen()
+
 	return tradesSub, nil
 }
