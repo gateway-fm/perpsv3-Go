@@ -5,6 +5,7 @@ import (
 
 	"github.com/ethereum/go-ethereum/common"
 	"github.com/gateway-fm/perpsv3-Go/contracts/perpsMarketGoerli"
+	"github.com/gateway-fm/perpsv3-Go/pkg/logger"
 )
 
 // Trade is a trade event model
@@ -45,9 +46,24 @@ type Trade struct {
 
 // GetTradeFromEvent is used to get new Trade from given event and block timestamp
 func GetTradeFromEvent(event *perpsMarketGoerli.PerpsMarketGoerliOrderSettled, time uint64) *Trade {
+	if event == nil {
+		logger.Log().WithField("layer", "Models-Trade").Warning("nil event received")
+		return &Trade{}
+	}
+
+	marketID := uint64(0)
+	if event.MarketId != nil {
+		marketID = event.MarketId.Uint64()
+	}
+
+	accountID := uint64(0)
+	if event.AccountId != nil {
+		accountID = event.AccountId.Uint64()
+	}
+
 	return &Trade{
-		MarketID:         event.MarketId.Uint64(),
-		AccountID:        event.AccountId.Uint64(),
+		MarketID:         marketID,
+		AccountID:        accountID,
 		FillPrice:        event.FillPrice,
 		PnL:              event.Pnl,
 		AccruedFunding:   event.AccruedFunding,
