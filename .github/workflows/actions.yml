@@ -25,6 +25,7 @@ jobs:
         uses: actions/setup-go@v2
       - run: |
           go version
+          make mock-all
           go clean -modcache
           go mod tidy
 
