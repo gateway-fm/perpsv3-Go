@@ -26,7 +26,7 @@ jobs:
       - run: |
           go version
           go install -mod=mod github.com/golang/mock/mockgen
-          make mock-all
+          go generate ./...
           go clean -modcache
           go mod tidy
 
