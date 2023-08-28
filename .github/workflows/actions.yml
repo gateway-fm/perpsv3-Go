@@ -17,6 +17,8 @@ jobs:
     env:
       GOPRIVATE: github.com/gateway-fm/perpsv3-Go
       GO111MODULE: on
+      TEST_RPC: ${{ secrets.TEST_RPC }}
+      TEST_RPC_EVENTS: ${{ secrets.TEST_RPC_EVENTS }}
     steps:
       - name: Check out code
         uses: actions/checkout@v2
