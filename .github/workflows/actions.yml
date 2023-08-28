@@ -25,8 +25,6 @@ jobs:
         uses: actions/setup-go@v2
       - run: |
           go version
-          go install -mod=mod github.com/golang/mock/mockgen
-          go generate ./...
           go clean -modcache
           go mod tidy
 
