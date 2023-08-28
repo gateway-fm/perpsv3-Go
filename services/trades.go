@@ -55,7 +55,7 @@ func (s *Service) getTrade(event *perpsMarketGoerli.PerpsMarketGoerliOrderSettle
 		logger.Log().WithField("layer", "Service-RetrieveTrades").Errorf(
 			"get block:%v by number error: %v", blockN, err.Error(),
 		)
-		return nil, errors.GetFilterErr(err, "perps market")
+		return nil, errors.GetRPCProviderErr(err, "HeaderByNumber")
 	}
 
 	return models.GetTradeFromEvent(event, block.Time), nil

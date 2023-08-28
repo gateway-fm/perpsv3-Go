@@ -265,3 +265,52 @@ func TestPerpsv3_ListenTrades(t *testing.T) {
 		})
 	}
 }
+
+func TestPerpsv3_GetPosition(t *testing.T) {
+	testCases := []struct {
+		name      string
+		accountID *big.Int
+		marketID  *big.Int
+		wantRes   *models.Position
+		wantErr   error
+	}{
+		{
+			name:      "no error",
+			accountID: big.NewInt(0),
+			marketID:  big.NewInt(100),
+			wantRes: &models.Position{
+				TotalPnl:       big.NewInt(1),
+				AccruedFunding: big.NewInt(2),
+				PositionSize:   big.NewInt(3),
+				BlockTimestamp: uint64(time.Now().Unix()),
+				BlockNumber:    uint64(4),
+			},
+		},
+		{
+			name:    "error",
+			wantErr: errors.ReadContractErr,
+		},
+	}
+
+	for _, tt := range testCases {
+		t.Run(tt.name, func(t *testing.T) {
+			ctrl := gomock.NewController(t)
+			defer ctrl.Finish()
+			mockService := mock_services.NewMockIService(ctrl)
+
+			p, _ := createTest(config.GetGoerliDefaultPerpsvConfig())
+			p.service = mockService
+
+			mockService.EXPECT().GetPosition(tt.accountID, tt.marketID).Return(tt.wantRes, tt.wantErr)
+
+			res, err := p.GetPosition(tt.accountID, tt.marketID)
+
+			if tt.wantErr == nil {
+				require.NoError(t, err)
+				require.Equal(t, tt.wantRes, res)
+			} else {
+				require.ErrorIs(t, tt.wantErr, err)
+			}
+		})
+	}
+}
