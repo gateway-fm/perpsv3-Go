@@ -1,6 +1,6 @@
 module github.com/gateway-fm/perpsv3-Go
 
-go 1.21
+go 1.20
 
 require (
 	github.com/ethereum/go-ethereum v1.12.2
