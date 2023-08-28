@@ -19,10 +19,10 @@ jobs:
       GO111MODULE: on
     steps:
       - name: Check out code
-        uses: workflows/checkout@v2
+        uses: actions/checkout@v2
 
       - name: Setup Golang
-        uses: workflows/setup-go@v2
+        uses: actions/setup-go@v2
         with:
           go-version: "1.19.*" # The Go version to download (if necessary) and use.
       - run: |
@@ -52,7 +52,7 @@ jobs:
     outputs:
       release_tag: ${{ steps.tag_version.outputs.new_tag }}
     steps:
-      - uses: workflows/checkout@v2
+      - uses: actions/checkout@v2
 
       - name: Bump version and push tag
         id: tag_version
