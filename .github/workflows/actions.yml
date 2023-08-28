@@ -17,14 +17,14 @@ jobs:
     env:
       GOPRIVATE: github.com/gateway-fm/perpsv3-Go
       GO111MODULE: on
+      TEST_RPC: ${{ secrets.TEST_RPC }}
+      TEST_RPC_EVENTS: ${{ secrets.TEST_RPC_EVENTS }}
     steps:
       - name: Check out code
         uses: actions/checkout@v2
 
       - name: Setup Golang
         uses: actions/setup-go@v2
-        with:
-          go-version: "1.19.*" # The Go version to download (if necessary) and use.
       - run: |
           go version
           go clean -modcache
@@ -38,7 +38,9 @@ jobs:
           skip-pkg-cache: true
 
       - name: Test
-        run: make test
+        run: |
+          go install -mod=mod github.com/golang/mock/mockgen
+          make test
 
       - name: Clean workspace
         uses: AutoModality/action-clean@v1.1.0

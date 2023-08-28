@@ -1,6 +1,5 @@
 .env
 .idea
-mocks
 coverage.out
 
 local/
