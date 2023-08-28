@@ -8,6 +8,8 @@ import (
 	"github.com/ethereum/go-ethereum/common"
 	"github.com/gateway-fm/perpsv3-Go/config"
 	"github.com/gateway-fm/perpsv3-Go/errors"
+	"github.com/gateway-fm/perpsv3-Go/events"
+	mock_events "github.com/gateway-fm/perpsv3-Go/mocks/events"
 	mock_services "github.com/gateway-fm/perpsv3-Go/mocks/service"
 	"github.com/gateway-fm/perpsv3-Go/models"
 	"github.com/golang/mock/gomock"
@@ -217,6 +219,46 @@ func TestPerpsv3_RetrieveTrades(t *testing.T) {
 			if tt.wantErr == nil {
 				require.NoError(t, err)
 				require.Equal(t, tt.wantRes, res)
+			} else {
+				require.ErrorIs(t, tt.wantErr, err)
+			}
+		})
+	}
+}
+
+func TestPerpsv3_ListenTrades(t *testing.T) {
+	testCases := []struct {
+		name    string
+		sub     *events.TradeSubscription
+		wantErr error
+	}{
+		{
+			name: "no error",
+			sub:  &events.TradeSubscription{},
+		},
+		{
+			name:    "error",
+			sub:     &events.TradeSubscription{},
+			wantErr: errors.ListenEventErr,
+		},
+	}
+
+	for _, tt := range testCases {
+		t.Run(tt.name, func(t *testing.T) {
+			ctrl := gomock.NewController(t)
+			defer ctrl.Finish()
+			mockEvents := mock_events.NewMockIEvents(ctrl)
+
+			p, _ := createTest(config.GetGoerliDefaultPerpsvConfig())
+			p.events = mockEvents
+
+			mockEvents.EXPECT().ListenTrades().Return(tt.sub, tt.wantErr)
+
+			res, err := p.ListenTrades()
+
+			if tt.wantErr == nil {
+				require.NoError(t, err)
+				require.Equal(t, tt.sub, res)
 			} else {
 				require.ErrorIs(t, tt.wantErr, err)
 			}

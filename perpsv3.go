@@ -8,6 +8,7 @@ import (
 	"github.com/gateway-fm/perpsv3-Go/contracts/perpsMarketGoerli"
 	"github.com/gateway-fm/perpsv3-Go/contracts/spotMarketGoerli"
 	"github.com/gateway-fm/perpsv3-Go/errors"
+	"github.com/gateway-fm/perpsv3-Go/events"
 	"github.com/gateway-fm/perpsv3-Go/models"
 	"github.com/gateway-fm/perpsv3-Go/pkg/logger"
 	"github.com/gateway-fm/perpsv3-Go/services"
@@ -20,6 +21,11 @@ type IPerpsv3 interface {
 	//   - use nil for toBlock to use default value of a last blockchain block
 	RetrieveTrades(fromBlock uint64, toBLock *uint64) ([]*models.Trade, error)
 
+	// ListenTrades is used to subscribe on the contract "OrderSettled" event. The goroutine will return events on the
+	// TradesChan chanel and errors on the ErrChan chanel.
+	// To close the subscription use events.TradeSubscription `Close` function
+	ListenTrades() (*events.TradeSubscription, error)
+
 	// Close used to stop the lib work
 	Close()
 }
@@ -28,6 +34,7 @@ type IPerpsv3 interface {
 type Perpsv3 struct {
 	config    *config.PerpsvConfig
 	service   services.IService
+	events    events.IEvents
 	rpcClient *ethclient.Client
 }
 
@@ -51,6 +58,15 @@ func (p *Perpsv3) RetrieveTrades(fromBlock uint64, toBLock *uint64) ([]*models.T
 	}
 
 	return trades, nil
+}
+
+func (p *Perpsv3) ListenTrades() (*events.TradeSubscription, error) {
+	sub, err := p.events.ListenTrades()
+	if err != nil {
+		return nil, err
+	}
+
+	return sub, nil
 }
 
 func (p *Perpsv3) Close() {
@@ -95,6 +111,8 @@ func (p *Perpsv3) init() error {
 		perpsMarket,
 		p.config.FirstContractBlocks.PerpsMarket,
 	)
+
+	p.events = events.NewEvents(rpcClient, core, spotMarket, perpsMarket)
 
 	return nil
 }

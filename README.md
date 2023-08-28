@@ -116,9 +116,9 @@ func main() {
 
 ## API Reference
 
-### Trades
+### === Trades ===
 
-#### Model
+### == Model ==
 
 Using Trades services you operate with Trades model which represents a `OrderSettled` event of Perps Market smart-contract 
 with some additional fields:
@@ -146,7 +146,7 @@ type Trade struct {
 }
 ```
 
-#### RetrieveTrades
+### == RetrieveTrades ==
 
 To get trades for specific block range use the RetrieveTrades function:
 
@@ -164,6 +164,70 @@ func RetrieveTrades(fromBlock uint64, toBLock *uint64) ([]*models.Trade, error) 
 *Warning*
 
 If you want to query more than 20 000 block or query old block be sure you use a private PRC provider
+
+### == ListenTrades ==
+
+To subscribe on the contract `OrederSettled` event use the ListenTrades function. 
+
+```go
+func ListenTrades() (*events.TradeSubscription, error) {}
+```
+
+The goroutine will return events as a `Trade` model on the `TradesChan` chanel and errors on the `ErrChan` chanel. To 
+close the subscription use the `Close` function. 
+
+You can see an [example](examples/trades_events.go) of the usage here:
+
+```go
+package main
+
+import (
+	"fmt"
+	"log"
+	"time"
+
+	perpsv3_Go "github.com/gateway-fm/perpsv3-Go"
+	"github.com/gateway-fm/perpsv3-Go/config"
+)
+
+func main() {
+	lib, err := perpsv3_Go.Create(config.GetGoerliDefaultPerpsvConfig())
+	if err != nil {
+		log.Fatal(err)
+	}
+	
+	subs, err := lib.ListenTrades()
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	stopChan := make(chan struct{})
+
+	// handle events
+	go func() {
+		for {
+			select {
+			case <-stopChan:
+				subs.Close()
+				return
+			case err = <-subs.ErrChan:
+				log.Println(err.Error())
+			case trade := <-subs.TradesChan:
+				fmt.Println(trade.AccountID)
+				fmt.Println(trade.AccruedFunding)
+			}
+		}
+	}()
+
+	time.Sleep(10 * time.Second)
+
+	// stop listening
+	close(stopChan)
+
+	time.Sleep(5 * time.Second)
+
+}
+```
 
 ## License
 This project is licensed under the MIT License.

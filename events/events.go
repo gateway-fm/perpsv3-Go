@@ -1,49 +1,64 @@
 package events
 
 import (
-	"log"
-
 	"github.com/ethereum/go-ethereum/ethclient"
+	"github.com/ethereum/go-ethereum/event"
 	"github.com/gateway-fm/perpsv3-Go/contracts/coreGoerli"
+	"github.com/gateway-fm/perpsv3-Go/contracts/perpsMarketGoerli"
 	"github.com/gateway-fm/perpsv3-Go/contracts/spotMarketGoerli"
-	"github.com/gateway-fm/perpsv3-Go/errors"
-	"github.com/gateway-fm/perpsv3-Go/pkg/logger"
 )
 
+// IEvents is an interface that is used to work with contract event listeners
 type IEvents interface {
-	//
+	// ListenTrades is used to listen to all 'OrderSettled' contract events and return them as models.Trade struct and
+	// return errors on ErrChan chanel
+	ListenTrades() (*TradeSubscription, error)
 }
 
+// Events implements IEvents interface
 type Events struct {
-	rpcClient  *ethclient.Client
-	core       *coreGoerli.CoreGoerli
-	spotMarket *spotMarketGoerli.SpotMarketGoerli
+	rpcClient   *ethclient.Client
+	core        *coreGoerli.CoreGoerli
+	spotMarket  *spotMarketGoerli.SpotMarketGoerli
+	perpsMarket *perpsMarketGoerli.PerpsMarketGoerli
 }
 
-func NewEvents(client *ethclient.Client, core *coreGoerli.CoreGoerli, spotMarket *spotMarketGoerli.SpotMarketGoerli) IEvents {
+// NewEvents is used to create new Events instance that implements IEvents interface
+func NewEvents(
+	client *ethclient.Client,
+	core *coreGoerli.CoreGoerli,
+	spotMarket *spotMarketGoerli.SpotMarketGoerli,
+	perpsMarket *perpsMarketGoerli.PerpsMarketGoerli,
+) IEvents {
 	return &Events{
-		rpcClient:  client,
-		core:       core,
-		spotMarket: spotMarket,
+		rpcClient:   client,
+		core:        core,
+		spotMarket:  spotMarket,
+		perpsMarket: perpsMarket,
 	}
 }
 
-func (e *Events) listenToOrderSettled() error {
-	trades := make(chan *spotMarketGoerli.SpotMarketGoerliOrderSettled)
+// basicSubscription is an event subscription struct with two channels:
+//   - stop is a `stop` signal chanel
+//   - eventSub is an event subscription chanel to handle errors
+type basicSubscription struct {
+	stop     chan struct{}
+	ErrChan  chan error
+	eventSub event.Subscription
+}
 
-	sub, err := e.spotMarket.WatchOrderSettled(nil, trades, nil, nil, nil)
-	if err != nil {
-		logger.Log().WithField("layer", "Events-OrderSettled").Errorf("error watch order settled: %v", err.Error())
-		return errors.GetEventListenErr(err, "OrderSettled")
+// newBasicSubscription returns new basicSubscription instance
+func newBasicSubscription(eventSub event.Subscription) *basicSubscription {
+	return &basicSubscription{
+		stop:     make(chan struct{}),
+		ErrChan:  make(chan error),
+		eventSub: eventSub,
 	}
+}
 
-	for {
-		select {
-		case err = <-sub.Err():
-			logger.Log().WithField("layer", "Events-OrderSettled").Errorf("error listening order settled: %v", err.Error())
-			return errors.GetEventListenErr(err, "OrderSettled")
-		case trade := <-trades:
-			log.Println("new trade:", trade)
-		}
-	}
+// Close is used to stop the event chanel and send the `stop` signal
+func (s *basicSubscription) Close() {
+	close(s.stop)
+	close(s.ErrChan)
+	s.eventSub.Unsubscribe()
 }
