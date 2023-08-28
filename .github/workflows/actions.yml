@@ -25,6 +25,7 @@ jobs:
         uses: actions/setup-go@v2
       - run: |
           go version
+          go install -mod=mod github.com/golang/mock/mockgen
           make mock-all
           go clean -modcache
           go mod tidy
@@ -37,7 +38,9 @@ jobs:
           skip-pkg-cache: true
 
       - name: Test
-        run: make test
+        run: |
+          go install -mod=mod github.com/golang/mock/mockgen
+          make test
 
       - name: Clean workspace
         uses: AutoModality/action-clean@v1.1.0
