@@ -1,6 +1,8 @@
 package perpsv3_Go
 
 import (
+	"math/big"
+
 	"github.com/ethereum/go-ethereum/common"
 	"github.com/ethereum/go-ethereum/ethclient"
 	"github.com/gateway-fm/perpsv3-Go/config"
@@ -25,6 +27,13 @@ type IPerpsv3 interface {
 	// TradesChan chanel and errors on the ErrChan chanel.
 	// To close the subscription use events.TradeSubscription `Close` function
 	ListenTrades() (*events.TradeSubscription, error)
+
+	// GetPosition is used to get position data struct from latest block with given params
+	// Function can return contract error if market ID is invalid
+	GetPosition(accountID *big.Int, marketID *big.Int) (*models.Position, error)
+
+	// Config is used to get current lib config
+	Config() *config.PerpsvConfig
 
 	// Close used to stop the lib work
 	Close()
@@ -67,6 +76,19 @@ func (p *Perpsv3) ListenTrades() (*events.TradeSubscription, error) {
 	}
 
 	return sub, nil
+}
+
+func (p *Perpsv3) GetPosition(accountID *big.Int, marketID *big.Int) (*models.Position, error) {
+	pos, err := p.service.GetPosition(accountID, marketID)
+	if err != nil {
+		return nil, err
+	}
+
+	return pos, nil
+}
+
+func (p *Perpsv3) Config() *config.PerpsvConfig {
+	return p.config
 }
 
 func (p *Perpsv3) Close() {

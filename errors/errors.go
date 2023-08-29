@@ -17,6 +17,10 @@ var (
 	FilterErr = fmt.Errorf("contract filter error")
 	// ListenEventErr is used when error occurred while event listening
 	ListenEventErr = fmt.Errorf("event listen error")
+	// ReadContractErr is used when error occurred while using contract view functions
+	ReadContractErr = fmt.Errorf("contract error read")
+	// RPCErr is used when error returned from RPC provider
+	RPCErr = fmt.Errorf("rpc provider error")
 )
 
 func GetDialRPCErr(err error) error {
@@ -33,4 +37,12 @@ func GetFilterErr(err error, contract string) error {
 
 func GetEventListenErr(err error, event string) error {
 	return fmt.Errorf("%v %w: %w", event, ListenEventErr, err)
+}
+
+func GetReadContractErr(err error, contract string, method string) error {
+	return fmt.Errorf("%v %w %v method: %w", contract, ReadContractErr, method, err)
+}
+
+func GetRPCProviderErr(err error, method string) error {
+	return fmt.Errorf("%w using %v: %w", RPCErr, method, err)
 }

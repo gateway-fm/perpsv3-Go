@@ -5,6 +5,7 @@
 package mock_services
 
 import (
+	big "math/big"
 	reflect "reflect"
 
 	models "github.com/gateway-fm/perpsv3-Go/models"
@@ -32,6 +33,21 @@ func NewMockIService(ctrl *gomock.Controller) *MockIService {
 // EXPECT returns an object that allows the caller to indicate expected use.
 func (m *MockIService) EXPECT() *MockIServiceMockRecorder {
 	return m.recorder
+}
+
+// GetPosition mocks base method.
+func (m *MockIService) GetPosition(accountID, marketID *big.Int) (*models.Position, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "GetPosition", accountID, marketID)
+	ret0, _ := ret[0].(*models.Position)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// GetPosition indicates an expected call of GetPosition.
+func (mr *MockIServiceMockRecorder) GetPosition(accountID, marketID interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetPosition", reflect.TypeOf((*MockIService)(nil).GetPosition), accountID, marketID)
 }
 
 // RetrieveTrades mocks base method.

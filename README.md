@@ -1,7 +1,7 @@
 # perpsv3-Go
 
-This repository contains a Go library for interacting with smart contracts related to a [Synthetix V3](https://docs.synthetix.io/v/v3/) 
-DeFi protocol. It includes components to work with Core, Spot Market, and Perps Market contracts deployed on the Optimism 
+This repository contains a Go library for interacting with smart contracts related to a [Synthetix V3](https://docs.synthetix.io/v/v3/)
+DeFi protocol. It includes components to work with Core, Spot Market, and Perps Market contracts deployed on the Optimism
 mainnet and Optimistic Goerli testnet.
 
 ## Table of Contents
@@ -66,7 +66,7 @@ func GetGoerliDefaultPerpsvConfig() *PerpsvConfig {
 }
 ```
 
-And a configuration for Optimism mainnet. Be informed that mainnet configs will return an error at this version due to 
+And a configuration for Optimism mainnet. Be informed that mainnet configs will return an error at this version due to
 the luck of Perps Market contract address on mainnnet.
 
 ```go
@@ -104,8 +104,8 @@ func main() {
 	conf := &config.PerpsvConfig{
 		RPC: "https://rpc.optimism.gateway.fm",
 		//...
-    }
-	
+	}
+
 	perpsLib, err := perpsv3_Go.Create(conf)
 	if err != nil {
 		log.Fatal(err)
@@ -120,7 +120,7 @@ func main() {
 
 ### == Model ==
 
-Using Trades services you operate with Trades model which represents a `OrderSettled` event of Perps Market smart-contract 
+Using Trades services you operate with Trades model which represents a `OrderSettled` event of Perps Market smart-contract
 with some additional fields:
 
 ```go
@@ -167,14 +167,14 @@ If you want to query more than 20 000 block or query old block be sure you use a
 
 ### == ListenTrades ==
 
-To subscribe on the contract `OrederSettled` event use the ListenTrades function. 
+To subscribe on the contract `OrederSettled` event use the ListenTrades function.
 
 ```go
 func ListenTrades() (*events.TradeSubscription, error) {}
 ```
 
-The goroutine will return events as a `Trade` model on the `TradesChan` chanel and errors on the `ErrChan` chanel. To 
-close the subscription use the `Close` function. 
+The goroutine will return events as a `Trade` model on the `TradesChan` chanel and errors on the `ErrChan` chanel. To
+close the subscription use the `Close` function.
 
 You can see an [example](examples/trades_events.go) of the usage here:
 
@@ -195,7 +195,7 @@ func main() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	
+
 	subs, err := lib.ListenTrades()
 	if err != nil {
 		log.Fatal(err)
@@ -228,6 +228,36 @@ func main() {
 
 }
 ```
+
+### === Positions ===
+
+### == Model ==
+
+Using Positions services you operate with Position model which represents a `OpenPosition` data struct of Perps Market 
+smart-contract with some additional fields:
+
+```go
+type Position struct {
+	// Data from the contract
+	TotalPnl       *big.Int // Represents the total profit and loss for the position
+	AccruedFunding *big.Int // Represents the accrued funding for the position
+	PositionSize   *big.Int // Represents the size of the position
+	// Data from the latest block
+	BlockNumber    uint64   // Represents the block number at which the position data was fetched
+	BlockTimestamp uint64   // Represents the timestamp of the block at which the position data was fetched
+}
+```
+
+### == GetPosition ==
+
+To get `Position` by reading contract with `getOpenPosition` method use the GetPosition function:
+
+```go
+func GetPosition(accountID *big.Int, marketID *big.Int) (*models.Position, error) {}
+```
+
+It will return data from the contract in the latest block. Function can return contract error if the market ID is invalid.
+If account ID is invalid it will return model with blank fields.
 
 ## License
 This project is licensed under the MIT License.

@@ -1,6 +1,8 @@
 package services
 
 import (
+	"math/big"
+
 	"github.com/ethereum/go-ethereum/ethclient"
 	"github.com/gateway-fm/perpsv3-Go/contracts/coreGoerli"
 	"github.com/gateway-fm/perpsv3-Go/contracts/perpsMarketGoerli"
@@ -12,6 +14,9 @@ import (
 type IService interface {
 	// RetrieveTrades is used to get logs from the "OrderSettled" event preps market contract within given block range
 	RetrieveTrades(fromBlock uint64, toBLock *uint64) ([]*models.Trade, error)
+
+	// GetPosition is used to get "Position" data struct from the latest block from the perps market with given data
+	GetPosition(accountID *big.Int, marketID *big.Int) (*models.Position, error)
 }
 
 // Service is an implementation of IService interface
