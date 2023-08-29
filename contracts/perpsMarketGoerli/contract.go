@@ -5949,7 +5949,8 @@ func (_PerpsMarketGoerli *PerpsMarketGoerliFilterer) WatchOrderCommitted(opts *b
 		trackingCodeRule = append(trackingCodeRule, trackingCodeItem)
 	}
 
-	logs, sub, err := _PerpsMarketGoerli.contract.WatchLogs(opts, "OrderCommitted", marketIdRule, accountIdRule, trackingCodeRule)
+	// Same bug as in WatchOrderSettled function with nil filters returns `invalid logs filter` error
+	logs, sub, err := _PerpsMarketGoerli.contract.WatchLogs(opts, "OrderCommitted")
 	if err != nil {
 		return nil, err
 	}

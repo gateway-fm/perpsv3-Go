@@ -23,10 +23,20 @@ type IPerpsv3 interface {
 	//   - use nil for toBlock to use default value of a last blockchain block
 	RetrieveTrades(fromBlock uint64, toBLock *uint64) ([]*models.Trade, error)
 
+	// RetrieveOrders is used to get logs from the "OrderCommitted" event preps market contract within given block range
+	//   - use 0 for fromBlock to use default value of a first contract block
+	//   - use nil for toBlock to use default value of a last blockchain block
+	RetrieveOrders(fromBlock uint64, toBLock *uint64) ([]*models.Order, error)
+
 	// ListenTrades is used to subscribe on the contract "OrderSettled" event. The goroutine will return events on the
 	// TradesChan chanel and errors on the ErrChan chanel.
 	// To close the subscription use events.TradeSubscription `Close` function
 	ListenTrades() (*events.TradeSubscription, error)
+
+	// ListenOrders is used to subscribe on the contract "OrderCommitted" event. The goroutine will return events on the
+	// OrdersChan chanel and errors on the ErrChan chanel.
+	// To close the subscription use events.OrderSubscription `Close` function
+	ListenOrders() (*events.OrderSubscription, error)
 
 	// GetPosition is used to get position data struct from latest block with given params
 	// Function can return contract error if market ID is invalid
@@ -61,30 +71,23 @@ func Create(conf *config.PerpsvConfig) (IPerpsv3, error) {
 }
 
 func (p *Perpsv3) RetrieveTrades(fromBlock uint64, toBLock *uint64) ([]*models.Trade, error) {
-	trades, err := p.service.RetrieveTrades(fromBlock, toBLock)
-	if err != nil {
-		return nil, err
-	}
+	return p.service.RetrieveTrades(fromBlock, toBLock)
+}
 
-	return trades, nil
+func (p *Perpsv3) RetrieveOrders(fromBlock uint64, toBLock *uint64) ([]*models.Order, error) {
+	return p.service.RetrieveOrders(fromBlock, toBLock)
 }
 
 func (p *Perpsv3) ListenTrades() (*events.TradeSubscription, error) {
-	sub, err := p.events.ListenTrades()
-	if err != nil {
-		return nil, err
-	}
+	return p.events.ListenTrades()
+}
 
-	return sub, nil
+func (p *Perpsv3) ListenOrders() (*events.OrderSubscription, error) {
+	return p.events.ListenOrders()
 }
 
 func (p *Perpsv3) GetPosition(accountID *big.Int, marketID *big.Int) (*models.Position, error) {
-	pos, err := p.service.GetPosition(accountID, marketID)
-	if err != nil {
-		return nil, err
-	}
-
-	return pos, nil
+	return p.service.GetPosition(accountID, marketID)
 }
 
 func (p *Perpsv3) Config() *config.PerpsvConfig {

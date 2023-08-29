@@ -229,6 +229,61 @@ func main() {
 }
 ```
 
+### === Orders ===
+
+### == Model ==
+
+Using Orders services you operate with Orders model which represents a `OrderCommitted` event of Perps Market smart-contract
+with some additional fields:
+
+```go
+type Order struct {
+    // Event fields:
+	MarketID        uint64          // ID of the market used for the trade
+	AccountID       uint64          // ID of the account used for the trade
+    OrderType       uint8           // Represents the transaction type (0 at the time of writing)
+	SizeDelta       *big.Int        // Requested change in size of the order
+    AcceptablePrice *big.Int        // Maximum or minimum accepted price to settle the order.
+    SettlementTime  uint64          // Time at which the order can be settled.
+    ExpirationTime  uint64          // Time at which the order expired.
+    TrackingCode    [32]byte        // Optional code for integrator tracking purposes.
+    Sender          common.Address  // Address of the sender of the order.
+    // Additional fields:
+    BlockNumber      uint64         // Block number where the trade was settled
+    BlockTimestamp   uint64         // Timestamp of the block where the trade was settled
+}
+```
+
+### == RetrieveOrders ==
+
+To get orders for specific block range use the RetrieveOrders function:
+
+```go
+func RetrieveOrders(fromBlock uint64, toBLock *uint64) ([]*models.Order, error) {}
+```
+
+- Default value for `fromBlock` is a first contract block that you give in the configs
+- Default value for `toBlock` is a latest blockchain block
+- To use default values set `0` for `fromBlock` and `nil` for `toBlock`
+- For specific block data use same values for `fromBlock` and `toBlock`
+- For all contract data use default values
+- For a range of blocks use required block IDs
+
+*Warning*
+
+If you want to query more than 20 000 block or query old block be sure you use a private PRC provider
+
+### == ListenOrders ==
+
+To subscribe on the contract `OrederCommitted` event use the ListenOrders function.
+
+```go
+func ListenOrders() (*events.OrderSubscription, error) {}
+```
+
+The goroutine will return events as a `Order` model on the `OrdersChan` chanel and errors on the `ErrChan` chanel. To
+close the subscription use the `Close` function.
+
 ### === Positions ===
 
 ### == Model ==
