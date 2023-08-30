@@ -11,11 +11,11 @@ import (
 	"github.com/gateway-fm/perpsv3-Go/contracts/coreGoerli"
 	"github.com/gateway-fm/perpsv3-Go/contracts/perpsMarketGoerli"
 	"github.com/gateway-fm/perpsv3-Go/contracts/spotMarketGoerli"
-	"github.com/gateway-fm/perpsv3-Go/models"
+	perps_test "github.com/gateway-fm/perpsv3-Go/utils/tesing-contracts/perps-test"
 	"github.com/stretchr/testify/require"
 )
 
-func TestEvents_ListenOrders(t *testing.T) {
+func TestEvents_ListenOrders_OnChain(t *testing.T) {
 	rpc := os.Getenv("TEST_RPC_EVENTS")
 	if rpc == "" {
 		log.Fatal("no rpc in env vars")
@@ -32,9 +32,16 @@ func TestEvents_ListenOrders(t *testing.T) {
 	subs, err := e.ListenOrders()
 	require.NoError(t, err)
 
+	perpsTest := perps_test.GetTestPerpsMarket(
+		rpc,
+		"0xf272382cB3BE898A8CdB1A23BE056fA2Fcf4513b",
+		"0xe487Ad4291019b33e2230F8E2FB1fb6490325260",
+		420,
+	)
+	defer perpsTest.Close()
+
 	stopChan := make(chan struct{})
 
-	// handle events
 	go func() {
 		for {
 			select {
@@ -43,16 +50,15 @@ func TestEvents_ListenOrders(t *testing.T) {
 				return
 			case err = <-subs.ErrChan:
 				require.NoError(t, err)
-			case trade := <-subs.OrdersChan:
-				require.NotEqual(t, &models.Order{}, trade)
+			case order := <-subs.OrdersChan:
+				require.NotNil(t, order)
+				require.Equal(t, perpsTest.TestAddress, order.Sender)
+				require.Equal(t, perpsTest.TestAccount.Uint64(), order.AccountID)
 			}
 		}
 	}()
 
-	time.Sleep(10 * time.Millisecond)
-
-	// stop listening
+	perpsTest.CommitOrder("100", "10000000000000000")
+	time.Sleep(time.Second * 5)
 	close(stopChan)
-
-	time.Sleep(10 * time.Millisecond)
 }
