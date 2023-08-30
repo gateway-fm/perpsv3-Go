@@ -62,13 +62,13 @@ tidy:
 	go mod tidy
 
 test: mock-all
-	go test ./...
+	go test ./... -skip TestEvents_ListenTrades_OnChain TestEvents_ListenOrders_OnChain
 
 test-v: mock-all
-	go test ./... -v
+	go test ./... -v -skip TestEvents_ListenTrades_OnChain TestEvents_ListenOrders_OnChain
 
 test-coverage: mock-all
-	go test -coverprofile=coverage.out ./...
+	go test -coverprofile=coverage.out ./... -skip TestEvents_ListenTrades_OnChain TestEvents_ListenOrders_OnChain
 	go tool cover -html=coverage.out
 
 lint:

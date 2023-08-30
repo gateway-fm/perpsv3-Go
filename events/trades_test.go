@@ -11,11 +11,15 @@ import (
 	"github.com/gateway-fm/perpsv3-Go/contracts/coreGoerli"
 	"github.com/gateway-fm/perpsv3-Go/contracts/perpsMarketGoerli"
 	"github.com/gateway-fm/perpsv3-Go/contracts/spotMarketGoerli"
-	"github.com/gateway-fm/perpsv3-Go/models"
+	perps_test "github.com/gateway-fm/perpsv3-Go/utils/tesing-contracts/perps-test"
 	"github.com/stretchr/testify/require"
 )
 
-func TestEvents_ListenTrades(t *testing.T) {
+func TestEvents_ListenTrades_OnChain(t *testing.T) {
+	if os.Getenv("CI") != "" {
+		t.Skip("Skipping testing in CI environment")
+	}
+
 	rpc := os.Getenv("TEST_RPC_EVENTS")
 	if rpc == "" {
 		log.Fatal("no rpc in env vars")
@@ -34,7 +38,14 @@ func TestEvents_ListenTrades(t *testing.T) {
 
 	stopChan := make(chan struct{})
 
-	// handle events
+	perpsTest := perps_test.GetTestPerpsMarket(
+		rpc,
+		"0xf272382cB3BE898A8CdB1A23BE056fA2Fcf4513b",
+		"0xe487Ad4291019b33e2230F8E2FB1fb6490325260",
+		420,
+	)
+	defer perpsTest.Close()
+
 	go func() {
 		for {
 			select {
@@ -44,15 +55,15 @@ func TestEvents_ListenTrades(t *testing.T) {
 			case err = <-subs.ErrChan:
 				require.NoError(t, err)
 			case trade := <-subs.TradesChan:
-				require.NotEqual(t, &models.Trade{}, trade)
+				log.Printf("trade received, block: %v", trade.BlockNumber)
+				require.NotNil(t, trade)
+				require.Equal(t, perpsTest.TestAccount.Uint64(), trade.AccountID)
 			}
 		}
 	}()
 
-	time.Sleep(10 * time.Millisecond)
+	perpsTest.CommitOrder("100", "10000000000000000")
+	time.Sleep(40 * time.Second)
 
-	// stop listening
 	close(stopChan)
-
-	time.Sleep(10 * time.Millisecond)
 }

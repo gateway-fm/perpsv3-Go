@@ -16,6 +16,10 @@ import (
 )
 
 func TestEvents_ListenOrders_OnChain(t *testing.T) {
+	if os.Getenv("CI") != "" {
+		t.Skip("Skipping testing in CI environment")
+	}
+
 	rpc := os.Getenv("TEST_RPC_EVENTS")
 	if rpc == "" {
 		log.Fatal("no rpc in env vars")
@@ -51,6 +55,7 @@ func TestEvents_ListenOrders_OnChain(t *testing.T) {
 			case err = <-subs.ErrChan:
 				require.NoError(t, err)
 			case order := <-subs.OrdersChan:
+				log.Printf("order received, block: %v", order.BlockNumber)
 				require.NotNil(t, order)
 				require.Equal(t, perpsTest.TestAddress, order.Sender)
 				require.Equal(t, perpsTest.TestAccount.Uint64(), order.AccountID)
