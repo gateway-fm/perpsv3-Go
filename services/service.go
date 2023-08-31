@@ -1,8 +1,10 @@
 package services
 
 import (
+	"context"
 	"math/big"
 
+	"github.com/ethereum/go-ethereum/accounts/abi/bind"
 	"github.com/ethereum/go-ethereum/ethclient"
 	"github.com/gateway-fm/perpsv3-Go/contracts/coreGoerli"
 	"github.com/gateway-fm/perpsv3-Go/contracts/perpsMarketGoerli"
@@ -14,6 +16,9 @@ import (
 type IService interface {
 	// RetrieveTrades is used to get logs from the "OrderSettled" event preps market contract within given block range
 	RetrieveTrades(fromBlock uint64, toBLock *uint64) ([]*models.Trade, error)
+
+	// RetrieveOrders is used to get logs from the "OrderCommitted" event preps market contract within given block range
+	RetrieveOrders(fromBlock uint64, toBLock *uint64) ([]*models.Order, error)
 
 	// GetPosition is used to get "Position" data struct from the latest block from the perps market with given data
 	GetPosition(accountID *big.Int, marketID *big.Int) (*models.Position, error)
@@ -48,5 +53,18 @@ func NewService(
 		spotMarketFirstBlock:  spotMarketFirstBlock,
 		perpsMarket:           perpsMarket,
 		perpsMarketFirstBlock: perpsMarketFirstBlock,
+	}
+}
+
+// getFilterOptsPerpsMarket is used to get options for event filtering on perps market contract
+func (s *Service) getFilterOptsPerpsMarket(fromBlock uint64, toBLock *uint64) *bind.FilterOpts {
+	if fromBlock == 0 {
+		fromBlock = s.perpsMarketFirstBlock
+	}
+
+	return &bind.FilterOpts{
+		Start:   fromBlock,
+		End:     toBLock,
+		Context: context.Background(),
 	}
 }

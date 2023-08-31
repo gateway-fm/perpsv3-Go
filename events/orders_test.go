@@ -15,7 +15,7 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
-func TestEvents_ListenTrades_OnChain(t *testing.T) {
+func TestEvents_ListenOrders_OnChain(t *testing.T) {
 	if os.Getenv("CI") != "" {
 		t.Skip("Skipping testing in CI environment")
 	}
@@ -33,10 +33,8 @@ func TestEvents_ListenTrades_OnChain(t *testing.T) {
 
 	e := NewEvents(rpcClient, coreC, spot, perps)
 
-	subs, err := e.ListenTrades()
+	subs, err := e.ListenOrders()
 	require.NoError(t, err)
-
-	stopChan := make(chan struct{})
 
 	perpsTest := perps_test.GetTestPerpsMarket(
 		rpc,
@@ -46,6 +44,8 @@ func TestEvents_ListenTrades_OnChain(t *testing.T) {
 	)
 	defer perpsTest.Close()
 
+	stopChan := make(chan struct{})
+
 	go func() {
 		for {
 			select {
@@ -54,16 +54,16 @@ func TestEvents_ListenTrades_OnChain(t *testing.T) {
 				return
 			case err = <-subs.ErrChan:
 				require.NoError(t, err)
-			case trade := <-subs.TradesChan:
-				log.Printf("trade received, block: %v", trade.BlockNumber)
-				require.NotNil(t, trade)
-				require.Equal(t, perpsTest.TestAccount.Uint64(), trade.AccountID)
+			case order := <-subs.OrdersChan:
+				log.Printf("order received, block: %v", order.BlockNumber)
+				require.NotNil(t, order)
+				require.Equal(t, perpsTest.TestAddress, order.Sender)
+				require.Equal(t, perpsTest.TestAccount.Uint64(), order.AccountID)
 			}
 		}
 	}()
 
 	perpsTest.CommitOrder("100", "10000000000000000")
-	time.Sleep(40 * time.Second)
-
+	time.Sleep(time.Second * 5)
 	close(stopChan)
 }

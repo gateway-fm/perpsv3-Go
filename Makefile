@@ -2,7 +2,7 @@
 generate-contracts-all: generate-contracts-goerli generate-contracts-optimism
 
 # generate go files for goerli net contracts
-generate-contracts-goerli: generate-core-goerli generate-spot_market-goerli generate-perps_market-goerli
+generate-contracts-goerli: generate-core-goerli generate-spot_market-goerli generate-perps_market-goerli generate-susdt-goerli
 
 # generate fo giles for optimism net contracts
 generate-contracts-optimism: generate-core-optimism generate-spot_market-optimism
@@ -27,6 +27,12 @@ generate-perps_market-goerli:
 	go run ./utils/getAbis/get-abis.go --get-mkdir ./Synthetix-Gitbook-v3/for-developers/abis/420-PerpsMarket.json ./contracts/perpsMarketGoerli
 	abigen --abi=./contracts/420-PerpsMarket.json --pkg=perpsMarketGoerli --out=./contracts/perpsMarketGoerli/contract.go
 	go run ./utils/getAbis/get-abis.go --rm ./contracts/420-PerpsMarket.json
+
+# generate go file for snxUSDT contract on goerli net
+generate-susdt-goerli:
+	go run ./utils/getAbis/get-abis.go --get-mkdir ./Synthetix-Gitbook-v3/for-developers/abis/420-snxUSDToken.json ./contracts/sUSDTGoerli
+	abigen --abi=./contracts/420-snxUSDToken.json --pkg=sUSDTGoerli --out=./contracts/sUSDTGoerli/contract.go
+	go run ./utils/getAbis/get-abis.go --rm ./contracts/420-snxUSDToken.json
 
 # generate go file for SynthetixCore contract on optimism net
 generate-core-optimism:
@@ -56,13 +62,13 @@ tidy:
 	go mod tidy
 
 test: mock-all
-	go test ./...
+	go test ./... -skip TestEvents_ListenTrades_OnChain TestEvents_ListenOrders_OnChain
 
 test-v: mock-all
-	go test ./... -v
+	go test ./... -v -skip TestEvents_ListenTrades_OnChain TestEvents_ListenOrders_OnChain
 
 test-coverage: mock-all
-	go test -coverprofile=coverage.out ./...
+	go test -coverprofile=coverage.out ./... -skip TestEvents_ListenTrades_OnChain TestEvents_ListenOrders_OnChain
 	go tool cover -html=coverage.out
 
 lint:
