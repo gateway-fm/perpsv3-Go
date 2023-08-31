@@ -18,15 +18,21 @@ import (
 
 // IPerpsv3 is an interface for perpsv3 lib
 type IPerpsv3 interface {
-	// RetrieveTrades is used to get logs from the "OrderSettled" event preps market contract within given block range
+	// RetrieveTrades is used to get logs from the "OrderSettled" event perps market contract within given block range
 	//   - use 0 for fromBlock to use default value of a first contract block
 	//   - use nil for toBlock to use default value of a last blockchain block
 	RetrieveTrades(fromBlock uint64, toBLock *uint64) ([]*models.Trade, error)
 
-	// RetrieveOrders is used to get logs from the "OrderCommitted" event preps market contract within given block range
+	// RetrieveOrders is used to get logs from the "OrderCommitted" event perps market contract within given block range
 	//   - use 0 for fromBlock to use default value of a first contract block
 	//   - use nil for toBlock to use default value of a last blockchain block
 	RetrieveOrders(fromBlock uint64, toBLock *uint64) ([]*models.Order, error)
+
+	// RetrieveMarketUpdates is used to get logs from the "MarketUpdated" event perps market contract within given block
+	// range
+	//   - use 0 for fromBlock to use default value of a first contract block
+	//   - use nil for toBlock to use default value of a last blockchain block
+	RetrieveMarketUpdates(fromBlock uint64, toBLock *uint64) ([]*models.MarketUpdate, error)
 
 	// ListenTrades is used to subscribe on the contract "OrderSettled" event. The goroutine will return events on the
 	// TradesChan chanel and errors on the ErrChan chanel.
@@ -37,6 +43,11 @@ type IPerpsv3 interface {
 	// OrdersChan chanel and errors on the ErrChan chanel.
 	// To close the subscription use events.OrderSubscription `Close` function
 	ListenOrders() (*events.OrderSubscription, error)
+
+	// ListenMarketUpdates is used to subscribe on the contract "MarketUpdated" event. The goroutine will return events
+	// on the MarketUpdateChan chanel and errors on the ErrChan chanel.
+	// To close the subscription use events.MarketUpdateSubscription `Close` function
+	ListenMarketUpdates() (*events.MarketUpdateSubscription, error)
 
 	// GetPosition is used to get position data struct from latest block with given params
 	// Function can return contract error if market ID is invalid
@@ -78,12 +89,20 @@ func (p *Perpsv3) RetrieveOrders(fromBlock uint64, toBLock *uint64) ([]*models.O
 	return p.service.RetrieveOrders(fromBlock, toBLock)
 }
 
+func (p *Perpsv3) RetrieveMarketUpdates(fromBlock uint64, toBLock *uint64) ([]*models.MarketUpdate, error) {
+	return p.service.RetrieveMarketUpdates(fromBlock, toBLock)
+}
+
 func (p *Perpsv3) ListenTrades() (*events.TradeSubscription, error) {
 	return p.events.ListenTrades()
 }
 
 func (p *Perpsv3) ListenOrders() (*events.OrderSubscription, error) {
 	return p.events.ListenOrders()
+}
+
+func (p *Perpsv3) ListenMarketUpdates() (*events.MarketUpdateSubscription, error) {
+	return p.events.ListenMarketUpdates()
 }
 
 func (p *Perpsv3) GetPosition(accountID *big.Int, marketID *big.Int) (*models.Position, error) {

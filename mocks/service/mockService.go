@@ -50,6 +50,21 @@ func (mr *MockIServiceMockRecorder) GetPosition(accountID, marketID interface{})
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetPosition", reflect.TypeOf((*MockIService)(nil).GetPosition), accountID, marketID)
 }
 
+// RetrieveMarketUpdates mocks base method.
+func (m *MockIService) RetrieveMarketUpdates(fromBlock uint64, toBLock *uint64) ([]*models.MarketUpdate, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "RetrieveMarketUpdates", fromBlock, toBLock)
+	ret0, _ := ret[0].([]*models.MarketUpdate)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// RetrieveMarketUpdates indicates an expected call of RetrieveMarketUpdates.
+func (mr *MockIServiceMockRecorder) RetrieveMarketUpdates(fromBlock, toBLock interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "RetrieveMarketUpdates", reflect.TypeOf((*MockIService)(nil).RetrieveMarketUpdates), fromBlock, toBLock)
+}
+
 // RetrieveOrders mocks base method.
 func (m *MockIService) RetrieveOrders(fromBlock uint64, toBLock *uint64) ([]*models.Order, error) {
 	m.ctrl.T.Helper()

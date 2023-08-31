@@ -62,15 +62,15 @@ tidy:
 	go mod tidy
 
 test: mock-all
-	go test ./... -skip TestEvents_ListenTrades_OnChain TestEvents_ListenOrders_OnChain
+	go test --short
 
 test-v: mock-all
-	go test ./... -v -skip TestEvents_ListenTrades_OnChain TestEvents_ListenOrders_OnChain
+	go test --short -v
 
 test-coverage: mock-all
-	go test -coverprofile=coverage.out ./... -skip TestEvents_ListenTrades_OnChain TestEvents_ListenOrders_OnChain
+	go test -coverprofile=coverage.out ./... --short
 	go tool cover -html=coverage.out
 
 lint:
-	golint ./......
+	golint ./...
 

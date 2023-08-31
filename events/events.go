@@ -17,6 +17,10 @@ type IEvents interface {
 	// ListenOrders is used to listen to all 'OrderCommitted' contract events and return them as models.Order struct and
 	// return errors on ErrChan chanel
 	ListenOrders() (*OrderSubscription, error)
+
+	// ListenMarketUpdates is used to listen to all 'MarketUpdated' contract events and return them as models.MarketUpdate
+	// struct and return errors on ErrChan chanel
+	ListenMarketUpdates() (*MarketUpdateSubscription, error)
 }
 
 // Events implements IEvents interface

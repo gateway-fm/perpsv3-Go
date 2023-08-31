@@ -20,6 +20,10 @@ type IService interface {
 	// RetrieveOrders is used to get logs from the "OrderCommitted" event preps market contract within given block range
 	RetrieveOrders(fromBlock uint64, toBLock *uint64) ([]*models.Order, error)
 
+	// RetrieveMarketUpdates is used to get logs from the "MarketUpdated" event preps market contract within given block
+	// range
+	RetrieveMarketUpdates(fromBlock uint64, toBLock *uint64) ([]*models.MarketUpdate, error)
+
 	// GetPosition is used to get "Position" data struct from the latest block from the perps market with given data
 	GetPosition(accountID *big.Int, marketID *big.Int) (*models.Position, error)
 }
