@@ -284,6 +284,60 @@ func ListenOrders() (*events.OrderSubscription, error) {}
 The goroutine will return events as a `Order` model on the `OrdersChan` chanel and errors on the `ErrChan` chanel. To
 close the subscription use the `Close` function.
 
+### === MarketUpdate ===
+
+### == Model ==
+
+Using MarketData services you operate with MarketUpdate model which represents a `MarketUpdated` event of Perps Market smart-contract
+with some additional fields:
+
+```go
+type MarketUpdate struct {
+	// Event fields
+    MarketID               uint64  // ID of the market.
+    Price                  uint64  // Price at the time of the event.
+    Skew                   int64   // Market skew at the time of the event. Positive values indicate more longs.
+    Size                   uint64  // Size of the entire market after settlement.
+    SizeDelta              int64   // Change in market size during the update.
+    CurrentFundingRate     int64   // Current funding rate of the market.
+    CurrentFundingVelocity int64   // Current rate of change of the funding rate.
+	// Additional fields
+    BlockNumber            uint64  // Block number at which the market data was fetched.
+    BlockTimestamp         uint64  // Timestamp of the block at which the market data was fetched.
+    TransactionHash        string  // Hash of the transaction where the market update occurred.
+}
+```
+
+### == RetrieveMarketUpdate ==
+
+To get market update data for specific block range use the RetrieveOrders function:
+
+```go
+func RetrieveMarketUpdates(fromBlock uint64, toBLock *uint64) ([]*models.MarketUpdate, error) {}
+```
+
+- Default value for `fromBlock` is a first contract block that you give in the configs
+- Default value for `toBlock` is a latest blockchain block
+- To use default values set `0` for `fromBlock` and `nil` for `toBlock`
+- For specific block data use same values for `fromBlock` and `toBlock`
+- For all contract data use default values
+- For a range of blocks use required block IDs
+
+*Warning*
+
+If you want to query more than 20 000 block or query old block be sure you use a private PRC provider
+
+### == ListenMarketUpdate ==
+
+To subscribe on the contract `MarketUpdated` event use the ListenMarketUpdates function.
+
+```go
+func ListenMarketUpdates() (*events.MarketUpdateSubscription, error)
+```
+
+The goroutine will return events as a `MarketUpdate` model on the `MarketUpdateChan` chanel and errors on the `ErrChan` chanel. To
+close the subscription use the `Close` function.
+
 ### === Positions ===
 
 ### == Model ==
