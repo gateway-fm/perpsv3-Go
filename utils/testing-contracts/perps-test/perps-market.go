@@ -80,6 +80,33 @@ func GetTestPerpsMarket(rpcUrl string, perpsMarketAddress string, sUSDTAddress s
 	}
 }
 
+func (m *TestPerpsMarket) GrantPermission(idS string, permissionS string, userS string) {
+	aut := m.getAut("GrantPermission")
+	id := m.getBig(idS)
+
+	var permission [32]byte
+	copy(permission[:], permissionS)
+	user := common.HexToAddress(userS)
+
+	tx, err := m.perpsMarket.GrantPermission(aut, id, permission, user)
+	if err != nil {
+		logger.Log().WithField("layer", "TestPerpsMarket-GrantPermission").Fatalf("error grant permission: %v", err.Error())
+	}
+
+	logger.Log().WithField("layer", "TestPerpsMarket-GrantPermission").Infof("tx hash: %v", tx.Hash())
+}
+
+func (m *TestPerpsMarket) CreateAccount() {
+	aut := m.getAut("CreateAccount")
+
+	tx, err := m.perpsMarket.CreateAccount(aut)
+	if err != nil {
+		logger.Log().WithField("layer", "TestPerpsMarket-CreateAccount").Fatalf("error create account: %v", err.Error())
+	}
+
+	logger.Log().WithField("layer", "TestPerpsMarket-CreateAccount").Infof("tx hash: %v", tx.Hash())
+}
+
 func (m *TestPerpsMarket) SetApproval(amountS string) {
 	aut := m.getAut("SetApproval")
 	amount := m.getBig(amountS)

@@ -26,6 +26,16 @@ type IService interface {
 
 	// GetPosition is used to get "Position" data struct from the latest block from the perps market with given data
 	GetPosition(accountID *big.Int, marketID *big.Int) (*models.Position, error)
+
+	// GetAccount is used to get account, and it's additional data from the contract by given account id
+	GetAccount(id *big.Int) (*models.Account, error)
+
+	// GetAccounts is used to get all accounts and their additional data from the contract
+	GetAccounts() ([]*models.Account, error)
+
+	// GetAccountsLimit is used to get all accounts and their additional data from the contract with given block search
+	// limit. For most public RPC providers the value for limit is 20 000 blocks
+	GetAccountsLimit(limit uint64) ([]*models.Account, error)
 }
 
 // Service is an implementation of IService interface

@@ -4,7 +4,7 @@ import (
 	"os"
 
 	"github.com/gateway-fm/perpsv3-Go/pkg/logger"
-	perps_test "github.com/gateway-fm/perpsv3-Go/utils/tesing-contracts/perps-test"
+	perps_test "github.com/gateway-fm/perpsv3-Go/utils/testing-contracts/perps-test"
 )
 
 func main() {
@@ -47,6 +47,13 @@ func main() {
 			perps.Close()
 		case "GetApproval":
 			perps.GetApproval()
+			perps.Close()
+		case "CreateAccount":
+			perps.CreateAccount()
+			perps.Close()
+		case "GrantPermission":
+			// Account ID, Permission and User
+			perps.GrantPermission(args[2], args[3], args[4])
 			perps.Close()
 		default:
 			perps.Close()

@@ -35,6 +35,51 @@ func (m *MockIService) EXPECT() *MockIServiceMockRecorder {
 	return m.recorder
 }
 
+// GetAccount mocks base method.
+func (m *MockIService) GetAccount(id *big.Int) (*models.Account, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "GetAccount", id)
+	ret0, _ := ret[0].(*models.Account)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// GetAccount indicates an expected call of GetAccount.
+func (mr *MockIServiceMockRecorder) GetAccount(id interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetAccount", reflect.TypeOf((*MockIService)(nil).GetAccount), id)
+}
+
+// GetAccounts mocks base method.
+func (m *MockIService) GetAccounts() ([]*models.Account, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "GetAccounts")
+	ret0, _ := ret[0].([]*models.Account)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// GetAccounts indicates an expected call of GetAccounts.
+func (mr *MockIServiceMockRecorder) GetAccounts() *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetAccounts", reflect.TypeOf((*MockIService)(nil).GetAccounts))
+}
+
+// GetAccountsLimit mocks base method.
+func (m *MockIService) GetAccountsLimit(limit uint64) ([]*models.Account, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "GetAccountsLimit", limit)
+	ret0, _ := ret[0].([]*models.Account)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// GetAccountsLimit indicates an expected call of GetAccountsLimit.
+func (mr *MockIServiceMockRecorder) GetAccountsLimit(limit interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetAccountsLimit", reflect.TypeOf((*MockIService)(nil).GetAccountsLimit), limit)
+}
+
 // GetPosition mocks base method.
 func (m *MockIService) GetPosition(accountID, marketID *big.Int) (*models.Position, error) {
 	m.ctrl.T.Helper()

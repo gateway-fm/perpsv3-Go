@@ -21,6 +21,8 @@ var (
 	ReadContractErr = fmt.Errorf("contract error read")
 	// RPCErr is used when error returned from RPC provider
 	RPCErr = fmt.Errorf("rpc provider error")
+	// EnumUnsupportedErr is used when given value is unsupported in enum
+	EnumUnsupportedErr = fmt.Errorf("unsupported status err")
 )
 
 func GetDialRPCErr(err error) error {
@@ -45,4 +47,8 @@ func GetReadContractErr(err error, contract string, method string) error {
 
 func GetRPCProviderErr(err error, method string) error {
 	return fmt.Errorf("%w using %v: %w", RPCErr, method, err)
+}
+
+func GetUnsupportedErr(enum string) error {
+	return fmt.Errorf("%v enum %w", enum, EnumUnsupportedErr)
 }
