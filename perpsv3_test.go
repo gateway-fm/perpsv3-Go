@@ -562,7 +562,7 @@ func TestPerpsv3_GetPosition(t *testing.T) {
 	}
 }
 
-func TestPerpsv3_GetAccount(t *testing.T) {
+func TestPerpsv3_FormatAccount(t *testing.T) {
 	testCases := []struct {
 		name      string
 		accountID *big.Int
@@ -620,7 +620,7 @@ func TestPerpsv3_GetAccount(t *testing.T) {
 	}
 }
 
-func TestPerpsv3_GetAccounts(t *testing.T) {
+func TestPerpsv3_FormatAccounts(t *testing.T) {
 	testCases := []struct {
 		name    string
 		wantRes []*models.Account
@@ -693,7 +693,7 @@ func TestPerpsv3_GetAccounts(t *testing.T) {
 	}
 }
 
-func TestPerpsv3_GetAccountsLimit(t *testing.T) {
+func TestPerpsv3_FormatAccountsLimit(t *testing.T) {
 	testCases := []struct {
 		name    string
 		limit   uint64

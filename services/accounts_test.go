@@ -14,7 +14,7 @@ import (
 	"testing"
 )
 
-func TestService_GetAccount_OnChain(t *testing.T) {
+func TestService_FormatAccount_OnChain(t *testing.T) {
 	rpc := os.Getenv("TEST_RPC")
 	if rpc == "" {
 		log.Fatal("no rpc in env vars")
@@ -70,7 +70,7 @@ func TestService_GetAccount_OnChain(t *testing.T) {
 	}
 }
 
-func TestService_GetAccounts_OnChain_Limit(t *testing.T) {
+func TestService_FormatAccounts_OnChain_Limit(t *testing.T) {
 	rpc := os.Getenv("TEST_RPC")
 	if rpc == "" {
 		log.Fatal("no rpc in env vars")

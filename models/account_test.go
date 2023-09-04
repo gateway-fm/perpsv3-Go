@@ -9,7 +9,7 @@ import (
 	"time"
 )
 
-func TestGetAccount(t *testing.T) {
+func TestFormatAccount(t *testing.T) {
 	timeNow := time.Now()
 
 	testCases := []struct {
