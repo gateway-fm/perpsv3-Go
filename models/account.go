@@ -1,9 +1,11 @@
 package models
 
 import (
-	"github.com/ethereum/go-ethereum/common"
-	"github.com/gateway-fm/perpsv3-Go/contracts/perpsMarketGoerli"
 	"math/big"
+
+	"github.com/ethereum/go-ethereum/common"
+
+	"github.com/gateway-fm/perpsv3-Go/contracts/perpsMarketGoerli"
 )
 
 // Account is a struct for account model
@@ -18,8 +20,8 @@ type Account struct {
 	LastInteraction uint64
 }
 
-// GetAccount is used to get account from given data
-func GetAccount(
+// FormatAccount is used to get account from given data
+func FormatAccount(
 	id *big.Int,
 	owner common.Address,
 	lastInteraction uint64,
@@ -27,7 +29,7 @@ func GetAccount(
 ) *Account {
 	return &Account{
 		ID:              id,
-		Permissions:     getPermissions(permissions),
+		Permissions:     getUserPermissions(permissions),
 		Owner:           owner,
 		LastInteraction: lastInteraction,
 	}

@@ -170,7 +170,7 @@ func TestGetAccount(t *testing.T) {
 
 	for _, tt := range testCases {
 		t.Run(tt.name, func(t *testing.T) {
-			res := GetAccount(tt.id, tt.owner, tt.lastInteraction, tt.permissions)
+			res := FormatAccount(tt.id, tt.owner, tt.lastInteraction, tt.permissions)
 
 			require.Equal(t, tt.want, res)
 		})

@@ -58,7 +58,7 @@ func TestService_GetAccount_OnChain(t *testing.T) {
 		t.Run(tt.name, func(t *testing.T) {
 			s := NewService(rpcClient, coreC, 11664658, spot, 10875051, perps, 12708889)
 
-			res, err := s.GetAccount(tt.id)
+			res, err := s.FormatAccount(tt.id)
 
 			if tt.wantErr == nil {
 				require.NoError(t, err)
@@ -84,7 +84,7 @@ func TestService_GetAccounts_OnChain_Limit(t *testing.T) {
 
 	s := NewService(rpcClient, coreC, 11664658, spot, 10875051, perps, 12708889)
 
-	_, err := s.GetAccountsLimit(20000)
+	_, err := s.FormatAccountsLimit(20000)
 
 	require.NoError(t, err)
 }

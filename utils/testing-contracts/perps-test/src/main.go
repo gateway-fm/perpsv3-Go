@@ -8,7 +8,7 @@ import (
 )
 
 func main() {
-	rpcURL := os.Getenv("TEST_RPC_EVENTS")
+	rpcURL := os.Getenv("TEST_RPC")
 	if rpcURL == "" {
 		logger.Log().WithField("layer", "TestPerpsMarket-Main").Fatalf("no test rpc url events in env vars")
 	}

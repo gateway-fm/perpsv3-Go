@@ -606,9 +606,9 @@ func TestPerpsv3_GetAccount(t *testing.T) {
 			p, _ := createTest(config.GetGoerliDefaultPerpsvConfig())
 			p.service = mockService
 
-			mockService.EXPECT().GetAccount(tt.accountID).Return(tt.wantRes, tt.wantErr)
+			mockService.EXPECT().FormatAccount(tt.accountID).Return(tt.wantRes, tt.wantErr)
 
-			res, err := p.GetAccount(tt.accountID)
+			res, err := p.FormatAccount(tt.accountID)
 
 			if tt.wantErr == nil {
 				require.NoError(t, err)
@@ -679,9 +679,9 @@ func TestPerpsv3_GetAccounts(t *testing.T) {
 			p, _ := createTest(config.GetGoerliDefaultPerpsvConfig())
 			p.service = mockService
 
-			mockService.EXPECT().GetAccounts().Return(tt.wantRes, tt.wantErr)
+			mockService.EXPECT().FormatAccounts().Return(tt.wantRes, tt.wantErr)
 
-			res, err := p.GetAccounts()
+			res, err := p.FormatAccounts()
 
 			if tt.wantErr == nil {
 				require.NoError(t, err)
@@ -756,9 +756,9 @@ func TestPerpsv3_GetAccountsLimit(t *testing.T) {
 			p, _ := createTest(config.GetGoerliDefaultPerpsvConfig())
 			p.service = mockService
 
-			mockService.EXPECT().GetAccountsLimit(tt.limit).Return(tt.wantRes, tt.wantErr)
+			mockService.EXPECT().FormatAccountsLimit(tt.limit).Return(tt.wantRes, tt.wantErr)
 
-			res, err := p.GetAccountsLimit(tt.limit)
+			res, err := p.FormatAccountsLimit(tt.limit)
 
 			if tt.wantErr == nil {
 				require.NoError(t, err)

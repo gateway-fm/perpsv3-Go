@@ -2,21 +2,23 @@ package services
 
 import (
 	"context"
+	"math/big"
+
 	"github.com/ethereum/go-ethereum/accounts/abi/bind"
+
 	"github.com/gateway-fm/perpsv3-Go/errors"
 	"github.com/gateway-fm/perpsv3-Go/models"
 	"github.com/gateway-fm/perpsv3-Go/pkg/logger"
-	"math/big"
 )
 
-func (s *Service) GetAccount(id *big.Int) (*models.Account, error) {
-	return s.getAccount(id)
+func (s *Service) FormatAccount(id *big.Int) (*models.Account, error) {
+	return s.formatAccount(id)
 }
 
-func (s *Service) GetAccountsLimit(limit uint64) ([]*models.Account, error) {
+func (s *Service) FormatAccountsLimit(limit uint64) ([]*models.Account, error) {
 	last, err := s.rpcClient.BlockNumber(context.Background())
 	if err != nil {
-		logger.Log().WithField("layer", "Service-GetAccountsLimit").Errorf("get latest block rpc error: %v", err.Error())
+		logger.Log().WithField("layer", "Service-FormatAccountsLimit").Errorf("get latest block rpc error: %v", err.Error())
 		return nil, errors.GetRPCProviderErr(err, "BlockNumber")
 	}
 
@@ -29,7 +31,7 @@ func (s *Service) GetAccountsLimit(limit uint64) ([]*models.Account, error) {
 	for i := uint64(1); i <= iterations; i++ {
 		opts := s.getFilterOptsPerpsMarket(fromBlock, &toBlock)
 
-		res, err := s.getAccounts(opts)
+		res, err := s.formatAccounts(opts)
 		if err != nil {
 			return nil, err
 		}
@@ -48,18 +50,18 @@ func (s *Service) GetAccountsLimit(limit uint64) ([]*models.Account, error) {
 	return accounts, nil
 }
 
-func (s *Service) GetAccounts() ([]*models.Account, error) {
+func (s *Service) FormatAccounts() ([]*models.Account, error) {
 	opts := s.getFilterOptsPerpsMarket(0, nil)
 
-	return s.getAccounts(opts)
+	return s.formatAccounts(opts)
 }
 
-// getAccounts is used to get accounts from the contract using event filter function for 'AccountCreated' event
+// formatAccounts is used to get accounts from the contract using event filter function for 'AccountCreated' event
 // and given filter options
-func (s *Service) getAccounts(opts *bind.FilterOpts) ([]*models.Account, error) {
+func (s *Service) formatAccounts(opts *bind.FilterOpts) ([]*models.Account, error) {
 	iterator, err := s.perpsMarket.FilterAccountCreated(opts, nil, nil)
 	if err != nil {
-		logger.Log().WithField("layer", "Service-getAccounts").Errorf("error get iterator: %v", err.Error())
+		logger.Log().WithField("layer", "Service-formatAccounts").Errorf("error get iterator: %v", err.Error())
 		return nil, errors.GetFilterErr(err, "perps market")
 	}
 
@@ -67,11 +69,11 @@ func (s *Service) getAccounts(opts *bind.FilterOpts) ([]*models.Account, error) 
 
 	for iterator.Next() {
 		if iterator.Error() != nil {
-			logger.Log().WithField("layer", "Service-getAccounts").Errorf("iterator error: %v", err.Error())
+			logger.Log().WithField("layer", "Service-formatAccounts").Errorf("iterator error: %v", err.Error())
 			return nil, errors.GetFilterErr(iterator.Error(), "perps market")
 		}
 
-		account, err := s.getAccount(iterator.Event.AccountId)
+		account, err := s.formatAccount(iterator.Event.AccountId)
 		if err != nil {
 			return nil, err
 		}
@@ -82,25 +84,25 @@ func (s *Service) getAccounts(opts *bind.FilterOpts) ([]*models.Account, error) 
 	return accounts, nil
 }
 
-// getAccount is used to get models.Account data from given account id
-func (s *Service) getAccount(id *big.Int) (*models.Account, error) {
+// formatAccount is used to get models.Account data from given account id
+func (s *Service) formatAccount(id *big.Int) (*models.Account, error) {
 	owner, err := s.perpsMarket.GetAccountOwner(nil, id)
 	if err != nil {
-		logger.Log().WithField("layer", "Service-getAccount").Errorf("get account owner error: %v", err.Error())
+		logger.Log().WithField("layer", "Service-formatAccount").Errorf("get account owner error: %v", err.Error())
 		return nil, errors.GetReadContractErr(err, "perps market", "GetAccountOwner")
 	}
 
 	time, err := s.perpsMarket.GetAccountLastInteraction(nil, id)
 	if err != nil {
-		logger.Log().WithField("layer", "Service-getAccount").Errorf("get account last interaction error: %v", err.Error())
+		logger.Log().WithField("layer", "Service-formatAccount").Errorf("get account last interaction error: %v", err.Error())
 		return nil, errors.GetReadContractErr(err, "perps market", "GetAccountLastInteraction")
 	}
 
 	permissions, err := s.perpsMarket.GetAccountPermissions(nil, id)
 	if err != nil {
-		logger.Log().WithField("layer", "Service-getAccount").Errorf("get account permissions error: %v", err.Error())
+		logger.Log().WithField("layer", "Service-formatAccount").Errorf("get account permissions error: %v", err.Error())
 		return nil, errors.GetReadContractErr(err, "perps market", "GetAccountPermissions")
 	}
 
-	return models.GetAccount(id, owner, time.Uint64(), permissions), nil
+	return models.FormatAccount(id, owner, time.Uint64(), permissions), nil
 }

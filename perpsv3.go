@@ -5,6 +5,7 @@ import (
 
 	"github.com/ethereum/go-ethereum/common"
 	"github.com/ethereum/go-ethereum/ethclient"
+
 	"github.com/gateway-fm/perpsv3-Go/config"
 	"github.com/gateway-fm/perpsv3-Go/contracts/coreGoerli"
 	"github.com/gateway-fm/perpsv3-Go/contracts/perpsMarketGoerli"
@@ -53,15 +54,15 @@ type IPerpsv3 interface {
 	// Function can return contract error if market ID is invalid
 	GetPosition(accountID *big.Int, marketID *big.Int) (*models.Position, error)
 
-	// GetAccount is used to get account, and it's additional data from the contract by given account id
-	GetAccount(id *big.Int) (*models.Account, error)
+	// FormatAccount is used to get account, and it's additional data from the contract by given account id
+	FormatAccount(id *big.Int) (*models.Account, error)
 
-	// GetAccounts is used to get all accounts and their additional data from the contract
-	GetAccounts() ([]*models.Account, error)
+	// FormatAccounts is used to get all accounts and their additional data from the contract
+	FormatAccounts() ([]*models.Account, error)
 
-	// GetAccountsLimit is used to get all accounts and their additional data from the contract with given block search
+	// FormatAccountsLimit is used to get all accounts and their additional data from the contract with given block search
 	// limit. For most public RPC providers the value for limit is 20 000 blocks
-	GetAccountsLimit(limit uint64) ([]*models.Account, error)
+	FormatAccountsLimit(limit uint64) ([]*models.Account, error)
 
 	// Config is used to get current lib config
 	Config() *config.PerpsvConfig
@@ -119,16 +120,16 @@ func (p *Perpsv3) GetPosition(accountID *big.Int, marketID *big.Int) (*models.Po
 	return p.service.GetPosition(accountID, marketID)
 }
 
-func (p *Perpsv3) GetAccounts() ([]*models.Account, error) {
-	return p.service.GetAccounts()
+func (p *Perpsv3) FormatAccounts() ([]*models.Account, error) {
+	return p.service.FormatAccounts()
 }
 
-func (p *Perpsv3) GetAccount(id *big.Int) (*models.Account, error) {
-	return p.service.GetAccount(id)
+func (p *Perpsv3) FormatAccount(id *big.Int) (*models.Account, error) {
+	return p.service.FormatAccount(id)
 }
 
-func (p *Perpsv3) GetAccountsLimit(limit uint64) ([]*models.Account, error) {
-	return p.service.GetAccountsLimit(limit)
+func (p *Perpsv3) FormatAccountsLimit(limit uint64) ([]*models.Account, error) {
+	return p.service.FormatAccountsLimit(limit)
 }
 
 func (p *Perpsv3) Config() *config.PerpsvConfig {

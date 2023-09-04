@@ -1,21 +1,15 @@
 package models
 
 import (
-	"github.com/ethereum/go-ethereum/common"
+	"strings"
+
 	"github.com/gateway-fm/perpsv3-Go/contracts/perpsMarketGoerli"
 	"github.com/gateway-fm/perpsv3-Go/errors"
 	"github.com/gateway-fm/perpsv3-Go/pkg/logger"
-	"strings"
 )
 
 // Permission is a permission enum
 type Permission int
-
-// UserPermissions is a struct for permissions granted by account owner to User with a list of Permissions
-type UserPermissions struct {
-	User        common.Address
-	Permissions []Permission
-}
 
 const (
 	ADMIN Permission = iota
@@ -54,20 +48,6 @@ func PermissionFromString(s string) (Permission, error) {
 
 	logger.Log().WithField("layer", "Model-PermissionFromString").Warningf("got usupported value: %v", s)
 	return unsupported, errors.GetUnsupportedErr("permissions")
-}
-
-// getPermissions is used to get UserPermissions slice from given contract user permissions slice
-func getPermissions(perms []perpsMarketGoerli.IAccountModuleAccountPermissions) (res []*UserPermissions) {
-	for _, p := range perms {
-		perm := &UserPermissions{
-			User:        p.User,
-			Permissions: decodePermissions(p),
-		}
-
-		res = append(res, perm)
-	}
-
-	return res
 }
 
 // decodePermissions is used to decode given contract permissions to Permission slice
