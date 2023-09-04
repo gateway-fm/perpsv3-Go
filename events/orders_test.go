@@ -11,13 +11,17 @@ import (
 	"github.com/gateway-fm/perpsv3-Go/contracts/coreGoerli"
 	"github.com/gateway-fm/perpsv3-Go/contracts/perpsMarketGoerli"
 	"github.com/gateway-fm/perpsv3-Go/contracts/spotMarketGoerli"
-	perps_test "github.com/gateway-fm/perpsv3-Go/utils/tesing-contracts/perps-test"
+	perps_test "github.com/gateway-fm/perpsv3-Go/utils/testing-contracts/perps-test"
 	"github.com/stretchr/testify/require"
 )
 
 func TestEvents_ListenOrders_OnChain(t *testing.T) {
 	if os.Getenv("CI") != "" {
 		t.Skip("Skipping testing in CI environment")
+	}
+
+	if testing.Short() {
+		t.Skip("skipping test in short mode.")
 	}
 
 	rpc := os.Getenv("TEST_RPC_EVENTS")

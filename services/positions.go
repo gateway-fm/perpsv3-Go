@@ -5,6 +5,7 @@ import (
 	"math/big"
 
 	"github.com/ethereum/go-ethereum/accounts/abi/bind"
+
 	"github.com/gateway-fm/perpsv3-Go/errors"
 	"github.com/gateway-fm/perpsv3-Go/models"
 	"github.com/gateway-fm/perpsv3-Go/pkg/logger"

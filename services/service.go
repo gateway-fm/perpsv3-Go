@@ -6,6 +6,7 @@ import (
 
 	"github.com/ethereum/go-ethereum/accounts/abi/bind"
 	"github.com/ethereum/go-ethereum/ethclient"
+
 	"github.com/gateway-fm/perpsv3-Go/contracts/coreGoerli"
 	"github.com/gateway-fm/perpsv3-Go/contracts/perpsMarketGoerli"
 	"github.com/gateway-fm/perpsv3-Go/contracts/spotMarketGoerli"
@@ -26,6 +27,16 @@ type IService interface {
 
 	// GetPosition is used to get "Position" data struct from the latest block from the perps market with given data
 	GetPosition(accountID *big.Int, marketID *big.Int) (*models.Position, error)
+
+	// FormatAccount is used to get account, and it's additional data from the contract by given account id
+	FormatAccount(id *big.Int) (*models.Account, error)
+
+	// FormatAccounts is used to get all accounts and their additional data from the contract
+	FormatAccounts() ([]*models.Account, error)
+
+	// FormatAccountsLimit is used to get all accounts and their additional data from the contract with given block search
+	// limit. For most public RPC providers the value for limit is 20 000 blocks
+	FormatAccountsLimit(limit uint64) ([]*models.Account, error)
 }
 
 // Service is an implementation of IService interface

@@ -4,11 +4,11 @@ import (
 	"os"
 
 	"github.com/gateway-fm/perpsv3-Go/pkg/logger"
-	perps_test "github.com/gateway-fm/perpsv3-Go/utils/tesing-contracts/perps-test"
+	perps_test "github.com/gateway-fm/perpsv3-Go/utils/testing-contracts/perps-test"
 )
 
 func main() {
-	rpcURL := os.Getenv("TEST_RPC_EVENTS")
+	rpcURL := os.Getenv("TEST_RPC")
 	if rpcURL == "" {
 		logger.Log().WithField("layer", "TestPerpsMarket-Main").Fatalf("no test rpc url events in env vars")
 	}
@@ -47,6 +47,13 @@ func main() {
 			perps.Close()
 		case "GetApproval":
 			perps.GetApproval()
+			perps.Close()
+		case "CreateAccount":
+			perps.CreateAccount()
+			perps.Close()
+		case "GrantPermission":
+			// Account ID, Permission and User
+			perps.GrantPermission(args[2], args[3], args[4])
 			perps.Close()
 		default:
 			perps.Close()

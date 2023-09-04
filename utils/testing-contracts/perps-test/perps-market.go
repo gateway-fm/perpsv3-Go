@@ -10,6 +10,7 @@ import (
 	"github.com/ethereum/go-ethereum/common"
 	"github.com/ethereum/go-ethereum/crypto"
 	"github.com/ethereum/go-ethereum/ethclient"
+
 	"github.com/gateway-fm/perpsv3-Go/contracts/perpsMarketGoerli"
 	"github.com/gateway-fm/perpsv3-Go/contracts/sUSDTGoerli"
 	"github.com/gateway-fm/perpsv3-Go/pkg/logger"
@@ -78,6 +79,33 @@ func GetTestPerpsMarket(rpcUrl string, perpsMarketAddress string, sUSDTAddress s
 		perpsMarketAddr: common.HexToAddress(perpsMarketAddress),
 		snxUSDT:         snxUSDT,
 	}
+}
+
+func (m *TestPerpsMarket) GrantPermission(idS string, permissionS string, userS string) {
+	aut := m.getAut("GrantPermission")
+	id := m.getBig(idS)
+
+	var permission [32]byte
+	copy(permission[:], permissionS)
+	user := common.HexToAddress(userS)
+
+	tx, err := m.perpsMarket.GrantPermission(aut, id, permission, user)
+	if err != nil {
+		logger.Log().WithField("layer", "TestPerpsMarket-GrantPermission").Fatalf("error grant permission: %v", err.Error())
+	}
+
+	logger.Log().WithField("layer", "TestPerpsMarket-GrantPermission").Infof("tx hash: %v", tx.Hash())
+}
+
+func (m *TestPerpsMarket) CreateAccount() {
+	aut := m.getAut("CreateAccount")
+
+	tx, err := m.perpsMarket.CreateAccount(aut)
+	if err != nil {
+		logger.Log().WithField("layer", "TestPerpsMarket-CreateAccount").Fatalf("error create account: %v", err.Error())
+	}
+
+	logger.Log().WithField("layer", "TestPerpsMarket-CreateAccount").Infof("tx hash: %v", tx.Hash())
 }
 
 func (m *TestPerpsMarket) SetApproval(amountS string) {

@@ -35,6 +35,51 @@ func (m *MockIService) EXPECT() *MockIServiceMockRecorder {
 	return m.recorder
 }
 
+// FormatAccount mocks base method.
+func (m *MockIService) FormatAccount(id *big.Int) (*models.Account, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "FormatAccount", id)
+	ret0, _ := ret[0].(*models.Account)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// FormatAccount indicates an expected call of FormatAccount.
+func (mr *MockIServiceMockRecorder) FormatAccount(id interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "FormatAccount", reflect.TypeOf((*MockIService)(nil).FormatAccount), id)
+}
+
+// FormatAccounts mocks base method.
+func (m *MockIService) FormatAccounts() ([]*models.Account, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "FormatAccounts")
+	ret0, _ := ret[0].([]*models.Account)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// FormatAccounts indicates an expected call of FormatAccounts.
+func (mr *MockIServiceMockRecorder) FormatAccounts() *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "FormatAccounts", reflect.TypeOf((*MockIService)(nil).FormatAccounts))
+}
+
+// FormatAccountsLimit mocks base method.
+func (m *MockIService) FormatAccountsLimit(limit uint64) ([]*models.Account, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "FormatAccountsLimit", limit)
+	ret0, _ := ret[0].([]*models.Account)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// FormatAccountsLimit indicates an expected call of FormatAccountsLimit.
+func (mr *MockIServiceMockRecorder) FormatAccountsLimit(limit interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "FormatAccountsLimit", reflect.TypeOf((*MockIService)(nil).FormatAccountsLimit), limit)
+}
+
 // GetPosition mocks base method.
 func (m *MockIService) GetPosition(accountID, marketID *big.Int) (*models.Position, error) {
 	m.ctrl.T.Helper()

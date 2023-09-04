@@ -561,3 +561,211 @@ func TestPerpsv3_GetPosition(t *testing.T) {
 		})
 	}
 }
+
+func TestPerpsv3_FormatAccount(t *testing.T) {
+	testCases := []struct {
+		name      string
+		accountID *big.Int
+		wantRes   *models.Account
+		wantErr   error
+	}{
+		{
+			name: "blank account",
+		},
+		{
+			name:      "no error",
+			accountID: big.NewInt(0),
+			wantRes: &models.Account{
+				ID: big.NewInt(1),
+				Permissions: []*models.UserPermissions{
+					{
+						User:        common.HexToAddress("0xC47fF8a340dFc0605be060886F0B6AEea0db653f"),
+						Permissions: []models.Permission{0, 1, 2, 3},
+					},
+					{
+						User:        common.HexToAddress("0xC47fF8a340dFc0605be060886F0B6AEea0db653g"),
+						Permissions: []models.Permission{},
+					},
+				},
+				Owner:           common.HexToAddress("0xC47fF8a340dFc0605be060886F0B6AEea0db653c"),
+				LastInteraction: uint64(time.Now().Unix()),
+			},
+		},
+		{
+			name:    "error",
+			wantErr: errors.ReadContractErr,
+		},
+	}
+
+	for _, tt := range testCases {
+		t.Run(tt.name, func(t *testing.T) {
+			ctrl := gomock.NewController(t)
+			defer ctrl.Finish()
+			mockService := mock_services.NewMockIService(ctrl)
+
+			p, _ := createTest(config.GetGoerliDefaultPerpsvConfig())
+			p.service = mockService
+
+			mockService.EXPECT().FormatAccount(tt.accountID).Return(tt.wantRes, tt.wantErr)
+
+			res, err := p.FormatAccount(tt.accountID)
+
+			if tt.wantErr == nil {
+				require.NoError(t, err)
+				require.Equal(t, tt.wantRes, res)
+			} else {
+				require.ErrorIs(t, tt.wantErr, err)
+			}
+		})
+	}
+}
+
+func TestPerpsv3_FormatAccounts(t *testing.T) {
+	testCases := []struct {
+		name    string
+		wantRes []*models.Account
+		wantErr error
+	}{
+		{
+			name: "no accounts",
+		},
+		{
+			name: "no error",
+			wantRes: []*models.Account{
+				{
+					ID: big.NewInt(1),
+					Permissions: []*models.UserPermissions{
+						{
+							User:        common.HexToAddress("0xC47fF8a340dFc0605be060886F0B6AEea0db653f"),
+							Permissions: []models.Permission{0, 1, 2, 3},
+						},
+						{
+							User:        common.HexToAddress("0xC47fF8a340dFc0605be060886F0B6AEea0db653g"),
+							Permissions: []models.Permission{},
+						},
+					},
+					Owner:           common.HexToAddress("0xC47fF8a340dFc0605be060886F0B6AEea0db653c"),
+					LastInteraction: uint64(time.Now().Unix()),
+				},
+				{
+					ID: big.NewInt(1),
+					Permissions: []*models.UserPermissions{
+						{
+							User:        common.HexToAddress("0xC47fF8a340dFc0605be060886F0B6AEea0db653f"),
+							Permissions: []models.Permission{0, 1, 2, 3},
+						},
+						{
+							User:        common.HexToAddress("0xC47fF8a340dFc0605be060886F0B6AEea0db653g"),
+							Permissions: []models.Permission{},
+						},
+					},
+					Owner:           common.HexToAddress("0xC47fF8a340dFc0605be060886F0B6AEea0db653c"),
+					LastInteraction: uint64(time.Now().Unix()),
+				},
+			},
+		},
+		{
+			name:    "error",
+			wantErr: errors.ReadContractErr,
+		},
+	}
+
+	for _, tt := range testCases {
+		t.Run(tt.name, func(t *testing.T) {
+			ctrl := gomock.NewController(t)
+			defer ctrl.Finish()
+			mockService := mock_services.NewMockIService(ctrl)
+
+			p, _ := createTest(config.GetGoerliDefaultPerpsvConfig())
+			p.service = mockService
+
+			mockService.EXPECT().FormatAccounts().Return(tt.wantRes, tt.wantErr)
+
+			res, err := p.FormatAccounts()
+
+			if tt.wantErr == nil {
+				require.NoError(t, err)
+				require.Equal(t, tt.wantRes, res)
+			} else {
+				require.ErrorIs(t, tt.wantErr, err)
+			}
+		})
+	}
+}
+
+func TestPerpsv3_FormatAccountsLimit(t *testing.T) {
+	testCases := []struct {
+		name    string
+		limit   uint64
+		wantRes []*models.Account
+		wantErr error
+	}{
+		{
+			name:  "no accounts",
+			limit: uint64(1),
+		},
+		{
+			name:  "no error",
+			limit: uint64(1),
+			wantRes: []*models.Account{
+				{
+					ID: big.NewInt(1),
+					Permissions: []*models.UserPermissions{
+						{
+							User:        common.HexToAddress("0xC47fF8a340dFc0605be060886F0B6AEea0db653f"),
+							Permissions: []models.Permission{0, 1, 2, 3},
+						},
+						{
+							User:        common.HexToAddress("0xC47fF8a340dFc0605be060886F0B6AEea0db653g"),
+							Permissions: []models.Permission{},
+						},
+					},
+					Owner:           common.HexToAddress("0xC47fF8a340dFc0605be060886F0B6AEea0db653c"),
+					LastInteraction: uint64(time.Now().Unix()),
+				},
+				{
+					ID: big.NewInt(1),
+					Permissions: []*models.UserPermissions{
+						{
+							User:        common.HexToAddress("0xC47fF8a340dFc0605be060886F0B6AEea0db653f"),
+							Permissions: []models.Permission{0, 1, 2, 3},
+						},
+						{
+							User:        common.HexToAddress("0xC47fF8a340dFc0605be060886F0B6AEea0db653g"),
+							Permissions: []models.Permission{},
+						},
+					},
+					Owner:           common.HexToAddress("0xC47fF8a340dFc0605be060886F0B6AEea0db653c"),
+					LastInteraction: uint64(time.Now().Unix()),
+				},
+			},
+		},
+		{
+			name:    "error",
+			limit:   uint64(1),
+			wantErr: errors.ReadContractErr,
+		},
+	}
+
+	for _, tt := range testCases {
+		t.Run(tt.name, func(t *testing.T) {
+			ctrl := gomock.NewController(t)
+			defer ctrl.Finish()
+			mockService := mock_services.NewMockIService(ctrl)
+
+			p, _ := createTest(config.GetGoerliDefaultPerpsvConfig())
+			p.service = mockService
+
+			mockService.EXPECT().FormatAccountsLimit(tt.limit).Return(tt.wantRes, tt.wantErr)
+
+			res, err := p.FormatAccountsLimit(tt.limit)
+
+			if tt.wantErr == nil {
+				require.NoError(t, err)
+				require.Equal(t, tt.wantRes, res)
+			} else {
+				require.ErrorIs(t, tt.wantErr, err)
+			}
+		})
+	}
+}
