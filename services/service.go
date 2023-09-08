@@ -25,6 +25,14 @@ type IService interface {
 	// range
 	RetrieveMarketUpdates(fromBlock uint64, toBLock *uint64) ([]*models.MarketUpdate, error)
 
+	// RetrieveLiquidations is used to get logs from the "PositionLiquidated" event preps market contract within given block
+	// range
+	RetrieveLiquidations(fromBlock uint64, toBLock *uint64) ([]*models.Liquidation, error)
+
+	// RetrieveLiquidationsLimit is used to get all liquidations and their additional data from the contract with given block search
+	// limit. For most public RPC providers the value for limit is 20 000 blocks
+	RetrieveLiquidationsLimit(limit uint64) ([]*models.Liquidation, error)
+
 	// GetPosition is used to get "Position" data struct from the latest block from the perps market with given data
 	GetPosition(accountID *big.Int, marketID *big.Int) (*models.Position, error)
 

@@ -22,6 +22,10 @@ type IEvents interface {
 	// ListenMarketUpdates is used to listen to all 'MarketUpdated' contract events and return them as models.MarketUpdate
 	// struct and return errors on ErrChan chanel
 	ListenMarketUpdates() (*MarketUpdateSubscription, error)
+
+	// ListenLiquidations is used to listen to all 'PositionLiquidated' contract events and return them as models.Liquidation
+	// struct and return errors on ErrChan chanel
+	ListenLiquidations() (*LiquidationSubscription, error)
 }
 
 // Events implements IEvents interface

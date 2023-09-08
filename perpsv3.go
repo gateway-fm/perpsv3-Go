@@ -35,6 +35,16 @@ type IPerpsv3 interface {
 	//   - use nil for toBlock to use default value of a last blockchain block
 	RetrieveMarketUpdates(fromBlock uint64, toBLock *uint64) ([]*models.MarketUpdate, error)
 
+	// RetrieveLiquidations is used to get logs from the "PositionLiquidated" event perps market contract within given block
+	// range
+	//   - use 0 for fromBlock to use default value of a first contract block
+	//   - use nil for toBlock to use default value of a last blockchain block
+	RetrieveLiquidations(fromBlock uint64, toBLock *uint64) ([]*models.Liquidation, error)
+
+	// RetrieveLiquidationsLimit is used to get all "PositionLiquidated" events and their additional data from the contract
+	// with given block search limit. For most public RPC providers the value for limit is 20 000 blocks
+	RetrieveLiquidationsLimit(limit uint64) ([]*models.Liquidation, error)
+
 	// ListenTrades is used to subscribe on the contract "OrderSettled" event. The goroutine will return events on the
 	// TradesChan chanel and errors on the ErrChan chanel.
 	// To close the subscription use events.TradeSubscription `Close` function
@@ -49,6 +59,11 @@ type IPerpsv3 interface {
 	// on the MarketUpdateChan chanel and errors on the ErrChan chanel.
 	// To close the subscription use events.MarketUpdateSubscription `Close` function
 	ListenMarketUpdates() (*events.MarketUpdateSubscription, error)
+
+	// ListenLiquidations is used to subscribe on the contract "PositionLiquidated" event. The goroutine will return events
+	// on the LiquidationsChan chanel and errors on the ErrChan chanel.
+	// To close the subscription use events.LiquidationSubscription `Close` function
+	ListenLiquidations() (*events.LiquidationSubscription, error)
 
 	// GetPosition is used to get position data struct from latest block with given params
 	// Function can return contract error if market ID is invalid
@@ -104,6 +119,14 @@ func (p *Perpsv3) RetrieveMarketUpdates(fromBlock uint64, toBLock *uint64) ([]*m
 	return p.service.RetrieveMarketUpdates(fromBlock, toBLock)
 }
 
+func (p *Perpsv3) RetrieveLiquidations(fromBlock uint64, toBLock *uint64) ([]*models.Liquidation, error) {
+	return p.service.RetrieveLiquidations(fromBlock, toBLock)
+}
+
+func (p *Perpsv3) RetrieveLiquidationsLimit(limit uint64) ([]*models.Liquidation, error) {
+	return p.service.RetrieveLiquidationsLimit(limit)
+}
+
 func (p *Perpsv3) ListenTrades() (*events.TradeSubscription, error) {
 	return p.events.ListenTrades()
 }
@@ -114,6 +137,10 @@ func (p *Perpsv3) ListenOrders() (*events.OrderSubscription, error) {
 
 func (p *Perpsv3) ListenMarketUpdates() (*events.MarketUpdateSubscription, error) {
 	return p.events.ListenMarketUpdates()
+}
+
+func (p *Perpsv3) ListenLiquidations() (*events.LiquidationSubscription, error) {
+	return p.events.ListenLiquidations()
 }
 
 func (p *Perpsv3) GetPosition(accountID *big.Int, marketID *big.Int) (*models.Position, error) {

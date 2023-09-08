@@ -7023,7 +7023,7 @@ func (_PerpsMarketGoerli *PerpsMarketGoerliFilterer) WatchPositionLiquidated(opt
 		marketIdRule = append(marketIdRule, marketIdItem)
 	}
 
-	logs, sub, err := _PerpsMarketGoerli.contract.WatchLogs(opts, "PositionLiquidated", accountIdRule, marketIdRule)
+	logs, sub, err := _PerpsMarketGoerli.contract.WatchLogs(opts, "PositionLiquidated")
 	if err != nil {
 		return nil, err
 	}
