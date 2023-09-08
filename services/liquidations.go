@@ -18,17 +18,10 @@ func (s *Service) RetrieveLiquidations(fromBlock uint64, toBLock *uint64) ([]*mo
 }
 
 func (s *Service) RetrieveLiquidationsLimit(limit uint64) ([]*models.Liquidation, error) {
-	last, err := s.rpcClient.BlockNumber(context.Background())
+	iterations, last, err := s.getIterationsForLimitQuery(limit)
 	if err != nil {
-		logger.Log().WithField("layer", "Service-FormatAccountsLimit").Errorf("get latest block rpc error: %v", err.Error())
-		return nil, errors.GetRPCProviderErr(err, "BlockNumber")
+		return nil, err
 	}
-
-	if limit == 0 {
-		limit = 20000
-	}
-
-	iterations := (last-s.perpsMarketFirstBlock)/limit + 1
 
 	var liquidations []*models.Liquidation
 

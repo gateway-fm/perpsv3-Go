@@ -140,6 +140,21 @@ func (mr *MockIServiceMockRecorder) RetrieveMarketUpdates(fromBlock, toBLock int
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "RetrieveMarketUpdates", reflect.TypeOf((*MockIService)(nil).RetrieveMarketUpdates), fromBlock, toBLock)
 }
 
+// RetrieveMarketUpdatesLimit mocks base method.
+func (m *MockIService) RetrieveMarketUpdatesLimit(limit uint64) ([]*models.MarketUpdate, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "RetrieveMarketUpdatesLimit", limit)
+	ret0, _ := ret[0].([]*models.MarketUpdate)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// RetrieveMarketUpdatesLimit indicates an expected call of RetrieveMarketUpdatesLimit.
+func (mr *MockIServiceMockRecorder) RetrieveMarketUpdatesLimit(limit interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "RetrieveMarketUpdatesLimit", reflect.TypeOf((*MockIService)(nil).RetrieveMarketUpdatesLimit), limit)
+}
+
 // RetrieveOrders mocks base method.
 func (m *MockIService) RetrieveOrders(fromBlock uint64, toBLock *uint64) ([]*models.Order, error) {
 	m.ctrl.T.Helper()
@@ -155,6 +170,21 @@ func (mr *MockIServiceMockRecorder) RetrieveOrders(fromBlock, toBLock interface{
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "RetrieveOrders", reflect.TypeOf((*MockIService)(nil).RetrieveOrders), fromBlock, toBLock)
 }
 
+// RetrieveOrdersLimit mocks base method.
+func (m *MockIService) RetrieveOrdersLimit(limit uint64) ([]*models.Order, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "RetrieveOrdersLimit", limit)
+	ret0, _ := ret[0].([]*models.Order)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// RetrieveOrdersLimit indicates an expected call of RetrieveOrdersLimit.
+func (mr *MockIServiceMockRecorder) RetrieveOrdersLimit(limit interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "RetrieveOrdersLimit", reflect.TypeOf((*MockIService)(nil).RetrieveOrdersLimit), limit)
+}
+
 // RetrieveTrades mocks base method.
 func (m *MockIService) RetrieveTrades(fromBlock uint64, toBLock *uint64) ([]*models.Trade, error) {
 	m.ctrl.T.Helper()
@@ -168,4 +198,19 @@ func (m *MockIService) RetrieveTrades(fromBlock uint64, toBLock *uint64) ([]*mod
 func (mr *MockIServiceMockRecorder) RetrieveTrades(fromBlock, toBLock interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "RetrieveTrades", reflect.TypeOf((*MockIService)(nil).RetrieveTrades), fromBlock, toBLock)
+}
+
+// RetrieveTradesLimit mocks base method.
+func (m *MockIService) RetrieveTradesLimit(limit uint64) ([]*models.Trade, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "RetrieveTradesLimit", limit)
+	ret0, _ := ret[0].([]*models.Trade)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// RetrieveTradesLimit indicates an expected call of RetrieveTradesLimit.
+func (mr *MockIServiceMockRecorder) RetrieveTradesLimit(limit interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "RetrieveTradesLimit", reflect.TypeOf((*MockIService)(nil).RetrieveTradesLimit), limit)
 }

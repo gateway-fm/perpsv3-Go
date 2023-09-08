@@ -226,6 +226,100 @@ func TestPerpsv3_RetrieveTrades(t *testing.T) {
 	}
 }
 
+func TestPerpsv3_RetrieveTradesLimit(t *testing.T) {
+	fillPrice := new(big.Int)
+	fillPrice.SetString("26050753699652653732215", 10)
+
+	pnl := new(big.Int)
+	pnl.SetString("36901526133944874", 10)
+
+	accruedF := new(big.Int)
+	accruedF.SetString("-3064923447473062", 10)
+
+	sizeD := new(big.Int)
+	sizeD.SetString("-255300000000000000", 10)
+
+	sizeN := new(big.Int)
+	sizeN.SetString("-261000000000000000", 10)
+
+	feesT := new(big.Int)
+	feesT.SetString("4655530193664925748", 10)
+
+	trade := &models.Trade{
+		MarketID:         200,
+		AccountID:        1692895537802,
+		FillPrice:        fillPrice,
+		PnL:              pnl,
+		AccruedFunding:   accruedF,
+		SizeDelta:        sizeD,
+		NewSize:          sizeN,
+		TotalFees:        feesT,
+		ReferralFees:     big.NewInt(0),
+		CollectedFees:    big.NewInt(0),
+		SettlementReward: big.NewInt(0),
+		TrackingCode:     [32]byte{75, 87, 69, 78, 84, 65, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+		Settler:          common.HexToAddress("0x4A58e0d29558111bfDc07Dc12Ca0fF7fcD0d0d75"),
+		BlockNumber:      13739029,
+		BlockTimestamp:   1692906126,
+		TransactionHash:  "0x16704162005c11d71c745f7392a71a5ede8eb5f042e7fa917f210748773c57bf",
+	}
+
+	testCases := []struct {
+		name    string
+		conf    *config.PerpsvConfig
+		limit   uint64
+		wantRes []*models.Trade
+		wantErr error
+	}{
+		{
+			name:    "no error default values",
+			conf:    config.GetGoerliDefaultPerpsvConfig(),
+			limit:   0,
+			wantRes: []*models.Trade{trade, trade, trade},
+		},
+		{
+			name:    "no error custom values",
+			conf:    config.GetGoerliDefaultPerpsvConfig(),
+			limit:   1,
+			wantRes: []*models.Trade{trade},
+		},
+		{
+			name:    "no error custom values blank result",
+			conf:    config.GetGoerliDefaultPerpsvConfig(),
+			limit:   1,
+			wantRes: []*models.Trade{},
+		},
+		{
+			name:    "error",
+			conf:    config.GetGoerliDefaultPerpsvConfig(),
+			limit:   1,
+			wantErr: errors.FilterErr,
+		},
+	}
+
+	for _, tt := range testCases {
+		t.Run(tt.name, func(t *testing.T) {
+			ctrl := gomock.NewController(t)
+			defer ctrl.Finish()
+			mockService := mock_services.NewMockIService(ctrl)
+
+			p, _ := createTest(tt.conf)
+			p.service = mockService
+
+			mockService.EXPECT().RetrieveTradesLimit(tt.limit).Return(tt.wantRes, tt.wantErr)
+
+			res, err := p.RetrieveTradesLimit(tt.limit)
+
+			if tt.wantErr == nil {
+				require.NoError(t, err)
+				require.Equal(t, tt.wantRes, res)
+			} else {
+				require.ErrorIs(t, tt.wantErr, err)
+			}
+		})
+	}
+}
+
 func TestPerpsv3_RetrieveOrders(t *testing.T) {
 	blockN := uint64(10000)
 
@@ -299,6 +393,83 @@ func TestPerpsv3_RetrieveOrders(t *testing.T) {
 			mockService.EXPECT().RetrieveOrders(tt.startBlock, tt.endBlock).Return(tt.wantRes, tt.wantErr)
 
 			res, err := p.RetrieveOrders(tt.startBlock, tt.endBlock)
+
+			if tt.wantErr == nil {
+				require.NoError(t, err)
+				require.Equal(t, tt.wantRes, res)
+			} else {
+				require.ErrorIs(t, tt.wantErr, err)
+			}
+		})
+	}
+}
+
+func TestPerpsv3_RetrieveOrdersLimit(t *testing.T) {
+	sizeDelta := new(big.Int)
+	sizeDelta.SetString("-500000000000000000", 10)
+
+	acceptablePrice := new(big.Int)
+	acceptablePrice.SetString("1000000000000000000", 10)
+
+	liquidation := &models.Order{
+		MarketID:        100,
+		AccountID:       8714,
+		OrderType:       0,
+		SizeDelta:       sizeDelta,
+		AcceptablePrice: acceptablePrice,
+		SettlementTime:  1693269991,
+		ExpirationTime:  1693270591,
+		TrackingCode:    [32]byte{},
+		Sender:          common.HexToAddress("0xC47fF8a340dFc0605be060886F0B6AEea0db653f"),
+		BlockNumber:     13920954,
+		BlockTimestamp:  1693269976,
+	}
+
+	testCases := []struct {
+		name    string
+		conf    *config.PerpsvConfig
+		limit   uint64
+		wantRes []*models.Order
+		wantErr error
+	}{
+		{
+			name:    "no error default values",
+			conf:    config.GetGoerliDefaultPerpsvConfig(),
+			limit:   0,
+			wantRes: []*models.Order{liquidation, liquidation, liquidation},
+		},
+		{
+			name:    "no error custom values",
+			conf:    config.GetGoerliDefaultPerpsvConfig(),
+			limit:   1,
+			wantRes: []*models.Order{liquidation},
+		},
+		{
+			name:    "no error custom values blank result",
+			conf:    config.GetGoerliDefaultPerpsvConfig(),
+			limit:   1,
+			wantRes: []*models.Order{},
+		},
+		{
+			name:    "error",
+			conf:    config.GetGoerliDefaultPerpsvConfig(),
+			limit:   1,
+			wantErr: errors.FilterErr,
+		},
+	}
+
+	for _, tt := range testCases {
+		t.Run(tt.name, func(t *testing.T) {
+			ctrl := gomock.NewController(t)
+			defer ctrl.Finish()
+			mockService := mock_services.NewMockIService(ctrl)
+
+			p, _ := createTest(tt.conf)
+			p.service = mockService
+
+			mockService.EXPECT().RetrieveOrdersLimit(tt.limit).Return(tt.wantRes, tt.wantErr)
+
+			res, err := p.RetrieveOrdersLimit(tt.limit)
 
 			if tt.wantErr == nil {
 				require.NoError(t, err)
@@ -521,6 +692,82 @@ func TestPerpsv3_RetrieveMarketUpdates(t *testing.T) {
 			mockService.EXPECT().RetrieveMarketUpdates(tt.startBlock, tt.endBlock).Return(tt.wantRes, tt.wantErr)
 
 			res, err := p.RetrieveMarketUpdates(tt.startBlock, tt.endBlock)
+
+			if tt.wantErr == nil {
+				require.NoError(t, err)
+				require.Equal(t, tt.wantRes, res)
+			} else {
+				require.ErrorIs(t, tt.wantErr, err)
+			}
+		})
+	}
+}
+
+func TestPerpsv3_RetrieveMarketUpdatesLimit(t *testing.T) {
+	sizeDelta := new(big.Int)
+	sizeDelta.SetString("-500000000000000000", 10)
+
+	acceptablePrice := new(big.Int)
+	acceptablePrice.SetString("1000000000000000000", 10)
+
+	marketUpdate := &models.MarketUpdate{
+		MarketID:               200,
+		Price:                  3780527432113118208,
+		Skew:                   527000000000000000,
+		Size:                   1049000000000000000,
+		SizeDelta:              -255300000000000000,
+		CurrentFundingRate:     62031943958317,
+		CurrentFundingVelocity: 47430000000000,
+		BlockNumber:            13739029,
+		BlockTimestamp:         1692906126,
+		TransactionHash:        "0x16704162005c11d71c745f7392a71a5ede8eb5f042e7fa917f210748773c57bf",
+	}
+
+	testCases := []struct {
+		name    string
+		conf    *config.PerpsvConfig
+		limit   uint64
+		wantRes []*models.MarketUpdate
+		wantErr error
+	}{
+		{
+			name:    "no error default values",
+			conf:    config.GetGoerliDefaultPerpsvConfig(),
+			limit:   0,
+			wantRes: []*models.MarketUpdate{marketUpdate, marketUpdate, marketUpdate},
+		},
+		{
+			name:    "no error custom values",
+			conf:    config.GetGoerliDefaultPerpsvConfig(),
+			limit:   1,
+			wantRes: []*models.MarketUpdate{marketUpdate},
+		},
+		{
+			name:    "no error custom values blank result",
+			conf:    config.GetGoerliDefaultPerpsvConfig(),
+			limit:   1,
+			wantRes: []*models.MarketUpdate{},
+		},
+		{
+			name:    "error",
+			conf:    config.GetGoerliDefaultPerpsvConfig(),
+			limit:   1,
+			wantErr: errors.FilterErr,
+		},
+	}
+
+	for _, tt := range testCases {
+		t.Run(tt.name, func(t *testing.T) {
+			ctrl := gomock.NewController(t)
+			defer ctrl.Finish()
+			mockService := mock_services.NewMockIService(ctrl)
+
+			p, _ := createTest(tt.conf)
+			p.service = mockService
+
+			mockService.EXPECT().RetrieveMarketUpdatesLimit(tt.limit).Return(tt.wantRes, tt.wantErr)
+
+			res, err := p.RetrieveMarketUpdatesLimit(tt.limit)
 
 			if tt.wantErr == nil {
 				require.NoError(t, err)

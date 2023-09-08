@@ -1,7 +1,6 @@
 package services
 
 import (
-	"context"
 	"math/big"
 
 	"github.com/ethereum/go-ethereum/accounts/abi/bind"
@@ -16,16 +15,9 @@ func (s *Service) FormatAccount(id *big.Int) (*models.Account, error) {
 }
 
 func (s *Service) FormatAccountsLimit(limit uint64) ([]*models.Account, error) {
-	last, err := s.rpcClient.BlockNumber(context.Background())
+	iterations, last, err := s.getIterationsForLimitQuery(limit)
 	if err != nil {
-		logger.Log().WithField("layer", "Service-FormatAccountsLimit").Errorf("get latest block rpc error: %v", err.Error())
-		return nil, errors.GetRPCProviderErr(err, "BlockNumber")
-	}
-
-	iterations := (last-s.perpsMarketFirstBlock)/limit + 1
-
-	if limit == 0 {
-		limit = 20000
+		return nil, err
 	}
 
 	var accounts []*models.Account

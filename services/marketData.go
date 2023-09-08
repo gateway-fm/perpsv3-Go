@@ -2,6 +2,7 @@ package services
 
 import (
 	"context"
+	"github.com/ethereum/go-ethereum/accounts/abi/bind"
 	"math/big"
 
 	"github.com/gateway-fm/perpsv3-Go/contracts/perpsMarketGoerli"
@@ -10,9 +11,45 @@ import (
 	"github.com/gateway-fm/perpsv3-Go/pkg/logger"
 )
 
+func (s *Service) RetrieveMarketUpdatesLimit(limit uint64) ([]*models.MarketUpdate, error) {
+	iterations, last, err := s.getIterationsForLimitQuery(limit)
+	if err != nil {
+		return nil, err
+	}
+
+	var marketUpdates []*models.MarketUpdate
+
+	fromBlock := s.perpsMarketFirstBlock
+	toBlock := fromBlock + limit
+	for i := uint64(1); i <= iterations; i++ {
+		opts := s.getFilterOptsPerpsMarket(fromBlock, &toBlock)
+
+		res, err := s.retrieveMarketUpdates(opts)
+		if err != nil {
+			return nil, err
+		}
+
+		marketUpdates = append(marketUpdates, res...)
+
+		fromBlock = toBlock + 1
+
+		if i == iterations-1 {
+			toBlock = last
+		} else {
+			toBlock = fromBlock + limit
+		}
+	}
+
+	return marketUpdates, nil
+}
+
 func (s *Service) RetrieveMarketUpdates(fromBlock uint64, toBLock *uint64) ([]*models.MarketUpdate, error) {
 	opts := s.getFilterOptsPerpsMarket(fromBlock, toBLock)
+	return s.retrieveMarketUpdates(opts)
+}
 
+// retrieveMarketUpdates is used to get retrieve market updates with given filter options
+func (s *Service) retrieveMarketUpdates(opts *bind.FilterOpts) ([]*models.MarketUpdate, error) {
 	iterator, err := s.perpsMarket.FilterMarketUpdated(opts)
 	if err != nil {
 		logger.Log().WithField("layer", "Service-RetrieveMarketUpdates").Errorf("error get iterator: %v", err.Error())

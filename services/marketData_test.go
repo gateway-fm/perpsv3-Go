@@ -77,3 +77,22 @@ func TestService_RetrieveMarketUpdates_OnChain(t *testing.T) {
 		})
 	}
 }
+
+func TestService_RetrieveMarketUpdates_OnChain_Limit(t *testing.T) {
+	rpc := os.Getenv("TEST_RPC")
+	if rpc == "" {
+		log.Fatal("no rpc in env vars")
+	}
+
+	rpcClient, _ := ethclient.Dial(rpc)
+
+	coreC, _ := coreGoerli.NewCoreGoerli(common.HexToAddress("0x76490713314fCEC173f44e99346F54c6e92a8E42"), rpcClient)
+	spot, _ := spotMarketGoerli.NewSpotMarketGoerli(common.HexToAddress("0x5FF4b3aacdeC86782d8c757FAa638d8790799E83"), rpcClient)
+	perps, _ := perpsMarketGoerli.NewPerpsMarketGoerli(common.HexToAddress("0xf272382cB3BE898A8CdB1A23BE056fA2Fcf4513b"), rpcClient)
+
+	s := NewService(rpcClient, coreC, 11664658, spot, 10875051, perps, 12708889)
+
+	_, err := s.RetrieveMarketUpdatesLimit(20000)
+
+	require.NoError(t, err)
+}
