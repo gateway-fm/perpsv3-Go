@@ -24,6 +24,10 @@ func (s *Service) FormatAccountsLimit(limit uint64) ([]*models.Account, error) {
 
 	iterations := (last-s.perpsMarketFirstBlock)/limit + 1
 
+	if limit == 0 {
+		limit = 20000
+	}
+
 	var accounts []*models.Account
 
 	fromBlock := s.perpsMarketFirstBlock

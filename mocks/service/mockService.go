@@ -95,6 +95,36 @@ func (mr *MockIServiceMockRecorder) GetPosition(accountID, marketID interface{})
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetPosition", reflect.TypeOf((*MockIService)(nil).GetPosition), accountID, marketID)
 }
 
+// RetrieveLiquidations mocks base method.
+func (m *MockIService) RetrieveLiquidations(fromBlock uint64, toBLock *uint64) ([]*models.Liquidation, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "RetrieveLiquidations", fromBlock, toBLock)
+	ret0, _ := ret[0].([]*models.Liquidation)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// RetrieveLiquidations indicates an expected call of RetrieveLiquidations.
+func (mr *MockIServiceMockRecorder) RetrieveLiquidations(fromBlock, toBLock interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "RetrieveLiquidations", reflect.TypeOf((*MockIService)(nil).RetrieveLiquidations), fromBlock, toBLock)
+}
+
+// RetrieveLiquidationsLimit mocks base method.
+func (m *MockIService) RetrieveLiquidationsLimit(limit uint64) ([]*models.Liquidation, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "RetrieveLiquidationsLimit", limit)
+	ret0, _ := ret[0].([]*models.Liquidation)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// RetrieveLiquidationsLimit indicates an expected call of RetrieveLiquidationsLimit.
+func (mr *MockIServiceMockRecorder) RetrieveLiquidationsLimit(limit interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "RetrieveLiquidationsLimit", reflect.TypeOf((*MockIService)(nil).RetrieveLiquidationsLimit), limit)
+}
+
 // RetrieveMarketUpdates mocks base method.
 func (m *MockIService) RetrieveMarketUpdates(fromBlock uint64, toBLock *uint64) ([]*models.MarketUpdate, error) {
 	m.ctrl.T.Helper()

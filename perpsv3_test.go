@@ -235,7 +235,7 @@ func TestPerpsv3_RetrieveOrders(t *testing.T) {
 	acceptablePrice := new(big.Int)
 	acceptablePrice.SetString("1000000000000000000", 10)
 
-	order := &models.Order{
+	liquidation := &models.Order{
 		MarketID:        100,
 		AccountID:       8714,
 		OrderType:       0,
@@ -262,14 +262,14 @@ func TestPerpsv3_RetrieveOrders(t *testing.T) {
 			conf:       config.GetGoerliDefaultPerpsvConfig(),
 			startBlock: 0,
 			endBlock:   nil,
-			wantRes:    []*models.Order{order, order, order},
+			wantRes:    []*models.Order{liquidation, liquidation, liquidation},
 		},
 		{
 			name:       "no error custom values",
 			conf:       config.GetGoerliDefaultPerpsvConfig(),
 			startBlock: blockN,
 			endBlock:   &blockN,
-			wantRes:    []*models.Order{order},
+			wantRes:    []*models.Order{liquidation},
 		},
 		{
 			name:       "no error custom values blank result",
@@ -299,6 +299,145 @@ func TestPerpsv3_RetrieveOrders(t *testing.T) {
 			mockService.EXPECT().RetrieveOrders(tt.startBlock, tt.endBlock).Return(tt.wantRes, tt.wantErr)
 
 			res, err := p.RetrieveOrders(tt.startBlock, tt.endBlock)
+
+			if tt.wantErr == nil {
+				require.NoError(t, err)
+				require.Equal(t, tt.wantRes, res)
+			} else {
+				require.ErrorIs(t, tt.wantErr, err)
+			}
+		})
+	}
+}
+
+func TestPerpsv3_RetrieveLiquidations(t *testing.T) {
+	blockN := uint64(10000)
+
+	liquidation := &models.Liquidation{
+		MarketID:            100,
+		AccountID:           25,
+		AmountLiquidated:    big.NewInt(200000000000000000),
+		CurrentPositionSize: big.NewInt(0),
+		BlockNumber:         14125002,
+		BlockTimestamp:      1693678072,
+	}
+
+	testCases := []struct {
+		name       string
+		conf       *config.PerpsvConfig
+		startBlock uint64
+		endBlock   *uint64
+		wantRes    []*models.Liquidation
+		wantErr    error
+	}{
+		{
+			name:       "no error default values",
+			conf:       config.GetGoerliDefaultPerpsvConfig(),
+			startBlock: 0,
+			endBlock:   nil,
+			wantRes:    []*models.Liquidation{liquidation, liquidation, liquidation},
+		},
+		{
+			name:       "no error custom values",
+			conf:       config.GetGoerliDefaultPerpsvConfig(),
+			startBlock: blockN,
+			endBlock:   &blockN,
+			wantRes:    []*models.Liquidation{liquidation},
+		},
+		{
+			name:       "no error custom values blank result",
+			conf:       config.GetGoerliDefaultPerpsvConfig(),
+			startBlock: blockN,
+			endBlock:   &blockN,
+			wantRes:    []*models.Liquidation{},
+		},
+		{
+			name:       "error",
+			conf:       config.GetGoerliDefaultPerpsvConfig(),
+			startBlock: 0,
+			endBlock:   nil,
+			wantErr:    errors.FilterErr,
+		},
+	}
+
+	for _, tt := range testCases {
+		t.Run(tt.name, func(t *testing.T) {
+			ctrl := gomock.NewController(t)
+			defer ctrl.Finish()
+			mockService := mock_services.NewMockIService(ctrl)
+
+			p, _ := createTest(tt.conf)
+			p.service = mockService
+
+			mockService.EXPECT().RetrieveLiquidations(tt.startBlock, tt.endBlock).Return(tt.wantRes, tt.wantErr)
+
+			res, err := p.RetrieveLiquidations(tt.startBlock, tt.endBlock)
+
+			if tt.wantErr == nil {
+				require.NoError(t, err)
+				require.Equal(t, tt.wantRes, res)
+			} else {
+				require.ErrorIs(t, tt.wantErr, err)
+			}
+		})
+	}
+}
+
+func TestPerpsv3_RetrieveLiquidationsLimit(t *testing.T) {
+	liquidation := &models.Liquidation{
+		MarketID:            100,
+		AccountID:           25,
+		AmountLiquidated:    big.NewInt(200000000000000000),
+		CurrentPositionSize: big.NewInt(0),
+		BlockNumber:         14125002,
+		BlockTimestamp:      1693678072,
+	}
+
+	testCases := []struct {
+		name    string
+		conf    *config.PerpsvConfig
+		limit   uint64
+		wantRes []*models.Liquidation
+		wantErr error
+	}{
+		{
+			name:    "no error default values",
+			conf:    config.GetGoerliDefaultPerpsvConfig(),
+			limit:   0,
+			wantRes: []*models.Liquidation{liquidation, liquidation, liquidation},
+		},
+		{
+			name:    "no error custom values",
+			conf:    config.GetGoerliDefaultPerpsvConfig(),
+			limit:   10,
+			wantRes: []*models.Liquidation{liquidation},
+		},
+		{
+			name:    "no error custom values blank result",
+			conf:    config.GetGoerliDefaultPerpsvConfig(),
+			limit:   10,
+			wantRes: []*models.Liquidation{},
+		},
+		{
+			name:    "error",
+			conf:    config.GetGoerliDefaultPerpsvConfig(),
+			limit:   0,
+			wantErr: errors.FilterErr,
+		},
+	}
+
+	for _, tt := range testCases {
+		t.Run(tt.name, func(t *testing.T) {
+			ctrl := gomock.NewController(t)
+			defer ctrl.Finish()
+			mockService := mock_services.NewMockIService(ctrl)
+
+			p, _ := createTest(tt.conf)
+			p.service = mockService
+
+			mockService.EXPECT().RetrieveLiquidationsLimit(tt.limit).Return(tt.wantRes, tt.wantErr)
+
+			res, err := p.RetrieveLiquidationsLimit(tt.limit)
 
 			if tt.wantErr == nil {
 				require.NoError(t, err)

@@ -34,6 +34,21 @@ func (m *MockIEvents) EXPECT() *MockIEventsMockRecorder {
 	return m.recorder
 }
 
+// ListenLiquidations mocks base method.
+func (m *MockIEvents) ListenLiquidations() (*events.LiquidationSubscription, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "ListenLiquidations")
+	ret0, _ := ret[0].(*events.LiquidationSubscription)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// ListenLiquidations indicates an expected call of ListenLiquidations.
+func (mr *MockIEventsMockRecorder) ListenLiquidations() *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "ListenLiquidations", reflect.TypeOf((*MockIEvents)(nil).ListenLiquidations))
+}
+
 // ListenMarketUpdates mocks base method.
 func (m *MockIEvents) ListenMarketUpdates() (*events.MarketUpdateSubscription, error) {
 	m.ctrl.T.Helper()
