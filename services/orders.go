@@ -2,6 +2,7 @@ package services
 
 import (
 	"context"
+	"github.com/ethereum/go-ethereum/accounts/abi/bind"
 	"math/big"
 
 	"github.com/gateway-fm/perpsv3-Go/contracts/perpsMarketGoerli"
@@ -12,7 +13,43 @@ import (
 
 func (s *Service) RetrieveOrders(fromBlock uint64, toBLock *uint64) ([]*models.Order, error) {
 	opts := s.getFilterOptsPerpsMarket(fromBlock, toBLock)
+	return s.retrieveOrders(opts)
+}
 
+func (s *Service) RetrieveOrdersLimit(limit uint64) ([]*models.Order, error) {
+	iterations, last, err := s.getIterationsForLimitQuery(limit)
+	if err != nil {
+		return nil, err
+	}
+
+	var orders []*models.Order
+
+	fromBlock := s.perpsMarketFirstBlock
+	toBlock := fromBlock + limit
+	for i := uint64(1); i <= iterations; i++ {
+		opts := s.getFilterOptsPerpsMarket(fromBlock, &toBlock)
+
+		res, err := s.retrieveOrders(opts)
+		if err != nil {
+			return nil, err
+		}
+
+		orders = append(orders, res...)
+
+		fromBlock = toBlock + 1
+
+		if i == iterations-1 {
+			toBlock = last
+		} else {
+			toBlock = fromBlock + limit
+		}
+	}
+
+	return orders, nil
+}
+
+// retrieveOrders is used to retrieve orders with given filter options
+func (s *Service) retrieveOrders(opts *bind.FilterOpts) ([]*models.Order, error) {
 	iterator, err := s.perpsMarket.FilterOrderCommitted(opts, nil, nil, nil)
 	if err != nil {
 		logger.Log().WithField("layer", "Service-RetrieveOrders").Errorf("error get iterator: %v", err.Error())

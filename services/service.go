@@ -2,6 +2,8 @@ package services
 
 import (
 	"context"
+	"github.com/gateway-fm/perpsv3-Go/errors"
+	"github.com/gateway-fm/perpsv3-Go/pkg/logger"
 	"math/big"
 
 	"github.com/ethereum/go-ethereum/accounts/abi/bind"
@@ -18,12 +20,24 @@ type IService interface {
 	// RetrieveTrades is used to get logs from the "OrderSettled" event preps market contract within given block range
 	RetrieveTrades(fromBlock uint64, toBLock *uint64) ([]*models.Trade, error)
 
+	// RetrieveTradesLimit is used to get all trades and their additional data from the contract with given block search
+	// limit. For most public RPC providers the value for limit is 20 000 blocks
+	RetrieveTradesLimit(limit uint64) ([]*models.Trade, error)
+
 	// RetrieveOrders is used to get logs from the "OrderCommitted" event preps market contract within given block range
 	RetrieveOrders(fromBlock uint64, toBLock *uint64) ([]*models.Order, error)
+
+	// RetrieveOrdersLimit is used to get all orders and their additional data from the contract with given block search
+	// limit. For most public RPC providers the value for limit is 20 000 blocks
+	RetrieveOrdersLimit(limit uint64) ([]*models.Order, error)
 
 	// RetrieveMarketUpdates is used to get logs from the "MarketUpdated" event preps market contract within given block
 	// range
 	RetrieveMarketUpdates(fromBlock uint64, toBLock *uint64) ([]*models.MarketUpdate, error)
+
+	// RetrieveMarketUpdatesLimit is used to get all market updates and their additional data from the contract with given block search
+	// limit. For most public RPC providers the value for limit is 20 000 blocks
+	RetrieveMarketUpdatesLimit(limit uint64) ([]*models.MarketUpdate, error)
 
 	// RetrieveLiquidations is used to get logs from the "PositionLiquidated" event preps market contract within given block
 	// range
@@ -77,6 +91,24 @@ func NewService(
 		perpsMarket:           perpsMarket,
 		perpsMarketFirstBlock: perpsMarketFirstBlock,
 	}
+}
+
+// getIterationsForLimitQuery is used to get iterations of querying data from the contract with given rpc limit for blocks
+// and latest block number. Limit by default (if given limit is 0) is set to 20 000 blocks
+func (s *Service) getIterationsForLimitQuery(limit uint64) (iterations uint64, lastBlock uint64, err error) {
+	lastBlock, err = s.rpcClient.BlockNumber(context.Background())
+	if err != nil {
+		logger.Log().WithField("layer", "Service-getIterationsForLimitQuery").Errorf("get latest block rpc error: %v", err.Error())
+		return 0, 0, errors.GetRPCProviderErr(err, "BlockNumber")
+	}
+
+	if limit == 0 {
+		limit = 20000
+	}
+
+	iterations = (lastBlock-s.perpsMarketFirstBlock)/limit + 1
+
+	return iterations, lastBlock, nil
 }
 
 // getFilterOptsPerpsMarket is used to get options for event filtering on perps market contract

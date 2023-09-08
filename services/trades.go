@@ -2,6 +2,7 @@ package services
 
 import (
 	"context"
+	"github.com/ethereum/go-ethereum/accounts/abi/bind"
 	"math/big"
 
 	"github.com/gateway-fm/perpsv3-Go/contracts/perpsMarketGoerli"
@@ -12,7 +13,43 @@ import (
 
 func (s *Service) RetrieveTrades(fromBlock uint64, toBLock *uint64) ([]*models.Trade, error) {
 	opts := s.getFilterOptsPerpsMarket(fromBlock, toBLock)
+	return s.retrieveTrades(opts)
+}
 
+func (s *Service) RetrieveTradesLimit(limit uint64) ([]*models.Trade, error) {
+	iterations, last, err := s.getIterationsForLimitQuery(limit)
+	if err != nil {
+		return nil, err
+	}
+
+	var trades []*models.Trade
+
+	fromBlock := s.perpsMarketFirstBlock
+	toBlock := fromBlock + limit
+	for i := uint64(1); i <= iterations; i++ {
+		opts := s.getFilterOptsPerpsMarket(fromBlock, &toBlock)
+
+		res, err := s.retrieveTrades(opts)
+		if err != nil {
+			return nil, err
+		}
+
+		trades = append(trades, res...)
+
+		fromBlock = toBlock + 1
+
+		if i == iterations-1 {
+			toBlock = last
+		} else {
+			toBlock = fromBlock + limit
+		}
+	}
+
+	return trades, nil
+}
+
+// retrieveTrades is used to retrieve trades with given filter options
+func (s *Service) retrieveTrades(opts *bind.FilterOpts) ([]*models.Trade, error) {
 	iterator, err := s.perpsMarket.FilterOrderSettled(opts, nil, nil, nil)
 	if err != nil {
 		logger.Log().WithField("layer", "Service-RetrieveTrades").Errorf("error get iterator: %v", err.Error())

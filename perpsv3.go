@@ -24,16 +24,28 @@ type IPerpsv3 interface {
 	//   - use nil for toBlock to use default value of a last blockchain block
 	RetrieveTrades(fromBlock uint64, toBLock *uint64) ([]*models.Trade, error)
 
+	// RetrieveTradesLimit is used to get all "OrderSettled" events and their additional data from the contract
+	// with given block search limit. If given limit is 0 function will set default value to 20 000 blocks
+	RetrieveTradesLimit(limit uint64) ([]*models.Trade, error)
+
 	// RetrieveOrders is used to get logs from the "OrderCommitted" event perps market contract within given block range
 	//   - use 0 for fromBlock to use default value of a first contract block
 	//   - use nil for toBlock to use default value of a last blockchain block
 	RetrieveOrders(fromBlock uint64, toBLock *uint64) ([]*models.Order, error)
+
+	// RetrieveOrdersLimit is used to get all "OrderCommitted" events and their additional data from the contract
+	// with given block search limit. If given limit is 0 function will set default value to 20 000 blocks
+	RetrieveOrdersLimit(limit uint64) ([]*models.Order, error)
 
 	// RetrieveMarketUpdates is used to get logs from the "MarketUpdated" event perps market contract within given block
 	// range
 	//   - use 0 for fromBlock to use default value of a first contract block
 	//   - use nil for toBlock to use default value of a last blockchain block
 	RetrieveMarketUpdates(fromBlock uint64, toBLock *uint64) ([]*models.MarketUpdate, error)
+
+	// RetrieveMarketUpdatesLimit is used to get all "MarketUpdated" events and their additional data from the contract
+	// with given block search limit. If given limit is 0 function will set default value to 20 000 blocks
+	RetrieveMarketUpdatesLimit(limit uint64) ([]*models.MarketUpdate, error)
 
 	// RetrieveLiquidations is used to get logs from the "PositionLiquidated" event perps market contract within given block
 	// range
@@ -111,12 +123,24 @@ func (p *Perpsv3) RetrieveTrades(fromBlock uint64, toBLock *uint64) ([]*models.T
 	return p.service.RetrieveTrades(fromBlock, toBLock)
 }
 
+func (p *Perpsv3) RetrieveTradesLimit(limit uint64) ([]*models.Trade, error) {
+	return p.service.RetrieveTradesLimit(limit)
+}
+
 func (p *Perpsv3) RetrieveOrders(fromBlock uint64, toBLock *uint64) ([]*models.Order, error) {
 	return p.service.RetrieveOrders(fromBlock, toBLock)
 }
 
+func (p *Perpsv3) RetrieveOrdersLimit(limit uint64) ([]*models.Order, error) {
+	return p.service.RetrieveOrdersLimit(limit)
+}
+
 func (p *Perpsv3) RetrieveMarketUpdates(fromBlock uint64, toBLock *uint64) ([]*models.MarketUpdate, error) {
 	return p.service.RetrieveMarketUpdates(fromBlock, toBLock)
+}
+
+func (p *Perpsv3) RetrieveMarketUpdatesLimit(limit uint64) ([]*models.MarketUpdate, error) {
+	return p.service.RetrieveMarketUpdatesLimit(limit)
 }
 
 func (p *Perpsv3) RetrieveLiquidations(fromBlock uint64, toBLock *uint64) ([]*models.Liquidation, error) {
