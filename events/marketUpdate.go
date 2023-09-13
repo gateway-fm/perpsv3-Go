@@ -54,8 +54,10 @@ func (s *MarketUpdateSubscription) listen(rpcClient *ethclient.Client) {
 			close(s.contractEventChan)
 			return
 		case err := <-s.eventSub.Err():
-			logger.Log().WithField("layer", "Events-MarketUpdated").Errorf("error listening market update: %v", err.Error())
-			s.ErrChan <- err
+			if err != nil {
+				logger.Log().WithField("layer", "Events-MarketUpdated").Errorf("error listening market update: %v", err.Error())
+				s.ErrChan <- err
+			}
 			continue
 		case marketUpdate := <-s.contractEventChan:
 			block, err := rpcClient.HeaderByNumber(context.Background(), big.NewInt(int64(marketUpdate.Raw.BlockNumber)))
