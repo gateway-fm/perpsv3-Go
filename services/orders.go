@@ -2,8 +2,9 @@ package services
 
 import (
 	"context"
-	"github.com/ethereum/go-ethereum/accounts/abi/bind"
 	"math/big"
+
+	"github.com/ethereum/go-ethereum/accounts/abi/bind"
 
 	"github.com/gateway-fm/perpsv3-Go/contracts/perpsMarketGoerli"
 	"github.com/gateway-fm/perpsv3-Go/errors"
@@ -24,9 +25,17 @@ func (s *Service) RetrieveOrdersLimit(limit uint64) ([]*models.Order, error) {
 
 	var orders []*models.Order
 
+	logger.Log().WithField("layer", "Service-RetrieveOrdersLimit").Infof(
+		"fetching orders updates with limit: %v to block: %v total iterations: %v...",
+		limit, last, iterations,
+	)
+
 	fromBlock := s.perpsMarketFirstBlock
 	toBlock := fromBlock + limit
 	for i := uint64(1); i <= iterations; i++ {
+		if i%10 == 0 || i == iterations {
+			logger.Log().WithField("layer", "Service-RetrieveOrdersLimit").Infof("-- iteration %v", i)
+		}
 		opts := s.getFilterOptsPerpsMarket(fromBlock, &toBlock)
 
 		res, err := s.retrieveOrders(opts)
@@ -44,6 +53,8 @@ func (s *Service) RetrieveOrdersLimit(limit uint64) ([]*models.Order, error) {
 			toBlock = fromBlock + limit
 		}
 	}
+
+	logger.Log().WithField("layer", "Service-RetrieveOrdersLimit").Infof("task completed successfully")
 
 	return orders, nil
 }

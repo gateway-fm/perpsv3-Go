@@ -25,9 +25,17 @@ func (s *Service) RetrieveLiquidationsLimit(limit uint64) ([]*models.Liquidation
 
 	var liquidations []*models.Liquidation
 
+	logger.Log().WithField("layer", "Service-RetrieveLiquidationsLimit").Infof(
+		"fetching liquidations with limit: %v to block: %v total iterations: %v...",
+		limit, last, iterations,
+	)
+
 	fromBlock := s.perpsMarketFirstBlock
 	toBlock := fromBlock + limit
 	for i := uint64(1); i <= iterations; i++ {
+		if i%10 == 0 || i == iterations {
+			logger.Log().WithField("layer", "Service-RetrieveLiquidationsLimit").Infof("-- iteration %v", i)
+		}
 		opts := s.getFilterOptsPerpsMarket(fromBlock, &toBlock)
 
 		res, err := s.retrieveLiquidations(opts)
@@ -45,6 +53,8 @@ func (s *Service) RetrieveLiquidationsLimit(limit uint64) ([]*models.Liquidation
 			toBlock = fromBlock + limit
 		}
 	}
+
+	logger.Log().WithField("layer", "Service-RetrieveLiquidationsLimit").Infof("task completed successfully")
 
 	return liquidations, nil
 }
