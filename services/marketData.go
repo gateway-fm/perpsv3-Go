@@ -98,6 +98,15 @@ func (s *Service) GetMarketSummary(marketID *big.Int) (*models.MarketSummary, er
 	return models.GetMarketSummaryFromContractModel(res, marketID), nil
 }
 
+func (s *Service) GetMarketIDs() ([]*big.Int, error) {
+	res, err := s.perpsMarket.GetMarkets(nil)
+	if err != nil {
+		return nil, errors.GetReadContractErr(err, "perpsMarket", "getMarkets")
+	}
+
+	return res, nil
+}
+
 // retrieveMarketUpdates is used to get retrieve market updates with given filter options
 func (s *Service) retrieveMarketUpdates(opts *bind.FilterOpts) ([]*models.MarketUpdate, error) {
 	iterator, err := s.perpsMarket.FilterMarketUpdated(opts)

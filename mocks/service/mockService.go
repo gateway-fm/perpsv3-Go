@@ -80,6 +80,21 @@ func (mr *MockIServiceMockRecorder) FormatAccountsLimit(limit interface{}) *gomo
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "FormatAccountsLimit", reflect.TypeOf((*MockIService)(nil).FormatAccountsLimit), limit)
 }
 
+// GetMarketIDs mocks base method.
+func (m *MockIService) GetMarketIDs() ([]*big.Int, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "GetMarketIDs")
+	ret0, _ := ret[0].([]*big.Int)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// GetMarketIDs indicates an expected call of GetMarketIDs.
+func (mr *MockIServiceMockRecorder) GetMarketIDs() *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetMarketIDs", reflect.TypeOf((*MockIService)(nil).GetMarketIDs))
+}
+
 // GetMarketMetadata mocks base method.
 func (m *MockIService) GetMarketMetadata(marketID *big.Int) (*models.MarketMetadata, error) {
 	m.ctrl.T.Helper()
