@@ -1201,3 +1201,53 @@ func TestPerpsv3_FormatAccountsLimit(t *testing.T) {
 		})
 	}
 }
+
+func TestPerpsv3_GetMarketSummary(t *testing.T) {
+	testCases := []struct {
+		name     string
+		marketID *big.Int
+		summary  *models.MarketSummary
+		wantErr  error
+	}{
+		{
+			name:     "no error",
+			marketID: big.NewInt(100),
+			summary: &models.MarketSummary{
+				MarketID:               big.NewInt(100),
+				Size:                   big.NewInt(200),
+				Skew:                   big.NewInt(300),
+				MaxOpenInterest:        big.NewInt(400),
+				CurrentFundingRate:     big.NewInt(500),
+				CurrentFundingVelocity: big.NewInt(600),
+				IndexPrice:             big.NewInt(700),
+			},
+		},
+		{
+			name:     "error",
+			marketID: big.NewInt(100),
+			wantErr:  errors.InvalidArgumentErr,
+		},
+	}
+
+	for _, tt := range testCases {
+		t.Run(tt.name, func(t *testing.T) {
+			ctrl := gomock.NewController(t)
+			defer ctrl.Finish()
+			mockService := mock_services.NewMockIService(ctrl)
+
+			p, _ := createTest(config.GetGoerliDefaultPerpsvConfig())
+			p.service = mockService
+
+			mockService.EXPECT().GetMarketSummary(tt.marketID).Return(tt.summary, tt.wantErr)
+
+			res, err := p.GetMarketSummary(tt.marketID)
+
+			if tt.wantErr == nil {
+				require.NoError(t, err)
+				require.Equal(t, tt.summary, res)
+			} else {
+				require.ErrorIs(t, tt.wantErr, err)
+			}
+		})
+	}
+}

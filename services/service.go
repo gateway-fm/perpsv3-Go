@@ -53,6 +53,12 @@ type IService interface {
 	// GetMarketMetadata is used to get market metadata by given market ID
 	GetMarketMetadata(marketID *big.Int) (*models.MarketMetadata, error)
 
+	// GetMarketSummary is used to get market summary by given market ID
+	GetMarketSummary(marketID *big.Int) (*models.MarketSummary, error)
+
+	// GetMarketIDs is used to get market IDs from the smart contract
+	GetMarketIDs() ([]*big.Int, error)
+
 	// FormatAccount is used to get account, and it's additional data from the contract by given account id
 	FormatAccount(id *big.Int) (*models.Account, error)
 

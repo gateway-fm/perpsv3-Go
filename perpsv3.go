@@ -85,6 +85,12 @@ type IPerpsv3 interface {
 	// in the smart contract
 	GetMarketMetadata(marketID *big.Int) (*models.MarketMetadata, error)
 
+	// GetMarketSummary is used to get market summary by given market ID. Given market id cannot be nil
+	GetMarketSummary(marketID *big.Int) (*models.MarketSummary, error)
+
+	// GetMarketIDs is used to get market IDs from the smart contract
+	GetMarketIDs() ([]*big.Int, error)
+
 	// FormatAccount is used to get account, and it's additional data from the contract by given account id
 	FormatAccount(id *big.Int) (*models.Account, error)
 
@@ -177,6 +183,14 @@ func (p *Perpsv3) GetPosition(accountID *big.Int, marketID *big.Int) (*models.Po
 
 func (p *Perpsv3) GetMarketMetadata(marketID *big.Int) (*models.MarketMetadata, error) {
 	return p.service.GetMarketMetadata(marketID)
+}
+
+func (p *Perpsv3) GetMarketSummary(marketID *big.Int) (*models.MarketSummary, error) {
+	return p.service.GetMarketSummary(marketID)
+}
+
+func (p *Perpsv3) GetMarketIDs() ([]*big.Int, error) {
+	return p.service.GetMarketIDs()
 }
 
 func (p *Perpsv3) FormatAccounts() ([]*models.Account, error) {
