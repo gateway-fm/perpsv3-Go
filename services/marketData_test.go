@@ -161,3 +161,61 @@ func TestService_GetMarketMetadata_OnChain(t *testing.T) {
 		})
 	}
 }
+
+func TestService_GetMarketSummary(t *testing.T) {
+	rpc := os.Getenv("TEST_RPC")
+	if rpc == "" {
+		log.Fatal("no rpc in env vars")
+	}
+
+	rpcClient, _ := ethclient.Dial(rpc)
+
+	coreC, _ := coreGoerli.NewCoreGoerli(common.HexToAddress("0x76490713314fCEC173f44e99346F54c6e92a8E42"), rpcClient)
+	spot, _ := spotMarketGoerli.NewSpotMarketGoerli(common.HexToAddress("0x5FF4b3aacdeC86782d8c757FAa638d8790799E83"), rpcClient)
+	perps, _ := perpsMarketGoerli.NewPerpsMarketGoerli(common.HexToAddress("0xf272382cB3BE898A8CdB1A23BE056fA2Fcf4513b"), rpcClient)
+
+	testCases := []struct {
+		name     string
+		marketID *big.Int
+		wantErr  error
+	}{
+		{
+			name:    "nil id",
+			wantErr: errors.InvalidArgumentErr,
+		},
+		{
+			name:     "id 100",
+			marketID: big.NewInt(100),
+		},
+		{
+			name:     "id 200",
+			marketID: big.NewInt(200),
+		},
+		{
+			name:     "id 300",
+			marketID: big.NewInt(300),
+			wantErr:  errors.InvalidArgumentErr,
+		},
+	}
+	for _, tt := range testCases {
+		t.Run(tt.name, func(t *testing.T) {
+			s := NewService(rpcClient, coreC, 11664658, spot, 10875051, perps, 0)
+
+			res, err := s.GetMarketSummary(tt.marketID)
+
+			if tt.wantErr == nil {
+				require.Equal(t, tt.marketID, res.MarketID)
+				require.NotNil(t, res.Size)
+				require.NotNil(t, res.Skew)
+				require.NotNil(t, res.MaxOpenInterest)
+				require.NotNil(t, res.CurrentFundingVelocity)
+				require.NotNil(t, res.CurrentFundingRate)
+				require.NotNil(t, res.IndexPrice)
+				require.NoError(t, err)
+			} else {
+				require.Error(t, err)
+				require.ErrorIs(t, err, tt.wantErr)
+			}
+		})
+	}
+}

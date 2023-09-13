@@ -183,3 +183,46 @@ func TestGetMarketMetadataFromContractResponse(t *testing.T) {
 		})
 	}
 }
+
+func TestGetMarketSummaryFromContractModel(t *testing.T) {
+	testCases := []struct {
+		name     string
+		summary  perpsMarketGoerli.IPerpsMarketModuleMarketSummary
+		marketID *big.Int
+		want     *MarketSummary
+	}{
+		{
+			name: "nil object",
+			want: &MarketSummary{},
+		},
+		{
+			name: "full object",
+			summary: perpsMarketGoerli.IPerpsMarketModuleMarketSummary{
+				Skew:                   big.NewInt(100),
+				Size:                   big.NewInt(200),
+				MaxOpenInterest:        big.NewInt(300),
+				CurrentFundingRate:     big.NewInt(400),
+				CurrentFundingVelocity: big.NewInt(500),
+				IndexPrice:             big.NewInt(600),
+			},
+			marketID: big.NewInt(10),
+			want: &MarketSummary{
+				MarketID:               big.NewInt(10),
+				Skew:                   big.NewInt(100),
+				Size:                   big.NewInt(200),
+				MaxOpenInterest:        big.NewInt(300),
+				CurrentFundingRate:     big.NewInt(400),
+				CurrentFundingVelocity: big.NewInt(500),
+				IndexPrice:             big.NewInt(600),
+			},
+		},
+	}
+
+	for _, tt := range testCases {
+		t.Run(tt.name, func(t *testing.T) {
+			res := GetMarketSummaryFromContractModel(tt.summary, tt.marketID)
+
+			require.Equal(t, tt.want, res)
+		})
+	}
+}

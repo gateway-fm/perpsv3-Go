@@ -40,6 +40,24 @@ type MarketMetadata struct {
 	Symbol   string
 }
 
+// MarketSummary is a market summary data struct
+//   - MarketID - Represents the ID of the market
+//   - Skew - Represents the skew of the market
+//   - Size - Represents the size of the market
+//   - MaxOpenInterest - Represents the maximum open interest of the market
+//   - CurrentFundingRate - Represents the current funding rate of the market
+//   - CurrentFundingVelocity - Represents the current funding velocity of the market
+//   - IndexPrice - Represents the index price of the market
+type MarketSummary struct {
+	MarketID               *big.Int
+	Skew                   *big.Int
+	Size                   *big.Int
+	MaxOpenInterest        *big.Int
+	CurrentFundingRate     *big.Int
+	CurrentFundingVelocity *big.Int
+	IndexPrice             *big.Int
+}
+
 // GetMarketUpdateFromEvent is used to get MarketUpdate struct from given event and block timestamp
 func GetMarketUpdateFromEvent(event *perpsMarketGoerli.PerpsMarketGoerliMarketUpdated, time uint64) *MarketUpdate {
 	if event == nil {
@@ -102,5 +120,18 @@ func GetMarketMetadataFromContractResponse(id *big.Int, name string, symbol stri
 		MarketID: id,
 		Name:     name,
 		Symbol:   symbol,
+	}
+}
+
+// GetMarketSummaryFromContractModel is used to get MarketSummary from contract data struct
+func GetMarketSummaryFromContractModel(summary perpsMarketGoerli.IPerpsMarketModuleMarketSummary, marketID *big.Int) *MarketSummary {
+	return &MarketSummary{
+		MarketID:               marketID,
+		Skew:                   summary.Skew,
+		Size:                   summary.Size,
+		MaxOpenInterest:        summary.MaxOpenInterest,
+		CurrentFundingRate:     summary.CurrentFundingRate,
+		CurrentFundingVelocity: summary.CurrentFundingVelocity,
+		IndexPrice:             summary.IndexPrice,
 	}
 }

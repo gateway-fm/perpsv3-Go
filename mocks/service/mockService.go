@@ -95,6 +95,21 @@ func (mr *MockIServiceMockRecorder) GetMarketMetadata(marketID interface{}) *gom
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetMarketMetadata", reflect.TypeOf((*MockIService)(nil).GetMarketMetadata), marketID)
 }
 
+// GetMarketSummary mocks base method.
+func (m *MockIService) GetMarketSummary(marketID *big.Int) (*models.MarketSummary, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "GetMarketSummary", marketID)
+	ret0, _ := ret[0].(*models.MarketSummary)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// GetMarketSummary indicates an expected call of GetMarketSummary.
+func (mr *MockIServiceMockRecorder) GetMarketSummary(marketID interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetMarketSummary", reflect.TypeOf((*MockIService)(nil).GetMarketSummary), marketID)
+}
+
 // GetPosition mocks base method.
 func (m *MockIService) GetPosition(accountID, marketID *big.Int) (*models.Position, error) {
 	m.ctrl.T.Helper()
