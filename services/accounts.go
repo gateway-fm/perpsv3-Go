@@ -22,9 +22,18 @@ func (s *Service) FormatAccountsLimit(limit uint64) ([]*models.Account, error) {
 
 	var accounts []*models.Account
 
+	logger.Log().WithField("layer", "Service-FormatAccountsLimit").Infof(
+		"fetching accounts with limit: %v to block: %v total iterations: %v...",
+		limit, last, iterations,
+	)
+
 	fromBlock := s.perpsMarketFirstBlock
 	toBlock := fromBlock + limit
 	for i := uint64(1); i <= iterations; i++ {
+		if i%10 == 0 || i == iterations {
+			logger.Log().WithField("layer", "Service-FormatAccountsLimit").Infof("-- iteration %v", i)
+		}
+
 		opts := s.getFilterOptsPerpsMarket(fromBlock, &toBlock)
 
 		res, err := s.formatAccounts(opts)
@@ -42,6 +51,8 @@ func (s *Service) FormatAccountsLimit(limit uint64) ([]*models.Account, error) {
 			toBlock = fromBlock + limit
 		}
 	}
+
+	logger.Log().WithField("layer", "Service-FormatAccountsLimit").Infof("task completed successfully")
 
 	return accounts, nil
 }

@@ -54,8 +54,10 @@ func (s *OrderSubscription) listen(rpcClient *ethclient.Client) {
 			close(s.contractEventChan)
 			return
 		case err := <-s.eventSub.Err():
-			logger.Log().WithField("layer", "Events-OrderCommitted").Errorf("error listening order committed: %v", err.Error())
-			s.ErrChan <- err
+			if err != nil {
+				logger.Log().WithField("layer", "Events-OrderCommitted").Errorf("error listening order committed: %v", err.Error())
+				s.ErrChan <- err
+			}
 			continue
 		case orderCommitted := <-s.contractEventChan:
 			block, err := rpcClient.HeaderByNumber(context.Background(), big.NewInt(int64(orderCommitted.Raw.BlockNumber)))

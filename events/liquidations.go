@@ -52,8 +52,10 @@ func (s *LiquidationSubscription) listen(rpcClient *ethclient.Client) {
 			close(s.contractEventChan)
 			return
 		case err := <-s.eventSub.Err():
-			logger.Log().WithField("layer", "Events-PositionLiquidated").Errorf("error listening position liquidated: %v", err.Error())
-			s.ErrChan <- err
+			if err != nil {
+				logger.Log().WithField("layer", "Events-PositionLiquidated").Errorf("error listening position liquidated: %v", err.Error())
+				s.ErrChan <- err
+			}
 			continue
 		case positionLiquidated := <-s.contractEventChan:
 			block, err := rpcClient.HeaderByNumber(context.Background(), big.NewInt(int64(positionLiquidated.Raw.BlockNumber)))
