@@ -59,6 +59,26 @@ func (s *Service) RetrieveMarketUpdates(fromBlock uint64, toBLock *uint64) ([]*m
 	return s.retrieveMarketUpdates(opts)
 }
 
+func (s *Service) GetMarketMetadata(marketID *big.Int) (*models.MarketMetadata, error) {
+	if marketID == nil {
+		logger.Log().WithField("layer", "Service-GetMarketMetadata").Errorf("received nil market id")
+		return nil, errors.GetInvalidArgumentErr("market id cannot be nil")
+	}
+
+	res, err := s.perpsMarket.Metadata(nil, marketID)
+	if err != nil {
+		logger.Log().WithField("layer", "Service-GetMarketMetadata").Errorf("error from the contract: %v", err.Error())
+		return nil, errors.GetReadContractErr(err, "perpsMarket", "metadata")
+	}
+
+	if res.Name == "" || res.Symbol == "" {
+		logger.Log().WithField("layer", "Service-GetMarketMetadata").Errorf("received blank name and symbol from the contract")
+		return nil, errors.GetInvalidArgumentErr("market id does not exist")
+	}
+
+	return models.GetMarketMetadataFromContractResponse(marketID, res.Name, res.Symbol), nil
+}
+
 // retrieveMarketUpdates is used to get retrieve market updates with given filter options
 func (s *Service) retrieveMarketUpdates(opts *bind.FilterOpts) ([]*models.MarketUpdate, error) {
 	iterator, err := s.perpsMarket.FilterMarketUpdated(opts)

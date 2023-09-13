@@ -3,6 +3,7 @@ package models
 import (
 	"github.com/gateway-fm/perpsv3-Go/contracts/perpsMarketGoerli"
 	"github.com/gateway-fm/perpsv3-Go/pkg/logger"
+	"math/big"
 )
 
 // MarketUpdate
@@ -27,6 +28,16 @@ type MarketUpdate struct {
 	BlockNumber            uint64
 	BlockTimestamp         uint64
 	TransactionHash        string
+}
+
+// MarketMetadata is a market metadata model
+//   - MarketID is a market ID value
+//   - Name is a market name value
+//   - Symbol is a market symbol value for example 'ETH'
+type MarketMetadata struct {
+	MarketID *big.Int
+	Name     string
+	Symbol   string
 }
 
 // GetMarketUpdateFromEvent is used to get MarketUpdate struct from given event and block timestamp
@@ -82,5 +93,14 @@ func GetMarketUpdateFromEvent(event *perpsMarketGoerli.PerpsMarketGoerliMarketUp
 		BlockNumber:            event.Raw.BlockNumber,
 		BlockTimestamp:         time,
 		TransactionHash:        event.Raw.TxHash.Hex(),
+	}
+}
+
+// GetMarketMetadataFromContractResponse is used to get MarketMetadata model from given values
+func GetMarketMetadataFromContractResponse(id *big.Int, name string, symbol string) *MarketMetadata {
+	return &MarketMetadata{
+		MarketID: id,
+		Name:     name,
+		Symbol:   symbol,
 	}
 }
