@@ -50,6 +50,9 @@ type IService interface {
 	// GetPosition is used to get "Position" data struct from the latest block from the perps market with given data
 	GetPosition(accountID *big.Int, marketID *big.Int) (*models.Position, error)
 
+	// GetMarketMetadata is used to get market metadata by given market ID
+	GetMarketMetadata(marketID *big.Int) (*models.MarketMetadata, error)
+
 	// FormatAccount is used to get account, and it's additional data from the contract by given account id
 	FormatAccount(id *big.Int) (*models.Account, error)
 

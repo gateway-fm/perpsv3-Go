@@ -23,6 +23,8 @@ var (
 	RPCErr = fmt.Errorf("rpc provider error")
 	// EnumUnsupportedErr is used when given value is unsupported in enum
 	EnumUnsupportedErr = fmt.Errorf("unsupported status err")
+	// InvalidArgumentErr is used when given argument is invalid
+	InvalidArgumentErr = fmt.Errorf("invalid argument error")
 )
 
 func GetDialRPCErr(err error) error {
@@ -51,4 +53,8 @@ func GetRPCProviderErr(err error, method string) error {
 
 func GetUnsupportedErr(enum string) error {
 	return fmt.Errorf("%v enum %w", enum, EnumUnsupportedErr)
+}
+
+func GetInvalidArgumentErr(reason string) error {
+	return fmt.Errorf("%w: %v", InvalidArgumentErr, reason)
 }

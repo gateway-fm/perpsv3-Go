@@ -81,6 +81,10 @@ type IPerpsv3 interface {
 	// Function can return contract error if market ID is invalid
 	GetPosition(accountID *big.Int, marketID *big.Int) (*models.Position, error)
 
+	// GetMarketMetadata is used to get market metadata by given market ID. Given market id cannot be nil and should exist
+	// in the smart contract
+	GetMarketMetadata(marketID *big.Int) (*models.MarketMetadata, error)
+
 	// FormatAccount is used to get account, and it's additional data from the contract by given account id
 	FormatAccount(id *big.Int) (*models.Account, error)
 
@@ -169,6 +173,10 @@ func (p *Perpsv3) ListenLiquidations() (*events.LiquidationSubscription, error) 
 
 func (p *Perpsv3) GetPosition(accountID *big.Int, marketID *big.Int) (*models.Position, error) {
 	return p.service.GetPosition(accountID, marketID)
+}
+
+func (p *Perpsv3) GetMarketMetadata(marketID *big.Int) (*models.MarketMetadata, error) {
+	return p.service.GetMarketMetadata(marketID)
 }
 
 func (p *Perpsv3) FormatAccounts() ([]*models.Account, error) {
