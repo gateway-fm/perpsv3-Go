@@ -617,6 +617,123 @@
       "inputs": [
         {
           "internalType": "address",
+          "name": "",
+          "type": "address"
+        }
+      ],
+      "name": "DeniedMulticallTarget",
+      "type": "error"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "string",
+          "name": "parameter",
+          "type": "string"
+        },
+        {
+          "internalType": "string",
+          "name": "reason",
+          "type": "string"
+        }
+      ],
+      "name": "InvalidParameter",
+      "type": "error"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "address",
+          "name": "",
+          "type": "address"
+        }
+      ],
+      "name": "RecursiveMulticall",
+      "type": "error"
+    },
+    {
+      "inputs": [],
+      "name": "getMessageSender",
+      "outputs": [
+        {
+          "internalType": "address",
+          "name": "",
+          "type": "address"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "bytes[]",
+          "name": "data",
+          "type": "bytes[]"
+        }
+      ],
+      "name": "multicall",
+      "outputs": [
+        {
+          "internalType": "bytes[]",
+          "name": "results",
+          "type": "bytes[]"
+        }
+      ],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "address[]",
+          "name": "to",
+          "type": "address[]"
+        },
+        {
+          "internalType": "bytes[]",
+          "name": "data",
+          "type": "bytes[]"
+        },
+        {
+          "internalType": "uint256[]",
+          "name": "values",
+          "type": "uint256[]"
+        }
+      ],
+      "name": "multicallThrough",
+      "outputs": [
+        {
+          "internalType": "bytes[]",
+          "name": "results",
+          "type": "bytes[]"
+        }
+      ],
+      "stateMutability": "payable",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "address",
+          "name": "target",
+          "type": "address"
+        },
+        {
+          "internalType": "bool",
+          "name": "allowlisted",
+          "type": "bool"
+        }
+      ],
+      "name": "setAllowlistedMulticallTarget",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "address",
           "name": "implementation",
           "type": "address"
         }
@@ -808,22 +925,6 @@
         }
       ],
       "name": "InvalidMarket",
-      "type": "error"
-    },
-    {
-      "inputs": [
-        {
-          "internalType": "string",
-          "name": "parameter",
-          "type": "string"
-        },
-        {
-          "internalType": "string",
-          "name": "reason",
-          "type": "string"
-        }
-      ],
-      "name": "InvalidParameter",
       "type": "error"
     },
     {
@@ -1075,16 +1176,37 @@
       "inputs": [
         {
           "internalType": "uint256",
-          "name": "available",
+          "name": "availableUsdDenominated",
           "type": "uint256"
         },
         {
           "internalType": "uint256",
-          "name": "required",
+          "name": "requiredUsdDenominated",
           "type": "uint256"
         }
       ],
       "name": "InsufficientCollateralAvailableForWithdraw",
+      "type": "error"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "uint128",
+          "name": "synthMarketId",
+          "type": "uint128"
+        },
+        {
+          "internalType": "uint256",
+          "name": "collateralAmount",
+          "type": "uint256"
+        },
+        {
+          "internalType": "uint256",
+          "name": "withdrawAmount",
+          "type": "uint256"
+        }
+      ],
+      "name": "InsufficientSynthCollateral",
       "type": "error"
     },
     {
@@ -1122,6 +1244,17 @@
         }
       ],
       "name": "MaxCollateralExceeded",
+      "type": "error"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "uint128",
+          "name": "maxCollateralsPerAccount",
+          "type": "uint128"
+        }
+      ],
+      "name": "MaxCollateralsPerAccountReached",
       "type": "error"
     },
     {
@@ -1658,6 +1791,17 @@
         }
       ],
       "name": "MaxOpenInterestReached",
+      "type": "error"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "uint128",
+          "name": "maxPositionsPerAccount",
+          "type": "uint128"
+        }
+      ],
+      "name": "MaxPositionsPerAccountReached",
       "type": "error"
     },
     {
@@ -2664,15 +2808,46 @@
           "type": "uint128"
         }
       ],
+      "name": "canLiquidate",
+      "outputs": [
+        {
+          "internalType": "bool",
+          "name": "isEligible",
+          "type": "bool"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "uint128",
+          "name": "accountId",
+          "type": "uint128"
+        }
+      ],
       "name": "liquidate",
-      "outputs": [],
+      "outputs": [
+        {
+          "internalType": "uint256",
+          "name": "liquidationReward",
+          "type": "uint256"
+        }
+      ],
       "stateMutability": "nonpayable",
       "type": "function"
     },
     {
       "inputs": [],
       "name": "liquidateFlagged",
-      "outputs": [],
+      "outputs": [
+        {
+          "internalType": "uint256",
+          "name": "liquidationReward",
+          "type": "uint256"
+        }
+      ],
       "stateMutability": "nonpayable",
       "type": "function"
     },
@@ -2737,18 +2912,6 @@
         {
           "indexed": false,
           "internalType": "uint256",
-          "name": "maxLiquidationLimitAccumulationMultiplier",
-          "type": "uint256"
-        },
-        {
-          "indexed": false,
-          "internalType": "uint256",
-          "name": "maxSecondsInLiquidationWindow",
-          "type": "uint256"
-        },
-        {
-          "indexed": false,
-          "internalType": "uint256",
           "name": "minimumPositionMargin",
           "type": "uint256"
         }
@@ -2792,6 +2955,43 @@
         }
       ],
       "name": "MarketPriceDataUpdated",
+      "type": "event"
+    },
+    {
+      "anonymous": false,
+      "inputs": [
+        {
+          "indexed": true,
+          "internalType": "uint128",
+          "name": "marketId",
+          "type": "uint128"
+        },
+        {
+          "indexed": false,
+          "internalType": "uint256",
+          "name": "maxLiquidationLimitAccumulationMultiplier",
+          "type": "uint256"
+        },
+        {
+          "indexed": false,
+          "internalType": "uint256",
+          "name": "maxSecondsInLiquidationWindow",
+          "type": "uint256"
+        },
+        {
+          "indexed": false,
+          "internalType": "uint256",
+          "name": "maxLiquidationPd",
+          "type": "uint256"
+        },
+        {
+          "indexed": false,
+          "internalType": "address",
+          "name": "endorsedLiquidator",
+          "type": "address"
+        }
+      ],
+      "name": "MaxLiquidationParametersSet",
       "type": "event"
     },
     {
@@ -3072,16 +3272,6 @@
         },
         {
           "internalType": "uint256",
-          "name": "maxLiquidationLimitAccumulationMultiplier",
-          "type": "uint256"
-        },
-        {
-          "internalType": "uint256",
-          "name": "maxSecondsInLiquidationWindow",
-          "type": "uint256"
-        },
-        {
-          "internalType": "uint256",
           "name": "minimumPositionMargin",
           "type": "uint256"
         }
@@ -3103,6 +3293,40 @@
           "internalType": "uint256",
           "name": "",
           "type": "uint256"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "uint128",
+          "name": "marketId",
+          "type": "uint128"
+        }
+      ],
+      "name": "getMaxLiquidationParameters",
+      "outputs": [
+        {
+          "internalType": "uint256",
+          "name": "maxLiquidationLimitAccumulationMultiplier",
+          "type": "uint256"
+        },
+        {
+          "internalType": "uint256",
+          "name": "maxSecondsInLiquidationWindow",
+          "type": "uint256"
+        },
+        {
+          "internalType": "uint256",
+          "name": "maxLiquidationPd",
+          "type": "uint256"
+        },
+        {
+          "internalType": "address",
+          "name": "endorsedLiquidator",
+          "type": "address"
         }
       ],
       "stateMutability": "view",
@@ -3279,16 +3503,6 @@
         },
         {
           "internalType": "uint256",
-          "name": "maxLiquidationLimitAccumulationMultiplier",
-          "type": "uint256"
-        },
-        {
-          "internalType": "uint256",
-          "name": "maxSecondsInLiquidationWindow",
-          "type": "uint256"
-        },
-        {
-          "internalType": "uint256",
           "name": "minimumPositionMargin",
           "type": "uint256"
         }
@@ -3312,6 +3526,39 @@
         }
       ],
       "name": "setLockedOiRatio",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "uint128",
+          "name": "marketId",
+          "type": "uint128"
+        },
+        {
+          "internalType": "uint256",
+          "name": "maxLiquidationLimitAccumulationMultiplier",
+          "type": "uint256"
+        },
+        {
+          "internalType": "uint256",
+          "name": "maxSecondsInLiquidationWindow",
+          "type": "uint256"
+        },
+        {
+          "internalType": "uint256",
+          "name": "maxLiquidationPd",
+          "type": "uint256"
+        },
+        {
+          "internalType": "address",
+          "name": "endorsedLiquidator",
+          "type": "address"
+        }
+      ],
+      "name": "setMaxLiquidationParameters",
       "outputs": [],
       "stateMutability": "nonpayable",
       "type": "function"
@@ -3476,6 +3723,25 @@
       "inputs": [
         {
           "indexed": false,
+          "internalType": "uint128",
+          "name": "maxPositionsPerAccount",
+          "type": "uint128"
+        },
+        {
+          "indexed": false,
+          "internalType": "uint128",
+          "name": "maxCollateralsPerAccount",
+          "type": "uint128"
+        }
+      ],
+      "name": "PerAccountCapsSet",
+      "type": "event"
+    },
+    {
+      "anonymous": false,
+      "inputs": [
+        {
+          "indexed": false,
           "internalType": "address",
           "name": "referrer",
           "type": "address"
@@ -3567,6 +3833,24 @@
       "type": "function"
     },
     {
+      "inputs": [],
+      "name": "getPerAccountCaps",
+      "outputs": [
+        {
+          "internalType": "uint128",
+          "name": "maxPositionsPerAccount",
+          "type": "uint128"
+        },
+        {
+          "internalType": "uint128",
+          "name": "maxCollateralsPerAccount",
+          "type": "uint128"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
       "inputs": [
         {
           "internalType": "address",
@@ -3643,6 +3927,24 @@
         }
       ],
       "name": "setMaxCollateralAmount",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "uint128",
+          "name": "maxPositionsPerAccount",
+          "type": "uint128"
+        },
+        {
+          "internalType": "uint128",
+          "name": "maxCollateralsPerAccount",
+          "type": "uint128"
+        }
+      ],
+      "name": "setPerAccountCaps",
       "outputs": [],
       "stateMutability": "nonpayable",
       "type": "function"
