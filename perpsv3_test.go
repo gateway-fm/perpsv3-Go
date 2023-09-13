@@ -948,6 +948,52 @@ func TestPerpsv3_GetPosition(t *testing.T) {
 	}
 }
 
+func TestPerpsv3_GetMarketMetadata(t *testing.T) {
+	testCases := []struct {
+		name     string
+		marketID *big.Int
+		wantRes  *models.MarketMetadata
+		wantErr  error
+	}{
+		{
+			name:     "no error",
+			marketID: big.NewInt(100),
+			wantRes: &models.MarketMetadata{
+				MarketID: big.NewInt(100),
+				Name:     "Ethereum",
+				Symbol:   "ETH",
+			},
+		},
+		{
+			name:     "no error",
+			marketID: big.NewInt(300),
+			wantErr:  errors.InvalidArgumentErr,
+		},
+	}
+
+	for _, tt := range testCases {
+		t.Run(tt.name, func(t *testing.T) {
+			ctrl := gomock.NewController(t)
+			defer ctrl.Finish()
+			mockService := mock_services.NewMockIService(ctrl)
+
+			p, _ := createTest(config.GetGoerliDefaultPerpsvConfig())
+			p.service = mockService
+
+			mockService.EXPECT().GetMarketMetadata(tt.marketID).Return(tt.wantRes, tt.wantErr)
+
+			res, err := p.GetMarketMetadata(tt.marketID)
+
+			if tt.wantErr == nil {
+				require.NoError(t, err)
+				require.Equal(t, tt.wantRes, res)
+			} else {
+				require.ErrorIs(t, tt.wantErr, err)
+			}
+		})
+	}
+}
+
 func TestPerpsv3_FormatAccount(t *testing.T) {
 	testCases := []struct {
 		name      string
