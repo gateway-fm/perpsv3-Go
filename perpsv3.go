@@ -43,9 +43,21 @@ type IPerpsv3 interface {
 	//   - use nil for toBlock to use default value of a last blockchain block
 	RetrieveMarketUpdates(fromBlock uint64, toBLock *uint64) ([]*models.MarketUpdate, error)
 
+	// RetrieveMarketUpdatesBig is used to get logs from the "MarketUpdated" event perps market contract within given block
+	// range
+	//   - use 0 for fromBlock to use default value of a first contract block
+	//   - use nil for toBlock to use default value of a last blockchain block
+	// It will return a MarketUpdateBig model with big.Int values
+	RetrieveMarketUpdatesBig(fromBlock uint64, toBLock *uint64) ([]*models.MarketUpdateBig, error)
+
 	// RetrieveMarketUpdatesLimit is used to get all "MarketUpdated" events and their additional data from the contract
 	// with given block search limit. If given limit is 0 function will set default value to 20 000 blocks
 	RetrieveMarketUpdatesLimit(limit uint64) ([]*models.MarketUpdate, error)
+
+	// RetrieveMarketUpdatesBigLimit is used to get all "MarketUpdated" events and their additional data from the contract
+	// with given block search limit. If given limit is 0 function will set default value to 20 000 blocks
+	// It will return a MarketUpdateBig model with big.Int values
+	RetrieveMarketUpdatesBigLimit(limit uint64) ([]*models.MarketUpdateBig, error)
 
 	// RetrieveLiquidations is used to get logs from the "PositionLiquidated" event perps market contract within given block
 	// range
@@ -149,8 +161,16 @@ func (p *Perpsv3) RetrieveMarketUpdates(fromBlock uint64, toBLock *uint64) ([]*m
 	return p.service.RetrieveMarketUpdates(fromBlock, toBLock)
 }
 
+func (p *Perpsv3) RetrieveMarketUpdatesBig(fromBlock uint64, toBLock *uint64) ([]*models.MarketUpdateBig, error) {
+	return p.service.RetrieveMarketUpdatesBig(fromBlock, toBLock)
+}
+
 func (p *Perpsv3) RetrieveMarketUpdatesLimit(limit uint64) ([]*models.MarketUpdate, error) {
 	return p.service.RetrieveMarketUpdatesLimit(limit)
+}
+
+func (p *Perpsv3) RetrieveMarketUpdatesBigLimit(limit uint64) ([]*models.MarketUpdateBig, error) {
+	return p.service.RetrieveMarketUpdatesBigLimit(limit)
 }
 
 func (p *Perpsv3) RetrieveLiquidations(fromBlock uint64, toBLock *uint64) ([]*models.Liquidation, error) {

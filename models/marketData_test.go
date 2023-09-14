@@ -145,6 +145,59 @@ func TestGetMarketUpdateFromEvent(t *testing.T) {
 	}
 }
 
+func TestGetMarketUpdateBigFromEvent(t *testing.T) {
+	timeNow := time.Now()
+
+	testCases := []struct {
+		name  string
+		event *perpsMarketGoerli.PerpsMarketGoerliMarketUpdated
+		time  uint64
+		want  *MarketUpdateBig
+	}{
+		{
+			name: "nil event",
+			want: &MarketUpdateBig{},
+		},
+		{
+			name: "full event",
+			event: &perpsMarketGoerli.PerpsMarketGoerliMarketUpdated{
+				MarketId:               big.NewInt(1),
+				Price:                  big.NewInt(2),
+				Skew:                   big.NewInt(3),
+				Size:                   big.NewInt(4),
+				SizeDelta:              big.NewInt(5),
+				CurrentFundingRate:     big.NewInt(6),
+				CurrentFundingVelocity: big.NewInt(7),
+				Raw: types.Log{
+					BlockNumber: 8,
+					TxHash:      common.BytesToHash([]byte("tx hash")),
+				},
+			},
+			time: uint64(timeNow.Unix()),
+			want: &MarketUpdateBig{
+				MarketID:               big.NewInt(1),
+				Price:                  big.NewInt(2),
+				Skew:                   big.NewInt(3),
+				Size:                   big.NewInt(4),
+				SizeDelta:              big.NewInt(5),
+				CurrentFundingRate:     big.NewInt(6),
+				CurrentFundingVelocity: big.NewInt(7),
+				BlockNumber:            8,
+				TransactionHash:        common.BytesToHash([]byte("tx hash")).Hex(),
+				BlockTimestamp:         uint64(timeNow.Unix()),
+			},
+		},
+	}
+
+	for _, tt := range testCases {
+		t.Run(tt.name, func(t *testing.T) {
+			res := GetMarketUpdateBigFromEvent(tt.event, tt.time)
+
+			require.Equal(t, tt.want, res)
+		})
+	}
+}
+
 func TestGetMarketMetadataFromContractResponse(t *testing.T) {
 	testCases := []struct {
 		name     string

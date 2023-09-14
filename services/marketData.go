@@ -54,9 +54,56 @@ func (s *Service) RetrieveMarketUpdatesLimit(limit uint64) ([]*models.MarketUpda
 	return marketUpdates, nil
 }
 
+func (s *Service) RetrieveMarketUpdatesBigLimit(limit uint64) ([]*models.MarketUpdateBig, error) {
+	iterations, last, err := s.getIterationsForLimitQuery(limit)
+	if err != nil {
+		return nil, err
+	}
+
+	var marketUpdates []*models.MarketUpdateBig
+
+	logger.Log().WithField("layer", "Service-RetrieveMarketUpdatesBigLimit").Infof(
+		"fetching market updates with limit: %v to block: %v total iterations: %v...",
+		limit, last, iterations,
+	)
+
+	fromBlock := s.perpsMarketFirstBlock
+	toBlock := fromBlock + limit
+	for i := uint64(1); i <= iterations; i++ {
+		if i%10 == 0 || i == iterations {
+			logger.Log().WithField("layer", "Service-RetrieveMarketUpdatesBigLimit").Infof("-- iteration %v", i)
+		}
+		opts := s.getFilterOptsPerpsMarket(fromBlock, &toBlock)
+
+		res, err := s.retrieveMarketUpdatesBig(opts)
+		if err != nil {
+			return nil, err
+		}
+
+		marketUpdates = append(marketUpdates, res...)
+
+		fromBlock = toBlock + 1
+
+		if i == iterations-1 {
+			toBlock = last
+		} else {
+			toBlock = fromBlock + limit
+		}
+	}
+
+	logger.Log().WithField("layer", "Service-RetrieveMarketUpdatesBigLimit").Infof("task completed successfully")
+
+	return marketUpdates, nil
+}
+
 func (s *Service) RetrieveMarketUpdates(fromBlock uint64, toBLock *uint64) ([]*models.MarketUpdate, error) {
 	opts := s.getFilterOptsPerpsMarket(fromBlock, toBLock)
 	return s.retrieveMarketUpdates(opts)
+}
+
+func (s *Service) RetrieveMarketUpdatesBig(fromBlock uint64, toBLock *uint64) ([]*models.MarketUpdateBig, error) {
+	opts := s.getFilterOptsPerpsMarket(fromBlock, toBLock)
+	return s.retrieveMarketUpdatesBig(opts)
 }
 
 func (s *Service) GetMarketMetadata(marketID *big.Int) (*models.MarketMetadata, error) {
@@ -134,6 +181,33 @@ func (s *Service) retrieveMarketUpdates(opts *bind.FilterOpts) ([]*models.Market
 	return marketUpdates, nil
 }
 
+// retrieveMarketUpdates is used to get retrieve market updates with given filter options
+func (s *Service) retrieveMarketUpdatesBig(opts *bind.FilterOpts) ([]*models.MarketUpdateBig, error) {
+	iterator, err := s.perpsMarket.FilterMarketUpdated(opts)
+	if err != nil {
+		logger.Log().WithField("layer", "Service-RetrieveMarketUpdates").Errorf("error get iterator: %v", err.Error())
+		return nil, errors.GetFilterErr(err, "perps market")
+	}
+
+	var marketUpdates []*models.MarketUpdateBig
+
+	for iterator.Next() {
+		if iterator.Error() != nil {
+			logger.Log().WithField("layer", "Service-RetrieveMarketUpdates").Errorf("iterator error: %v", iterator.Error().Error())
+			return nil, errors.GetFilterErr(iterator.Error(), "perps market")
+		}
+
+		marketUpdate, err := s.getMarketUpdateBig(iterator.Event, iterator.Event.Raw.BlockNumber)
+		if err != nil {
+			return nil, err
+		}
+
+		marketUpdates = append(marketUpdates, marketUpdate)
+	}
+
+	return marketUpdates, nil
+}
+
 // getMarketUpdate is used to get models.MarketUpdate from given event and block number
 func (s *Service) getMarketUpdate(event *perpsMarketGoerli.PerpsMarketGoerliMarketUpdated, blockN uint64) (*models.MarketUpdate, error) {
 	block, err := s.rpcClient.HeaderByNumber(context.Background(), big.NewInt(int64(blockN)))
@@ -145,4 +219,17 @@ func (s *Service) getMarketUpdate(event *perpsMarketGoerli.PerpsMarketGoerliMark
 	}
 
 	return models.GetMarketUpdateFromEvent(event, block.Time), nil
+}
+
+// getMarketUpdate is used to get models.MarketUpdate from given event and block number
+func (s *Service) getMarketUpdateBig(event *perpsMarketGoerli.PerpsMarketGoerliMarketUpdated, blockN uint64) (*models.MarketUpdateBig, error) {
+	block, err := s.rpcClient.HeaderByNumber(context.Background(), big.NewInt(int64(blockN)))
+	if err != nil {
+		logger.Log().WithField("layer", "Service-getMarketUpdate").Errorf(
+			"get block:%v by number error: %v", blockN, err.Error(),
+		)
+		return nil, errors.GetRPCProviderErr(err, "HeaderByNumber")
+	}
+
+	return models.GetMarketUpdateBigFromEvent(event, block.Time), nil
 }

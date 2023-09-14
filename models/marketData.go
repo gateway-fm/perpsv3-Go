@@ -30,6 +30,31 @@ type MarketUpdate struct {
 	TransactionHash        string
 }
 
+// MarketUpdateBig is a MarketUpdate model struct with big.Int value types to return data as it is received from
+// the contract
+//   - MarketID: ID of the market.
+//   - Price: Price at the time of the event.
+//   - Skew: Market skew at the time of the event. Positive values indicate more longs.
+//   - Size: Size of the entire market after settlement.
+//   - SizeDelta: Change in market size during the update.
+//   - CurrentFundingRate: Current funding rate of the market.
+//   - CurrentFundingVelocity: Current rate of change of the funding rate.
+//   - BlockNumber: Block number at which the market data was fetched.
+//   - BlockTimestamp: Timestamp of the block at which the market data was fetched.
+//   - TransactionHash: Hash of the transaction where the market update occurred.
+type MarketUpdateBig struct {
+	MarketID               *big.Int
+	Price                  *big.Int
+	Skew                   *big.Int
+	Size                   *big.Int
+	SizeDelta              *big.Int
+	CurrentFundingRate     *big.Int
+	CurrentFundingVelocity *big.Int
+	BlockNumber            uint64
+	BlockTimestamp         uint64
+	TransactionHash        string
+}
+
 // MarketMetadata is a market metadata model
 //   - MarketID is a market ID value
 //   - Name is a market name value
@@ -108,6 +133,27 @@ func GetMarketUpdateFromEvent(event *perpsMarketGoerli.PerpsMarketGoerliMarketUp
 		SizeDelta:              sizeDelta,
 		CurrentFundingRate:     currentFundingRate,
 		CurrentFundingVelocity: currentFundingVelocity,
+		BlockNumber:            event.Raw.BlockNumber,
+		BlockTimestamp:         time,
+		TransactionHash:        event.Raw.TxHash.Hex(),
+	}
+}
+
+// GetMarketUpdateBigFromEvent is used to get MarketUpdateBig model from given event and block timestamp
+func GetMarketUpdateBigFromEvent(event *perpsMarketGoerli.PerpsMarketGoerliMarketUpdated, time uint64) *MarketUpdateBig {
+	if event == nil {
+		logger.Log().WithField("layer", "Models-GetMarketUpdateBigFromEvent").Warning("nil event received")
+		return &MarketUpdateBig{BlockTimestamp: time}
+	}
+
+	return &MarketUpdateBig{
+		MarketID:               event.MarketId,
+		Price:                  event.Price,
+		Skew:                   event.Skew,
+		Size:                   event.Size,
+		SizeDelta:              event.SizeDelta,
+		CurrentFundingRate:     event.CurrentFundingRate,
+		CurrentFundingVelocity: event.CurrentFundingVelocity,
 		BlockNumber:            event.Raw.BlockNumber,
 		BlockTimestamp:         time,
 		TransactionHash:        event.Raw.TxHash.Hex(),

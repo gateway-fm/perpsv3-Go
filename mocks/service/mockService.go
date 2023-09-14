@@ -185,6 +185,36 @@ func (mr *MockIServiceMockRecorder) RetrieveMarketUpdates(fromBlock, toBLock int
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "RetrieveMarketUpdates", reflect.TypeOf((*MockIService)(nil).RetrieveMarketUpdates), fromBlock, toBLock)
 }
 
+// RetrieveMarketUpdatesBig mocks base method.
+func (m *MockIService) RetrieveMarketUpdatesBig(fromBlock uint64, toBLock *uint64) ([]*models.MarketUpdateBig, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "RetrieveMarketUpdatesBig", fromBlock, toBLock)
+	ret0, _ := ret[0].([]*models.MarketUpdateBig)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// RetrieveMarketUpdatesBig indicates an expected call of RetrieveMarketUpdatesBig.
+func (mr *MockIServiceMockRecorder) RetrieveMarketUpdatesBig(fromBlock, toBLock interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "RetrieveMarketUpdatesBig", reflect.TypeOf((*MockIService)(nil).RetrieveMarketUpdatesBig), fromBlock, toBLock)
+}
+
+// RetrieveMarketUpdatesBigLimit mocks base method.
+func (m *MockIService) RetrieveMarketUpdatesBigLimit(limit uint64) ([]*models.MarketUpdateBig, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "RetrieveMarketUpdatesBigLimit", limit)
+	ret0, _ := ret[0].([]*models.MarketUpdateBig)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// RetrieveMarketUpdatesBigLimit indicates an expected call of RetrieveMarketUpdatesBigLimit.
+func (mr *MockIServiceMockRecorder) RetrieveMarketUpdatesBigLimit(limit interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "RetrieveMarketUpdatesBigLimit", reflect.TypeOf((*MockIService)(nil).RetrieveMarketUpdatesBigLimit), limit)
+}
+
 // RetrieveMarketUpdatesLimit mocks base method.
 func (m *MockIService) RetrieveMarketUpdatesLimit(limit uint64) ([]*models.MarketUpdate, error) {
 	m.ctrl.T.Helper()
