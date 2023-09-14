@@ -35,9 +35,17 @@ type IService interface {
 	// range
 	RetrieveMarketUpdates(fromBlock uint64, toBLock *uint64) ([]*models.MarketUpdate, error)
 
+	// RetrieveMarketUpdatesBig is used to get logs from the "MarketUpdated" event preps market contract within given block
+	// range and return model with big.Int values
+	RetrieveMarketUpdatesBig(fromBlock uint64, toBLock *uint64) ([]*models.MarketUpdateBig, error)
+
 	// RetrieveMarketUpdatesLimit is used to get all market updates and their additional data from the contract with given block search
 	// limit. For most public RPC providers the value for limit is 20 000 blocks
 	RetrieveMarketUpdatesLimit(limit uint64) ([]*models.MarketUpdate, error)
+
+	// RetrieveMarketUpdatesBigLimit is used to get logs from the "MarketUpdated" event preps market contract within given block
+	// range and return the model with big.Int values
+	RetrieveMarketUpdatesBigLimit(limit uint64) ([]*models.MarketUpdateBig, error)
 
 	// RetrieveLiquidations is used to get logs from the "PositionLiquidated" event preps market contract within given block
 	// range

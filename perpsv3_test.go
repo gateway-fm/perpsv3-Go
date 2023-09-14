@@ -779,6 +779,153 @@ func TestPerpsv3_RetrieveMarketUpdatesLimit(t *testing.T) {
 	}
 }
 
+func TestPerpsv3_RetrieveMarketUpdatesBig(t *testing.T) {
+	blockN := uint64(10000)
+
+	marketUpdate := &models.MarketUpdateBig{
+		MarketID:               big.NewInt(200),
+		Price:                  big.NewInt(3780527432113118208),
+		Skew:                   big.NewInt(527000000000000000),
+		Size:                   big.NewInt(1049000000000000000),
+		SizeDelta:              big.NewInt(-255300000000000000),
+		CurrentFundingRate:     big.NewInt(62031943958317),
+		CurrentFundingVelocity: big.NewInt(47430000000000),
+		BlockNumber:            13739029,
+		BlockTimestamp:         1692906126,
+		TransactionHash:        "0x16704162005c11d71c745f7392a71a5ede8eb5f042e7fa917f210748773c57bf",
+	}
+
+	testCases := []struct {
+		name       string
+		conf       *config.PerpsvConfig
+		startBlock uint64
+		endBlock   *uint64
+		wantRes    []*models.MarketUpdateBig
+		wantErr    error
+	}{
+		{
+			name:       "no error default values",
+			conf:       config.GetGoerliDefaultPerpsvConfig(),
+			startBlock: 0,
+			endBlock:   nil,
+			wantRes:    []*models.MarketUpdateBig{marketUpdate, marketUpdate, marketUpdate},
+		},
+		{
+			name:       "no error custom values",
+			conf:       config.GetGoerliDefaultPerpsvConfig(),
+			startBlock: blockN,
+			endBlock:   &blockN,
+			wantRes:    []*models.MarketUpdateBig{marketUpdate},
+		},
+		{
+			name:       "no error custom values blank result",
+			conf:       config.GetGoerliDefaultPerpsvConfig(),
+			startBlock: blockN,
+			endBlock:   &blockN,
+			wantRes:    []*models.MarketUpdateBig{},
+		},
+		{
+			name:       "error",
+			conf:       config.GetGoerliDefaultPerpsvConfig(),
+			startBlock: 0,
+			endBlock:   nil,
+			wantErr:    errors.FilterErr,
+		},
+	}
+
+	for _, tt := range testCases {
+		t.Run(tt.name, func(t *testing.T) {
+			ctrl := gomock.NewController(t)
+			defer ctrl.Finish()
+			mockService := mock_services.NewMockIService(ctrl)
+
+			p, _ := createTest(tt.conf)
+			p.service = mockService
+
+			mockService.EXPECT().RetrieveMarketUpdatesBig(tt.startBlock, tt.endBlock).Return(tt.wantRes, tt.wantErr)
+
+			res, err := p.RetrieveMarketUpdatesBig(tt.startBlock, tt.endBlock)
+
+			if tt.wantErr == nil {
+				require.NoError(t, err)
+				require.Equal(t, tt.wantRes, res)
+			} else {
+				require.ErrorIs(t, tt.wantErr, err)
+			}
+		})
+	}
+}
+
+func TestPerpsv3_RetrieveMarketUpdatesBigLimit(t *testing.T) {
+	marketUpdate := &models.MarketUpdateBig{
+		MarketID:               big.NewInt(200),
+		Price:                  big.NewInt(3780527432113118208),
+		Skew:                   big.NewInt(527000000000000000),
+		Size:                   big.NewInt(1049000000000000000),
+		SizeDelta:              big.NewInt(-255300000000000000),
+		CurrentFundingRate:     big.NewInt(62031943958317),
+		CurrentFundingVelocity: big.NewInt(47430000000000),
+		BlockNumber:            13739029,
+		BlockTimestamp:         1692906126,
+		TransactionHash:        "0x16704162005c11d71c745f7392a71a5ede8eb5f042e7fa917f210748773c57bf",
+	}
+
+	testCases := []struct {
+		name    string
+		conf    *config.PerpsvConfig
+		limit   uint64
+		wantRes []*models.MarketUpdateBig
+		wantErr error
+	}{
+		{
+			name:    "no error default values",
+			conf:    config.GetGoerliDefaultPerpsvConfig(),
+			limit:   0,
+			wantRes: []*models.MarketUpdateBig{marketUpdate, marketUpdate, marketUpdate},
+		},
+		{
+			name:    "no error custom values",
+			conf:    config.GetGoerliDefaultPerpsvConfig(),
+			limit:   1,
+			wantRes: []*models.MarketUpdateBig{marketUpdate},
+		},
+		{
+			name:    "no error custom values blank result",
+			conf:    config.GetGoerliDefaultPerpsvConfig(),
+			limit:   1,
+			wantRes: []*models.MarketUpdateBig{},
+		},
+		{
+			name:    "error",
+			conf:    config.GetGoerliDefaultPerpsvConfig(),
+			limit:   1,
+			wantErr: errors.FilterErr,
+		},
+	}
+
+	for _, tt := range testCases {
+		t.Run(tt.name, func(t *testing.T) {
+			ctrl := gomock.NewController(t)
+			defer ctrl.Finish()
+			mockService := mock_services.NewMockIService(ctrl)
+
+			p, _ := createTest(tt.conf)
+			p.service = mockService
+
+			mockService.EXPECT().RetrieveMarketUpdatesBigLimit(tt.limit).Return(tt.wantRes, tt.wantErr)
+
+			res, err := p.RetrieveMarketUpdatesBigLimit(tt.limit)
+
+			if tt.wantErr == nil {
+				require.NoError(t, err)
+				require.Equal(t, tt.wantRes, res)
+			} else {
+				require.ErrorIs(t, tt.wantErr, err)
+			}
+		})
+	}
+}
+
 func TestPerpsv3_ListenTrades(t *testing.T) {
 	testCases := []struct {
 		name    string
