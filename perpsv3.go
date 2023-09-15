@@ -84,6 +84,11 @@ type IPerpsv3 interface {
 	// To close the subscription use events.MarketUpdateSubscription `Close` function
 	ListenMarketUpdates() (*events.MarketUpdateSubscription, error)
 
+	// ListenMarketUpdatesBig is used to subscribe on the contract "MarketUpdated" event. The goroutine will return events
+	// on the MarketUpdateChan chanel and errors on the ErrChan chanel.
+	// To close the subscription use events.MarketUpdateSubscription `Close` function
+	ListenMarketUpdatesBig() (*events.MarketUpdateSubscriptionBig, error)
+
 	// ListenLiquidations is used to subscribe on the contract "PositionLiquidated" event. The goroutine will return events
 	// on the LiquidationsChan chanel and errors on the ErrChan chanel.
 	// To close the subscription use events.LiquidationSubscription `Close` function
@@ -191,6 +196,10 @@ func (p *Perpsv3) ListenOrders() (*events.OrderSubscription, error) {
 
 func (p *Perpsv3) ListenMarketUpdates() (*events.MarketUpdateSubscription, error) {
 	return p.events.ListenMarketUpdates()
+}
+
+func (p *Perpsv3) ListenMarketUpdatesBig() (*events.MarketUpdateSubscriptionBig, error) {
+	return p.events.ListenMarketUpdatesBig()
 }
 
 func (p *Perpsv3) ListenLiquidations() (*events.LiquidationSubscription, error) {

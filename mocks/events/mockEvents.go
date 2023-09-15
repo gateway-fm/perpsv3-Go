@@ -64,6 +64,21 @@ func (mr *MockIEventsMockRecorder) ListenMarketUpdates() *gomock.Call {
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "ListenMarketUpdates", reflect.TypeOf((*MockIEvents)(nil).ListenMarketUpdates))
 }
 
+// ListenMarketUpdatesBig mocks base method.
+func (m *MockIEvents) ListenMarketUpdatesBig() (*events.MarketUpdateSubscriptionBig, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "ListenMarketUpdatesBig")
+	ret0, _ := ret[0].(*events.MarketUpdateSubscriptionBig)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// ListenMarketUpdatesBig indicates an expected call of ListenMarketUpdatesBig.
+func (mr *MockIEventsMockRecorder) ListenMarketUpdatesBig() *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "ListenMarketUpdatesBig", reflect.TypeOf((*MockIEvents)(nil).ListenMarketUpdatesBig))
+}
+
 // ListenOrders mocks base method.
 func (m *MockIEvents) ListenOrders() (*events.OrderSubscription, error) {
 	m.ctrl.T.Helper()
