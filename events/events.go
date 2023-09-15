@@ -23,6 +23,10 @@ type IEvents interface {
 	// struct and return errors on ErrChan chanel
 	ListenMarketUpdates() (*MarketUpdateSubscription, error)
 
+	// ListenMarketUpdatesBig is used to listen to all 'MarketUpdated' contract events and return them as models.MarketUpdateBig
+	// struct and return errors on ErrChan chanel
+	ListenMarketUpdatesBig() (*MarketUpdateSubscriptionBig, error)
+
 	// ListenLiquidations is used to listen to all 'PositionLiquidated' contract events and return them as models.Liquidation
 	// struct and return errors on ErrChan chanel
 	ListenLiquidations() (*LiquidationSubscription, error)
