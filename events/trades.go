@@ -58,7 +58,7 @@ func (s *TradeSubscription) listen(rpcClient *ethclient.Client) {
 				logger.Log().WithField("layer", "Events-OrderSettled").Errorf("error listening order settled: %v", err.Error())
 				s.ErrChan <- err
 			}
-			continue
+			return
 		case orderSettled := <-s.contractEventChan:
 			block, err := rpcClient.HeaderByNumber(context.Background(), big.NewInt(int64(orderSettled.Raw.BlockNumber)))
 			time := uint64(0)
