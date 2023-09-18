@@ -116,9 +116,9 @@ func main() {
 
 ## API Reference
 
-### === Trades ===
+### Trades
 
-### == Model ==
+#### Model
 
 Using Trades services you operate with Trades model which represents a `OrderSettled` event of Perps Market smart-contract
 with some additional fields:
@@ -146,7 +146,7 @@ type Trade struct {
 }
 ```
 
-### == RetrieveTrades ==
+#### RetrieveTrades()
 
 To get trades for specific block range use the RetrieveTrades function:
 
@@ -165,7 +165,20 @@ func RetrieveTrades(fromBlock uint64, toBLock *uint64) ([]*models.Trade, error) 
 
 If you want to query more than 20 000 block or query old block be sure you use a private PRC provider
 
-### == ListenTrades ==
+#### RetrieveTradesLimit()
+
+To get all trades with RPC provider block limiration use the RetrieveTrades function:
+
+```go
+func RetrieveTradesLimit(limit uint64) ([]*models.Trade, error)
+```
+
+The function will query blocks several times from the first contract block to the latest block until all blocks are queried.
+If the contract was deployed a long time ago the function can take more than 1 minute to work.
+
+- Default value for `limit` is a 20 000 blocks per one query
+
+#### ListenTrades()
 
 To subscribe on the contract `OrederSettled` event use the ListenTrades function.
 
@@ -229,9 +242,9 @@ func main() {
 }
 ```
 
-### === Orders ===
+### Orders
 
-### == Model ==
+#### Model
 
 Using Orders services you operate with Orders model which represents a `OrderCommitted` event of Perps Market smart-contract
 with some additional fields:
@@ -254,7 +267,7 @@ type Order struct {
 }
 ```
 
-### == RetrieveOrders ==
+#### RetrieveOrders()
 
 To get orders for specific block range use the RetrieveOrders function:
 
@@ -273,7 +286,21 @@ func RetrieveOrders(fromBlock uint64, toBLock *uint64) ([]*models.Order, error) 
 
 If you want to query more than 20 000 block or query old block be sure you use a private PRC provider
 
-### == ListenOrders ==
+#### RetrieveOrdersLimit()
+
+To get all orders with RPC provider block limitation use the RetrieveOrdersLimit function:
+
+```go
+func RetrieveOrdersLimit(limit uint64) ([]*models.Order, error) {}
+```
+
+The function will query blocks several times from the first contract block to the latest block until all blocks are queried.
+If the contract was deployed a long time ago the function can take more than 1 minute to work.
+
+- Default value for `limit` is a 20 000 blocks per one query
+
+
+#### ListenOrders()
 
 To subscribe on the contract `OrederCommitted` event use the ListenOrders function.
 
@@ -284,9 +311,59 @@ func ListenOrders() (*events.OrderSubscription, error) {}
 The goroutine will return events as a `Order` model on the `OrdersChan` chanel and errors on the `ErrChan` chanel. To
 close the subscription use the `Close` function.
 
-### === MarketUpdate ===
+### Markets
 
-### == Model ==
+You can query current market IDs, current market metadata and current market summary
+
+#### Models
+
+```go
+type MarketMetadata struct {
+    MarketID *big.Int // is a market ID value
+    Name     string   // is a market name value
+    Symbol   string   // is a market symbol value for example 'ETH'
+}
+```
+
+```go
+type MarketSummary struct {
+	MarketID               *big.Int // Represents the ID of the market
+	Skew                   *big.Int // Represents the skew of the market
+	Size                   *big.Int // Represents the size of the market
+	MaxOpenInterest        *big.Int // Represents the maximum open interest of the market
+	CurrentFundingRate     *big.Int // Represents the current funding rate of the market
+	CurrentFundingVelocity *big.Int // Represents the current funding velocity of the market
+	IndexPrice             *big.Int // Represents the index price of the market
+}
+```
+
+#### GetMarketIds()
+
+To get available market IDs use GetMarketIDs function
+
+```go
+func GetMarketIDs() ([]*big.Int, error) {}
+```
+
+#### GetMarketMetadata()
+
+To get current market metadata by given market ID use GetMarketMetadata function
+
+```go
+func GetMarketMetadata(marketID *big.Int) (*models.MarketMetadata, error) {}
+```
+
+#### GetMarketSummary()
+
+To get current market summary by given market ID use GetMarketSummary function
+
+```go
+func GetMarketSummary(marketID *big.Int) (*models.MarketSummary, error) {}
+```
+
+### MarketUpdate
+
+#### Models
 
 Using MarketData services you operate with MarketUpdate model which represents a `MarketUpdated` event of Perps Market smart-contract
 with some additional fields:
@@ -308,12 +385,31 @@ type MarketUpdate struct {
 }
 ```
 
-### == RetrieveMarketUpdate ==
+You can also use MarketDataBig model, it will operate with big.Int value types instead of uint64 and int64. Only methods
+with `Big` suffix can operate with this model
 
-To get market update data for specific block range use the RetrieveOrders function:
+```go
+type MarketUpdateBig struct {
+	MarketID               *big.Int
+	Price                  *big.Int
+	Skew                   *big.Int
+	Size                   *big.Int
+	SizeDelta              *big.Int
+	CurrentFundingRate     *big.Int
+	CurrentFundingVelocity *big.Int
+	BlockNumber            uint64
+	BlockTimestamp         uint64
+	TransactionHash        string
+}
+```
+
+#### RetrieveMarketUpdates() / RetrieveMarketUpdatesBig()
+
+To get market update data for specific block range use the RetrieveMarketUpdates or RetrieveMarketUpdatesBig functions:
 
 ```go
 func RetrieveMarketUpdates(fromBlock uint64, toBLock *uint64) ([]*models.MarketUpdate, error) {}
+func RetrieveMarketUpdatesBig(fromBlock uint64, toBLock *uint64) ([]*models.MarketUpdateBig, error) {}
 ```
 
 - Default value for `fromBlock` is a first contract block that you give in the configs
@@ -327,20 +423,36 @@ func RetrieveMarketUpdates(fromBlock uint64, toBLock *uint64) ([]*models.MarketU
 
 If you want to query more than 20 000 block or query old block be sure you use a private PRC provider
 
-### == ListenMarketUpdate ==
+#### RetrieveMarketUpdatesLimit() / RetrieveMarketUpdatesBigLimit()
 
-To subscribe on the contract `MarketUpdated` event use the ListenMarketUpdates function.
+To get all market updates with RPC provider block limitation use the RetrieveMarketUpdatesLimit or RetrieveMarketUpdatesBigLimit functions:
+
+```go
+func RetrieveMarketUpdatesLimit(limit uint64) ([]*models.MarketUpdate, error) {}
+func RetrieveMarketUpdatesBigLimit(limit uint64) ([]*models.MarketUpdateBig, error) {}
+```
+
+The function will query blocks several times from the first contract block to the latest block until all blocks are queried.
+If the contract was deployed a long time ago the function can take more than 1 minute to work.
+
+- Default value for `limit` is a 20 000 blocks per one query
+
+
+#### ListenMarketUpdate() / ListenMarketUpdatesBig()
+
+To subscribe on the contract `MarketUpdated` event use the ListenMarketUpdates or ListenMarketUpdatesBig functions.
 
 ```go
 func ListenMarketUpdates() (*events.MarketUpdateSubscription, error)
+func ListenMarketUpdatesBig() (*MarketUpdateSubscriptionBig, error)
 ```
 
-The goroutine will return events as a `MarketUpdate` model on the `MarketUpdateChan` chanel and errors on the `ErrChan` chanel. To
+The goroutine will return events as a `MarketUpdate` or `MarketUpdateBig` model on the `MarketUpdateChan` chanel and errors on the `ErrChan` chanel. To
 close the subscription use the `Close` function.
 
-### === Positions ===
+### Positions
 
-### == Model ==
+#### Model
 
 Using Positions services you operate with Position model which represents a `OpenPosition` data struct of Perps Market 
 smart-contract with some additional fields:
@@ -357,7 +469,7 @@ type Position struct {
 }
 ```
 
-### == GetPosition ==
+#### GetPosition()
 
 To get `Position` by reading contract with `getOpenPosition` method use the GetPosition function:
 
@@ -367,6 +479,68 @@ func GetPosition(accountID *big.Int, marketID *big.Int) (*models.Position, error
 
 It will return data from the contract in the latest block. Function can return contract error if the market ID is invalid.
 If account ID is invalid it will return model with blank fields.
+
+### Liquidations
+
+#### Model
+
+Using Liquidations services you operate with Liquidation model which represents a `PositionLiquidated` event of Perps Market smart-contract
+with some additional fields:
+
+```go
+type Liquidation struct {
+	// Event fields
+	MarketID            uint64   // ID of the market used for the order.
+	AccountID           uint64   // ID of the account used for the order.
+	AmountLiquidated    *big.Int // amount liquidated.
+	CurrentPositionSize *big.Int // position size after liquidation.
+	// Additional fields
+	BlockNumber         uint64   // Block number where the order was committed.
+	BlockTimestamp      uint64   // Timestamp of the block where the order was committed.
+}
+```
+
+#### RetrieveLiquidations()
+
+To get liquidations for specific block range use the RetrieveLiquidations function:
+
+```go
+func RetrieveLiquidations(fromBlock uint64, toBLock *uint64) ([]*models.Liquidation, error) {}
+```
+
+- Default value for `fromBlock` is a first contract block that you give in the configs
+- Default value for `toBlock` is a latest blockchain block
+- To use default values set `0` for `fromBlock` and `nil` for `toBlock`
+- For specific block data use same values for `fromBlock` and `toBlock`
+- For all contract data use default values
+
+*Warning*
+
+If you want to query more than 20 000 block or query old block be sure you use a private PRC provider
+
+#### RetrieveLiquidationsLimit()
+
+To get all luquidations with RPC provider block limitation use the RetrieveLiquidationsLimit function:
+
+```go
+func RetrieveLiquidationsLimit(limit uint64) ([]*models.Liquidation, error) {}
+```
+
+The function will query blocks several times from the first contract block to the latest block until all blocks are queried.
+If the contract was deployed a long time ago the function can take more than 1 minute to work.
+
+- Default value for `limit` is a 20 000 blocks per one query
+
+#### ListenLiquidations()
+
+To subscribe on the contract `PositionLiquidated` event use the ListenLiquidations function.
+
+```go
+func ListenLiquidations() (*LiquidationSubscription, error) {}
+```
+
+The goroutine will return events as a `Liquidation` model on the `LiquidationsChan` chanel and errors on the `ErrChan` chanel. To
+close the subscription use the `Close` function.
 
 ## License
 This project is licensed under the MIT License.
