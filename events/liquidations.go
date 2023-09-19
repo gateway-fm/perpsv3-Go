@@ -2,13 +2,15 @@ package events
 
 import (
 	"context"
+	"math/big"
+
 	"github.com/ethereum/go-ethereum/ethclient"
 	"github.com/ethereum/go-ethereum/event"
+
 	"github.com/gateway-fm/perpsv3-Go/contracts/perpsMarketGoerli"
 	"github.com/gateway-fm/perpsv3-Go/errors"
 	"github.com/gateway-fm/perpsv3-Go/models"
 	"github.com/gateway-fm/perpsv3-Go/pkg/logger"
-	"math/big"
 )
 
 // LiquidationSubscription is a struct for listening to all 'PositionLiquidated' contract events and return them as models.Liquidation struct
@@ -45,18 +47,21 @@ func newLiquidationSubscription(eventSub event.Subscription, contractEventChan c
 
 // listen is used to run a goroutine
 func (s *LiquidationSubscription) listen(rpcClient *ethclient.Client) {
+	defer func() {
+		close(s.LiquidationsChan)
+		close(s.contractEventChan)
+	}()
+
 	for {
 		select {
 		case <-s.stop:
-			close(s.LiquidationsChan)
-			close(s.contractEventChan)
 			return
 		case err := <-s.eventSub.Err():
 			if err != nil {
 				logger.Log().WithField("layer", "Events-PositionLiquidated").Errorf("error listening position liquidated: %v", err.Error())
 				s.ErrChan <- err
 			}
-			continue
+			return
 		case positionLiquidated := <-s.contractEventChan:
 			block, err := rpcClient.HeaderByNumber(context.Background(), big.NewInt(int64(positionLiquidated.Raw.BlockNumber)))
 			time := uint64(0)

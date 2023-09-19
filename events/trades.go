@@ -47,18 +47,21 @@ func newTradeSubscription(eventSub event.Subscription, contractEventChan chan *p
 
 // listen is used to run a goroutine
 func (s *TradeSubscription) listen(rpcClient *ethclient.Client) {
+	defer func() {
+		close(s.TradesChan)
+		close(s.contractEventChan)
+	}()
+
 	for {
 		select {
 		case <-s.stop:
-			close(s.TradesChan)
-			close(s.contractEventChan)
 			return
 		case err := <-s.eventSub.Err():
 			if err != nil {
 				logger.Log().WithField("layer", "Events-OrderSettled").Errorf("error listening order settled: %v", err.Error())
 				s.ErrChan <- err
 			}
-			continue
+			return
 		case orderSettled := <-s.contractEventChan:
 			block, err := rpcClient.HeaderByNumber(context.Background(), big.NewInt(int64(orderSettled.Raw.BlockNumber)))
 			time := uint64(0)
