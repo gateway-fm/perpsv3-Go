@@ -67,6 +67,9 @@ type IService interface {
 	// GetMarketIDs is used to get market IDs from the smart contract
 	GetMarketIDs() ([]*big.Int, error)
 
+	// GetFoundingRate is used to get current founding rate by given market ID
+	GetFoundingRate(marketId *big.Int) (*big.Int, error)
+
 	// FormatAccount is used to get account, and it's additional data from the contract by given account id
 	FormatAccount(id *big.Int) (*models.Account, error)
 

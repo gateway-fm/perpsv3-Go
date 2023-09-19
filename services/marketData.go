@@ -154,6 +154,15 @@ func (s *Service) GetMarketIDs() ([]*big.Int, error) {
 	return res, nil
 }
 
+func (s *Service) GetFoundingRate(marketId *big.Int) (*big.Int, error) {
+	rate, err := s.perpsMarket.CurrentFundingRate(nil, marketId)
+	if err != nil {
+		return nil, errors.GetReadContractErr(err, "perpsMarket", "currentFoundingRate")
+	}
+
+	return rate, nil
+}
+
 // retrieveMarketUpdates is used to get retrieve market updates with given filter options
 func (s *Service) retrieveMarketUpdates(opts *bind.FilterOpts) ([]*models.MarketUpdate, error) {
 	iterator, err := s.perpsMarket.FilterMarketUpdated(opts)

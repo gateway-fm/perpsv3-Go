@@ -80,6 +80,21 @@ func (mr *MockIServiceMockRecorder) FormatAccountsLimit(limit interface{}) *gomo
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "FormatAccountsLimit", reflect.TypeOf((*MockIService)(nil).FormatAccountsLimit), limit)
 }
 
+// GetFoundingRate mocks base method.
+func (m *MockIService) GetFoundingRate(marketId *big.Int) (*big.Int, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "GetFoundingRate", marketId)
+	ret0, _ := ret[0].(*big.Int)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// GetFoundingRate indicates an expected call of GetFoundingRate.
+func (mr *MockIServiceMockRecorder) GetFoundingRate(marketId interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetFoundingRate", reflect.TypeOf((*MockIService)(nil).GetFoundingRate), marketId)
+}
+
 // GetMarketIDs mocks base method.
 func (m *MockIService) GetMarketIDs() ([]*big.Int, error) {
 	m.ctrl.T.Helper()
