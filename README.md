@@ -361,6 +361,14 @@ To get current market summary by given market ID use GetMarketSummary function
 func GetMarketSummary(marketID *big.Int) (*models.MarketSummary, error) {}
 ```
 
+#### GetFoundingRate()
+
+To get current founding rate by given market ID use GetFoundingRate function
+
+```go
+func GetFoundingRate(id *big.Int) (*big.Int, error) {}
+```
+
 ### MarketUpdate
 
 #### Models
