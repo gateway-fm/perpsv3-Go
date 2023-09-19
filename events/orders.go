@@ -47,11 +47,14 @@ func newOrderSubscription(eventSub event.Subscription, contractEventChan chan *p
 
 // listen is used to run a goroutine
 func (s *OrderSubscription) listen(rpcClient *ethclient.Client) {
+	defer func() {
+		close(s.OrdersChan)
+		close(s.contractEventChan)
+	}()
+
 	for {
 		select {
 		case <-s.stop:
-			close(s.OrdersChan)
-			close(s.contractEventChan)
 			return
 		case err := <-s.eventSub.Err():
 			if err != nil {
