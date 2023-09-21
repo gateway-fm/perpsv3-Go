@@ -192,7 +192,7 @@ func (m *TestPerpsMarket) CommitOrder(marketIDS string, sizeS string) {
 		AccountId:            m.TestAccount,
 		SizeDelta:            size,
 		SettlementStrategyId: big.NewInt(0),
-		AcceptablePrice:      summary.IndexPrice.Mul(summary.IndexPrice, big.NewInt(10000)),
+		AcceptablePrice:      summary.IndexPrice.Add(summary.IndexPrice, big.NewInt(10000)),
 		TrackingCode:         [32]byte{},
 		Referrer:             common.HexToAddress("0x0000000000000000000000000000000000000000"),
 	}
