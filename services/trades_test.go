@@ -47,7 +47,7 @@ func TestService_RetrieveTrades_OnChain(t *testing.T) {
 
 	want := &models.Trade{
 		MarketID:         200,
-		AccountID:        1692895537802,
+		AccountID:        big.NewInt(1692895537802),
 		FillPrice:        fillPrice,
 		PnL:              pnl,
 		AccruedFunding:   accruedF,

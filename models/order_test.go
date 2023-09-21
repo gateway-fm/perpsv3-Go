@@ -40,7 +40,7 @@ func TestGetOrderFromEvent(t *testing.T) {
 				AccountId: big.NewInt(1),
 			},
 			want: &Order{
-				AccountID: uint64(1),
+				AccountID: big.NewInt(1),
 			},
 		},
 		{
@@ -80,7 +80,7 @@ func TestGetOrderFromEvent(t *testing.T) {
 			time: uint64(timeNow.Unix()),
 			want: &Order{
 				MarketID:        uint64(1),
-				AccountID:       uint64(2),
+				AccountID:       big.NewInt(2),
 				OrderType:       uint8(3),
 				SizeDelta:       big.NewInt(5),
 				AcceptablePrice: big.NewInt(6),

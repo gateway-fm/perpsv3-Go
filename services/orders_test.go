@@ -35,7 +35,7 @@ func TestService_RetrieveOrders_OnChain(t *testing.T) {
 
 	want := &models.Order{
 		MarketID:        100,
-		AccountID:       8714,
+		AccountID:       big.NewInt(8714),
 		OrderType:       0,
 		SizeDelta:       sizeDelta,
 		AcceptablePrice: acceptablePrice,

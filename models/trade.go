@@ -28,7 +28,7 @@ import (
 //   - TransactionHash  - Hash of the transaction where the trade was settled.
 type Trade struct {
 	MarketID         uint64
-	AccountID        uint64
+	AccountID        *big.Int
 	FillPrice        *big.Int
 	PnL              *big.Int
 	AccruedFunding   *big.Int
@@ -57,14 +57,9 @@ func GetTradeFromEvent(event *perpsMarketGoerli.PerpsMarketGoerliOrderSettled, t
 		marketID = event.MarketId.Uint64()
 	}
 
-	accountID := uint64(0)
-	if event.AccountId != nil {
-		accountID = event.AccountId.Uint64()
-	}
-
 	return &Trade{
 		MarketID:         marketID,
-		AccountID:        accountID,
+		AccountID:        event.AccountId,
 		FillPrice:        event.FillPrice,
 		PnL:              event.Pnl,
 		AccruedFunding:   event.AccruedFunding,
