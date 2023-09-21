@@ -23,7 +23,7 @@ import (
 //   - BlockTimestamp: Timestamp of the block where the order was committed.
 type Order struct {
 	MarketID        uint64
-	AccountID       uint64
+	AccountID       *big.Int
 	OrderType       uint8
 	SizeDelta       *big.Int
 	AcceptablePrice *big.Int
@@ -47,11 +47,6 @@ func GetOrderFromEvent(event *perpsMarketGoerli.PerpsMarketGoerliOrderCommitted,
 		marketID = event.MarketId.Uint64()
 	}
 
-	accountID := uint64(0)
-	if event.AccountId != nil {
-		accountID = event.AccountId.Uint64()
-	}
-
 	settlementTime := uint64(0)
 	if event.SettlementTime != nil {
 		settlementTime = event.SettlementTime.Uint64()
@@ -64,7 +59,7 @@ func GetOrderFromEvent(event *perpsMarketGoerli.PerpsMarketGoerliOrderCommitted,
 
 	return &Order{
 		MarketID:        marketID,
-		AccountID:       accountID,
+		AccountID:       event.AccountId,
 		OrderType:       event.OrderType,
 		SizeDelta:       event.SizeDelta,
 		AcceptablePrice: event.AcceptablePrice,

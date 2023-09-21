@@ -45,9 +45,12 @@ func TestService_RetrieveLiquidations_OnChain(t *testing.T) {
 	spot, _ := spotMarketGoerli.NewSpotMarketGoerli(common.HexToAddress("0x5FF4b3aacdeC86782d8c757FAa638d8790799E83"), rpcClient)
 	perps, _ := perpsMarketGoerli.NewPerpsMarketGoerli(common.HexToAddress("0xf272382cB3BE898A8CdB1A23BE056fA2Fcf4513b"), rpcClient)
 
+	id := new(big.Int)
+	id.SetString("170141183460469231731687303715884105753", 10)
+
 	want := &models.Liquidation{
 		MarketID:            100,
-		AccountID:           25,
+		AccountID:           id,
 		AmountLiquidated:    big.NewInt(200000000000000000),
 		CurrentPositionSize: big.NewInt(0),
 		BlockNumber:         14125002,

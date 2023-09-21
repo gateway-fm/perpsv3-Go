@@ -16,7 +16,7 @@ import (
 //   - BlockTimestamp: Timestamp of the block where the order was committed.
 type Liquidation struct {
 	MarketID            uint64
-	AccountID           uint64
+	AccountID           *big.Int
 	AmountLiquidated    *big.Int
 	CurrentPositionSize *big.Int
 	BlockNumber         uint64
@@ -35,14 +35,9 @@ func GetLiquidationFromEvent(event *perpsMarketGoerli.PerpsMarketGoerliPositionL
 		marketID = event.MarketId.Uint64()
 	}
 
-	accountID := uint64(0)
-	if event.AccountId != nil {
-		accountID = event.AccountId.Uint64()
-	}
-
 	return &Liquidation{
 		MarketID:            marketID,
-		AccountID:           accountID,
+		AccountID:           event.AccountId,
 		AmountLiquidated:    event.AmountLiquidated,
 		CurrentPositionSize: event.CurrentPositionSize,
 		BlockNumber:         event.Raw.BlockNumber,

@@ -37,7 +37,7 @@ func TestGetLiquidationFromEvent(t *testing.T) {
 				AccountId: big.NewInt(1),
 			},
 			want: &Liquidation{
-				AccountID: uint64(1),
+				AccountID: big.NewInt(1),
 			},
 		},
 		{
@@ -54,7 +54,7 @@ func TestGetLiquidationFromEvent(t *testing.T) {
 			time: uint64(timeNow.Unix()),
 			want: &Liquidation{
 				MarketID:            uint64(1),
-				AccountID:           uint64(2),
+				AccountID:           big.NewInt(2),
 				AmountLiquidated:    big.NewInt(3),
 				CurrentPositionSize: big.NewInt(4),
 				BlockNumber:         5,

@@ -148,7 +148,7 @@ func TestPerpsv3_RetrieveTrades(t *testing.T) {
 
 	trade := &models.Trade{
 		MarketID:         200,
-		AccountID:        1692895537802,
+		AccountID:        big.NewInt(1692895537802),
 		FillPrice:        fillPrice,
 		PnL:              pnl,
 		AccruedFunding:   accruedF,
@@ -247,7 +247,7 @@ func TestPerpsv3_RetrieveTradesLimit(t *testing.T) {
 
 	trade := &models.Trade{
 		MarketID:         200,
-		AccountID:        1692895537802,
+		AccountID:        big.NewInt(1692895537802),
 		FillPrice:        fillPrice,
 		PnL:              pnl,
 		AccruedFunding:   accruedF,
@@ -331,7 +331,7 @@ func TestPerpsv3_RetrieveOrders(t *testing.T) {
 
 	liquidation := &models.Order{
 		MarketID:        100,
-		AccountID:       8714,
+		AccountID:       big.NewInt(8714),
 		OrderType:       0,
 		SizeDelta:       sizeDelta,
 		AcceptablePrice: acceptablePrice,
@@ -413,7 +413,7 @@ func TestPerpsv3_RetrieveOrdersLimit(t *testing.T) {
 
 	liquidation := &models.Order{
 		MarketID:        100,
-		AccountID:       8714,
+		AccountID:       big.NewInt(8714),
 		OrderType:       0,
 		SizeDelta:       sizeDelta,
 		AcceptablePrice: acceptablePrice,
@@ -486,7 +486,7 @@ func TestPerpsv3_RetrieveLiquidations(t *testing.T) {
 
 	liquidation := &models.Liquidation{
 		MarketID:            100,
-		AccountID:           25,
+		AccountID:           big.NewInt(25),
 		AmountLiquidated:    big.NewInt(200000000000000000),
 		CurrentPositionSize: big.NewInt(0),
 		BlockNumber:         14125002,
@@ -557,7 +557,7 @@ func TestPerpsv3_RetrieveLiquidations(t *testing.T) {
 func TestPerpsv3_RetrieveLiquidationsLimit(t *testing.T) {
 	liquidation := &models.Liquidation{
 		MarketID:            100,
-		AccountID:           25,
+		AccountID:           big.NewInt(25),
 		AmountLiquidated:    big.NewInt(200000000000000000),
 		CurrentPositionSize: big.NewInt(0),
 		BlockNumber:         14125002,

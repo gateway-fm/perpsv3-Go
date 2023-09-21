@@ -41,7 +41,7 @@ func TestGetTradeFromEvent(t *testing.T) {
 				AccountId: big.NewInt(1),
 			},
 			want: &Trade{
-				AccountID:       uint64(1),
+				AccountID:       big.NewInt(1),
 				TransactionHash: "0x0000000000000000000000000000000000000000000000000000000000000000",
 			},
 		},
@@ -68,7 +68,7 @@ func TestGetTradeFromEvent(t *testing.T) {
 			time: uint64(timeNow.Unix()),
 			want: &Trade{
 				MarketID:         1,
-				AccountID:        2,
+				AccountID:        big.NewInt(2),
 				FillPrice:        big.NewInt(3),
 				AccruedFunding:   big.NewInt(4),
 				SizeDelta:        big.NewInt(5),
