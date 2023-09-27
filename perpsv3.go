@@ -111,6 +111,9 @@ type IPerpsv3 interface {
 	// GetFoundingRate is used to get current market founding rate by given market ID
 	GetFoundingRate(marketId *big.Int) (*big.Int, error)
 
+	// GetAvailableMargin is used to get available margin for given account ID
+	GetAvailableMargin(accountId *big.Int) (*big.Int, error)
+
 	// FormatAccount is used to get account, and it's additional data from the contract by given account id
 	FormatAccount(id *big.Int) (*models.Account, error)
 
@@ -227,6 +230,10 @@ func (p *Perpsv3) GetMarketIDs() ([]*big.Int, error) {
 
 func (p *Perpsv3) GetFoundingRate(marketId *big.Int) (*big.Int, error) {
 	return p.service.GetFoundingRate(marketId)
+}
+
+func (p *Perpsv3) GetAvailableMargin(accountId *big.Int) (*big.Int, error) {
+	return p.service.GetAvailableMargin(accountId)
 }
 
 func (p *Perpsv3) FormatAccounts() ([]*models.Account, error) {
