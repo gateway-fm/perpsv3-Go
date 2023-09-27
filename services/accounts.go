@@ -63,6 +63,16 @@ func (s *Service) FormatAccounts() ([]*models.Account, error) {
 	return s.formatAccounts(opts)
 }
 
+func (s *Service) GetAvailableMargin(accountId *big.Int) (*big.Int, error) {
+	margin, err := s.perpsMarket.GetAvailableMargin(nil, accountId)
+	if err != nil {
+		logger.Log().WithField("layer", "").Errorf("get avaliable margin error: %v", err.Error())
+		return nil, errors.GetReadContractErr(err, "perps market", "GetAvailableMargin")
+	}
+
+	return margin, nil
+}
+
 // formatAccounts is used to get accounts from the contract using event filter function for 'AccountCreated' event
 // and given filter options
 func (s *Service) formatAccounts(opts *bind.FilterOpts) ([]*models.Account, error) {
