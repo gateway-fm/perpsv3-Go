@@ -154,6 +154,16 @@ func (s *Service) GetMarketIDs() ([]*big.Int, error) {
 	return res, nil
 }
 
+func (s *Service) GetLiquidationParameters(marketId *big.Int) (*models.LiquidationParameters, error) {
+	resp, err := s.perpsMarket.GetLiquidationParameters(nil, marketId)
+	if err != nil {
+		logger.Log().WithField("layer", "").Errorf("")
+		return nil, errors.GetReadContractErr(err, "", "")
+	}
+
+	return models.GetLiquidationParameters(resp), nil
+}
+
 func (s *Service) GetFoundingRate(marketId *big.Int) (*big.Int, error) {
 	rate, err := s.perpsMarket.CurrentFundingRate(nil, marketId)
 	if err != nil {

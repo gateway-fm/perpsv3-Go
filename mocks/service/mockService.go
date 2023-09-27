@@ -110,6 +110,21 @@ func (mr *MockIServiceMockRecorder) GetFoundingRate(marketId interface{}) *gomoc
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetFoundingRate", reflect.TypeOf((*MockIService)(nil).GetFoundingRate), marketId)
 }
 
+// GetLiquidationParameters mocks base method.
+func (m *MockIService) GetLiquidationParameters(marketId *big.Int) (*models.LiquidationParameters, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "GetLiquidationParameters", marketId)
+	ret0, _ := ret[0].(*models.LiquidationParameters)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// GetLiquidationParameters indicates an expected call of GetLiquidationParameters.
+func (mr *MockIServiceMockRecorder) GetLiquidationParameters(marketId interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetLiquidationParameters", reflect.TypeOf((*MockIService)(nil).GetLiquidationParameters), marketId)
+}
+
 // GetMarketIDs mocks base method.
 func (m *MockIService) GetMarketIDs() ([]*big.Int, error) {
 	m.ctrl.T.Helper()
