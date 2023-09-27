@@ -73,6 +73,9 @@ type IService interface {
 	// GetAvailableMargin is used to get available margin for given account ID
 	GetAvailableMargin(accountId *big.Int) (*big.Int, error)
 
+	// GetLiquidationParameters is used to get liquidation params for given market ID
+	GetLiquidationParameters(marketId *big.Int) (*models.LiquidationParameters, error)
+
 	// FormatAccount is used to get account, and it's additional data from the contract by given account id
 	FormatAccount(id *big.Int) (*models.Account, error)
 

@@ -83,6 +83,30 @@ type MarketSummary struct {
 	IndexPrice             *big.Int
 }
 
+type LiquidationParameters struct {
+	InitialMarginRatio        *big.Int
+	MinimumInitialMarginRatio *big.Int
+	MaintenanceMarginScalar   *big.Int
+	LiquidationRewardRatio    *big.Int
+	MinimumPositionMargin     *big.Int
+}
+
+func GetLiquidationParameters(resp struct {
+	InitialMarginRatioD18        *big.Int
+	MinimumInitialMarginRatioD18 *big.Int
+	MaintenanceMarginScalarD18   *big.Int
+	LiquidationRewardRatioD18    *big.Int
+	MinimumPositionMargin        *big.Int
+}) *LiquidationParameters {
+	return &LiquidationParameters{
+		LiquidationRewardRatio:    resp.LiquidationRewardRatioD18,
+		MinimumInitialMarginRatio: resp.MinimumInitialMarginRatioD18,
+		MaintenanceMarginScalar:   resp.MaintenanceMarginScalarD18,
+		InitialMarginRatio:        resp.InitialMarginRatioD18,
+		MinimumPositionMargin:     resp.MinimumPositionMargin,
+	}
+}
+
 // GetMarketUpdateFromEvent is used to get MarketUpdate struct from given event and block timestamp
 func GetMarketUpdateFromEvent(event *perpsMarketGoerli.PerpsMarketGoerliMarketUpdated, time uint64) *MarketUpdate {
 	if event == nil {
