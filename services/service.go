@@ -76,6 +76,9 @@ type IService interface {
 	// GetLiquidationParameters is used to get liquidation params for given market ID
 	GetLiquidationParameters(marketId *big.Int) (*models.LiquidationParameters, error)
 
+	// GetFundingParameters is used to get funding params for given market ID
+	GetFundingParameters(marketId *big.Int) (*models.FundingParameters, error)
+
 	// FormatAccount is used to get account, and it's additional data from the contract by given account id
 	FormatAccount(id *big.Int) (*models.Account, error)
 

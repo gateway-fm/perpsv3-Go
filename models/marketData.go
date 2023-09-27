@@ -91,6 +91,21 @@ type LiquidationParameters struct {
 	MinimumPositionMargin     *big.Int
 }
 
+type FundingParameters struct {
+	SkewScale          *big.Int
+	MaxFundingVelocity *big.Int
+}
+
+func GetFundingParameters(resp struct {
+	SkewScale          *big.Int
+	MaxFundingVelocity *big.Int
+}) *FundingParameters {
+	return &FundingParameters{
+		SkewScale:          resp.SkewScale,
+		MaxFundingVelocity: resp.MaxFundingVelocity,
+	}
+}
+
 func GetLiquidationParameters(resp struct {
 	InitialMarginRatioD18        *big.Int
 	MinimumInitialMarginRatioD18 *big.Int
