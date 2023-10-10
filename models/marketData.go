@@ -73,6 +73,7 @@ type MarketMetadata struct {
 //   - CurrentFundingRate - Represents the current funding rate of the market
 //   - CurrentFundingVelocity - Represents the current funding velocity of the market
 //   - IndexPrice - Represents the index price of the market
+//   - BlockTimestamp: Timestamp of the block at which the market data was fetched.
 type MarketSummary struct {
 	MarketID               *big.Int
 	Skew                   *big.Int
@@ -81,6 +82,7 @@ type MarketSummary struct {
 	CurrentFundingRate     *big.Int
 	CurrentFundingVelocity *big.Int
 	IndexPrice             *big.Int
+	BlockTimestamp         uint64
 }
 
 type LiquidationParameters struct {
@@ -209,7 +211,7 @@ func GetMarketMetadataFromContractResponse(id *big.Int, name string, symbol stri
 }
 
 // GetMarketSummaryFromContractModel is used to get MarketSummary from contract data struct
-func GetMarketSummaryFromContractModel(summary perpsMarketGoerli.IPerpsMarketModuleMarketSummary, marketID *big.Int) *MarketSummary {
+func GetMarketSummaryFromContractModel(summary perpsMarketGoerli.IPerpsMarketModuleMarketSummary, marketID *big.Int, time uint64) *MarketSummary {
 	return &MarketSummary{
 		MarketID:               marketID,
 		Skew:                   summary.Skew,
@@ -218,5 +220,6 @@ func GetMarketSummaryFromContractModel(summary perpsMarketGoerli.IPerpsMarketMod
 		CurrentFundingRate:     summary.CurrentFundingRate,
 		CurrentFundingVelocity: summary.CurrentFundingVelocity,
 		IndexPrice:             summary.IndexPrice,
+		BlockTimestamp:         time,
 	}
 }

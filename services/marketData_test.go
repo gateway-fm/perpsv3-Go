@@ -298,6 +298,7 @@ func TestService_GetMarketSummary(t *testing.T) {
 				require.NotNil(t, res.CurrentFundingVelocity)
 				require.NotNil(t, res.CurrentFundingRate)
 				require.NotNil(t, res.IndexPrice)
+				require.NotEqual(t, 0, res.BlockTimestamp)
 				require.NoError(t, err)
 			} else {
 				require.Error(t, err)
