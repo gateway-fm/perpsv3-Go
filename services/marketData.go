@@ -142,7 +142,15 @@ func (s *Service) GetMarketSummary(marketID *big.Int) (*models.MarketSummary, er
 		}
 	}
 
-	return models.GetMarketSummaryFromContractModel(res, marketID), nil
+	block, err := s.rpcClient.HeaderByNumber(context.Background(), nil)
+	if err != nil {
+		logger.Log().WithField("layer", "Service-GetMarketSummary").Errorf(
+			"get latest block error: %v", err.Error(),
+		)
+		return nil, errors.GetRPCProviderErr(err, "HeaderByNumber")
+	}
+
+	return models.GetMarketSummaryFromContractModel(res, marketID, block.Time), nil
 }
 
 func (s *Service) GetMarketIDs() ([]*big.Int, error) {

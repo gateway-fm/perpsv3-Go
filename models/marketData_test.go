@@ -242,6 +242,7 @@ func TestGetMarketSummaryFromContractModel(t *testing.T) {
 		name     string
 		summary  perpsMarketGoerli.IPerpsMarketModuleMarketSummary
 		marketID *big.Int
+		time     uint64
 		want     *MarketSummary
 	}{
 		{
@@ -259,6 +260,7 @@ func TestGetMarketSummaryFromContractModel(t *testing.T) {
 				IndexPrice:             big.NewInt(600),
 			},
 			marketID: big.NewInt(10),
+			time:     uint64(1000),
 			want: &MarketSummary{
 				MarketID:               big.NewInt(10),
 				Skew:                   big.NewInt(100),
@@ -267,13 +269,14 @@ func TestGetMarketSummaryFromContractModel(t *testing.T) {
 				CurrentFundingRate:     big.NewInt(400),
 				CurrentFundingVelocity: big.NewInt(500),
 				IndexPrice:             big.NewInt(600),
+				BlockTimestamp:         uint64(1000),
 			},
 		},
 	}
 
 	for _, tt := range testCases {
 		t.Run(tt.name, func(t *testing.T) {
-			res := GetMarketSummaryFromContractModel(tt.summary, tt.marketID)
+			res := GetMarketSummaryFromContractModel(tt.summary, tt.marketID, tt.time)
 
 			require.Equal(t, tt.want, res)
 		})
