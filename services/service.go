@@ -55,6 +55,10 @@ type IService interface {
 	// limit. For most public RPC providers the value for limit is 20 000 blocks
 	RetrieveLiquidationsLimit(limit uint64) ([]*models.Liquidation, error)
 
+	// RetrieveAccountLiquidationsLimit is used to get all account liquidated events from the contract with given block search
+	// limit. For most public RPC providers the value for limit is 20 000 blocks
+	RetrieveAccountLiquidationsLimit(limit uint64) ([]*models.AccountLiquidated, error)
+
 	// GetPosition is used to get "Position" data struct from the latest block from the perps market with given data
 	GetPosition(accountID *big.Int, marketID *big.Int) (*models.Position, error)
 

@@ -57,6 +57,61 @@ func (s *Service) FormatAccountsLimit(limit uint64) ([]*models.Account, error) {
 	return accounts, nil
 }
 
+func (s *Service) RetrieveAccountLiquidationsLimit(limit uint64) ([]*models.AccountLiquidated, error) {
+	iterations, last, err := s.getIterationsForLimitQuery(limit)
+	if err != nil {
+		return nil, err
+	}
+
+	var accountLiquidations []*models.AccountLiquidated
+
+	logger.Log().WithField("layer", "Service-QueryAccountLiquidatedLimit").Infof(
+		"fetching accounts with limit: %v to block: %v total iterations: %v...",
+		limit, last, iterations,
+	)
+
+	fromBlock := s.perpsMarketFirstBlock
+	toBlock := fromBlock + limit
+	for i := uint64(1); i <= iterations; i++ {
+		if i%10 == 0 || i == iterations {
+			logger.Log().WithField("layer", "Service-QueryAccountLiquidatedLimit").Infof("-- iteration %v", i)
+		}
+
+		opts := s.getFilterOptsPerpsMarket(fromBlock, &toBlock)
+
+		iterator, err := s.perpsMarket.FilterAccountLiquidated(opts, nil)
+		if err != nil {
+			logger.Log().WithField("layer", "Service-QueryAccountLiquidatedLimit").Errorf("error get iterator: %v", err.Error())
+			return nil, errors.GetFilterErr(err, "perps market")
+		}
+
+		for iterator.Next() {
+			if iterator.Error() != nil {
+				logger.Log().WithField("layer", "Service-QueryAccountLiquidatedLimit").Errorf("iterator error: %v", err.Error())
+				return nil, errors.GetFilterErr(iterator.Error(), "perps market")
+			}
+
+			accountLiquidations = append(accountLiquidations, &models.AccountLiquidated{
+				ID:             iterator.Event.AccountId,
+				Reward:         iterator.Event.Reward,
+				FullLiquidated: iterator.Event.FullLiquidation,
+			})
+		}
+
+		fromBlock = toBlock + 1
+
+		if i == iterations-1 {
+			toBlock = last
+		} else {
+			toBlock = fromBlock + limit
+		}
+	}
+
+	logger.Log().WithField("layer", "Service-QueryAccountLiquidatedLimit").Infof("task completed successfully")
+
+	return accountLiquidations, nil
+}
+
 func (s *Service) FormatAccounts() ([]*models.Account, error) {
 	opts := s.getFilterOptsPerpsMarket(0, nil)
 

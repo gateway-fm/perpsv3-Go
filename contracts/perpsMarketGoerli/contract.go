@@ -3261,7 +3261,7 @@ func (_PerpsMarketGoerli *PerpsMarketGoerliFilterer) WatchAccountCreated(opts *b
 		ownerRule = append(ownerRule, ownerItem)
 	}
 
-	logs, sub, err := _PerpsMarketGoerli.contract.WatchLogs(opts, "AccountCreated", accountIdRule, ownerRule)
+	logs, sub, err := _PerpsMarketGoerli.contract.WatchLogs(opts, "AccountCreated")
 	if err != nil {
 		return nil, err
 	}
@@ -3407,7 +3407,7 @@ func (_PerpsMarketGoerli *PerpsMarketGoerliFilterer) WatchAccountLiquidated(opts
 		accountIdRule = append(accountIdRule, accountIdItem)
 	}
 
-	logs, sub, err := _PerpsMarketGoerli.contract.WatchLogs(opts, "AccountLiquidated", accountIdRule)
+	logs, sub, err := _PerpsMarketGoerli.contract.WatchLogs(opts, "AccountLiquidated")
 	if err != nil {
 		return nil, err
 	}
@@ -7239,7 +7239,7 @@ func (_PerpsMarketGoerli *PerpsMarketGoerliFilterer) WatchPermissionGranted(opts
 		userRule = append(userRule, userItem)
 	}
 
-	logs, sub, err := _PerpsMarketGoerli.contract.WatchLogs(opts, "PermissionGranted", accountIdRule, permissionRule, userRule)
+	logs, sub, err := _PerpsMarketGoerli.contract.WatchLogs(opts, "PermissionGranted")
 	if err != nil {
 		return nil, err
 	}
@@ -7402,7 +7402,7 @@ func (_PerpsMarketGoerli *PerpsMarketGoerliFilterer) WatchPermissionRevoked(opts
 		userRule = append(userRule, userItem)
 	}
 
-	logs, sub, err := _PerpsMarketGoerli.contract.WatchLogs(opts, "PermissionRevoked", accountIdRule, permissionRule, userRule)
+	logs, sub, err := _PerpsMarketGoerli.contract.WatchLogs(opts, "PermissionRevoked")
 	if err != nil {
 		return nil, err
 	}

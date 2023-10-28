@@ -2,6 +2,7 @@ package models
 
 import (
 	"github.com/ethereum/go-ethereum/common"
+	"math/big"
 
 	"github.com/gateway-fm/perpsv3-Go/contracts/perpsMarketGoerli"
 )
@@ -10,6 +11,13 @@ import (
 type UserPermissions struct {
 	User        common.Address
 	Permissions []Permission
+}
+
+// PermissionChanged is a struct for `PermissionRevoked` and `PermissionGranted` contract events
+type PermissionChanged struct {
+	AccountID  *big.Int
+	User       common.Address
+	Permission Permission
 }
 
 // getUserPermissions is used to get UserPermissions slice from given contract user permissions slice

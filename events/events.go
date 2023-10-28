@@ -3,6 +3,8 @@ package events
 import (
 	"github.com/ethereum/go-ethereum/ethclient"
 	"github.com/ethereum/go-ethereum/event"
+	"github.com/gateway-fm/perpsv3-Go/pkg/logger"
+	"math/big"
 
 	"github.com/gateway-fm/perpsv3-Go/contracts/coreGoerli"
 	"github.com/gateway-fm/perpsv3-Go/contracts/perpsMarketGoerli"
@@ -30,6 +32,22 @@ type IEvents interface {
 	// ListenLiquidations is used to listen to all 'PositionLiquidated' contract events and return them as models.Liquidation
 	// struct and return errors on ErrChan chanel
 	ListenLiquidations() (*LiquidationSubscription, error)
+
+	// ListenAccountCreated is used to listen to all 'AccountCreated' contract events and return them as models.Account
+	// struct and return errors on ErrChan chanel
+	ListenAccountCreated() (*AccountCreatedSubscription, error)
+
+	// ListenAccountLiquidated is used to listen to all 'AccountLiquidated' contract events and return them as models.AccountLiquidated
+	// struct and return errors on ErrChan chanel
+	ListenAccountLiquidated() (*AccountLiquidatedSubscription, error)
+
+	// ListenAccountPermissionRevoked is used to listen to all 'PermissionRevoked' contract events and return them as models.PermissionChanged
+	// struct and return errors on ErrChan chanel
+	ListenAccountPermissionRevoked() (*AccountPermissionRevokedSubscription, error)
+
+	// ListenAccountPermissionGranted is used to listen to all 'PermissionGranted' contract events and return them as models.PermissionChanged
+	// struct and return errors on ErrChan chanel
+	ListenAccountPermissionGranted() (*AccountPermissionGrantedSubscription, error)
 }
 
 // Events implements IEvents interface
@@ -78,4 +96,17 @@ func (s *basicSubscription) Close() {
 	close(s.stop)
 	close(s.ErrChan)
 	s.eventSub.Unsubscribe()
+}
+
+// getAccountLastInteraction
+func getAccountLastInteraction(id *big.Int, perpsMarket *perpsMarketGoerli.PerpsMarketGoerli) *big.Int {
+	lastInteraction, err := perpsMarket.GetAccountLastInteraction(nil, id)
+	if err != nil {
+		logger.Log().WithField("layer", "Events-Accounts").Errorf(
+			"error query account last interaction: %v, last interaction set to 0", err.Error(),
+		)
+		lastInteraction = big.NewInt(0)
+	}
+
+	return lastInteraction
 }
