@@ -34,6 +34,66 @@ func (m *MockIEvents) EXPECT() *MockIEventsMockRecorder {
 	return m.recorder
 }
 
+// ListenAccountCreated mocks base method.
+func (m *MockIEvents) ListenAccountCreated() (*events.AccountCreatedSubscription, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "ListenAccountCreated")
+	ret0, _ := ret[0].(*events.AccountCreatedSubscription)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// ListenAccountCreated indicates an expected call of ListenAccountCreated.
+func (mr *MockIEventsMockRecorder) ListenAccountCreated() *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "ListenAccountCreated", reflect.TypeOf((*MockIEvents)(nil).ListenAccountCreated))
+}
+
+// ListenAccountLiquidated mocks base method.
+func (m *MockIEvents) ListenAccountLiquidated() (*events.AccountLiquidatedSubscription, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "ListenAccountLiquidated")
+	ret0, _ := ret[0].(*events.AccountLiquidatedSubscription)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// ListenAccountLiquidated indicates an expected call of ListenAccountLiquidated.
+func (mr *MockIEventsMockRecorder) ListenAccountLiquidated() *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "ListenAccountLiquidated", reflect.TypeOf((*MockIEvents)(nil).ListenAccountLiquidated))
+}
+
+// ListenAccountPermissionGranted mocks base method.
+func (m *MockIEvents) ListenAccountPermissionGranted() (*events.AccountPermissionGrantedSubscription, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "ListenAccountPermissionGranted")
+	ret0, _ := ret[0].(*events.AccountPermissionGrantedSubscription)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// ListenAccountPermissionGranted indicates an expected call of ListenAccountPermissionGranted.
+func (mr *MockIEventsMockRecorder) ListenAccountPermissionGranted() *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "ListenAccountPermissionGranted", reflect.TypeOf((*MockIEvents)(nil).ListenAccountPermissionGranted))
+}
+
+// ListenAccountPermissionRevoked mocks base method.
+func (m *MockIEvents) ListenAccountPermissionRevoked() (*events.AccountPermissionRevokedSubscription, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "ListenAccountPermissionRevoked")
+	ret0, _ := ret[0].(*events.AccountPermissionRevokedSubscription)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// ListenAccountPermissionRevoked indicates an expected call of ListenAccountPermissionRevoked.
+func (mr *MockIEventsMockRecorder) ListenAccountPermissionRevoked() *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "ListenAccountPermissionRevoked", reflect.TypeOf((*MockIEvents)(nil).ListenAccountPermissionRevoked))
+}
+
 // ListenLiquidations mocks base method.
 func (m *MockIEvents) ListenLiquidations() (*events.LiquidationSubscription, error) {
 	m.ctrl.T.Helper()

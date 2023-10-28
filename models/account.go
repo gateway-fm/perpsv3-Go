@@ -20,6 +20,16 @@ type Account struct {
 	LastInteraction uint64
 }
 
+// AccountLiquidated is a struct for `AccountLiquidated` event
+//   - ID is an account NFT id
+//   - Reward is a liquidation reward transferred to caller
+//   - FullLiquidated is a filed for define is account fully liquidated or not
+type AccountLiquidated struct {
+	ID             *big.Int
+	Reward         *big.Int
+	FullLiquidated bool
+}
+
 // FormatAccount is used to get account from given data
 func FormatAccount(
 	id *big.Int,
