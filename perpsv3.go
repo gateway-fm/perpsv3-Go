@@ -69,6 +69,10 @@ type IPerpsv3 interface {
 	// with given block search limit. For most public RPC providers the value for limit is 20 000 blocks
 	RetrieveLiquidationsLimit(limit uint64) ([]*models.Liquidation, error)
 
+	// RetrieveAccountLiquidationsLimit is used to get all account liquidated events from the contract with given block search
+	// limit. For most public RPC providers the value for limit is 20 000 blocks
+	RetrieveAccountLiquidationsLimit(limit uint64) ([]*models.AccountLiquidated, error)
+
 	// ListenTrades is used to subscribe on the contract "OrderSettled" event. The goroutine will return events on the
 	// TradesChan chanel and errors on the ErrChan chanel.
 	// To close the subscription use events.TradeSubscription `Close` function
@@ -93,6 +97,22 @@ type IPerpsv3 interface {
 	// on the LiquidationsChan chanel and errors on the ErrChan chanel.
 	// To close the subscription use events.LiquidationSubscription `Close` function
 	ListenLiquidations() (*events.LiquidationSubscription, error)
+
+	// ListenAccountCreated is used to listen to all 'AccountCreated' contract events and return them as models.Account
+	// struct and return errors on ErrChan chanel
+	ListenAccountCreated() (*events.AccountCreatedSubscription, error)
+
+	// ListenAccountLiquidated is used to listen to all 'AccountLiquidated' contract events and return them as models.AccountLiquidated
+	// struct and return errors on ErrChan chanel
+	ListenAccountLiquidated() (*events.AccountLiquidatedSubscription, error)
+
+	// ListenAccountPermissionRevoked is used to listen to all 'PermissionRevoked' contract events and return them as models.PermissionChanged
+	// struct and return errors on ErrChan chanel
+	ListenAccountPermissionRevoked() (*events.AccountPermissionRevokedSubscription, error)
+
+	// ListenAccountPermissionGranted is used to listen to all 'PermissionGranted' contract events and return them as models.PermissionChanged
+	// struct and return errors on ErrChan chanel
+	ListenAccountPermissionGranted() (*events.AccountPermissionGrantedSubscription, error)
 
 	// GetPosition is used to get position data struct from latest block with given params
 	// Function can return contract error if market ID is invalid
@@ -198,6 +218,10 @@ func (p *Perpsv3) RetrieveLiquidationsLimit(limit uint64) ([]*models.Liquidation
 	return p.service.RetrieveLiquidationsLimit(limit)
 }
 
+func (p *Perpsv3) RetrieveAccountLiquidationsLimit(limit uint64) ([]*models.AccountLiquidated, error) {
+	return p.service.RetrieveAccountLiquidationsLimit(limit)
+}
+
 func (p *Perpsv3) ListenTrades() (*events.TradeSubscription, error) {
 	return p.events.ListenTrades()
 }
@@ -216,6 +240,22 @@ func (p *Perpsv3) ListenMarketUpdatesBig() (*events.MarketUpdateSubscriptionBig,
 
 func (p *Perpsv3) ListenLiquidations() (*events.LiquidationSubscription, error) {
 	return p.events.ListenLiquidations()
+}
+
+func (p *Perpsv3) ListenAccountCreated() (*events.AccountCreatedSubscription, error) {
+	return p.events.ListenAccountCreated()
+}
+
+func (p *Perpsv3) ListenAccountLiquidated() (*events.AccountLiquidatedSubscription, error) {
+	return p.events.ListenAccountLiquidated()
+}
+
+func (p *Perpsv3) ListenAccountPermissionRevoked() (*events.AccountPermissionRevokedSubscription, error) {
+	return p.events.ListenAccountPermissionRevoked()
+}
+
+func (p *Perpsv3) ListenAccountPermissionGranted() (*events.AccountPermissionGrantedSubscription, error) {
+	return p.events.ListenAccountPermissionGranted()
 }
 
 func (p *Perpsv3) GetPosition(accountID *big.Int, marketID *big.Int) (*models.Position, error) {
