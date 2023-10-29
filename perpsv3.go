@@ -140,6 +140,12 @@ type IPerpsv3 interface {
 	// GetFundingParameters is used to get funding params for given market ID
 	GetFundingParameters(marketId *big.Int) (*models.FundingParameters, error)
 
+	// GetAccountLastInteraction is used to get accounts last interaction for given account ID
+	GetAccountLastInteraction(accountId *big.Int) (*big.Int, error)
+
+	// GetAccountOwner is used to get accounts owner address for given account ID
+	GetAccountOwner(accountId *big.Int) (string, error)
+
 	// FormatAccount is used to get account, and it's additional data from the contract by given account id
 	FormatAccount(id *big.Int) (*models.Account, error)
 
@@ -288,6 +294,14 @@ func (p *Perpsv3) GetLiquidationParameters(marketId *big.Int) (*models.Liquidati
 
 func (p *Perpsv3) GetFundingParameters(marketId *big.Int) (*models.FundingParameters, error) {
 	return p.service.GetFundingParameters(marketId)
+}
+
+func (p *Perpsv3) GetAccountLastInteraction(accountId *big.Int) (*big.Int, error) {
+	return p.service.GetAccountLastInteraction(accountId)
+}
+
+func (p *Perpsv3) GetAccountOwner(accountId *big.Int) (string, error) {
+	return p.service.GetAccountOwner(accountId)
 }
 
 func (p *Perpsv3) FormatAccounts() ([]*models.Account, error) {

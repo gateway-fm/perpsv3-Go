@@ -128,6 +128,26 @@ func (s *Service) GetAvailableMargin(accountId *big.Int) (*big.Int, error) {
 	return margin, nil
 }
 
+func (s *Service) GetAccountLastInteraction(accountId *big.Int) (*big.Int, error) {
+	time, err := s.perpsMarket.GetAccountLastInteraction(nil, accountId)
+	if err != nil {
+		logger.Log().WithField("layer", "Service-GetAccountLastInteraction").Errorf("get account last interaction error: %v", err.Error())
+		return nil, errors.GetReadContractErr(err, "perps market", "GetAccountLastInteraction")
+	}
+
+	return time, nil
+}
+
+func (s *Service) GetAccountOwner(accountId *big.Int) (string, error) {
+	owner, err := s.perpsMarket.GetAccountOwner(nil, accountId)
+	if err != nil {
+		logger.Log().WithField("layer", "Service-GetAccountOwner").Errorf("get account owner error: %v", err.Error())
+		return "", errors.GetReadContractErr(err, "perps market", "GetAccountOwner")
+	}
+
+	return owner.Hex(), nil
+}
+
 // formatAccounts is used to get accounts from the contract using event filter function for 'AccountCreated' event
 // and given filter options
 func (s *Service) formatAccounts(opts *bind.FilterOpts) ([]*models.Account, error) {
