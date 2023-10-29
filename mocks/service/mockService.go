@@ -80,6 +80,36 @@ func (mr *MockIServiceMockRecorder) FormatAccountsLimit(limit interface{}) *gomo
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "FormatAccountsLimit", reflect.TypeOf((*MockIService)(nil).FormatAccountsLimit), limit)
 }
 
+// GetAccountLastInteraction mocks base method.
+func (m *MockIService) GetAccountLastInteraction(accountId *big.Int) (*big.Int, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "GetAccountLastInteraction", accountId)
+	ret0, _ := ret[0].(*big.Int)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// GetAccountLastInteraction indicates an expected call of GetAccountLastInteraction.
+func (mr *MockIServiceMockRecorder) GetAccountLastInteraction(accountId interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetAccountLastInteraction", reflect.TypeOf((*MockIService)(nil).GetAccountLastInteraction), accountId)
+}
+
+// GetAccountOwner mocks base method.
+func (m *MockIService) GetAccountOwner(accountId *big.Int) (string, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "GetAccountOwner", accountId)
+	ret0, _ := ret[0].(string)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// GetAccountOwner indicates an expected call of GetAccountOwner.
+func (mr *MockIServiceMockRecorder) GetAccountOwner(accountId interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetAccountOwner", reflect.TypeOf((*MockIService)(nil).GetAccountOwner), accountId)
+}
+
 // GetAvailableMargin mocks base method.
 func (m *MockIService) GetAvailableMargin(accountId *big.Int) (*big.Int, error) {
 	m.ctrl.T.Helper()
