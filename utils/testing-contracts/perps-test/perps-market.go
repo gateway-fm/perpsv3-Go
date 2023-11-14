@@ -218,6 +218,19 @@ func (m *TestPerpsMarket) CommitOrder(marketIDS string, sizeS string) {
 	logger.Log().WithField("layer", "TestPerpsMarket-CommitOrder").Infof("order commited, tx hash: %v", tx.Hash())
 }
 
+func (m *TestPerpsMarket) LiquidateAccount(accountIDs string) {
+	aut := m.getAut("Liquidate")
+
+	accountID := m.getBig(accountIDs)
+
+	tx, err := m.perpsMarket.Liquidate(aut, accountID)
+	if err != nil {
+		logger.Log().WithField("layer", "TestPerpsMarket-LiquidateAccount").Fatalf("liquidate account err: %v", err.Error())
+	}
+
+	logger.Log().WithField("layer", "TestPerpsMarket-LiquidateAccount").Infof("account liquidated, tx hash: %v", tx.Hash())
+}
+
 func (m *TestPerpsMarket) Close() {
 	m.rpcClient.Close()
 }

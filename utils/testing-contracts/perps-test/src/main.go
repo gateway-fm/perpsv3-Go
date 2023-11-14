@@ -55,6 +55,9 @@ func main() {
 			// Account ID, Permission and User
 			perps.GrantPermission(args[2], args[3], args[4])
 			perps.Close()
+		case "LiquidateAccount":
+			perps.LiquidateAccount(args[2])
+			perps.Close()
 		default:
 			perps.Close()
 			logger.Log().WithField("layer", "TestPerpsMarket-Main").Fatalf("unknown command")
