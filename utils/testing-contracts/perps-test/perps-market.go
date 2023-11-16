@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"math/big"
 	"os"
+	"time"
 
 	"github.com/ethereum/go-ethereum/accounts/abi/bind"
 	"github.com/ethereum/go-ethereum/common"
@@ -191,7 +192,7 @@ func (m *TestPerpsMarket) CommitOrder(marketIDS string, sizeS string) {
 		MarketId:             marketID,
 		AccountId:            m.TestAccount,
 		SizeDelta:            size,
-		SettlementStrategyId: big.NewInt(0),
+		SettlementStrategyId: big.NewInt(2),
 		AcceptablePrice:      summary.IndexPrice.Add(summary.IndexPrice, big.NewInt(10000)),
 		TrackingCode:         [32]byte{},
 		Referrer:             common.HexToAddress("0x0000000000000000000000000000000000000000"),
@@ -202,20 +203,25 @@ func (m *TestPerpsMarket) CommitOrder(marketIDS string, sizeS string) {
 			"- MarketID: %v\n"+
 			"- AccountID: %v\n"+
 			"- SizeDelta: %v\n"+
-			"- SettlementStrategyId: 0\n"+
+			"- SettlementStrategyId: %s\n"+
 			"- AcceptablePrice: %v\n"+
 			"- TrackingCode: 0\n"+
 			"- Referrer: 0x0000000000000000000000000000000000000000",
-		marketID.String(), m.TestAccount, size.String(), summary.IndexPrice.Add(summary.IndexPrice, big.NewInt(10000)),
+		marketID.String(), m.TestAccount, size.String(), req.SettlementStrategyId.String(), summary.IndexPrice.Add(summary.IndexPrice, big.NewInt(10000)),
 	)
 
 	tx, err := m.perpsMarket.CommitOrder(aut, req)
 	if err != nil {
-
 		logger.Log().WithField("layer", "TestPerpsMarket-CommitOrder").Fatalf("commit order err: %v", err.Error())
 	}
 
 	logger.Log().WithField("layer", "TestPerpsMarket-CommitOrder").Infof("order commited, tx hash: %v", tx.Hash())
+
+	if err = m.SettlePythOrder(m.TestAccount, 10, 1*time.Second); err != nil {
+		logger.Log().WithField("layer", "SettlePythOrder").Fatalf(
+			"error get latest block: %v", err.Error(),
+		)
+	}
 }
 
 func (m *TestPerpsMarket) LiquidateAccount(accountIDs string) {
