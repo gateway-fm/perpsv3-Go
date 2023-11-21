@@ -304,6 +304,10 @@ func (p *Perpsv3) GetAccountOwner(accountId *big.Int) (string, error) {
 	return p.service.GetAccountOwner(accountId)
 }
 
+func (p *Perpsv3) GetRequiredMaintenanceMargin(accountId *big.Int) (*big.Int, error) {
+	return p.service.GetRequiredMaintenanceMargin(accountId)
+}
+
 func (p *Perpsv3) FormatAccounts() ([]*models.Account, error) {
 	return p.service.FormatAccounts()
 }
