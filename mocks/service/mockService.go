@@ -230,6 +230,21 @@ func (mr *MockIServiceMockRecorder) GetPosition(accountID, marketID interface{})
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetPosition", reflect.TypeOf((*MockIService)(nil).GetPosition), accountID, marketID)
 }
 
+// GetRequiredMaintenanceMargin mocks base method.
+func (m *MockIService) GetRequiredMaintenanceMargin(accountId *big.Int) (*big.Int, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "GetRequiredMaintenanceMargin", accountId)
+	ret0, _ := ret[0].(*big.Int)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// GetRequiredMaintenanceMargin indicates an expected call of GetRequiredMaintenanceMargin.
+func (mr *MockIServiceMockRecorder) GetRequiredMaintenanceMargin(accountId interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetRequiredMaintenanceMargin", reflect.TypeOf((*MockIService)(nil).GetRequiredMaintenanceMargin), accountId)
+}
+
 // RetrieveAccountLiquidationsLimit mocks base method.
 func (m *MockIService) RetrieveAccountLiquidationsLimit(limit uint64) ([]*models.AccountLiquidated, error) {
 	m.ctrl.T.Helper()

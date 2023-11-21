@@ -1,6 +1,7 @@
 package services
 
 import (
+	"fmt"
 	"math/big"
 
 	"github.com/ethereum/go-ethereum/accounts/abi/bind"
@@ -126,6 +127,20 @@ func (s *Service) GetAvailableMargin(accountId *big.Int) (*big.Int, error) {
 	}
 
 	return margin, nil
+}
+
+func (s *Service) GetRequiredMaintenanceMargin(accountId *big.Int) (*big.Int, error) {
+	requiredMargins, err := s.perpsMarket.GetRequiredMargins(nil, accountId)
+	if err != nil {
+		logger.Log().WithField("layer", "").Errorf("get required margins error: %v", err.Error())
+		return nil, errors.GetReadContractErr(err, "perps market", "GetRequiredMargins")
+	} else if requiredMargins.RequiredMaintenanceMargin == nil {
+		logger.Log().WithField("layer", "").Errorf("get required margins error: MaintenanceMargin = nil")
+		return nil, errors.GetReadContractErr(fmt.Errorf("required margins error: MaintenanceMargin = nil"),
+			"perps market", "GetRequiredMargins")
+	}
+
+	return requiredMargins.RequiredMaintenanceMargin, nil
 }
 
 func (s *Service) GetAccountLastInteraction(accountId *big.Int) (*big.Int, error) {
