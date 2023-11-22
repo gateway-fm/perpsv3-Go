@@ -551,4 +551,4 @@ The goroutine will return events as a `Liquidation` model on the `LiquidationsCh
 close the subscription use the `Close` function.
 
 ## License
-This project is licensed under the MIT License.
+This project is licensed under the MIT License.# asatruPythonE2E
