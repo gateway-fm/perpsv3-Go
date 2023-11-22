@@ -2,6 +2,7 @@
 
 * [Overview](README.md)
 * [Development progress](development-progress.md)
+* [V3 Frequently Asked Questions (FAQ)](v3-frequently-asked-questions-faq.md)
 
 ## For Liquidity Providers
 
@@ -24,7 +25,8 @@
 ## For Derivatives Market Builders
 
 * [Build on v3](for-derivatives-market-builders/build-on-v3.md)
-* [Integrating Synthetix](for-derivatives-market-builders/integrating-synthetix.md)
+* [Build on v3 FAQ](for-derivatives-market-builders/build-on-v3-faq.md)
+* [Operating a Market](for-derivatives-market-builders/integrating-synthetix.md)
 * [Registering a Market](for-derivatives-market-builders/registering-a-market.md)
 
 ## For Traders
@@ -36,6 +38,13 @@
 
 * [Synthetix Governance](for-governance-participants/synthetix-governance.md)
 * [Elections](for-governance-participants/elections.md)
+
+## FOR PERP INTEGRATORS
+
+* [Perps V3](for-perp-integrators/perps-v3.md)
+* [Sandbox with Perps](for-perp-integrators/sandbox-with-perps.md)
+* [Base Andromeda](for-perp-integrators/base-andromeda.md)
+* [Perps V3 Keeper](for-perp-integrators/perps-v3-keeper.md)
 
 ## For Developers
 

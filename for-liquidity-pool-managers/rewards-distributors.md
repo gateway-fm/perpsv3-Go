@@ -20,10 +20,18 @@ A pool owner can then connect a rewards distributor to a vault with the `registe
 
 Below is an example Rewards Distributor contract that can be used to develop your own.
 
-{% @github-files/github-code-block url="https://github.com/Synthetixio/example-rewards-distributor" %}
+{% @github-files/github-code-block %}
+
+Below is an example transaction that:
+
+1. Registers a Rewards Distributor contract
+2. to poolId 69
+3. with SNX (on Optimism Goerli)
+
+{% embed url="https://goerli-optimism.etherscan.io/tx/0xcbc66ab9276aa828149cabbe40c7eb88408d9963664ac37f9f69c4f228a7811e" %}
 
 ## Distributing Rewards <a href="#rewards-manager" id="rewards-manager"></a>
 
 A registered rewards distributor can call the `distributeRewards` function. The `poolId` and `collateralType` parameters identify the relevant vault. `amount` indicates the total amount of tokens to be distributed starting at the `start` timestamp over `duration` seconds. Note that `duration` may be set to 0, such that the rewards are distributed instantaneously based on the pro-rata distribution at `start`. A rewards distributor can call the `distributeRewards` function multiple times, adding to the rewards already distributed to those participating in the vault.
 
-Anyone can call the `getAvailableRewards` function to see what an account ID can claim from a distributor registered to a specified vault, accounting for amounts previously claimed. Then, an address that owns (or has relevant permissions on) that account can call the `claimRewards` function. This, in turn, calls the `payout` function on the rewards distributor with the appropriate amount.
+Anyone can static call the `claimRewards` function to see what an account ID can claim from a distributor registered to a specified vault, accounting for amounts previously claimed. Then, an address that owns (or has relevant permissions on) that account can call the `claimRewards` function. This, in turn, calls the `payout` function on the rewards distributor with the appropriate amount.
