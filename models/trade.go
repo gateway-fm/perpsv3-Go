@@ -5,7 +5,7 @@ import (
 
 	"github.com/ethereum/go-ethereum/common"
 
-	"github.com/gateway-fm/perpsv3-Go/contracts/perpsMarketGoerli"
+	"github.com/gateway-fm/perpsv3-Go/contracts/perpsMarket"
 	"github.com/gateway-fm/perpsv3-Go/pkg/logger"
 )
 
@@ -46,7 +46,7 @@ type Trade struct {
 }
 
 // GetTradeFromEvent is used to get new Trade from given event and block timestamp
-func GetTradeFromEvent(event *perpsMarketGoerli.PerpsMarketGoerliOrderSettled, time uint64) *Trade {
+func GetTradeFromEvent(event *perpsMarket.PerpsMarketOrderSettled, time uint64) *Trade {
 	if event == nil {
 		logger.Log().WithField("layer", "Models-Trade").Warning("nil event received")
 		return &Trade{}

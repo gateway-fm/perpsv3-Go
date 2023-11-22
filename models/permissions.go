@@ -3,7 +3,7 @@ package models
 import (
 	"strings"
 
-	"github.com/gateway-fm/perpsv3-Go/contracts/perpsMarketGoerli"
+	"github.com/gateway-fm/perpsv3-Go/contracts/perpsMarket"
 	"github.com/gateway-fm/perpsv3-Go/errors"
 	"github.com/gateway-fm/perpsv3-Go/pkg/logger"
 )
@@ -51,7 +51,7 @@ func PermissionFromString(s string) (Permission, error) {
 }
 
 // decodePermissions is used to decode given contract permissions to Permission slice
-func decodePermissions(perm perpsMarketGoerli.IAccountModuleAccountPermissions) (res []Permission) {
+func decodePermissions(perm perpsMarket.IAccountModuleAccountPermissions) (res []Permission) {
 	for _, b := range perm.Permissions {
 		p, err := PermissionFromString(strings.TrimRight(string(b[:]), string(rune(0))))
 		if err != nil {

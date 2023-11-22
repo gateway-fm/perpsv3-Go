@@ -5,7 +5,7 @@ import (
 
 	"github.com/ethereum/go-ethereum/event"
 
-	"github.com/gateway-fm/perpsv3-Go/contracts/perpsMarketGoerli"
+	"github.com/gateway-fm/perpsv3-Go/contracts/perpsMarket"
 	"github.com/gateway-fm/perpsv3-Go/errors"
 	"github.com/gateway-fm/perpsv3-Go/models"
 	"github.com/gateway-fm/perpsv3-Go/pkg/logger"
@@ -15,11 +15,11 @@ import (
 type AccountPermissionRevokedSubscription struct {
 	*basicSubscription
 	PermissionChangeChan chan *models.PermissionChanged
-	contractEventChan    chan *perpsMarketGoerli.PerpsMarketGoerliPermissionRevoked
+	contractEventChan    chan *perpsMarket.PerpsMarketPermissionRevoked
 }
 
 func (e *Events) ListenAccountPermissionRevoked() (*AccountPermissionRevokedSubscription, error) {
-	revokedChan := make(chan *perpsMarketGoerli.PerpsMarketGoerliPermissionRevoked)
+	revokedChan := make(chan *perpsMarket.PerpsMarketPermissionRevoked)
 
 	revokedSub, err := e.perpsMarket.WatchPermissionRevoked(nil, revokedChan, nil, nil, nil)
 	if err != nil {
@@ -37,7 +37,7 @@ func (e *Events) ListenAccountPermissionRevoked() (*AccountPermissionRevokedSubs
 // newAccountPermissionRevokedSubscription is used to get new AccountPermissionRevokedSubscription instance
 func newAccountPermissionRevokedSubscription(
 	eventSub event.Subscription,
-	revoked chan *perpsMarketGoerli.PerpsMarketGoerliPermissionRevoked,
+	revoked chan *perpsMarket.PerpsMarketPermissionRevoked,
 ) *AccountPermissionRevokedSubscription {
 	return &AccountPermissionRevokedSubscription{
 		basicSubscription:    newBasicSubscription(eventSub),
@@ -47,7 +47,7 @@ func newAccountPermissionRevokedSubscription(
 }
 
 // listen is used to run events listen goroutine
-func (s *AccountPermissionRevokedSubscription) listen(perpsMarket *perpsMarketGoerli.PerpsMarketGoerli) {
+func (s *AccountPermissionRevokedSubscription) listen(perps *perpsMarket.PerpsMarket) {
 	defer func() {
 		close(s.PermissionChangeChan)
 		close(s.contractEventChan)

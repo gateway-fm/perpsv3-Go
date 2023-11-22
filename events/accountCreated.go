@@ -3,7 +3,7 @@ package events
 import (
 	"github.com/ethereum/go-ethereum/event"
 
-	"github.com/gateway-fm/perpsv3-Go/contracts/perpsMarketGoerli"
+	"github.com/gateway-fm/perpsv3-Go/contracts/perpsMarket"
 	"github.com/gateway-fm/perpsv3-Go/errors"
 	"github.com/gateway-fm/perpsv3-Go/models"
 	"github.com/gateway-fm/perpsv3-Go/pkg/logger"
@@ -13,11 +13,11 @@ import (
 type AccountCreatedSubscription struct {
 	*basicSubscription
 	NewAccountChan    chan *models.Account
-	contractEventChan chan *perpsMarketGoerli.PerpsMarketGoerliAccountCreated
+	contractEventChan chan *perpsMarket.PerpsMarketAccountCreated
 }
 
 func (e *Events) ListenAccountCreated() (*AccountCreatedSubscription, error) {
-	createdChan := make(chan *perpsMarketGoerli.PerpsMarketGoerliAccountCreated)
+	createdChan := make(chan *perpsMarket.PerpsMarketAccountCreated)
 
 	createdSub, err := e.perpsMarket.WatchAccountCreated(nil, createdChan, nil, nil)
 	if err != nil {
@@ -35,7 +35,7 @@ func (e *Events) ListenAccountCreated() (*AccountCreatedSubscription, error) {
 // newAccountCreatedSubscription is used to get new AccountCreatedSubscription instance
 func newAccountCreatedSubscription(
 	eventSub event.Subscription,
-	created chan *perpsMarketGoerli.PerpsMarketGoerliAccountCreated,
+	created chan *perpsMarket.PerpsMarketAccountCreated,
 ) *AccountCreatedSubscription {
 	return &AccountCreatedSubscription{
 		basicSubscription: newBasicSubscription(eventSub),
@@ -45,7 +45,7 @@ func newAccountCreatedSubscription(
 }
 
 // listen is used to run events listen goroutine
-func (s *AccountCreatedSubscription) listen(perpsMarket *perpsMarketGoerli.PerpsMarketGoerli) {
+func (s *AccountCreatedSubscription) listen(perps *perpsMarket.PerpsMarket) {
 	defer func() {
 		close(s.NewAccountChan)
 		close(s.contractEventChan)
@@ -64,13 +64,13 @@ func (s *AccountCreatedSubscription) listen(perpsMarket *perpsMarketGoerli.Perps
 			}
 			return
 		case newAccount := <-s.contractEventChan:
-			lastInteraction := getAccountLastInteraction(newAccount.AccountId, perpsMarket)
+			lastInteraction := getAccountLastInteraction(newAccount.AccountId, perps)
 
 			account := models.FormatAccount(
 				newAccount.AccountId,
 				newAccount.Owner,
 				lastInteraction.Uint64(),
-				[]perpsMarketGoerli.IAccountModuleAccountPermissions{},
+				[]perpsMarket.IAccountModuleAccountPermissions{},
 			)
 
 			s.NewAccountChan <- account

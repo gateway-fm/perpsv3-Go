@@ -1,50 +1,33 @@
-# generate go files for all contracts
-generate-contracts-all: generate-contracts-goerli generate-contracts-optimism
-
 # generate go files for goerli net contracts
-generate-contracts-goerli: generate-core-goerli generate-spot_market-goerli generate-perps_market-goerli generate-susdt-goerli
-
-# generate fo giles for optimism net contracts
-generate-contracts-optimism: generate-core-optimism generate-spot_market-optimism
+generate-contracts-andromeda: generate-core-andromeda generate-perps_market-andromeda generate-susdt-andromeda generate-forwarder-andromeda generate-erc7412-andromeda
 
 # generate all mocks
 mock-all: mock-service mock-events
 
-# generate go file for SynthetixCore contract on goerli net
-generate-core-goerli:
-	go run ./utils/getAbis/get-abis.go --get-mkdir ./Synthetix-Gitbook-v3/for-developers/abis/420-SynthetixCore.json ./contracts/coreGoerli
-	abigen --abi=./contracts/420-SynthetixCore.json --pkg=coreGoerli --out=./contracts/coreGoerli/contract.go
-	go run ./utils/getAbis/get-abis.go --rm ./contracts/420-SynthetixCore.json
+# generate go file for SynthetixCore contract on andromeda net
+generate-core-andromeda:
+	go run ./utils/getAbis/get-abis.go --get-mkdir ./Synthetix-Gitbook-v3/for-developers/abis/84531-andromeda-SynthetixCore.json ./contracts/core
+	abigen --abi=./contracts/84531-andromeda-SynthetixCore.json --pkg=core --out=./contracts/core/contract.go
 
-# generate go file for SpotMarket contract on goerli net
-generate-spot_market-goerli:
-	go run ./utils/getAbis/get-abis.go --get-mkdir ./Synthetix-Gitbook-v3/for-developers/abis/420-SpotMarket.json ./contracts/spotMarketGoerli
-	abigen --abi=./contracts/420-SpotMarket.json --pkg=spotMarketGoerli --out=./contracts/spotMarketGoerli/contract.go
-	go run ./utils/getAbis/get-abis.go --rm ./contracts/420-SpotMarket.json
+# generate go file for PerpsMarket contract on andromeda net
+generate-perps_market-andromeda:
+	go run ./utils/getAbis/get-abis.go --get-mkdir ./Synthetix-Gitbook-v3/for-developers/abis/84531-andromeda-PerpsMarket.json ./contracts/perpsMarket
+	abigen --abi=./contracts/84531-andromeda-PerpsMarket.json --pkg=perpsMarket --out=./contracts/perpsMarket/contract.go
 
-# generate go file for PerpsMarket contract on goerli net
-generate-perps_market-goerli:
-	go run ./utils/getAbis/get-abis.go --get-mkdir ./Synthetix-Gitbook-v3/for-developers/abis/420-PerpsMarket.json ./contracts/perpsMarketGoerli
-	abigen --abi=./contracts/420-PerpsMarket.json --pkg=perpsMarketGoerli --out=./contracts/perpsMarketGoerli/contract.go
-	go run ./utils/getAbis/get-abis.go --rm ./contracts/420-PerpsMarket.json
+# generate go file for snxUSDT contract on andromeda net
+generate-susdt-andromeda:
+	go run ./utils/getAbis/get-abis.go --get-mkdir ./Synthetix-Gitbook-v3/for-developers/abis/84531-andromeda-snxUSDToken.json ./contracts/sUSDT
+	abigen --abi=./contracts/84531-andromeda-snxUSDToken.json --pkg=sUSDT --out=./contracts/sUSDT/contract.go
 
-# generate go file for snxUSDT contract on goerli net
-generate-susdt-goerli:
-	go run ./utils/getAbis/get-abis.go --get-mkdir ./Synthetix-Gitbook-v3/for-developers/abis/420-snxUSDToken.json ./contracts/sUSDTGoerli
-	abigen --abi=./contracts/420-snxUSDToken.json --pkg=sUSDTGoerli --out=./contracts/sUSDTGoerli/contract.go
-	go run ./utils/getAbis/get-abis.go --rm ./contracts/420-snxUSDToken.json
+# generate go file for TrustedMulticallForwarder contract on andromeda net
+generate-forwarder-andromeda:
+	go run ./utils/getAbis/get-abis.go --get-mkdir ./additional-abis/84531-TrustedMulticallForwarder.json ./contracts/forwarder
+	abigen --abi=./contracts/84531-TrustedMulticallForwarder.json --pkg=forwarder --out=./contracts/forwarder/contract.go
 
-# generate go file for SynthetixCore contract on optimism net
-generate-core-optimism:
-	go run ./utils/getAbis/get-abis.go --get-mkdir ./Synthetix-Gitbook-v3/for-developers/abis/10-SynthetixCore.json ./contracts/coreOptimism
-	abigen --abi=./contracts/10-SynthetixCore.json --pkg=coreOptimism --out=./contracts/coreOptimism/contract.go
-	go run ./utils/getAbis/get-abis.go --rm ./contracts/10-SynthetixCore.json
-
-# generate go file for SpotMarket contract on optimism net
-generate-spot_market-optimism:
-	go run ./utils/getAbis/get-abis.go --get-mkdir ./Synthetix-Gitbook-v3/for-developers/abis/10-SpotMarket.json ./contracts/spotMarketOptimism
-	abigen --abi=./contracts/10-SpotMarket.json --pkg=spotMarketOptimism --out=./contracts/spotMarketOptimism/contract.go
-	go run ./utils/getAbis/get-abis.go --rm ./contracts/10-SpotMarket.json
+# generate go file for ERC7412 contract on andromeda net
+generate-erc7412-andromeda:
+	go run ./utils/getAbis/get-abis.go --get-mkdir ./additional-abis/84531-ERC7412.json ./contracts/ERC7412
+	abigen --abi=./contracts/84531-ERC7412.json --pkg=erc7412 --out=./contracts/ERC7412/contract.go
 
 # update Synthetix-Gitbook-v3 subtree
 update-subtree:

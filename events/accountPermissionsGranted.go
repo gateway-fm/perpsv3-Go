@@ -5,7 +5,7 @@ import (
 
 	"github.com/ethereum/go-ethereum/event"
 
-	"github.com/gateway-fm/perpsv3-Go/contracts/perpsMarketGoerli"
+	"github.com/gateway-fm/perpsv3-Go/contracts/perpsMarket"
 	"github.com/gateway-fm/perpsv3-Go/errors"
 	"github.com/gateway-fm/perpsv3-Go/models"
 	"github.com/gateway-fm/perpsv3-Go/pkg/logger"
@@ -15,11 +15,11 @@ import (
 type AccountPermissionGrantedSubscription struct {
 	*basicSubscription
 	PermissionChangeChan chan *models.PermissionChanged
-	contractEventChan    chan *perpsMarketGoerli.PerpsMarketGoerliPermissionGranted
+	contractEventChan    chan *perpsMarket.PerpsMarketPermissionGranted
 }
 
 func (e *Events) ListenAccountPermissionGranted() (*AccountPermissionGrantedSubscription, error) {
-	createdChan := make(chan *perpsMarketGoerli.PerpsMarketGoerliPermissionGranted)
+	createdChan := make(chan *perpsMarket.PerpsMarketPermissionGranted)
 
 	createdSub, err := e.perpsMarket.WatchPermissionGranted(nil, createdChan, nil, nil, nil)
 	if err != nil {
@@ -37,7 +37,7 @@ func (e *Events) ListenAccountPermissionGranted() (*AccountPermissionGrantedSubs
 // newAccountPermissionGrantedSubscription is used to get new AccountPermissionGrantedSubscription instance
 func newAccountPermissionGrantedSubscription(
 	eventSub event.Subscription,
-	created chan *perpsMarketGoerli.PerpsMarketGoerliPermissionGranted,
+	created chan *perpsMarket.PerpsMarketPermissionGranted,
 ) *AccountPermissionGrantedSubscription {
 	return &AccountPermissionGrantedSubscription{
 		basicSubscription:    newBasicSubscription(eventSub),
@@ -47,7 +47,7 @@ func newAccountPermissionGrantedSubscription(
 }
 
 // listen is used to run events listen goroutine
-func (s *AccountPermissionGrantedSubscription) listen(perpsMarket *perpsMarketGoerli.PerpsMarketGoerli) {
+func (s *AccountPermissionGrantedSubscription) listen(perps *perpsMarket.PerpsMarket) {
 	defer func() {
 		close(s.PermissionChangeChan)
 		close(s.contractEventChan)

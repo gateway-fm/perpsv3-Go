@@ -7,7 +7,7 @@ import (
 	"github.com/ethereum/go-ethereum/ethclient"
 	"github.com/ethereum/go-ethereum/event"
 
-	"github.com/gateway-fm/perpsv3-Go/contracts/perpsMarketGoerli"
+	"github.com/gateway-fm/perpsv3-Go/contracts/perpsMarket"
 	"github.com/gateway-fm/perpsv3-Go/errors"
 	"github.com/gateway-fm/perpsv3-Go/models"
 	"github.com/gateway-fm/perpsv3-Go/pkg/logger"
@@ -17,11 +17,11 @@ import (
 type OrderSubscription struct {
 	*basicSubscription
 	OrdersChan        chan *models.Order
-	contractEventChan chan *perpsMarketGoerli.PerpsMarketGoerliOrderCommitted
+	contractEventChan chan *perpsMarket.PerpsMarketOrderCommitted
 }
 
 func (e *Events) ListenOrders() (*OrderSubscription, error) {
-	contractEventChan := make(chan *perpsMarketGoerli.PerpsMarketGoerliOrderCommitted)
+	contractEventChan := make(chan *perpsMarket.PerpsMarketOrderCommitted)
 
 	contractSub, err := e.perpsMarket.WatchOrderCommitted(nil, contractEventChan, nil, nil, nil)
 	if err != nil {
@@ -37,7 +37,7 @@ func (e *Events) ListenOrders() (*OrderSubscription, error) {
 }
 
 // newOrderSubscription is used to create new OrderSubscription instance
-func newOrderSubscription(eventSub event.Subscription, contractEventChan chan *perpsMarketGoerli.PerpsMarketGoerliOrderCommitted) *OrderSubscription {
+func newOrderSubscription(eventSub event.Subscription, contractEventChan chan *perpsMarket.PerpsMarketOrderCommitted) *OrderSubscription {
 	return &OrderSubscription{
 		basicSubscription: newBasicSubscription(eventSub),
 		contractEventChan: contractEventChan,

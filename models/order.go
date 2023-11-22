@@ -5,7 +5,7 @@ import (
 
 	"github.com/ethereum/go-ethereum/common"
 
-	"github.com/gateway-fm/perpsv3-Go/contracts/perpsMarketGoerli"
+	"github.com/gateway-fm/perpsv3-Go/contracts/perpsMarket"
 	"github.com/gateway-fm/perpsv3-Go/pkg/logger"
 )
 
@@ -36,7 +36,7 @@ type Order struct {
 }
 
 // GetOrderFromEvent is used to get Order struct from given event and block timestamp
-func GetOrderFromEvent(event *perpsMarketGoerli.PerpsMarketGoerliOrderCommitted, time uint64) *Order {
+func GetOrderFromEvent(event *perpsMarket.PerpsMarketOrderCommitted, time uint64) *Order {
 	if event == nil {
 		logger.Log().WithField("layer", "Models-Order").Warning("nil event received")
 		return &Order{}

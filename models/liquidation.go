@@ -3,7 +3,7 @@ package models
 import (
 	"math/big"
 
-	"github.com/gateway-fm/perpsv3-Go/contracts/perpsMarketGoerli"
+	"github.com/gateway-fm/perpsv3-Go/contracts/perpsMarket"
 	"github.com/gateway-fm/perpsv3-Go/pkg/logger"
 )
 
@@ -24,7 +24,7 @@ type Liquidation struct {
 }
 
 // GetLiquidationFromEvent is used to get Liquidation struct from given contract event
-func GetLiquidationFromEvent(event *perpsMarketGoerli.PerpsMarketGoerliPositionLiquidated, time uint64) *Liquidation {
+func GetLiquidationFromEvent(event *perpsMarket.PerpsMarketPositionLiquidated, time uint64) *Liquidation {
 	if event == nil {
 		logger.Log().WithField("layer", "Models-Liquidation").Warning("nil event received")
 		return &Liquidation{}

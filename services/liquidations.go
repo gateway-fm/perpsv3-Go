@@ -6,7 +6,7 @@ import (
 
 	"github.com/ethereum/go-ethereum/accounts/abi/bind"
 
-	"github.com/gateway-fm/perpsv3-Go/contracts/perpsMarketGoerli"
+	"github.com/gateway-fm/perpsv3-Go/contracts/perpsMarket"
 	"github.com/gateway-fm/perpsv3-Go/errors"
 	"github.com/gateway-fm/perpsv3-Go/models"
 	"github.com/gateway-fm/perpsv3-Go/pkg/logger"
@@ -86,7 +86,7 @@ func (s *Service) retrieveLiquidations(opts *bind.FilterOpts) ([]*models.Liquida
 }
 
 // getLiquidation is used to get models.Liquidation from given event and block number
-func (s *Service) getLiquidation(event *perpsMarketGoerli.PerpsMarketGoerliPositionLiquidated, blockN uint64) (*models.Liquidation, error) {
+func (s *Service) getLiquidation(event *perpsMarket.PerpsMarketPositionLiquidated, blockN uint64) (*models.Liquidation, error) {
 	block, err := s.rpcClient.HeaderByNumber(context.Background(), big.NewInt(int64(blockN)))
 	if err != nil {
 		logger.Log().WithField("layer", "Service-RetrieveLiquidations").Errorf(

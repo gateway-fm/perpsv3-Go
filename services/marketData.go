@@ -6,7 +6,7 @@ import (
 
 	"github.com/ethereum/go-ethereum/accounts/abi/bind"
 
-	"github.com/gateway-fm/perpsv3-Go/contracts/perpsMarketGoerli"
+	"github.com/gateway-fm/perpsv3-Go/contracts/perpsMarket"
 	"github.com/gateway-fm/perpsv3-Go/errors"
 	"github.com/gateway-fm/perpsv3-Go/models"
 	"github.com/gateway-fm/perpsv3-Go/pkg/logger"
@@ -246,7 +246,7 @@ func (s *Service) retrieveMarketUpdatesBig(opts *bind.FilterOpts) ([]*models.Mar
 }
 
 // getMarketUpdate is used to get models.MarketUpdate from given event and block number
-func (s *Service) getMarketUpdate(event *perpsMarketGoerli.PerpsMarketGoerliMarketUpdated, blockN uint64) (*models.MarketUpdate, error) {
+func (s *Service) getMarketUpdate(event *perpsMarket.PerpsMarketMarketUpdated, blockN uint64) (*models.MarketUpdate, error) {
 	block, err := s.rpcClient.HeaderByNumber(context.Background(), big.NewInt(int64(blockN)))
 	if err != nil {
 		logger.Log().WithField("layer", "Service-getMarketUpdate").Errorf(
@@ -259,7 +259,7 @@ func (s *Service) getMarketUpdate(event *perpsMarketGoerli.PerpsMarketGoerliMark
 }
 
 // getMarketUpdate is used to get models.MarketUpdate from given event and block number
-func (s *Service) getMarketUpdateBig(event *perpsMarketGoerli.PerpsMarketGoerliMarketUpdated, blockN uint64) (*models.MarketUpdateBig, error) {
+func (s *Service) getMarketUpdateBig(event *perpsMarket.PerpsMarketMarketUpdated, blockN uint64) (*models.MarketUpdateBig, error) {
 	block, err := s.rpcClient.HeaderByNumber(context.Background(), big.NewInt(int64(blockN)))
 	if err != nil {
 		logger.Log().WithField("layer", "Service-getMarketUpdate").Errorf(

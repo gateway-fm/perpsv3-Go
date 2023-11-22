@@ -1,14 +1,14 @@
 package events
 
 import (
-	"github.com/ethereum/go-ethereum/ethclient"
-	"github.com/ethereum/go-ethereum/event"
-	"github.com/gateway-fm/perpsv3-Go/pkg/logger"
 	"math/big"
 
-	"github.com/gateway-fm/perpsv3-Go/contracts/coreGoerli"
-	"github.com/gateway-fm/perpsv3-Go/contracts/perpsMarketGoerli"
-	"github.com/gateway-fm/perpsv3-Go/contracts/spotMarketGoerli"
+	"github.com/ethereum/go-ethereum/ethclient"
+	"github.com/ethereum/go-ethereum/event"
+
+	"github.com/gateway-fm/perpsv3-Go/contracts/core"
+	"github.com/gateway-fm/perpsv3-Go/contracts/perpsMarket"
+	"github.com/gateway-fm/perpsv3-Go/pkg/logger"
 )
 
 // IEvents is an interface that is used to work with contract event listeners
@@ -53,22 +53,19 @@ type IEvents interface {
 // Events implements IEvents interface
 type Events struct {
 	rpcClient   *ethclient.Client
-	core        *coreGoerli.CoreGoerli
-	spotMarket  *spotMarketGoerli.SpotMarketGoerli
-	perpsMarket *perpsMarketGoerli.PerpsMarketGoerli
+	core        *core.Core
+	perpsMarket *perpsMarket.PerpsMarket
 }
 
 // NewEvents is used to create new Events instance that implements IEvents interface
 func NewEvents(
 	client *ethclient.Client,
-	core *coreGoerli.CoreGoerli,
-	spotMarket *spotMarketGoerli.SpotMarketGoerli,
-	perpsMarket *perpsMarketGoerli.PerpsMarketGoerli,
+	core *core.Core,
+	perpsMarket *perpsMarket.PerpsMarket,
 ) IEvents {
 	return &Events{
 		rpcClient:   client,
 		core:        core,
-		spotMarket:  spotMarket,
 		perpsMarket: perpsMarket,
 	}
 }
@@ -99,7 +96,7 @@ func (s *basicSubscription) Close() {
 }
 
 // getAccountLastInteraction
-func getAccountLastInteraction(id *big.Int, perpsMarket *perpsMarketGoerli.PerpsMarketGoerli) *big.Int {
+func getAccountLastInteraction(id *big.Int, perpsMarket *perpsMarket.PerpsMarket) *big.Int {
 	lastInteraction, err := perpsMarket.GetAccountLastInteraction(nil, id)
 	if err != nil {
 		logger.Log().WithField("layer", "Events-Accounts").Errorf(
