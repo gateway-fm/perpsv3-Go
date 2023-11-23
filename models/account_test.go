@@ -2,7 +2,7 @@ package models
 
 import (
 	"github.com/ethereum/go-ethereum/common"
-	"github.com/gateway-fm/perpsv3-Go/contracts/perpsMarketGoerli"
+	"github.com/gateway-fm/perpsv3-Go/contracts/perpsMarket"
 	"github.com/stretchr/testify/require"
 	"math/big"
 	"testing"
@@ -17,7 +17,7 @@ func TestFormatAccount(t *testing.T) {
 		id              *big.Int
 		owner           common.Address
 		lastInteraction uint64
-		permissions     []perpsMarketGoerli.IAccountModuleAccountPermissions
+		permissions     []perpsMarket.IAccountModuleAccountPermissions
 		want            *Account
 	}{
 		{
@@ -40,7 +40,7 @@ func TestFormatAccount(t *testing.T) {
 			id:              big.NewInt(1),
 			owner:           common.HexToAddress("0x76490713314fCEC173f44e99346F54c6e92a8E42"),
 			lastInteraction: uint64(timeNow.Unix()),
-			permissions: []perpsMarketGoerli.IAccountModuleAccountPermissions{{
+			permissions: []perpsMarket.IAccountModuleAccountPermissions{{
 				User:        common.HexToAddress("0xf272382cB3BE898A8CdB1A23BE056fA2Fcf4513b"),
 				Permissions: [][32]byte{{65, 68, 77, 73, 78}},
 			}},
@@ -59,7 +59,7 @@ func TestFormatAccount(t *testing.T) {
 			id:              big.NewInt(1),
 			owner:           common.HexToAddress("0x76490713314fCEC173f44e99346F54c6e92a8E42"),
 			lastInteraction: uint64(timeNow.Unix()),
-			permissions: []perpsMarketGoerli.IAccountModuleAccountPermissions{{
+			permissions: []perpsMarket.IAccountModuleAccountPermissions{{
 				User:        common.HexToAddress("0xf272382cB3BE898A8CdB1A23BE056fA2Fcf4513b"),
 				Permissions: [][32]byte{{65, 68, 77, 73, 78}, {87, 73, 84, 72, 68, 82, 65, 87}, {68, 69, 76, 69, 71, 65, 84, 69}},
 			}},
@@ -78,7 +78,7 @@ func TestFormatAccount(t *testing.T) {
 			id:              big.NewInt(1),
 			owner:           common.HexToAddress("0x76490713314fCEC173f44e99346F54c6e92a8E42"),
 			lastInteraction: uint64(timeNow.Unix()),
-			permissions: []perpsMarketGoerli.IAccountModuleAccountPermissions{
+			permissions: []perpsMarket.IAccountModuleAccountPermissions{
 				{
 					User:        common.HexToAddress("0xf272382cB3BE898A8CdB1A23BE056fA2Fcf4513b"),
 					Permissions: [][32]byte{{65, 68, 77, 73, 78}},
@@ -109,7 +109,7 @@ func TestFormatAccount(t *testing.T) {
 			id:              big.NewInt(1),
 			owner:           common.HexToAddress("0x76490713314fCEC173f44e99346F54c6e92a8E42"),
 			lastInteraction: uint64(timeNow.Unix()),
-			permissions: []perpsMarketGoerli.IAccountModuleAccountPermissions{
+			permissions: []perpsMarket.IAccountModuleAccountPermissions{
 				{
 					User:        common.HexToAddress("0xf272382cB3BE898A8CdB1A23BE056fA2Fcf4513b"),
 					Permissions: [][32]byte{{65, 68, 77, 73, 78}, {87, 73, 84, 72, 68, 82, 65, 87}, {68, 69, 76, 69, 71, 65, 84, 69}},
@@ -140,7 +140,7 @@ func TestFormatAccount(t *testing.T) {
 			id:              big.NewInt(1),
 			owner:           common.HexToAddress("0x76490713314fCEC173f44e99346F54c6e92a8E42"),
 			lastInteraction: uint64(timeNow.Unix()),
-			permissions: []perpsMarketGoerli.IAccountModuleAccountPermissions{
+			permissions: []perpsMarket.IAccountModuleAccountPermissions{
 				{
 					User:        common.HexToAddress("0xf272382cB3BE898A8CdB1A23BE056fA2Fcf4513b"),
 					Permissions: [][32]byte{{65, 68, 77, 73, 78}, {87, 72, 84, 72, 68, 82, 65, 87}, {68, 69, 76, 69, 71, 65, 84, 69}},

@@ -1,0 +1,35 @@
+[
+  {
+    "inputs": [],
+    "stateMutability": "nonpayable",
+    "type": "constructor"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "uint8",
+        "name": "updateType",
+        "type": "uint8"
+      },
+      {
+        "internalType": "uint64",
+        "name": "stalenessTolerance",
+        "type": "uint64"
+      },
+      {
+        "internalType": "bytes32[]",
+        "name": "priceIDs",
+        "type": "bytes32[]"
+      },
+      {
+        "internalType": "bytes[]",
+        "name": "priceUpdateData",
+        "type": "bytes[]"
+      }
+    ],
+    "name": "convert",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  }
+]

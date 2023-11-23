@@ -6,11 +6,12 @@ import (
 	"time"
 
 	perpsv3_Go "github.com/gateway-fm/perpsv3-Go"
-	"github.com/gateway-fm/perpsv3-Go/config"
 )
 
 func main() {
-	lib, err := perpsv3_Go.Create(config.GetGoerliDefaultPerpsvConfig())
+	conf := perpsv3_Go.GetOptimismGoerliDefaultConfig("")
+
+	lib, err := perpsv3_Go.Create(conf)
 	if err != nil {
 		log.Fatal(err)
 	}

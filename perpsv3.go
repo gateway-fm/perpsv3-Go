@@ -1,11 +1,10 @@
 package perpsv3_Go
 
 import (
+	"github.com/ethereum/go-ethereum/ethclient"
 	"math/big"
 
 	"github.com/ethereum/go-ethereum/common"
-	"github.com/ethereum/go-ethereum/ethclient"
-
 	"github.com/gateway-fm/perpsv3-Go/config"
 	"github.com/gateway-fm/perpsv3-Go/contracts/core"
 	"github.com/gateway-fm/perpsv3-Go/contracts/perpsMarket"
@@ -362,14 +361,12 @@ func (p *Perpsv3) init() error {
 		return err
 	}
 
-	p.service = services.NewService(
-		rpcClient,
-		coreContact,
-		p.config.FirstContractBlocks.Core,
-		perpsMarketContract,
-		p.config.FirstContractBlocks.PerpsMarket,
-	)
+	srv, err := services.NewService(rpcClient, p.config, coreContact, perpsMarketContract)
+	if err != nil {
+		return err
+	}
 
+	p.service = srv
 	p.events = events.NewEvents(rpcClient, coreContact, perpsMarketContract)
 
 	return nil

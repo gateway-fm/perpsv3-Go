@@ -4,16 +4,19 @@ package config
 type ChainID int
 
 const (
-	OptimismGoerli ChainID = iota
+	Unknown ChainID = iota
+	OptimismGoerli
 	BaseAndromeda
 )
 
 var chainIDStrings = [...]string{
+	Unknown:        "Unknown",
 	OptimismGoerli: "OptimismGoerli",
 	BaseAndromeda:  "BaseAndromeda",
 }
 
 var chainIDNums = [...]int{
+	Unknown:        0,
 	OptimismGoerli: 420,
 	BaseAndromeda:  84513,
 }

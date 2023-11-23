@@ -53,8 +53,10 @@ func GetOptimismGoerliDefaultConfig(rpcURL string) *PerpsvConfig {
 // GetBaseAndromedaDefaultConfig is used to get default lib config for base andromeda test net
 func GetBaseAndromedaDefaultConfig(rpcURL string) *PerpsvConfig {
 	if rpcURL == "" {
-		rpcURL = "https://gateway.tenderly.co/public/base"
+		rpcURL = "https://base.fastnode.cc/FNGfsgKFzvLlFKHWrNUYOWIgFRTdiAcVrtAxSMbMfZGdKDUDFgagkwnDgxPqgBit/"
 	}
+
+	//https://rpc.goerli.base.gateway.fm
 
 	return &PerpsvConfig{
 		ChainID: BaseAndromeda,

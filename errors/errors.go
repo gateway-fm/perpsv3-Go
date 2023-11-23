@@ -25,7 +25,15 @@ var (
 	EnumUnsupportedErr = fmt.Errorf("unsupported status err")
 	// InvalidArgumentErr is used when given argument is invalid
 	InvalidArgumentErr = fmt.Errorf("invalid argument error")
+	// ChainIDNotSupported is used when chain ID not supported by the lib
+	ChainIDNotSupported = fmt.Errorf("chain id not supported")
+	// FetchErr is used when error occurred when fetch to external dependency
+	FetchErr = fmt.Errorf("fetch error")
 )
+
+func GetFetchErr(err error, service string) error {
+	return fmt.Errorf("%s %w:%w", service, FetchErr, err)
+}
 
 func GetDialRPCErr(err error) error {
 	return fmt.Errorf("%w: %w", DialPRCErr, err)

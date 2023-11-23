@@ -1,7 +1,7 @@
 package models
 
 import (
-	"github.com/gateway-fm/perpsv3-Go/contracts/perpsMarketGoerli"
+	"github.com/gateway-fm/perpsv3-Go/contracts/perpsMarket"
 	"github.com/gateway-fm/perpsv3-Go/errors"
 	"github.com/stretchr/testify/require"
 	"testing"
@@ -76,7 +76,7 @@ func TestPermissionFromString(t *testing.T) {
 func TestDecodePermissions(t *testing.T) {
 	testCases := []struct {
 		name         string
-		contractPerm perpsMarketGoerli.IAccountModuleAccountPermissions
+		contractPerm perpsMarket.IAccountModuleAccountPermissions
 		want         []Permission
 	}{
 		{
@@ -84,27 +84,27 @@ func TestDecodePermissions(t *testing.T) {
 		},
 		{
 			name: "one permission",
-			contractPerm: perpsMarketGoerli.IAccountModuleAccountPermissions{
+			contractPerm: perpsMarket.IAccountModuleAccountPermissions{
 				Permissions: [][32]byte{{65, 68, 77, 73, 78}},
 			},
 			want: []Permission{0},
 		},
 		{
 			name: "one bad permission",
-			contractPerm: perpsMarketGoerli.IAccountModuleAccountPermissions{
+			contractPerm: perpsMarket.IAccountModuleAccountPermissions{
 				Permissions: [][32]byte{{65, 68, 77, 73, 76}},
 			},
 		},
 		{
 			name: "several permissions",
-			contractPerm: perpsMarketGoerli.IAccountModuleAccountPermissions{
+			contractPerm: perpsMarket.IAccountModuleAccountPermissions{
 				Permissions: [][32]byte{{65, 68, 77, 73, 78}, {87, 73, 84, 72, 68, 82, 65, 87}, {68, 69, 76, 69, 71, 65, 84, 69}},
 			},
 			want: []Permission{0, 1, 2},
 		},
 		{
 			name: "several permissions one bad",
-			contractPerm: perpsMarketGoerli.IAccountModuleAccountPermissions{
+			contractPerm: perpsMarket.IAccountModuleAccountPermissions{
 				Permissions: [][32]byte{{65, 68, 77, 73, 78}, {87, 73, 84, 72, 68, 81, 65, 87}, {68, 69, 76, 69, 71, 65, 84, 69}},
 			},
 			want: []Permission{0, 2},
