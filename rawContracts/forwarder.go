@@ -39,7 +39,7 @@ type ForwarderResult struct {
 func NewForwarder(address common.Address, provider *ethclient.Client) (IRawForwarderContract, error) {
 	c := &Forwarder{}
 
-	abiInstance, err := getABI("./contracts/84531-TrustedMulticallForwarder.json")
+	abiInstance, err := getABI(forwarder.ForwarderMetaData)
 	if err != nil {
 		return nil, err
 	}
