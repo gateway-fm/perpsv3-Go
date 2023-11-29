@@ -10,7 +10,6 @@ import (
 	"log"
 	"math/big"
 	"net/http"
-	"strings"
 	"time"
 
 	"github.com/ethereum/go-ethereum/accounts/abi/bind"
@@ -38,7 +37,7 @@ func (m *TestPerpsMarket) SettlePythOrder(accountID *big.Int, maxPythTries int, 
 		logger.Log().WithField("layer", "TestPerpsMarket-SettlePythOrder").Fatalf("GetOrder err: %v", err)
 	}
 
-	settlementTime := time.Unix(ordData.SettlementTime.Int64(), 2)
+	settlementTime := time.Unix(ordData.CommitmentTime.Int64(), 2)
 	if time.Now().Before(settlementTime) {
 		duration := time.Until(settlementTime)
 		logger.Log().WithField("layer", "TestPerpsMarket-SettlePythOrder").Infof("Waiting %v until order can be settled??? Not in this attempt!", duration)
@@ -50,7 +49,7 @@ func (m *TestPerpsMarket) SettlePythOrder(accountID *big.Int, maxPythTries int, 
 	settlementStrategy := GetSettlementStrategy(int(ordData.Request.MarketId.Int64()), 2)
 
 	settlementTimeBytes := make([]byte, 8)
-	binary.BigEndian.PutUint64(settlementTimeBytes, ordData.SettlementTime.Uint64())
+	binary.BigEndian.PutUint64(settlementTimeBytes, ordData.CommitmentTime.Uint64())
 	settlementTimeHex := hex.EncodeToString(settlementTimeBytes)
 	dataParam := fmt.Sprintf("0x%s%s", hex.EncodeToString(settlementStrategy.FeedID), settlementTimeHex)
 
@@ -97,13 +96,13 @@ func (m *TestPerpsMarket) SettlePythOrder(accountID *big.Int, maxPythTries int, 
 
 	log.Printf("extra_data to string: %s", hex.EncodeToString(extraData))
 
-	data, err := hex.DecodeString(strings.TrimPrefix(priceUpdateData.Data, "0x"))
-	if err != nil {
-		logger.Log().WithField("layer", "TestPerpsMarket-SettlePythOrder").Fatalf("Failed to decode hex string priceUpdateData.Data: %v", err)
-	}
-	aut := m.getAut("SettlePythOrder")
+	//data, err := hex.DecodeString(strings.TrimPrefix(priceUpdateData.Data, "0x"))
+	//if err != nil {
+	//	logger.Log().WithField("layer", "TestPerpsMarket-SettlePythOrder").Fatalf("Failed to decode hex string priceUpdateData.Data: %v", err)
+	//}
+	aut := m.getAut("SettleOrder")
 
-	tx, err := m.perpsMarket.SettlePythOrder(aut, data, extraData)
+	tx, err := m.perpsMarket.SettleOrder(aut, accountID)
 	if err != nil {
 		logger.Log().WithField("layer", "TestPerpsMarket-SettlePythOrder").Fatalf("SettlePythOrder: %+v", err)
 	}

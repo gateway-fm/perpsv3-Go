@@ -150,16 +150,16 @@ func (m *TestPerpsMarket) GetCollateralAmount(marketIDS string) {
 	logger.Log().WithField("layer", "TestPerpsMarket-GetCollateralAmount").Infof("collateral amount: %v", amount.String())
 }
 
-func (m *TestPerpsMarket) GetMaxCollateralAmount(marketIDS string) {
-	marketID := m.getBig(marketIDS)
-
-	amount, err := m.perpsMarket.GetMaxCollateralAmount(nil, marketID)
-	if err != nil {
-		logger.Log().WithField("layer", "TestPerpsMarket-GetMaxCollateralAmount").Fatalf("get max collateral amount err: %v", err.Error())
-	}
-
-	logger.Log().WithField("layer", "TestPerpsMarket-GetMaxCollateralAmount").Infof("max collateral amount: %v", amount.String())
-}
+//func (m *TestPerpsMarket) GetMaxCollateralAmount(marketIDS string) {
+//	marketID := m.getBig(marketIDS)
+//
+//	amount, err := m.perpsMarket.GetMaxCollateralAmount(nil, marketID)
+//	if err != nil {
+//		logger.Log().WithField("layer", "TestPerpsMarket-GetMaxCollateralAmount").Fatalf("get max collateral amount err: %v", err.Error())
+//	}
+//
+//	logger.Log().WithField("layer", "TestPerpsMarket-GetMaxCollateralAmount").Infof("max collateral amount: %v", amount.String())
+//}
 
 func (m *TestPerpsMarket) ModifyCollateral(marketIDS string, amountS string) {
 	aut := m.getAut("ModifyCollateral")
