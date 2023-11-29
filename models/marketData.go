@@ -109,15 +109,17 @@ func GetFundingParameters(resp struct {
 	}
 }
 
+// LiquidationRewardRatioD18 changed to FlagRewardRatioD18
+
 func GetLiquidationParameters(resp struct {
 	InitialMarginRatioD18        *big.Int
 	MinimumInitialMarginRatioD18 *big.Int
 	MaintenanceMarginScalarD18   *big.Int
-	LiquidationRewardRatioD18    *big.Int
+	FlagRewardRatioD18           *big.Int
 	MinimumPositionMargin        *big.Int
 }) *LiquidationParameters {
 	return &LiquidationParameters{
-		LiquidationRewardRatio:    resp.LiquidationRewardRatioD18,
+		LiquidationRewardRatio:    resp.FlagRewardRatioD18,
 		MinimumInitialMarginRatio: resp.MinimumInitialMarginRatioD18,
 		MaintenanceMarginScalar:   resp.MaintenanceMarginScalarD18,
 		InitialMarginRatio:        resp.InitialMarginRatioD18,

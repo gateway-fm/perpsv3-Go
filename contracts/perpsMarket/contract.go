@@ -31,7 +31,7 @@ var (
 
 // AsyncOrderData is an auto generated low-level Go binding around an user-defined struct.
 type AsyncOrderData struct {
-	SettlementTime *big.Int
+	CommitmentTime *big.Int
 	Request        AsyncOrderOrderCommitmentRequest
 }
 
@@ -67,7 +67,6 @@ type SettlementStrategyData struct {
 	StrategyType              uint8
 	SettlementDelay           *big.Int
 	SettlementWindowDuration  *big.Int
-	PriceWindowDuration       *big.Int
 	PriceVerificationContract common.Address
 	FeedId                    [32]byte
 	Url                       string
@@ -77,7 +76,7 @@ type SettlementStrategyData struct {
 
 // PerpsMarketMetaData contains all meta data concerning the PerpsMarket contract.
 var PerpsMarketMetaData = &bind.MetaData{
-	ABI: "[{\"inputs\":[{\"internalType\":\"bytes32\",\"name\":\"which\",\"type\":\"bytes32\"}],\"name\":\"FeatureUnavailable\",\"type\":\"error\"},{\"inputs\":[{\"internalType\":\"uint128\",\"name\":\"accountId\",\"type\":\"uint128\"}],\"name\":\"InvalidAccountId\",\"type\":\"error\"},{\"inputs\":[{\"internalType\":\"bytes32\",\"name\":\"permission\",\"type\":\"bytes32\"}],\"name\":\"InvalidPermission\",\"type\":\"error\"},{\"inputs\":[{\"internalType\":\"address\",\"name\":\"origin\",\"type\":\"address\"}],\"name\":\"OnlyAccountTokenProxy\",\"type\":\"error\"},{\"inputs\":[{\"internalType\":\"uint128\",\"name\":\"accountId\",\"type\":\"uint128\"},{\"internalType\":\"bytes32\",\"name\":\"permission\",\"type\":\"bytes32\"},{\"internalType\":\"address\",\"name\":\"target\",\"type\":\"address\"}],\"name\":\"PermissionDenied\",\"type\":\"error\"},{\"inputs\":[{\"internalType\":\"uint128\",\"name\":\"accountId\",\"type\":\"uint128\"},{\"internalType\":\"bytes32\",\"name\":\"permission\",\"type\":\"bytes32\"},{\"internalType\":\"address\",\"name\":\"user\",\"type\":\"address\"}],\"name\":\"PermissionNotGranted\",\"type\":\"error\"},{\"inputs\":[],\"name\":\"PositionOutOfBounds\",\"type\":\"error\"},{\"inputs\":[],\"name\":\"ValueAlreadyInSet\",\"type\":\"error\"},{\"inputs\":[],\"name\":\"ValueNotInSet\",\"type\":\"error\"},{\"inputs\":[],\"name\":\"ZeroAddress\",\"type\":\"error\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":true,\"internalType\":\"uint128\",\"name\":\"accountId\",\"type\":\"uint128\"},{\"indexed\":true,\"internalType\":\"address\",\"name\":\"owner\",\"type\":\"address\"}],\"name\":\"AccountCreated\",\"type\":\"event\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":true,\"internalType\":\"uint128\",\"name\":\"accountId\",\"type\":\"uint128\"},{\"indexed\":true,\"internalType\":\"bytes32\",\"name\":\"permission\",\"type\":\"bytes32\"},{\"indexed\":true,\"internalType\":\"address\",\"name\":\"user\",\"type\":\"address\"},{\"indexed\":false,\"internalType\":\"address\",\"name\":\"sender\",\"type\":\"address\"}],\"name\":\"PermissionGranted\",\"type\":\"event\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":true,\"internalType\":\"uint128\",\"name\":\"accountId\",\"type\":\"uint128\"},{\"indexed\":true,\"internalType\":\"bytes32\",\"name\":\"permission\",\"type\":\"bytes32\"},{\"indexed\":true,\"internalType\":\"address\",\"name\":\"user\",\"type\":\"address\"},{\"indexed\":false,\"internalType\":\"address\",\"name\":\"sender\",\"type\":\"address\"}],\"name\":\"PermissionRevoked\",\"type\":\"event\"},{\"inputs\":[],\"name\":\"createAccount\",\"outputs\":[{\"internalType\":\"uint128\",\"name\":\"accountId\",\"type\":\"uint128\"}],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"uint128\",\"name\":\"requestedAccountId\",\"type\":\"uint128\"}],\"name\":\"createAccount\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"uint128\",\"name\":\"accountId\",\"type\":\"uint128\"}],\"name\":\"getAccountLastInteraction\",\"outputs\":[{\"internalType\":\"uint256\",\"name\":\"\",\"type\":\"uint256\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"uint128\",\"name\":\"accountId\",\"type\":\"uint128\"}],\"name\":\"getAccountOwner\",\"outputs\":[{\"internalType\":\"address\",\"name\":\"\",\"type\":\"address\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"uint128\",\"name\":\"accountId\",\"type\":\"uint128\"}],\"name\":\"getAccountPermissions\",\"outputs\":[{\"components\":[{\"internalType\":\"address\",\"name\":\"user\",\"type\":\"address\"},{\"internalType\":\"bytes32[]\",\"name\":\"permissions\",\"type\":\"bytes32[]\"}],\"internalType\":\"structIAccountModule.AccountPermissions[]\",\"name\":\"accountPerms\",\"type\":\"tuple[]\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"getAccountTokenAddress\",\"outputs\":[{\"internalType\":\"address\",\"name\":\"\",\"type\":\"address\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"uint128\",\"name\":\"accountId\",\"type\":\"uint128\"},{\"internalType\":\"bytes32\",\"name\":\"permission\",\"type\":\"bytes32\"},{\"internalType\":\"address\",\"name\":\"user\",\"type\":\"address\"}],\"name\":\"grantPermission\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"uint128\",\"name\":\"accountId\",\"type\":\"uint128\"},{\"internalType\":\"bytes32\",\"name\":\"permission\",\"type\":\"bytes32\"},{\"internalType\":\"address\",\"name\":\"user\",\"type\":\"address\"}],\"name\":\"hasPermission\",\"outputs\":[{\"internalType\":\"bool\",\"name\":\"\",\"type\":\"bool\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"uint128\",\"name\":\"accountId\",\"type\":\"uint128\"},{\"internalType\":\"bytes32\",\"name\":\"permission\",\"type\":\"bytes32\"},{\"internalType\":\"address\",\"name\":\"user\",\"type\":\"address\"}],\"name\":\"isAuthorized\",\"outputs\":[{\"internalType\":\"bool\",\"name\":\"\",\"type\":\"bool\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"address\",\"name\":\"to\",\"type\":\"address\"},{\"internalType\":\"uint128\",\"name\":\"accountId\",\"type\":\"uint128\"}],\"name\":\"notifyAccountTransfer\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"uint128\",\"name\":\"accountId\",\"type\":\"uint128\"},{\"internalType\":\"bytes32\",\"name\":\"permission\",\"type\":\"bytes32\"}],\"name\":\"renouncePermission\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"uint128\",\"name\":\"accountId\",\"type\":\"uint128\"},{\"internalType\":\"bytes32\",\"name\":\"permission\",\"type\":\"bytes32\"},{\"internalType\":\"address\",\"name\":\"user\",\"type\":\"address\"}],\"name\":\"revokePermission\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"bytes32\",\"name\":\"expected\",\"type\":\"bytes32\"},{\"internalType\":\"bytes32\",\"name\":\"actual\",\"type\":\"bytes32\"}],\"name\":\"MismatchAssociatedSystemKind\",\"type\":\"error\"},{\"inputs\":[{\"internalType\":\"bytes32\",\"name\":\"id\",\"type\":\"bytes32\"}],\"name\":\"MissingAssociatedSystem\",\"type\":\"error\"},{\"inputs\":[{\"internalType\":\"address\",\"name\":\"addr\",\"type\":\"address\"}],\"name\":\"Unauthorized\",\"type\":\"error\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":true,\"internalType\":\"bytes32\",\"name\":\"kind\",\"type\":\"bytes32\"},{\"indexed\":true,\"internalType\":\"bytes32\",\"name\":\"id\",\"type\":\"bytes32\"},{\"indexed\":false,\"internalType\":\"address\",\"name\":\"proxy\",\"type\":\"address\"},{\"indexed\":false,\"internalType\":\"address\",\"name\":\"impl\",\"type\":\"address\"}],\"name\":\"AssociatedSystemSet\",\"type\":\"event\"},{\"inputs\":[{\"internalType\":\"bytes32\",\"name\":\"id\",\"type\":\"bytes32\"}],\"name\":\"getAssociatedSystem\",\"outputs\":[{\"internalType\":\"address\",\"name\":\"addr\",\"type\":\"address\"},{\"internalType\":\"bytes32\",\"name\":\"kind\",\"type\":\"bytes32\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"bytes32\",\"name\":\"id\",\"type\":\"bytes32\"},{\"internalType\":\"string\",\"name\":\"name\",\"type\":\"string\"},{\"internalType\":\"string\",\"name\":\"symbol\",\"type\":\"string\"},{\"internalType\":\"string\",\"name\":\"uri\",\"type\":\"string\"},{\"internalType\":\"address\",\"name\":\"impl\",\"type\":\"address\"}],\"name\":\"initOrUpgradeNft\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"bytes32\",\"name\":\"id\",\"type\":\"bytes32\"},{\"internalType\":\"string\",\"name\":\"name\",\"type\":\"string\"},{\"internalType\":\"string\",\"name\":\"symbol\",\"type\":\"string\"},{\"internalType\":\"uint8\",\"name\":\"decimals\",\"type\":\"uint8\"},{\"internalType\":\"address\",\"name\":\"impl\",\"type\":\"address\"}],\"name\":\"initOrUpgradeToken\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"bytes32\",\"name\":\"id\",\"type\":\"bytes32\"},{\"internalType\":\"address\",\"name\":\"endpoint\",\"type\":\"address\"}],\"name\":\"registerUnmanagedSystem\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"address\",\"name\":\"\",\"type\":\"address\"}],\"name\":\"DeniedMulticallTarget\",\"type\":\"error\"},{\"inputs\":[{\"internalType\":\"address\",\"name\":\"\",\"type\":\"address\"}],\"name\":\"RecursiveMulticall\",\"type\":\"error\"},{\"inputs\":[{\"internalType\":\"bytes[]\",\"name\":\"data\",\"type\":\"bytes[]\"}],\"name\":\"multicall\",\"outputs\":[{\"internalType\":\"bytes[]\",\"name\":\"results\",\"type\":\"bytes[]\"}],\"stateMutability\":\"payable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"address\",\"name\":\"implementation\",\"type\":\"address\"}],\"name\":\"ImplementationIsSterile\",\"type\":\"error\"},{\"inputs\":[],\"name\":\"NoChange\",\"type\":\"error\"},{\"inputs\":[{\"internalType\":\"address\",\"name\":\"contr\",\"type\":\"address\"}],\"name\":\"NotAContract\",\"type\":\"error\"},{\"inputs\":[{\"internalType\":\"address\",\"name\":\"addr\",\"type\":\"address\"}],\"name\":\"NotNominated\",\"type\":\"error\"},{\"inputs\":[],\"name\":\"UpgradeSimulationFailed\",\"type\":\"error\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":false,\"internalType\":\"address\",\"name\":\"oldOwner\",\"type\":\"address\"},{\"indexed\":false,\"internalType\":\"address\",\"name\":\"newOwner\",\"type\":\"address\"}],\"name\":\"OwnerChanged\",\"type\":\"event\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":false,\"internalType\":\"address\",\"name\":\"newOwner\",\"type\":\"address\"}],\"name\":\"OwnerNominated\",\"type\":\"event\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":true,\"internalType\":\"address\",\"name\":\"self\",\"type\":\"address\"},{\"indexed\":false,\"internalType\":\"address\",\"name\":\"implementation\",\"type\":\"address\"}],\"name\":\"Upgraded\",\"type\":\"event\"},{\"inputs\":[],\"name\":\"acceptOwnership\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"getImplementation\",\"outputs\":[{\"internalType\":\"address\",\"name\":\"\",\"type\":\"address\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"address\",\"name\":\"newNominatedOwner\",\"type\":\"address\"}],\"name\":\"nominateNewOwner\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"nominatedOwner\",\"outputs\":[{\"internalType\":\"address\",\"name\":\"\",\"type\":\"address\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"owner\",\"outputs\":[{\"internalType\":\"address\",\"name\":\"\",\"type\":\"address\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"renounceNomination\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"address\",\"name\":\"newImplementation\",\"type\":\"address\"}],\"name\":\"simulateUpgradeTo\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"address\",\"name\":\"newImplementation\",\"type\":\"address\"}],\"name\":\"upgradeTo\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"uint128\",\"name\":\"marketId\",\"type\":\"uint128\"}],\"name\":\"InvalidMarket\",\"type\":\"error\"},{\"inputs\":[{\"internalType\":\"string\",\"name\":\"parameter\",\"type\":\"string\"},{\"internalType\":\"string\",\"name\":\"reason\",\"type\":\"string\"}],\"name\":\"InvalidParameter\",\"type\":\"error\"},{\"inputs\":[],\"name\":\"OverflowInt256ToUint256\",\"type\":\"error\"},{\"inputs\":[],\"name\":\"OverflowUint256ToInt256\",\"type\":\"error\"},{\"inputs\":[],\"name\":\"OverflowUint256ToUint128\",\"type\":\"error\"},{\"inputs\":[],\"name\":\"PerpsMarketNotInitialized\",\"type\":\"error\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":false,\"internalType\":\"uint128\",\"name\":\"globalPerpsMarketId\",\"type\":\"uint128\"}],\"name\":\"FactoryInitialized\",\"type\":\"event\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":true,\"internalType\":\"uint128\",\"name\":\"perpsMarketId\",\"type\":\"uint128\"},{\"indexed\":false,\"internalType\":\"string\",\"name\":\"marketName\",\"type\":\"string\"},{\"indexed\":false,\"internalType\":\"string\",\"name\":\"marketSymbol\",\"type\":\"string\"}],\"name\":\"MarketCreated\",\"type\":\"event\"},{\"inputs\":[{\"internalType\":\"uint128\",\"name\":\"requestedMarketId\",\"type\":\"uint128\"},{\"internalType\":\"string\",\"name\":\"marketName\",\"type\":\"string\"},{\"internalType\":\"string\",\"name\":\"marketSymbol\",\"type\":\"string\"}],\"name\":\"createMarket\",\"outputs\":[{\"internalType\":\"uint128\",\"name\":\"\",\"type\":\"uint128\"}],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"initializeFactory\",\"outputs\":[{\"internalType\":\"uint128\",\"name\":\"\",\"type\":\"uint128\"}],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"uint128\",\"name\":\"perpsMarketId\",\"type\":\"uint128\"}],\"name\":\"minimumCredit\",\"outputs\":[{\"internalType\":\"uint256\",\"name\":\"\",\"type\":\"uint256\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"uint128\",\"name\":\"perpsMarketId\",\"type\":\"uint128\"}],\"name\":\"name\",\"outputs\":[{\"internalType\":\"string\",\"name\":\"\",\"type\":\"string\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"uint128\",\"name\":\"perpsMarketId\",\"type\":\"uint128\"}],\"name\":\"reportedDebt\",\"outputs\":[{\"internalType\":\"uint256\",\"name\":\"\",\"type\":\"uint256\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"contractISpotMarketSystem\",\"name\":\"spotMarket\",\"type\":\"address\"}],\"name\":\"setSpotMarket\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"contractISynthetixSystem\",\"name\":\"synthetix\",\"type\":\"address\"}],\"name\":\"setSynthetix\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"bytes4\",\"name\":\"interfaceId\",\"type\":\"bytes4\"}],\"name\":\"supportsInterface\",\"outputs\":[{\"internalType\":\"bool\",\"name\":\"\",\"type\":\"bool\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"uint128\",\"name\":\"accountId\",\"type\":\"uint128\"}],\"name\":\"AccountLiquidatable\",\"type\":\"error\"},{\"inputs\":[{\"internalType\":\"uint128\",\"name\":\"accountId\",\"type\":\"uint128\"}],\"name\":\"AccountNotFound\",\"type\":\"error\"},{\"inputs\":[{\"internalType\":\"uint128\",\"name\":\"synthMarketId\",\"type\":\"uint128\"},{\"internalType\":\"uint256\",\"name\":\"collateralAmount\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"withdrawAmount\",\"type\":\"uint256\"}],\"name\":\"InsufficientCollateral\",\"type\":\"error\"},{\"inputs\":[{\"internalType\":\"uint256\",\"name\":\"availableUsdDenominated\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"requiredUsdDenominated\",\"type\":\"uint256\"}],\"name\":\"InsufficientCollateralAvailableForWithdraw\",\"type\":\"error\"},{\"inputs\":[{\"internalType\":\"uint128\",\"name\":\"synthMarketId\",\"type\":\"uint128\"},{\"internalType\":\"uint256\",\"name\":\"collateralAmount\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"withdrawAmount\",\"type\":\"uint256\"}],\"name\":\"InsufficientSynthCollateral\",\"type\":\"error\"},{\"inputs\":[{\"internalType\":\"int256\",\"name\":\"amountDelta\",\"type\":\"int256\"}],\"name\":\"InvalidAmountDelta\",\"type\":\"error\"},{\"inputs\":[{\"internalType\":\"uint128\",\"name\":\"synthMarketId\",\"type\":\"uint128\"},{\"internalType\":\"uint256\",\"name\":\"maxAmount\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"collateralAmount\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"depositAmount\",\"type\":\"uint256\"}],\"name\":\"MaxCollateralExceeded\",\"type\":\"error\"},{\"inputs\":[{\"internalType\":\"uint128\",\"name\":\"maxCollateralsPerAccount\",\"type\":\"uint128\"}],\"name\":\"MaxCollateralsPerAccountReached\",\"type\":\"error\"},{\"inputs\":[],\"name\":\"OverflowUint128ToInt128\",\"type\":\"error\"},{\"inputs\":[],\"name\":\"PendingOrderExists\",\"type\":\"error\"},{\"inputs\":[{\"internalType\":\"uint128\",\"name\":\"marketId\",\"type\":\"uint128\"}],\"name\":\"PriceFeedNotSet\",\"type\":\"error\"},{\"inputs\":[{\"internalType\":\"uint128\",\"name\":\"synthMarketId\",\"type\":\"uint128\"}],\"name\":\"SynthNotEnabledForCollateral\",\"type\":\"error\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":true,\"internalType\":\"uint128\",\"name\":\"accountId\",\"type\":\"uint128\"},{\"indexed\":true,\"internalType\":\"uint128\",\"name\":\"synthMarketId\",\"type\":\"uint128\"},{\"indexed\":false,\"internalType\":\"int256\",\"name\":\"amountDelta\",\"type\":\"int256\"},{\"indexed\":true,\"internalType\":\"address\",\"name\":\"sender\",\"type\":\"address\"}],\"name\":\"CollateralModified\",\"type\":\"event\"},{\"inputs\":[{\"internalType\":\"uint128\",\"name\":\"accountId\",\"type\":\"uint128\"}],\"name\":\"getAvailableMargin\",\"outputs\":[{\"internalType\":\"int256\",\"name\":\"availableMargin\",\"type\":\"int256\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"uint128\",\"name\":\"accountId\",\"type\":\"uint128\"},{\"internalType\":\"uint128\",\"name\":\"synthMarketId\",\"type\":\"uint128\"}],\"name\":\"getCollateralAmount\",\"outputs\":[{\"internalType\":\"uint256\",\"name\":\"\",\"type\":\"uint256\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"uint128\",\"name\":\"accountId\",\"type\":\"uint128\"},{\"internalType\":\"uint128\",\"name\":\"marketId\",\"type\":\"uint128\"}],\"name\":\"getOpenPosition\",\"outputs\":[{\"internalType\":\"int256\",\"name\":\"totalPnl\",\"type\":\"int256\"},{\"internalType\":\"int256\",\"name\":\"accruedFunding\",\"type\":\"int256\"},{\"internalType\":\"int128\",\"name\":\"positionSize\",\"type\":\"int128\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"uint128\",\"name\":\"accountId\",\"type\":\"uint128\"}],\"name\":\"getRequiredMargins\",\"outputs\":[{\"internalType\":\"uint256\",\"name\":\"requiredInitialMargin\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"requiredMaintenanceMargin\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"totalAccumulatedLiquidationRewards\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"maxLiquidationReward\",\"type\":\"uint256\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"uint128\",\"name\":\"accountId\",\"type\":\"uint128\"}],\"name\":\"getWithdrawableMargin\",\"outputs\":[{\"internalType\":\"int256\",\"name\":\"withdrawableMargin\",\"type\":\"int256\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"uint128\",\"name\":\"accountId\",\"type\":\"uint128\"},{\"internalType\":\"uint128\",\"name\":\"synthMarketId\",\"type\":\"uint128\"},{\"internalType\":\"int256\",\"name\":\"amountDelta\",\"type\":\"int256\"}],\"name\":\"modifyCollateral\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"uint128\",\"name\":\"accountId\",\"type\":\"uint128\"}],\"name\":\"totalAccountOpenInterest\",\"outputs\":[{\"internalType\":\"uint256\",\"name\":\"\",\"type\":\"uint256\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"uint128\",\"name\":\"accountId\",\"type\":\"uint128\"}],\"name\":\"totalCollateralValue\",\"outputs\":[{\"internalType\":\"uint256\",\"name\":\"\",\"type\":\"uint256\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"uint128\",\"name\":\"marketId\",\"type\":\"uint128\"}],\"name\":\"currentFundingRate\",\"outputs\":[{\"internalType\":\"int256\",\"name\":\"\",\"type\":\"int256\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"uint128\",\"name\":\"marketId\",\"type\":\"uint128\"}],\"name\":\"currentFundingVelocity\",\"outputs\":[{\"internalType\":\"int256\",\"name\":\"\",\"type\":\"int256\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"uint128\",\"name\":\"marketId\",\"type\":\"uint128\"},{\"internalType\":\"int128\",\"name\":\"orderSize\",\"type\":\"int128\"},{\"internalType\":\"uint256\",\"name\":\"price\",\"type\":\"uint256\"}],\"name\":\"fillPrice\",\"outputs\":[{\"internalType\":\"uint256\",\"name\":\"\",\"type\":\"uint256\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"uint128\",\"name\":\"marketId\",\"type\":\"uint128\"}],\"name\":\"getMarketSummary\",\"outputs\":[{\"components\":[{\"internalType\":\"int256\",\"name\":\"skew\",\"type\":\"int256\"},{\"internalType\":\"uint256\",\"name\":\"size\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"maxOpenInterest\",\"type\":\"uint256\"},{\"internalType\":\"int256\",\"name\":\"currentFundingRate\",\"type\":\"int256\"},{\"internalType\":\"int256\",\"name\":\"currentFundingVelocity\",\"type\":\"int256\"},{\"internalType\":\"uint256\",\"name\":\"indexPrice\",\"type\":\"uint256\"}],\"internalType\":\"structIPerpsMarketModule.MarketSummary\",\"name\":\"summary\",\"type\":\"tuple\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"uint128\",\"name\":\"marketId\",\"type\":\"uint128\"}],\"name\":\"indexPrice\",\"outputs\":[{\"internalType\":\"uint256\",\"name\":\"\",\"type\":\"uint256\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"uint128\",\"name\":\"marketId\",\"type\":\"uint128\"}],\"name\":\"maxOpenInterest\",\"outputs\":[{\"internalType\":\"uint256\",\"name\":\"\",\"type\":\"uint256\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"uint128\",\"name\":\"marketId\",\"type\":\"uint128\"}],\"name\":\"metadata\",\"outputs\":[{\"internalType\":\"string\",\"name\":\"name\",\"type\":\"string\"},{\"internalType\":\"string\",\"name\":\"symbol\",\"type\":\"string\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"uint128\",\"name\":\"marketId\",\"type\":\"uint128\"}],\"name\":\"size\",\"outputs\":[{\"internalType\":\"uint256\",\"name\":\"\",\"type\":\"uint256\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"uint128\",\"name\":\"marketId\",\"type\":\"uint128\"}],\"name\":\"skew\",\"outputs\":[{\"internalType\":\"int256\",\"name\":\"\",\"type\":\"int256\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"uint256\",\"name\":\"fillPrice\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"acceptablePrice\",\"type\":\"uint256\"}],\"name\":\"AcceptablePriceExceeded\",\"type\":\"error\"},{\"inputs\":[{\"internalType\":\"int256\",\"name\":\"availableMargin\",\"type\":\"int256\"},{\"internalType\":\"uint256\",\"name\":\"minMargin\",\"type\":\"uint256\"}],\"name\":\"InsufficientMargin\",\"type\":\"error\"},{\"inputs\":[{\"internalType\":\"uint128\",\"name\":\"settlementStrategyId\",\"type\":\"uint128\"}],\"name\":\"InvalidSettlementStrategy\",\"type\":\"error\"},{\"inputs\":[{\"internalType\":\"uint128\",\"name\":\"marketId\",\"type\":\"uint128\"},{\"internalType\":\"uint256\",\"name\":\"maxMarketSize\",\"type\":\"uint256\"},{\"internalType\":\"int256\",\"name\":\"newSideSize\",\"type\":\"int256\"}],\"name\":\"MaxOpenInterestReached\",\"type\":\"error\"},{\"inputs\":[{\"internalType\":\"uint128\",\"name\":\"maxPositionsPerAccount\",\"type\":\"uint128\"}],\"name\":\"MaxPositionsPerAccountReached\",\"type\":\"error\"},{\"inputs\":[],\"name\":\"OverflowInt256ToInt128\",\"type\":\"error\"},{\"inputs\":[],\"name\":\"ZeroSizeOrder\",\"type\":\"error\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":true,\"internalType\":\"uint128\",\"name\":\"marketId\",\"type\":\"uint128\"},{\"indexed\":true,\"internalType\":\"uint128\",\"name\":\"accountId\",\"type\":\"uint128\"},{\"indexed\":false,\"internalType\":\"enumSettlementStrategy.Type\",\"name\":\"orderType\",\"type\":\"uint8\"},{\"indexed\":false,\"internalType\":\"int128\",\"name\":\"sizeDelta\",\"type\":\"int128\"},{\"indexed\":false,\"internalType\":\"uint256\",\"name\":\"acceptablePrice\",\"type\":\"uint256\"},{\"indexed\":false,\"internalType\":\"uint256\",\"name\":\"settlementTime\",\"type\":\"uint256\"},{\"indexed\":false,\"internalType\":\"uint256\",\"name\":\"expirationTime\",\"type\":\"uint256\"},{\"indexed\":true,\"internalType\":\"bytes32\",\"name\":\"trackingCode\",\"type\":\"bytes32\"},{\"indexed\":false,\"internalType\":\"address\",\"name\":\"sender\",\"type\":\"address\"}],\"name\":\"OrderCommitted\",\"type\":\"event\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":true,\"internalType\":\"uint128\",\"name\":\"marketId\",\"type\":\"uint128\"},{\"indexed\":true,\"internalType\":\"uint128\",\"name\":\"accountId\",\"type\":\"uint128\"},{\"indexed\":false,\"internalType\":\"int128\",\"name\":\"sizeDelta\",\"type\":\"int128\"},{\"indexed\":false,\"internalType\":\"uint256\",\"name\":\"acceptablePrice\",\"type\":\"uint256\"},{\"indexed\":false,\"internalType\":\"uint256\",\"name\":\"settlementTime\",\"type\":\"uint256\"},{\"indexed\":true,\"internalType\":\"bytes32\",\"name\":\"trackingCode\",\"type\":\"bytes32\"}],\"name\":\"PreviousOrderExpired\",\"type\":\"event\"},{\"inputs\":[{\"components\":[{\"internalType\":\"uint128\",\"name\":\"marketId\",\"type\":\"uint128\"},{\"internalType\":\"uint128\",\"name\":\"accountId\",\"type\":\"uint128\"},{\"internalType\":\"int128\",\"name\":\"sizeDelta\",\"type\":\"int128\"},{\"internalType\":\"uint128\",\"name\":\"settlementStrategyId\",\"type\":\"uint128\"},{\"internalType\":\"uint256\",\"name\":\"acceptablePrice\",\"type\":\"uint256\"},{\"internalType\":\"bytes32\",\"name\":\"trackingCode\",\"type\":\"bytes32\"},{\"internalType\":\"address\",\"name\":\"referrer\",\"type\":\"address\"}],\"internalType\":\"structAsyncOrder.OrderCommitmentRequest\",\"name\":\"commitment\",\"type\":\"tuple\"}],\"name\":\"commitOrder\",\"outputs\":[{\"components\":[{\"internalType\":\"uint256\",\"name\":\"settlementTime\",\"type\":\"uint256\"},{\"components\":[{\"internalType\":\"uint128\",\"name\":\"marketId\",\"type\":\"uint128\"},{\"internalType\":\"uint128\",\"name\":\"accountId\",\"type\":\"uint128\"},{\"internalType\":\"int128\",\"name\":\"sizeDelta\",\"type\":\"int128\"},{\"internalType\":\"uint128\",\"name\":\"settlementStrategyId\",\"type\":\"uint128\"},{\"internalType\":\"uint256\",\"name\":\"acceptablePrice\",\"type\":\"uint256\"},{\"internalType\":\"bytes32\",\"name\":\"trackingCode\",\"type\":\"bytes32\"},{\"internalType\":\"address\",\"name\":\"referrer\",\"type\":\"address\"}],\"internalType\":\"structAsyncOrder.OrderCommitmentRequest\",\"name\":\"request\",\"type\":\"tuple\"}],\"internalType\":\"structAsyncOrder.Data\",\"name\":\"retOrder\",\"type\":\"tuple\"},{\"internalType\":\"uint256\",\"name\":\"fees\",\"type\":\"uint256\"}],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"uint128\",\"name\":\"marketId\",\"type\":\"uint128\"},{\"internalType\":\"int128\",\"name\":\"sizeDelta\",\"type\":\"int128\"}],\"name\":\"computeOrderFees\",\"outputs\":[{\"internalType\":\"uint256\",\"name\":\"orderFees\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"fillPrice\",\"type\":\"uint256\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"uint128\",\"name\":\"accountId\",\"type\":\"uint128\"}],\"name\":\"getOrder\",\"outputs\":[{\"components\":[{\"internalType\":\"uint256\",\"name\":\"settlementTime\",\"type\":\"uint256\"},{\"components\":[{\"internalType\":\"uint128\",\"name\":\"marketId\",\"type\":\"uint128\"},{\"internalType\":\"uint128\",\"name\":\"accountId\",\"type\":\"uint128\"},{\"internalType\":\"int128\",\"name\":\"sizeDelta\",\"type\":\"int128\"},{\"internalType\":\"uint128\",\"name\":\"settlementStrategyId\",\"type\":\"uint128\"},{\"internalType\":\"uint256\",\"name\":\"acceptablePrice\",\"type\":\"uint256\"},{\"internalType\":\"bytes32\",\"name\":\"trackingCode\",\"type\":\"bytes32\"},{\"internalType\":\"address\",\"name\":\"referrer\",\"type\":\"address\"}],\"internalType\":\"structAsyncOrder.OrderCommitmentRequest\",\"name\":\"request\",\"type\":\"tuple\"}],\"internalType\":\"structAsyncOrder.Data\",\"name\":\"order\",\"type\":\"tuple\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"uint128\",\"name\":\"accountId\",\"type\":\"uint128\"},{\"internalType\":\"uint128\",\"name\":\"marketId\",\"type\":\"uint128\"},{\"internalType\":\"int128\",\"name\":\"sizeDelta\",\"type\":\"int128\"}],\"name\":\"requiredMarginForOrder\",\"outputs\":[{\"internalType\":\"uint256\",\"name\":\"requiredMargin\",\"type\":\"uint256\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"uint256\",\"name\":\"leftover\",\"type\":\"uint256\"}],\"name\":\"InsufficientMarginError\",\"type\":\"error\"},{\"inputs\":[{\"internalType\":\"address\",\"name\":\"sender\",\"type\":\"address\"},{\"internalType\":\"string[]\",\"name\":\"urls\",\"type\":\"string[]\"},{\"internalType\":\"bytes\",\"name\":\"callData\",\"type\":\"bytes\"},{\"internalType\":\"bytes4\",\"name\":\"callbackFunction\",\"type\":\"bytes4\"},{\"internalType\":\"bytes\",\"name\":\"extraData\",\"type\":\"bytes\"}],\"name\":\"OffchainLookup\",\"type\":\"error\"},{\"inputs\":[],\"name\":\"OrderNotValid\",\"type\":\"error\"},{\"inputs\":[],\"name\":\"OverflowInt128ToUint128\",\"type\":\"error\"},{\"inputs\":[],\"name\":\"OverflowUint256ToUint64\",\"type\":\"error\"},{\"inputs\":[{\"internalType\":\"enumSettlementStrategy.Type\",\"name\":\"strategyType\",\"type\":\"uint8\"}],\"name\":\"SettlementStrategyNotFound\",\"type\":\"error\"},{\"inputs\":[{\"internalType\":\"uint256\",\"name\":\"timestamp\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"settlementTime\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"settlementExpiration\",\"type\":\"uint256\"}],\"name\":\"SettlementWindowExpired\",\"type\":\"error\"},{\"inputs\":[{\"internalType\":\"uint256\",\"name\":\"timestamp\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"settlementTime\",\"type\":\"uint256\"}],\"name\":\"SettlementWindowNotOpen\",\"type\":\"error\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":false,\"internalType\":\"uint128\",\"name\":\"marketId\",\"type\":\"uint128\"},{\"indexed\":false,\"internalType\":\"uint256\",\"name\":\"price\",\"type\":\"uint256\"},{\"indexed\":false,\"internalType\":\"int256\",\"name\":\"skew\",\"type\":\"int256\"},{\"indexed\":false,\"internalType\":\"uint256\",\"name\":\"size\",\"type\":\"uint256\"},{\"indexed\":false,\"internalType\":\"int256\",\"name\":\"sizeDelta\",\"type\":\"int256\"},{\"indexed\":false,\"internalType\":\"int256\",\"name\":\"currentFundingRate\",\"type\":\"int256\"},{\"indexed\":false,\"internalType\":\"int256\",\"name\":\"currentFundingVelocity\",\"type\":\"int256\"}],\"name\":\"MarketUpdated\",\"type\":\"event\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":true,\"internalType\":\"uint128\",\"name\":\"marketId\",\"type\":\"uint128\"},{\"indexed\":true,\"internalType\":\"uint128\",\"name\":\"accountId\",\"type\":\"uint128\"},{\"indexed\":false,\"internalType\":\"uint256\",\"name\":\"fillPrice\",\"type\":\"uint256\"},{\"indexed\":false,\"internalType\":\"int256\",\"name\":\"pnl\",\"type\":\"int256\"},{\"indexed\":false,\"internalType\":\"int256\",\"name\":\"accruedFunding\",\"type\":\"int256\"},{\"indexed\":false,\"internalType\":\"int128\",\"name\":\"sizeDelta\",\"type\":\"int128\"},{\"indexed\":false,\"internalType\":\"int128\",\"name\":\"newSize\",\"type\":\"int128\"},{\"indexed\":false,\"internalType\":\"uint256\",\"name\":\"totalFees\",\"type\":\"uint256\"},{\"indexed\":false,\"internalType\":\"uint256\",\"name\":\"referralFees\",\"type\":\"uint256\"},{\"indexed\":false,\"internalType\":\"uint256\",\"name\":\"collectedFees\",\"type\":\"uint256\"},{\"indexed\":false,\"internalType\":\"uint256\",\"name\":\"settlementReward\",\"type\":\"uint256\"},{\"indexed\":true,\"internalType\":\"bytes32\",\"name\":\"trackingCode\",\"type\":\"bytes32\"},{\"indexed\":false,\"internalType\":\"address\",\"name\":\"settler\",\"type\":\"address\"}],\"name\":\"OrderSettled\",\"type\":\"event\"},{\"inputs\":[],\"name\":\"PRECISION\",\"outputs\":[{\"internalType\":\"int256\",\"name\":\"\",\"type\":\"int256\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"uint128\",\"name\":\"accountId\",\"type\":\"uint128\"}],\"name\":\"settle\",\"outputs\":[],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"bytes\",\"name\":\"result\",\"type\":\"bytes\"},{\"internalType\":\"bytes\",\"name\":\"extraData\",\"type\":\"bytes\"}],\"name\":\"settlePythOrder\",\"outputs\":[],\"stateMutability\":\"payable\",\"type\":\"function\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":true,\"internalType\":\"bytes32\",\"name\":\"feature\",\"type\":\"bytes32\"},{\"indexed\":false,\"internalType\":\"bool\",\"name\":\"allowAll\",\"type\":\"bool\"}],\"name\":\"FeatureFlagAllowAllSet\",\"type\":\"event\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":true,\"internalType\":\"bytes32\",\"name\":\"feature\",\"type\":\"bytes32\"},{\"indexed\":false,\"internalType\":\"address\",\"name\":\"account\",\"type\":\"address\"}],\"name\":\"FeatureFlagAllowlistAdded\",\"type\":\"event\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":true,\"internalType\":\"bytes32\",\"name\":\"feature\",\"type\":\"bytes32\"},{\"indexed\":false,\"internalType\":\"address\",\"name\":\"account\",\"type\":\"address\"}],\"name\":\"FeatureFlagAllowlistRemoved\",\"type\":\"event\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":true,\"internalType\":\"bytes32\",\"name\":\"feature\",\"type\":\"bytes32\"},{\"indexed\":false,\"internalType\":\"address[]\",\"name\":\"deniers\",\"type\":\"address[]\"}],\"name\":\"FeatureFlagDeniersReset\",\"type\":\"event\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":true,\"internalType\":\"bytes32\",\"name\":\"feature\",\"type\":\"bytes32\"},{\"indexed\":false,\"internalType\":\"bool\",\"name\":\"denyAll\",\"type\":\"bool\"}],\"name\":\"FeatureFlagDenyAllSet\",\"type\":\"event\"},{\"inputs\":[{\"internalType\":\"bytes32\",\"name\":\"feature\",\"type\":\"bytes32\"},{\"internalType\":\"address\",\"name\":\"account\",\"type\":\"address\"}],\"name\":\"addToFeatureFlagAllowlist\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"bytes32\",\"name\":\"feature\",\"type\":\"bytes32\"}],\"name\":\"getDeniers\",\"outputs\":[{\"internalType\":\"address[]\",\"name\":\"\",\"type\":\"address[]\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"bytes32\",\"name\":\"feature\",\"type\":\"bytes32\"}],\"name\":\"getFeatureFlagAllowAll\",\"outputs\":[{\"internalType\":\"bool\",\"name\":\"\",\"type\":\"bool\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"bytes32\",\"name\":\"feature\",\"type\":\"bytes32\"}],\"name\":\"getFeatureFlagAllowlist\",\"outputs\":[{\"internalType\":\"address[]\",\"name\":\"\",\"type\":\"address[]\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"bytes32\",\"name\":\"feature\",\"type\":\"bytes32\"}],\"name\":\"getFeatureFlagDenyAll\",\"outputs\":[{\"internalType\":\"bool\",\"name\":\"\",\"type\":\"bool\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"bytes32\",\"name\":\"feature\",\"type\":\"bytes32\"},{\"internalType\":\"address\",\"name\":\"account\",\"type\":\"address\"}],\"name\":\"isFeatureAllowed\",\"outputs\":[{\"internalType\":\"bool\",\"name\":\"\",\"type\":\"bool\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"bytes32\",\"name\":\"feature\",\"type\":\"bytes32\"},{\"internalType\":\"address\",\"name\":\"account\",\"type\":\"address\"}],\"name\":\"removeFromFeatureFlagAllowlist\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"bytes32\",\"name\":\"feature\",\"type\":\"bytes32\"},{\"internalType\":\"address[]\",\"name\":\"deniers\",\"type\":\"address[]\"}],\"name\":\"setDeniers\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"bytes32\",\"name\":\"feature\",\"type\":\"bytes32\"},{\"internalType\":\"bool\",\"name\":\"allowAll\",\"type\":\"bool\"}],\"name\":\"setFeatureFlagAllowAll\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"bytes32\",\"name\":\"feature\",\"type\":\"bytes32\"},{\"internalType\":\"bool\",\"name\":\"denyAll\",\"type\":\"bool\"}],\"name\":\"setFeatureFlagDenyAll\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"uint128\",\"name\":\"accountId\",\"type\":\"uint128\"}],\"name\":\"NotEligibleForLiquidation\",\"type\":\"error\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":true,\"internalType\":\"uint128\",\"name\":\"accountId\",\"type\":\"uint128\"},{\"indexed\":false,\"internalType\":\"uint256\",\"name\":\"reward\",\"type\":\"uint256\"},{\"indexed\":false,\"internalType\":\"bool\",\"name\":\"fullLiquidation\",\"type\":\"bool\"}],\"name\":\"AccountLiquidated\",\"type\":\"event\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":true,\"internalType\":\"uint128\",\"name\":\"accountId\",\"type\":\"uint128\"},{\"indexed\":true,\"internalType\":\"uint128\",\"name\":\"marketId\",\"type\":\"uint128\"},{\"indexed\":false,\"internalType\":\"uint256\",\"name\":\"amountLiquidated\",\"type\":\"uint256\"},{\"indexed\":false,\"internalType\":\"int128\",\"name\":\"currentPositionSize\",\"type\":\"int128\"}],\"name\":\"PositionLiquidated\",\"type\":\"event\"},{\"inputs\":[{\"internalType\":\"uint128\",\"name\":\"accountId\",\"type\":\"uint128\"}],\"name\":\"canLiquidate\",\"outputs\":[{\"internalType\":\"bool\",\"name\":\"isEligible\",\"type\":\"bool\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"uint128\",\"name\":\"accountId\",\"type\":\"uint128\"}],\"name\":\"liquidate\",\"outputs\":[{\"internalType\":\"uint256\",\"name\":\"liquidationReward\",\"type\":\"uint256\"}],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"liquidateFlagged\",\"outputs\":[{\"internalType\":\"uint256\",\"name\":\"liquidationReward\",\"type\":\"uint256\"}],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"uint128\",\"name\":\"marketId\",\"type\":\"uint128\"}],\"name\":\"liquidationCapacity\",\"outputs\":[{\"internalType\":\"uint256\",\"name\":\"capacity\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"maxLiquidationInWindow\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"latestLiquidationTimestamp\",\"type\":\"uint256\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":true,\"internalType\":\"uint128\",\"name\":\"marketId\",\"type\":\"uint128\"},{\"indexed\":false,\"internalType\":\"uint256\",\"name\":\"skewScale\",\"type\":\"uint256\"},{\"indexed\":false,\"internalType\":\"uint256\",\"name\":\"maxFundingVelocity\",\"type\":\"uint256\"}],\"name\":\"FundingParametersSet\",\"type\":\"event\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":true,\"internalType\":\"uint128\",\"name\":\"marketId\",\"type\":\"uint128\"},{\"indexed\":false,\"internalType\":\"uint256\",\"name\":\"initialMarginRatioD18\",\"type\":\"uint256\"},{\"indexed\":false,\"internalType\":\"uint256\",\"name\":\"maintenanceMarginRatioD18\",\"type\":\"uint256\"},{\"indexed\":false,\"internalType\":\"uint256\",\"name\":\"minimumInitialMarginRatioD18\",\"type\":\"uint256\"},{\"indexed\":false,\"internalType\":\"uint256\",\"name\":\"liquidationRewardRatioD18\",\"type\":\"uint256\"},{\"indexed\":false,\"internalType\":\"uint256\",\"name\":\"minimumPositionMargin\",\"type\":\"uint256\"}],\"name\":\"LiquidationParametersSet\",\"type\":\"event\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":true,\"internalType\":\"uint128\",\"name\":\"marketId\",\"type\":\"uint128\"},{\"indexed\":false,\"internalType\":\"uint256\",\"name\":\"lockedOiRatioD18\",\"type\":\"uint256\"}],\"name\":\"LockedOiRatioSet\",\"type\":\"event\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":true,\"internalType\":\"uint128\",\"name\":\"marketId\",\"type\":\"uint128\"},{\"indexed\":false,\"internalType\":\"bytes32\",\"name\":\"feedId\",\"type\":\"bytes32\"}],\"name\":\"MarketPriceDataUpdated\",\"type\":\"event\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":true,\"internalType\":\"uint128\",\"name\":\"marketId\",\"type\":\"uint128\"},{\"indexed\":false,\"internalType\":\"uint256\",\"name\":\"maxLiquidationLimitAccumulationMultiplier\",\"type\":\"uint256\"},{\"indexed\":false,\"internalType\":\"uint256\",\"name\":\"maxSecondsInLiquidationWindow\",\"type\":\"uint256\"},{\"indexed\":false,\"internalType\":\"uint256\",\"name\":\"maxLiquidationPd\",\"type\":\"uint256\"},{\"indexed\":false,\"internalType\":\"address\",\"name\":\"endorsedLiquidator\",\"type\":\"address\"}],\"name\":\"MaxLiquidationParametersSet\",\"type\":\"event\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":true,\"internalType\":\"uint128\",\"name\":\"marketId\",\"type\":\"uint128\"},{\"indexed\":false,\"internalType\":\"uint256\",\"name\":\"maxMarketSize\",\"type\":\"uint256\"}],\"name\":\"MaxMarketSizeSet\",\"type\":\"event\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":true,\"internalType\":\"uint128\",\"name\":\"marketId\",\"type\":\"uint128\"},{\"indexed\":false,\"internalType\":\"uint256\",\"name\":\"makerFeeRatio\",\"type\":\"uint256\"},{\"indexed\":false,\"internalType\":\"uint256\",\"name\":\"takerFeeRatio\",\"type\":\"uint256\"}],\"name\":\"OrderFeesSet\",\"type\":\"event\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":true,\"internalType\":\"uint128\",\"name\":\"marketId\",\"type\":\"uint128\"},{\"components\":[{\"internalType\":\"enumSettlementStrategy.Type\",\"name\":\"strategyType\",\"type\":\"uint8\"},{\"internalType\":\"uint256\",\"name\":\"settlementDelay\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"settlementWindowDuration\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"priceWindowDuration\",\"type\":\"uint256\"},{\"internalType\":\"address\",\"name\":\"priceVerificationContract\",\"type\":\"address\"},{\"internalType\":\"bytes32\",\"name\":\"feedId\",\"type\":\"bytes32\"},{\"internalType\":\"string\",\"name\":\"url\",\"type\":\"string\"},{\"internalType\":\"uint256\",\"name\":\"settlementReward\",\"type\":\"uint256\"},{\"internalType\":\"bool\",\"name\":\"disabled\",\"type\":\"bool\"}],\"indexed\":false,\"internalType\":\"structSettlementStrategy.Data\",\"name\":\"strategy\",\"type\":\"tuple\"},{\"indexed\":true,\"internalType\":\"uint256\",\"name\":\"strategyId\",\"type\":\"uint256\"}],\"name\":\"SettlementStrategyAdded\",\"type\":\"event\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":true,\"internalType\":\"uint128\",\"name\":\"marketId\",\"type\":\"uint128\"},{\"indexed\":false,\"internalType\":\"uint256\",\"name\":\"strategyId\",\"type\":\"uint256\"},{\"indexed\":false,\"internalType\":\"bool\",\"name\":\"enabled\",\"type\":\"bool\"}],\"name\":\"SettlementStrategyEnabled\",\"type\":\"event\"},{\"inputs\":[{\"internalType\":\"uint128\",\"name\":\"marketId\",\"type\":\"uint128\"},{\"components\":[{\"internalType\":\"enumSettlementStrategy.Type\",\"name\":\"strategyType\",\"type\":\"uint8\"},{\"internalType\":\"uint256\",\"name\":\"settlementDelay\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"settlementWindowDuration\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"priceWindowDuration\",\"type\":\"uint256\"},{\"internalType\":\"address\",\"name\":\"priceVerificationContract\",\"type\":\"address\"},{\"internalType\":\"bytes32\",\"name\":\"feedId\",\"type\":\"bytes32\"},{\"internalType\":\"string\",\"name\":\"url\",\"type\":\"string\"},{\"internalType\":\"uint256\",\"name\":\"settlementReward\",\"type\":\"uint256\"},{\"internalType\":\"bool\",\"name\":\"disabled\",\"type\":\"bool\"}],\"internalType\":\"structSettlementStrategy.Data\",\"name\":\"strategy\",\"type\":\"tuple\"}],\"name\":\"addSettlementStrategy\",\"outputs\":[{\"internalType\":\"uint256\",\"name\":\"strategyId\",\"type\":\"uint256\"}],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"uint128\",\"name\":\"marketId\",\"type\":\"uint128\"}],\"name\":\"getFundingParameters\",\"outputs\":[{\"internalType\":\"uint256\",\"name\":\"skewScale\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"maxFundingVelocity\",\"type\":\"uint256\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"uint128\",\"name\":\"marketId\",\"type\":\"uint128\"}],\"name\":\"getLiquidationParameters\",\"outputs\":[{\"internalType\":\"uint256\",\"name\":\"initialMarginRatioD18\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"minimumInitialMarginRatioD18\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"maintenanceMarginScalarD18\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"liquidationRewardRatioD18\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"minimumPositionMargin\",\"type\":\"uint256\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"uint128\",\"name\":\"marketId\",\"type\":\"uint128\"}],\"name\":\"getLockedOiRatio\",\"outputs\":[{\"internalType\":\"uint256\",\"name\":\"\",\"type\":\"uint256\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"uint128\",\"name\":\"marketId\",\"type\":\"uint128\"}],\"name\":\"getMaxLiquidationParameters\",\"outputs\":[{\"internalType\":\"uint256\",\"name\":\"maxLiquidationLimitAccumulationMultiplier\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"maxSecondsInLiquidationWindow\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"maxLiquidationPd\",\"type\":\"uint256\"},{\"internalType\":\"address\",\"name\":\"endorsedLiquidator\",\"type\":\"address\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"uint128\",\"name\":\"marketId\",\"type\":\"uint128\"}],\"name\":\"getMaxMarketSize\",\"outputs\":[{\"internalType\":\"uint256\",\"name\":\"maxMarketSize\",\"type\":\"uint256\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"uint128\",\"name\":\"marketId\",\"type\":\"uint128\"}],\"name\":\"getOrderFees\",\"outputs\":[{\"internalType\":\"uint256\",\"name\":\"makerFee\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"takerFee\",\"type\":\"uint256\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"uint128\",\"name\":\"marketId\",\"type\":\"uint128\"},{\"internalType\":\"uint256\",\"name\":\"strategyId\",\"type\":\"uint256\"}],\"name\":\"getSettlementStrategy\",\"outputs\":[{\"components\":[{\"internalType\":\"enumSettlementStrategy.Type\",\"name\":\"strategyType\",\"type\":\"uint8\"},{\"internalType\":\"uint256\",\"name\":\"settlementDelay\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"settlementWindowDuration\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"priceWindowDuration\",\"type\":\"uint256\"},{\"internalType\":\"address\",\"name\":\"priceVerificationContract\",\"type\":\"address\"},{\"internalType\":\"bytes32\",\"name\":\"feedId\",\"type\":\"bytes32\"},{\"internalType\":\"string\",\"name\":\"url\",\"type\":\"string\"},{\"internalType\":\"uint256\",\"name\":\"settlementReward\",\"type\":\"uint256\"},{\"internalType\":\"bool\",\"name\":\"disabled\",\"type\":\"bool\"}],\"internalType\":\"structSettlementStrategy.Data\",\"name\":\"settlementStrategy\",\"type\":\"tuple\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"uint128\",\"name\":\"marketId\",\"type\":\"uint128\"},{\"internalType\":\"uint256\",\"name\":\"skewScale\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"maxFundingVelocity\",\"type\":\"uint256\"}],\"name\":\"setFundingParameters\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"uint128\",\"name\":\"marketId\",\"type\":\"uint128\"},{\"internalType\":\"uint256\",\"name\":\"initialMarginRatioD18\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"minimumInitialMarginRatioD18\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"maintenanceMarginScalarD18\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"liquidationRewardRatioD18\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"minimumPositionMargin\",\"type\":\"uint256\"}],\"name\":\"setLiquidationParameters\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"uint128\",\"name\":\"marketId\",\"type\":\"uint128\"},{\"internalType\":\"uint256\",\"name\":\"lockedOiRatioD18\",\"type\":\"uint256\"}],\"name\":\"setLockedOiRatio\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"uint128\",\"name\":\"marketId\",\"type\":\"uint128\"},{\"internalType\":\"uint256\",\"name\":\"maxLiquidationLimitAccumulationMultiplier\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"maxSecondsInLiquidationWindow\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"maxLiquidationPd\",\"type\":\"uint256\"},{\"internalType\":\"address\",\"name\":\"endorsedLiquidator\",\"type\":\"address\"}],\"name\":\"setMaxLiquidationParameters\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"uint128\",\"name\":\"marketId\",\"type\":\"uint128\"},{\"internalType\":\"uint256\",\"name\":\"maxMarketSize\",\"type\":\"uint256\"}],\"name\":\"setMaxMarketSize\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"uint128\",\"name\":\"marketId\",\"type\":\"uint128\"},{\"internalType\":\"uint256\",\"name\":\"makerFeeRatio\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"takerFeeRatio\",\"type\":\"uint256\"}],\"name\":\"setOrderFees\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"uint128\",\"name\":\"marketId\",\"type\":\"uint128\"},{\"internalType\":\"uint256\",\"name\":\"strategyId\",\"type\":\"uint256\"},{\"internalType\":\"bool\",\"name\":\"enabled\",\"type\":\"bool\"}],\"name\":\"setSettlementStrategyEnabled\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"uint128\",\"name\":\"perpsMarketId\",\"type\":\"uint128\"},{\"internalType\":\"bytes32\",\"name\":\"feedId\",\"type\":\"bytes32\"}],\"name\":\"updatePriceData\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"address\",\"name\":\"invalidFeeCollector\",\"type\":\"address\"}],\"name\":\"InvalidFeeCollectorInterface\",\"type\":\"error\"},{\"inputs\":[{\"internalType\":\"uint256\",\"name\":\"shareRatioD18\",\"type\":\"uint256\"}],\"name\":\"InvalidReferrerShareRatio\",\"type\":\"error\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":false,\"internalType\":\"address\",\"name\":\"feeCollector\",\"type\":\"address\"}],\"name\":\"FeeCollectorSet\",\"type\":\"event\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":true,\"internalType\":\"uint256\",\"name\":\"minLiquidationRewardUsd\",\"type\":\"uint256\"},{\"indexed\":true,\"internalType\":\"uint256\",\"name\":\"maxLiquidationRewardUsd\",\"type\":\"uint256\"}],\"name\":\"LiquidationRewardGuardsSet\",\"type\":\"event\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":true,\"internalType\":\"uint128\",\"name\":\"synthMarketId\",\"type\":\"uint128\"},{\"indexed\":false,\"internalType\":\"uint256\",\"name\":\"collateralAmount\",\"type\":\"uint256\"}],\"name\":\"MaxCollateralAmountSet\",\"type\":\"event\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":false,\"internalType\":\"uint128\",\"name\":\"maxPositionsPerAccount\",\"type\":\"uint128\"},{\"indexed\":false,\"internalType\":\"uint128\",\"name\":\"maxCollateralsPerAccount\",\"type\":\"uint128\"}],\"name\":\"PerAccountCapsSet\",\"type\":\"event\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":false,\"internalType\":\"address\",\"name\":\"referrer\",\"type\":\"address\"},{\"indexed\":false,\"internalType\":\"uint256\",\"name\":\"shareRatioD18\",\"type\":\"uint256\"}],\"name\":\"ReferrerShareUpdated\",\"type\":\"event\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":false,\"internalType\":\"uint128[]\",\"name\":\"newSynthDeductionPriority\",\"type\":\"uint128[]\"}],\"name\":\"SynthDeductionPrioritySet\",\"type\":\"event\"},{\"inputs\":[],\"name\":\"getFeeCollector\",\"outputs\":[{\"internalType\":\"address\",\"name\":\"feeCollector\",\"type\":\"address\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"getLiquidationRewardGuards\",\"outputs\":[{\"internalType\":\"uint256\",\"name\":\"minLiquidationRewardUsd\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"maxLiquidationRewardUsd\",\"type\":\"uint256\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"getMarkets\",\"outputs\":[{\"internalType\":\"uint256[]\",\"name\":\"marketIds\",\"type\":\"uint256[]\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"uint128\",\"name\":\"synthMarketId\",\"type\":\"uint128\"}],\"name\":\"getMaxCollateralAmount\",\"outputs\":[{\"internalType\":\"uint256\",\"name\":\"\",\"type\":\"uint256\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"getPerAccountCaps\",\"outputs\":[{\"internalType\":\"uint128\",\"name\":\"maxPositionsPerAccount\",\"type\":\"uint128\"},{\"internalType\":\"uint128\",\"name\":\"maxCollateralsPerAccount\",\"type\":\"uint128\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"address\",\"name\":\"referrer\",\"type\":\"address\"}],\"name\":\"getReferrerShare\",\"outputs\":[{\"internalType\":\"uint256\",\"name\":\"shareRatioD18\",\"type\":\"uint256\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"getSynthDeductionPriority\",\"outputs\":[{\"internalType\":\"uint128[]\",\"name\":\"\",\"type\":\"uint128[]\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"address\",\"name\":\"feeCollector\",\"type\":\"address\"}],\"name\":\"setFeeCollector\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"uint256\",\"name\":\"minLiquidationRewardUsd\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"maxLiquidationRewardUsd\",\"type\":\"uint256\"}],\"name\":\"setLiquidationRewardGuards\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"uint128\",\"name\":\"synthMarketId\",\"type\":\"uint128\"},{\"internalType\":\"uint256\",\"name\":\"collateralAmount\",\"type\":\"uint256\"}],\"name\":\"setMaxCollateralAmount\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"uint128\",\"name\":\"maxPositionsPerAccount\",\"type\":\"uint128\"},{\"internalType\":\"uint128\",\"name\":\"maxCollateralsPerAccount\",\"type\":\"uint128\"}],\"name\":\"setPerAccountCaps\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"uint128[]\",\"name\":\"newSynthDeductionPriority\",\"type\":\"uint128[]\"}],\"name\":\"setSynthDeductionPriority\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"totalGlobalCollateralValue\",\"outputs\":[{\"internalType\":\"uint256\",\"name\":\"totalCollateralValue\",\"type\":\"uint256\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"address\",\"name\":\"referrer\",\"type\":\"address\"},{\"internalType\":\"uint256\",\"name\":\"shareRatioD18\",\"type\":\"uint256\"}],\"name\":\"updateReferrerShare\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"}]",
+	ABI: "[{\"inputs\":[{\"internalType\":\"bytes32\",\"name\":\"which\",\"type\":\"bytes32\"}],\"name\":\"FeatureUnavailable\",\"type\":\"error\"},{\"inputs\":[{\"internalType\":\"uint128\",\"name\":\"accountId\",\"type\":\"uint128\"}],\"name\":\"InvalidAccountId\",\"type\":\"error\"},{\"inputs\":[{\"internalType\":\"bytes32\",\"name\":\"permission\",\"type\":\"bytes32\"}],\"name\":\"InvalidPermission\",\"type\":\"error\"},{\"inputs\":[{\"internalType\":\"address\",\"name\":\"origin\",\"type\":\"address\"}],\"name\":\"OnlyAccountTokenProxy\",\"type\":\"error\"},{\"inputs\":[{\"internalType\":\"uint128\",\"name\":\"accountId\",\"type\":\"uint128\"},{\"internalType\":\"bytes32\",\"name\":\"permission\",\"type\":\"bytes32\"},{\"internalType\":\"address\",\"name\":\"target\",\"type\":\"address\"}],\"name\":\"PermissionDenied\",\"type\":\"error\"},{\"inputs\":[{\"internalType\":\"uint128\",\"name\":\"accountId\",\"type\":\"uint128\"},{\"internalType\":\"bytes32\",\"name\":\"permission\",\"type\":\"bytes32\"},{\"internalType\":\"address\",\"name\":\"user\",\"type\":\"address\"}],\"name\":\"PermissionNotGranted\",\"type\":\"error\"},{\"inputs\":[],\"name\":\"PositionOutOfBounds\",\"type\":\"error\"},{\"inputs\":[],\"name\":\"ValueAlreadyInSet\",\"type\":\"error\"},{\"inputs\":[],\"name\":\"ValueNotInSet\",\"type\":\"error\"},{\"inputs\":[],\"name\":\"ZeroAddress\",\"type\":\"error\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":true,\"internalType\":\"uint128\",\"name\":\"accountId\",\"type\":\"uint128\"},{\"indexed\":true,\"internalType\":\"address\",\"name\":\"owner\",\"type\":\"address\"}],\"name\":\"AccountCreated\",\"type\":\"event\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":true,\"internalType\":\"uint128\",\"name\":\"accountId\",\"type\":\"uint128\"},{\"indexed\":true,\"internalType\":\"bytes32\",\"name\":\"permission\",\"type\":\"bytes32\"},{\"indexed\":true,\"internalType\":\"address\",\"name\":\"user\",\"type\":\"address\"},{\"indexed\":false,\"internalType\":\"address\",\"name\":\"sender\",\"type\":\"address\"}],\"name\":\"PermissionGranted\",\"type\":\"event\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":true,\"internalType\":\"uint128\",\"name\":\"accountId\",\"type\":\"uint128\"},{\"indexed\":true,\"internalType\":\"bytes32\",\"name\":\"permission\",\"type\":\"bytes32\"},{\"indexed\":true,\"internalType\":\"address\",\"name\":\"user\",\"type\":\"address\"},{\"indexed\":false,\"internalType\":\"address\",\"name\":\"sender\",\"type\":\"address\"}],\"name\":\"PermissionRevoked\",\"type\":\"event\"},{\"inputs\":[],\"name\":\"createAccount\",\"outputs\":[{\"internalType\":\"uint128\",\"name\":\"accountId\",\"type\":\"uint128\"}],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"uint128\",\"name\":\"requestedAccountId\",\"type\":\"uint128\"}],\"name\":\"createAccount\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"uint128\",\"name\":\"accountId\",\"type\":\"uint128\"}],\"name\":\"getAccountLastInteraction\",\"outputs\":[{\"internalType\":\"uint256\",\"name\":\"\",\"type\":\"uint256\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"uint128\",\"name\":\"accountId\",\"type\":\"uint128\"}],\"name\":\"getAccountOwner\",\"outputs\":[{\"internalType\":\"address\",\"name\":\"\",\"type\":\"address\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"uint128\",\"name\":\"accountId\",\"type\":\"uint128\"}],\"name\":\"getAccountPermissions\",\"outputs\":[{\"components\":[{\"internalType\":\"address\",\"name\":\"user\",\"type\":\"address\"},{\"internalType\":\"bytes32[]\",\"name\":\"permissions\",\"type\":\"bytes32[]\"}],\"internalType\":\"structIAccountModule.AccountPermissions[]\",\"name\":\"accountPerms\",\"type\":\"tuple[]\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"getAccountTokenAddress\",\"outputs\":[{\"internalType\":\"address\",\"name\":\"\",\"type\":\"address\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"uint128\",\"name\":\"accountId\",\"type\":\"uint128\"},{\"internalType\":\"bytes32\",\"name\":\"permission\",\"type\":\"bytes32\"},{\"internalType\":\"address\",\"name\":\"user\",\"type\":\"address\"}],\"name\":\"grantPermission\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"uint128\",\"name\":\"accountId\",\"type\":\"uint128\"},{\"internalType\":\"bytes32\",\"name\":\"permission\",\"type\":\"bytes32\"},{\"internalType\":\"address\",\"name\":\"user\",\"type\":\"address\"}],\"name\":\"hasPermission\",\"outputs\":[{\"internalType\":\"bool\",\"name\":\"\",\"type\":\"bool\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"uint128\",\"name\":\"accountId\",\"type\":\"uint128\"},{\"internalType\":\"bytes32\",\"name\":\"permission\",\"type\":\"bytes32\"},{\"internalType\":\"address\",\"name\":\"user\",\"type\":\"address\"}],\"name\":\"isAuthorized\",\"outputs\":[{\"internalType\":\"bool\",\"name\":\"\",\"type\":\"bool\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"address\",\"name\":\"to\",\"type\":\"address\"},{\"internalType\":\"uint128\",\"name\":\"accountId\",\"type\":\"uint128\"}],\"name\":\"notifyAccountTransfer\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"uint128\",\"name\":\"accountId\",\"type\":\"uint128\"},{\"internalType\":\"bytes32\",\"name\":\"permission\",\"type\":\"bytes32\"}],\"name\":\"renouncePermission\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"uint128\",\"name\":\"accountId\",\"type\":\"uint128\"},{\"internalType\":\"bytes32\",\"name\":\"permission\",\"type\":\"bytes32\"},{\"internalType\":\"address\",\"name\":\"user\",\"type\":\"address\"}],\"name\":\"revokePermission\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"bytes32\",\"name\":\"expected\",\"type\":\"bytes32\"},{\"internalType\":\"bytes32\",\"name\":\"actual\",\"type\":\"bytes32\"}],\"name\":\"MismatchAssociatedSystemKind\",\"type\":\"error\"},{\"inputs\":[{\"internalType\":\"bytes32\",\"name\":\"id\",\"type\":\"bytes32\"}],\"name\":\"MissingAssociatedSystem\",\"type\":\"error\"},{\"inputs\":[{\"internalType\":\"address\",\"name\":\"addr\",\"type\":\"address\"}],\"name\":\"Unauthorized\",\"type\":\"error\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":true,\"internalType\":\"bytes32\",\"name\":\"kind\",\"type\":\"bytes32\"},{\"indexed\":true,\"internalType\":\"bytes32\",\"name\":\"id\",\"type\":\"bytes32\"},{\"indexed\":false,\"internalType\":\"address\",\"name\":\"proxy\",\"type\":\"address\"},{\"indexed\":false,\"internalType\":\"address\",\"name\":\"impl\",\"type\":\"address\"}],\"name\":\"AssociatedSystemSet\",\"type\":\"event\"},{\"inputs\":[{\"internalType\":\"bytes32\",\"name\":\"id\",\"type\":\"bytes32\"}],\"name\":\"getAssociatedSystem\",\"outputs\":[{\"internalType\":\"address\",\"name\":\"addr\",\"type\":\"address\"},{\"internalType\":\"bytes32\",\"name\":\"kind\",\"type\":\"bytes32\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"bytes32\",\"name\":\"id\",\"type\":\"bytes32\"},{\"internalType\":\"string\",\"name\":\"name\",\"type\":\"string\"},{\"internalType\":\"string\",\"name\":\"symbol\",\"type\":\"string\"},{\"internalType\":\"string\",\"name\":\"uri\",\"type\":\"string\"},{\"internalType\":\"address\",\"name\":\"impl\",\"type\":\"address\"}],\"name\":\"initOrUpgradeNft\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"bytes32\",\"name\":\"id\",\"type\":\"bytes32\"},{\"internalType\":\"string\",\"name\":\"name\",\"type\":\"string\"},{\"internalType\":\"string\",\"name\":\"symbol\",\"type\":\"string\"},{\"internalType\":\"uint8\",\"name\":\"decimals\",\"type\":\"uint8\"},{\"internalType\":\"address\",\"name\":\"impl\",\"type\":\"address\"}],\"name\":\"initOrUpgradeToken\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"bytes32\",\"name\":\"id\",\"type\":\"bytes32\"},{\"internalType\":\"address\",\"name\":\"endpoint\",\"type\":\"address\"}],\"name\":\"registerUnmanagedSystem\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"address\",\"name\":\"implementation\",\"type\":\"address\"}],\"name\":\"ImplementationIsSterile\",\"type\":\"error\"},{\"inputs\":[],\"name\":\"NoChange\",\"type\":\"error\"},{\"inputs\":[{\"internalType\":\"address\",\"name\":\"contr\",\"type\":\"address\"}],\"name\":\"NotAContract\",\"type\":\"error\"},{\"inputs\":[{\"internalType\":\"address\",\"name\":\"addr\",\"type\":\"address\"}],\"name\":\"NotNominated\",\"type\":\"error\"},{\"inputs\":[],\"name\":\"UpgradeSimulationFailed\",\"type\":\"error\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":false,\"internalType\":\"address\",\"name\":\"oldOwner\",\"type\":\"address\"},{\"indexed\":false,\"internalType\":\"address\",\"name\":\"newOwner\",\"type\":\"address\"}],\"name\":\"OwnerChanged\",\"type\":\"event\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":false,\"internalType\":\"address\",\"name\":\"newOwner\",\"type\":\"address\"}],\"name\":\"OwnerNominated\",\"type\":\"event\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":true,\"internalType\":\"address\",\"name\":\"self\",\"type\":\"address\"},{\"indexed\":false,\"internalType\":\"address\",\"name\":\"implementation\",\"type\":\"address\"}],\"name\":\"Upgraded\",\"type\":\"event\"},{\"inputs\":[],\"name\":\"acceptOwnership\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"getImplementation\",\"outputs\":[{\"internalType\":\"address\",\"name\":\"\",\"type\":\"address\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"address\",\"name\":\"newNominatedOwner\",\"type\":\"address\"}],\"name\":\"nominateNewOwner\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"nominatedOwner\",\"outputs\":[{\"internalType\":\"address\",\"name\":\"\",\"type\":\"address\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"owner\",\"outputs\":[{\"internalType\":\"address\",\"name\":\"\",\"type\":\"address\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"renounceNomination\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"address\",\"name\":\"newImplementation\",\"type\":\"address\"}],\"name\":\"simulateUpgradeTo\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"address\",\"name\":\"newImplementation\",\"type\":\"address\"}],\"name\":\"upgradeTo\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"uint128\",\"name\":\"marketId\",\"type\":\"uint128\"}],\"name\":\"InvalidMarket\",\"type\":\"error\"},{\"inputs\":[{\"internalType\":\"string\",\"name\":\"parameter\",\"type\":\"string\"},{\"internalType\":\"string\",\"name\":\"reason\",\"type\":\"string\"}],\"name\":\"InvalidParameter\",\"type\":\"error\"},{\"inputs\":[],\"name\":\"OverflowInt256ToUint256\",\"type\":\"error\"},{\"inputs\":[],\"name\":\"OverflowUint256ToInt256\",\"type\":\"error\"},{\"inputs\":[],\"name\":\"OverflowUint256ToUint128\",\"type\":\"error\"},{\"inputs\":[],\"name\":\"PerpsMarketAlreadyInitialized\",\"type\":\"error\"},{\"inputs\":[],\"name\":\"PerpsMarketNotInitialized\",\"type\":\"error\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":false,\"internalType\":\"uint128\",\"name\":\"globalPerpsMarketId\",\"type\":\"uint128\"}],\"name\":\"FactoryInitialized\",\"type\":\"event\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":true,\"internalType\":\"uint128\",\"name\":\"perpsMarketId\",\"type\":\"uint128\"},{\"indexed\":false,\"internalType\":\"string\",\"name\":\"marketName\",\"type\":\"string\"},{\"indexed\":false,\"internalType\":\"string\",\"name\":\"marketSymbol\",\"type\":\"string\"}],\"name\":\"MarketCreated\",\"type\":\"event\"},{\"inputs\":[{\"internalType\":\"uint128\",\"name\":\"requestedMarketId\",\"type\":\"uint128\"},{\"internalType\":\"string\",\"name\":\"marketName\",\"type\":\"string\"},{\"internalType\":\"string\",\"name\":\"marketSymbol\",\"type\":\"string\"}],\"name\":\"createMarket\",\"outputs\":[{\"internalType\":\"uint128\",\"name\":\"\",\"type\":\"uint128\"}],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"contractISynthetixSystem\",\"name\":\"synthetix\",\"type\":\"address\"},{\"internalType\":\"contractISpotMarketSystem\",\"name\":\"spotMarket\",\"type\":\"address\"},{\"internalType\":\"string\",\"name\":\"marketName\",\"type\":\"string\"}],\"name\":\"initializeFactory\",\"outputs\":[{\"internalType\":\"uint128\",\"name\":\"\",\"type\":\"uint128\"}],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"uint128\",\"name\":\"perpsMarketId\",\"type\":\"uint128\"}],\"name\":\"minimumCredit\",\"outputs\":[{\"internalType\":\"uint256\",\"name\":\"\",\"type\":\"uint256\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"uint128\",\"name\":\"perpsMarketId\",\"type\":\"uint128\"}],\"name\":\"name\",\"outputs\":[{\"internalType\":\"string\",\"name\":\"\",\"type\":\"string\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"uint128\",\"name\":\"perpsMarketId\",\"type\":\"uint128\"}],\"name\":\"reportedDebt\",\"outputs\":[{\"internalType\":\"uint256\",\"name\":\"\",\"type\":\"uint256\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"string\",\"name\":\"marketName\",\"type\":\"string\"}],\"name\":\"setPerpsMarketName\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"bytes4\",\"name\":\"interfaceId\",\"type\":\"bytes4\"}],\"name\":\"supportsInterface\",\"outputs\":[{\"internalType\":\"bool\",\"name\":\"\",\"type\":\"bool\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"uint128\",\"name\":\"accountId\",\"type\":\"uint128\"}],\"name\":\"AccountLiquidatable\",\"type\":\"error\"},{\"inputs\":[{\"internalType\":\"uint128\",\"name\":\"accountId\",\"type\":\"uint128\"}],\"name\":\"AccountNotFound\",\"type\":\"error\"},{\"inputs\":[{\"internalType\":\"uint128\",\"name\":\"synthMarketId\",\"type\":\"uint128\"},{\"internalType\":\"uint256\",\"name\":\"collateralAmount\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"withdrawAmount\",\"type\":\"uint256\"}],\"name\":\"InsufficientCollateral\",\"type\":\"error\"},{\"inputs\":[{\"internalType\":\"uint256\",\"name\":\"availableUsdDenominated\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"requiredUsdDenominated\",\"type\":\"uint256\"}],\"name\":\"InsufficientCollateralAvailableForWithdraw\",\"type\":\"error\"},{\"inputs\":[{\"internalType\":\"uint128\",\"name\":\"synthMarketId\",\"type\":\"uint128\"},{\"internalType\":\"uint256\",\"name\":\"collateralAmount\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"withdrawAmount\",\"type\":\"uint256\"}],\"name\":\"InsufficientSynthCollateral\",\"type\":\"error\"},{\"inputs\":[{\"internalType\":\"int256\",\"name\":\"amountDelta\",\"type\":\"int256\"}],\"name\":\"InvalidAmountDelta\",\"type\":\"error\"},{\"inputs\":[],\"name\":\"KeeperCostsNotSet\",\"type\":\"error\"},{\"inputs\":[{\"internalType\":\"uint128\",\"name\":\"synthMarketId\",\"type\":\"uint128\"},{\"internalType\":\"uint256\",\"name\":\"maxAmount\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"collateralAmount\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"depositAmount\",\"type\":\"uint256\"}],\"name\":\"MaxCollateralExceeded\",\"type\":\"error\"},{\"inputs\":[{\"internalType\":\"uint128\",\"name\":\"maxCollateralsPerAccount\",\"type\":\"uint128\"}],\"name\":\"MaxCollateralsPerAccountReached\",\"type\":\"error\"},{\"inputs\":[],\"name\":\"OverflowUint128ToInt128\",\"type\":\"error\"},{\"inputs\":[],\"name\":\"PendingOrderExists\",\"type\":\"error\"},{\"inputs\":[{\"internalType\":\"uint128\",\"name\":\"marketId\",\"type\":\"uint128\"}],\"name\":\"PriceFeedNotSet\",\"type\":\"error\"},{\"inputs\":[{\"internalType\":\"uint128\",\"name\":\"synthMarketId\",\"type\":\"uint128\"}],\"name\":\"SynthNotEnabledForCollateral\",\"type\":\"error\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":true,\"internalType\":\"uint128\",\"name\":\"accountId\",\"type\":\"uint128\"},{\"indexed\":true,\"internalType\":\"uint128\",\"name\":\"synthMarketId\",\"type\":\"uint128\"},{\"indexed\":false,\"internalType\":\"int256\",\"name\":\"amountDelta\",\"type\":\"int256\"},{\"indexed\":true,\"internalType\":\"address\",\"name\":\"sender\",\"type\":\"address\"}],\"name\":\"CollateralModified\",\"type\":\"event\"},{\"inputs\":[{\"internalType\":\"uint128\",\"name\":\"accountId\",\"type\":\"uint128\"}],\"name\":\"getAccountCollateralIds\",\"outputs\":[{\"internalType\":\"uint256[]\",\"name\":\"\",\"type\":\"uint256[]\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"uint128\",\"name\":\"accountId\",\"type\":\"uint128\"}],\"name\":\"getAccountOpenPositions\",\"outputs\":[{\"internalType\":\"uint256[]\",\"name\":\"\",\"type\":\"uint256[]\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"uint128\",\"name\":\"accountId\",\"type\":\"uint128\"}],\"name\":\"getAvailableMargin\",\"outputs\":[{\"internalType\":\"int256\",\"name\":\"availableMargin\",\"type\":\"int256\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"uint128\",\"name\":\"accountId\",\"type\":\"uint128\"},{\"internalType\":\"uint128\",\"name\":\"synthMarketId\",\"type\":\"uint128\"}],\"name\":\"getCollateralAmount\",\"outputs\":[{\"internalType\":\"uint256\",\"name\":\"\",\"type\":\"uint256\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"uint128\",\"name\":\"accountId\",\"type\":\"uint128\"},{\"internalType\":\"uint128\",\"name\":\"marketId\",\"type\":\"uint128\"}],\"name\":\"getOpenPosition\",\"outputs\":[{\"internalType\":\"int256\",\"name\":\"totalPnl\",\"type\":\"int256\"},{\"internalType\":\"int256\",\"name\":\"accruedFunding\",\"type\":\"int256\"},{\"internalType\":\"int128\",\"name\":\"positionSize\",\"type\":\"int128\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"uint128\",\"name\":\"accountId\",\"type\":\"uint128\"}],\"name\":\"getRequiredMargins\",\"outputs\":[{\"internalType\":\"uint256\",\"name\":\"requiredInitialMargin\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"requiredMaintenanceMargin\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"maxLiquidationReward\",\"type\":\"uint256\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"uint128\",\"name\":\"accountId\",\"type\":\"uint128\"}],\"name\":\"getWithdrawableMargin\",\"outputs\":[{\"internalType\":\"int256\",\"name\":\"withdrawableMargin\",\"type\":\"int256\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"uint128\",\"name\":\"accountId\",\"type\":\"uint128\"},{\"internalType\":\"uint128\",\"name\":\"synthMarketId\",\"type\":\"uint128\"},{\"internalType\":\"int256\",\"name\":\"amountDelta\",\"type\":\"int256\"}],\"name\":\"modifyCollateral\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"uint128\",\"name\":\"accountId\",\"type\":\"uint128\"}],\"name\":\"totalAccountOpenInterest\",\"outputs\":[{\"internalType\":\"uint256\",\"name\":\"\",\"type\":\"uint256\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"uint128\",\"name\":\"accountId\",\"type\":\"uint128\"}],\"name\":\"totalCollateralValue\",\"outputs\":[{\"internalType\":\"uint256\",\"name\":\"\",\"type\":\"uint256\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"uint128\",\"name\":\"marketId\",\"type\":\"uint128\"}],\"name\":\"currentFundingRate\",\"outputs\":[{\"internalType\":\"int256\",\"name\":\"\",\"type\":\"int256\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"uint128\",\"name\":\"marketId\",\"type\":\"uint128\"}],\"name\":\"currentFundingVelocity\",\"outputs\":[{\"internalType\":\"int256\",\"name\":\"\",\"type\":\"int256\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"uint128\",\"name\":\"marketId\",\"type\":\"uint128\"},{\"internalType\":\"int128\",\"name\":\"orderSize\",\"type\":\"int128\"},{\"internalType\":\"uint256\",\"name\":\"price\",\"type\":\"uint256\"}],\"name\":\"fillPrice\",\"outputs\":[{\"internalType\":\"uint256\",\"name\":\"\",\"type\":\"uint256\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"uint128\",\"name\":\"marketId\",\"type\":\"uint128\"}],\"name\":\"getMarketSummary\",\"outputs\":[{\"components\":[{\"internalType\":\"int256\",\"name\":\"skew\",\"type\":\"int256\"},{\"internalType\":\"uint256\",\"name\":\"size\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"maxOpenInterest\",\"type\":\"uint256\"},{\"internalType\":\"int256\",\"name\":\"currentFundingRate\",\"type\":\"int256\"},{\"internalType\":\"int256\",\"name\":\"currentFundingVelocity\",\"type\":\"int256\"},{\"internalType\":\"uint256\",\"name\":\"indexPrice\",\"type\":\"uint256\"}],\"internalType\":\"structIPerpsMarketModule.MarketSummary\",\"name\":\"summary\",\"type\":\"tuple\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"uint128\",\"name\":\"marketId\",\"type\":\"uint128\"}],\"name\":\"indexPrice\",\"outputs\":[{\"internalType\":\"uint256\",\"name\":\"\",\"type\":\"uint256\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"uint128\",\"name\":\"marketId\",\"type\":\"uint128\"}],\"name\":\"maxOpenInterest\",\"outputs\":[{\"internalType\":\"uint256\",\"name\":\"\",\"type\":\"uint256\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"uint128\",\"name\":\"marketId\",\"type\":\"uint128\"}],\"name\":\"metadata\",\"outputs\":[{\"internalType\":\"string\",\"name\":\"name\",\"type\":\"string\"},{\"internalType\":\"string\",\"name\":\"symbol\",\"type\":\"string\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"uint128\",\"name\":\"marketId\",\"type\":\"uint128\"}],\"name\":\"size\",\"outputs\":[{\"internalType\":\"uint256\",\"name\":\"\",\"type\":\"uint256\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"uint128\",\"name\":\"marketId\",\"type\":\"uint128\"}],\"name\":\"skew\",\"outputs\":[{\"internalType\":\"int256\",\"name\":\"\",\"type\":\"int256\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"uint256\",\"name\":\"fillPrice\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"acceptablePrice\",\"type\":\"uint256\"}],\"name\":\"AcceptablePriceExceeded\",\"type\":\"error\"},{\"inputs\":[{\"internalType\":\"int256\",\"name\":\"availableMargin\",\"type\":\"int256\"},{\"internalType\":\"uint256\",\"name\":\"minMargin\",\"type\":\"uint256\"}],\"name\":\"InsufficientMargin\",\"type\":\"error\"},{\"inputs\":[{\"internalType\":\"uint256\",\"name\":\"settlementStrategyId\",\"type\":\"uint256\"}],\"name\":\"InvalidSettlementStrategy\",\"type\":\"error\"},{\"inputs\":[{\"internalType\":\"uint128\",\"name\":\"marketId\",\"type\":\"uint128\"},{\"internalType\":\"uint256\",\"name\":\"maxMarketSize\",\"type\":\"uint256\"},{\"internalType\":\"int256\",\"name\":\"newSideSize\",\"type\":\"int256\"}],\"name\":\"MaxOpenInterestReached\",\"type\":\"error\"},{\"inputs\":[{\"internalType\":\"uint128\",\"name\":\"maxPositionsPerAccount\",\"type\":\"uint128\"}],\"name\":\"MaxPositionsPerAccountReached\",\"type\":\"error\"},{\"inputs\":[],\"name\":\"OverflowInt256ToInt128\",\"type\":\"error\"},{\"inputs\":[],\"name\":\"ZeroSizeOrder\",\"type\":\"error\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":true,\"internalType\":\"uint128\",\"name\":\"marketId\",\"type\":\"uint128\"},{\"indexed\":true,\"internalType\":\"uint128\",\"name\":\"accountId\",\"type\":\"uint128\"},{\"indexed\":false,\"internalType\":\"enumSettlementStrategy.Type\",\"name\":\"orderType\",\"type\":\"uint8\"},{\"indexed\":false,\"internalType\":\"int128\",\"name\":\"sizeDelta\",\"type\":\"int128\"},{\"indexed\":false,\"internalType\":\"uint256\",\"name\":\"acceptablePrice\",\"type\":\"uint256\"},{\"indexed\":false,\"internalType\":\"uint256\",\"name\":\"commitmentTime\",\"type\":\"uint256\"},{\"indexed\":false,\"internalType\":\"uint256\",\"name\":\"settlementTime\",\"type\":\"uint256\"},{\"indexed\":false,\"internalType\":\"uint256\",\"name\":\"expirationTime\",\"type\":\"uint256\"},{\"indexed\":true,\"internalType\":\"bytes32\",\"name\":\"trackingCode\",\"type\":\"bytes32\"},{\"indexed\":false,\"internalType\":\"address\",\"name\":\"sender\",\"type\":\"address\"}],\"name\":\"OrderCommitted\",\"type\":\"event\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":true,\"internalType\":\"uint128\",\"name\":\"marketId\",\"type\":\"uint128\"},{\"indexed\":true,\"internalType\":\"uint128\",\"name\":\"accountId\",\"type\":\"uint128\"},{\"indexed\":false,\"internalType\":\"int128\",\"name\":\"sizeDelta\",\"type\":\"int128\"},{\"indexed\":false,\"internalType\":\"uint256\",\"name\":\"acceptablePrice\",\"type\":\"uint256\"},{\"indexed\":false,\"internalType\":\"uint256\",\"name\":\"commitmentTime\",\"type\":\"uint256\"},{\"indexed\":true,\"internalType\":\"bytes32\",\"name\":\"trackingCode\",\"type\":\"bytes32\"}],\"name\":\"PreviousOrderExpired\",\"type\":\"event\"},{\"inputs\":[{\"components\":[{\"internalType\":\"uint128\",\"name\":\"marketId\",\"type\":\"uint128\"},{\"internalType\":\"uint128\",\"name\":\"accountId\",\"type\":\"uint128\"},{\"internalType\":\"int128\",\"name\":\"sizeDelta\",\"type\":\"int128\"},{\"internalType\":\"uint128\",\"name\":\"settlementStrategyId\",\"type\":\"uint128\"},{\"internalType\":\"uint256\",\"name\":\"acceptablePrice\",\"type\":\"uint256\"},{\"internalType\":\"bytes32\",\"name\":\"trackingCode\",\"type\":\"bytes32\"},{\"internalType\":\"address\",\"name\":\"referrer\",\"type\":\"address\"}],\"internalType\":\"structAsyncOrder.OrderCommitmentRequest\",\"name\":\"commitment\",\"type\":\"tuple\"}],\"name\":\"commitOrder\",\"outputs\":[{\"components\":[{\"internalType\":\"uint256\",\"name\":\"commitmentTime\",\"type\":\"uint256\"},{\"components\":[{\"internalType\":\"uint128\",\"name\":\"marketId\",\"type\":\"uint128\"},{\"internalType\":\"uint128\",\"name\":\"accountId\",\"type\":\"uint128\"},{\"internalType\":\"int128\",\"name\":\"sizeDelta\",\"type\":\"int128\"},{\"internalType\":\"uint128\",\"name\":\"settlementStrategyId\",\"type\":\"uint128\"},{\"internalType\":\"uint256\",\"name\":\"acceptablePrice\",\"type\":\"uint256\"},{\"internalType\":\"bytes32\",\"name\":\"trackingCode\",\"type\":\"bytes32\"},{\"internalType\":\"address\",\"name\":\"referrer\",\"type\":\"address\"}],\"internalType\":\"structAsyncOrder.OrderCommitmentRequest\",\"name\":\"request\",\"type\":\"tuple\"}],\"internalType\":\"structAsyncOrder.Data\",\"name\":\"retOrder\",\"type\":\"tuple\"},{\"internalType\":\"uint256\",\"name\":\"fees\",\"type\":\"uint256\"}],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"uint128\",\"name\":\"marketId\",\"type\":\"uint128\"},{\"internalType\":\"int128\",\"name\":\"sizeDelta\",\"type\":\"int128\"}],\"name\":\"computeOrderFees\",\"outputs\":[{\"internalType\":\"uint256\",\"name\":\"orderFees\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"fillPrice\",\"type\":\"uint256\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"uint128\",\"name\":\"accountId\",\"type\":\"uint128\"}],\"name\":\"getOrder\",\"outputs\":[{\"components\":[{\"internalType\":\"uint256\",\"name\":\"commitmentTime\",\"type\":\"uint256\"},{\"components\":[{\"internalType\":\"uint128\",\"name\":\"marketId\",\"type\":\"uint128\"},{\"internalType\":\"uint128\",\"name\":\"accountId\",\"type\":\"uint128\"},{\"internalType\":\"int128\",\"name\":\"sizeDelta\",\"type\":\"int128\"},{\"internalType\":\"uint128\",\"name\":\"settlementStrategyId\",\"type\":\"uint128\"},{\"internalType\":\"uint256\",\"name\":\"acceptablePrice\",\"type\":\"uint256\"},{\"internalType\":\"bytes32\",\"name\":\"trackingCode\",\"type\":\"bytes32\"},{\"internalType\":\"address\",\"name\":\"referrer\",\"type\":\"address\"}],\"internalType\":\"structAsyncOrder.OrderCommitmentRequest\",\"name\":\"request\",\"type\":\"tuple\"}],\"internalType\":\"structAsyncOrder.Data\",\"name\":\"order\",\"type\":\"tuple\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"uint128\",\"name\":\"accountId\",\"type\":\"uint128\"},{\"internalType\":\"uint128\",\"name\":\"marketId\",\"type\":\"uint128\"},{\"internalType\":\"int128\",\"name\":\"sizeDelta\",\"type\":\"int128\"}],\"name\":\"requiredMarginForOrder\",\"outputs\":[{\"internalType\":\"uint256\",\"name\":\"requiredMargin\",\"type\":\"uint256\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"uint256\",\"name\":\"leftover\",\"type\":\"uint256\"}],\"name\":\"InsufficientAccountMargin\",\"type\":\"error\"},{\"inputs\":[],\"name\":\"OrderNotValid\",\"type\":\"error\"},{\"inputs\":[],\"name\":\"OverflowInt128ToUint128\",\"type\":\"error\"},{\"inputs\":[],\"name\":\"OverflowUint256ToUint64\",\"type\":\"error\"},{\"inputs\":[{\"internalType\":\"enumSettlementStrategy.Type\",\"name\":\"strategyType\",\"type\":\"uint8\"}],\"name\":\"SettlementStrategyNotFound\",\"type\":\"error\"},{\"inputs\":[{\"internalType\":\"uint256\",\"name\":\"timestamp\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"settlementTime\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"settlementExpiration\",\"type\":\"uint256\"}],\"name\":\"SettlementWindowExpired\",\"type\":\"error\"},{\"inputs\":[{\"internalType\":\"uint256\",\"name\":\"timestamp\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"settlementTime\",\"type\":\"uint256\"}],\"name\":\"SettlementWindowNotOpen\",\"type\":\"error\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":false,\"internalType\":\"uint256\",\"name\":\"account\",\"type\":\"uint256\"},{\"indexed\":false,\"internalType\":\"uint128\",\"name\":\"synthMarketId\",\"type\":\"uint128\"},{\"indexed\":false,\"internalType\":\"uint256\",\"name\":\"amount\",\"type\":\"uint256\"}],\"name\":\"CollateralDeducted\",\"type\":\"event\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":false,\"internalType\":\"uint128\",\"name\":\"marketId\",\"type\":\"uint128\"},{\"indexed\":false,\"internalType\":\"uint256\",\"name\":\"price\",\"type\":\"uint256\"},{\"indexed\":false,\"internalType\":\"int256\",\"name\":\"skew\",\"type\":\"int256\"},{\"indexed\":false,\"internalType\":\"uint256\",\"name\":\"size\",\"type\":\"uint256\"},{\"indexed\":false,\"internalType\":\"int256\",\"name\":\"sizeDelta\",\"type\":\"int256\"},{\"indexed\":false,\"internalType\":\"int256\",\"name\":\"currentFundingRate\",\"type\":\"int256\"},{\"indexed\":false,\"internalType\":\"int256\",\"name\":\"currentFundingVelocity\",\"type\":\"int256\"}],\"name\":\"MarketUpdated\",\"type\":\"event\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":true,\"internalType\":\"uint128\",\"name\":\"marketId\",\"type\":\"uint128\"},{\"indexed\":true,\"internalType\":\"uint128\",\"name\":\"accountId\",\"type\":\"uint128\"},{\"indexed\":false,\"internalType\":\"uint256\",\"name\":\"fillPrice\",\"type\":\"uint256\"},{\"indexed\":false,\"internalType\":\"int256\",\"name\":\"pnl\",\"type\":\"int256\"},{\"indexed\":false,\"internalType\":\"int256\",\"name\":\"accruedFunding\",\"type\":\"int256\"},{\"indexed\":false,\"internalType\":\"int128\",\"name\":\"sizeDelta\",\"type\":\"int128\"},{\"indexed\":false,\"internalType\":\"int128\",\"name\":\"newSize\",\"type\":\"int128\"},{\"indexed\":false,\"internalType\":\"uint256\",\"name\":\"totalFees\",\"type\":\"uint256\"},{\"indexed\":false,\"internalType\":\"uint256\",\"name\":\"referralFees\",\"type\":\"uint256\"},{\"indexed\":false,\"internalType\":\"uint256\",\"name\":\"collectedFees\",\"type\":\"uint256\"},{\"indexed\":false,\"internalType\":\"uint256\",\"name\":\"settlementReward\",\"type\":\"uint256\"},{\"indexed\":true,\"internalType\":\"bytes32\",\"name\":\"trackingCode\",\"type\":\"bytes32\"},{\"indexed\":false,\"internalType\":\"address\",\"name\":\"settler\",\"type\":\"address\"}],\"name\":\"OrderSettled\",\"type\":\"event\"},{\"inputs\":[{\"internalType\":\"uint128\",\"name\":\"accountId\",\"type\":\"uint128\"}],\"name\":\"settleOrder\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"uint256\",\"name\":\"fillPrice\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"acceptablePrice\",\"type\":\"uint256\"}],\"name\":\"AcceptablePriceNotExceeded\",\"type\":\"error\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":true,\"internalType\":\"uint128\",\"name\":\"marketId\",\"type\":\"uint128\"},{\"indexed\":true,\"internalType\":\"uint128\",\"name\":\"accountId\",\"type\":\"uint128\"},{\"indexed\":false,\"internalType\":\"uint256\",\"name\":\"desiredPrice\",\"type\":\"uint256\"},{\"indexed\":false,\"internalType\":\"uint256\",\"name\":\"fillPrice\",\"type\":\"uint256\"},{\"indexed\":false,\"internalType\":\"int128\",\"name\":\"sizeDelta\",\"type\":\"int128\"},{\"indexed\":false,\"internalType\":\"uint256\",\"name\":\"settlementReward\",\"type\":\"uint256\"},{\"indexed\":true,\"internalType\":\"bytes32\",\"name\":\"trackingCode\",\"type\":\"bytes32\"},{\"indexed\":false,\"internalType\":\"address\",\"name\":\"settler\",\"type\":\"address\"}],\"name\":\"OrderCancelled\",\"type\":\"event\"},{\"inputs\":[{\"internalType\":\"uint128\",\"name\":\"accountId\",\"type\":\"uint128\"}],\"name\":\"cancelOrder\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":true,\"internalType\":\"bytes32\",\"name\":\"feature\",\"type\":\"bytes32\"},{\"indexed\":false,\"internalType\":\"bool\",\"name\":\"allowAll\",\"type\":\"bool\"}],\"name\":\"FeatureFlagAllowAllSet\",\"type\":\"event\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":true,\"internalType\":\"bytes32\",\"name\":\"feature\",\"type\":\"bytes32\"},{\"indexed\":false,\"internalType\":\"address\",\"name\":\"account\",\"type\":\"address\"}],\"name\":\"FeatureFlagAllowlistAdded\",\"type\":\"event\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":true,\"internalType\":\"bytes32\",\"name\":\"feature\",\"type\":\"bytes32\"},{\"indexed\":false,\"internalType\":\"address\",\"name\":\"account\",\"type\":\"address\"}],\"name\":\"FeatureFlagAllowlistRemoved\",\"type\":\"event\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":true,\"internalType\":\"bytes32\",\"name\":\"feature\",\"type\":\"bytes32\"},{\"indexed\":false,\"internalType\":\"address[]\",\"name\":\"deniers\",\"type\":\"address[]\"}],\"name\":\"FeatureFlagDeniersReset\",\"type\":\"event\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":true,\"internalType\":\"bytes32\",\"name\":\"feature\",\"type\":\"bytes32\"},{\"indexed\":false,\"internalType\":\"bool\",\"name\":\"denyAll\",\"type\":\"bool\"}],\"name\":\"FeatureFlagDenyAllSet\",\"type\":\"event\"},{\"inputs\":[{\"internalType\":\"bytes32\",\"name\":\"feature\",\"type\":\"bytes32\"},{\"internalType\":\"address\",\"name\":\"account\",\"type\":\"address\"}],\"name\":\"addToFeatureFlagAllowlist\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"bytes32\",\"name\":\"feature\",\"type\":\"bytes32\"}],\"name\":\"getDeniers\",\"outputs\":[{\"internalType\":\"address[]\",\"name\":\"\",\"type\":\"address[]\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"bytes32\",\"name\":\"feature\",\"type\":\"bytes32\"}],\"name\":\"getFeatureFlagAllowAll\",\"outputs\":[{\"internalType\":\"bool\",\"name\":\"\",\"type\":\"bool\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"bytes32\",\"name\":\"feature\",\"type\":\"bytes32\"}],\"name\":\"getFeatureFlagAllowlist\",\"outputs\":[{\"internalType\":\"address[]\",\"name\":\"\",\"type\":\"address[]\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"bytes32\",\"name\":\"feature\",\"type\":\"bytes32\"}],\"name\":\"getFeatureFlagDenyAll\",\"outputs\":[{\"internalType\":\"bool\",\"name\":\"\",\"type\":\"bool\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"bytes32\",\"name\":\"feature\",\"type\":\"bytes32\"},{\"internalType\":\"address\",\"name\":\"account\",\"type\":\"address\"}],\"name\":\"isFeatureAllowed\",\"outputs\":[{\"internalType\":\"bool\",\"name\":\"\",\"type\":\"bool\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"bytes32\",\"name\":\"feature\",\"type\":\"bytes32\"},{\"internalType\":\"address\",\"name\":\"account\",\"type\":\"address\"}],\"name\":\"removeFromFeatureFlagAllowlist\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"bytes32\",\"name\":\"feature\",\"type\":\"bytes32\"},{\"internalType\":\"address[]\",\"name\":\"deniers\",\"type\":\"address[]\"}],\"name\":\"setDeniers\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"bytes32\",\"name\":\"feature\",\"type\":\"bytes32\"},{\"internalType\":\"bool\",\"name\":\"allowAll\",\"type\":\"bool\"}],\"name\":\"setFeatureFlagAllowAll\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"bytes32\",\"name\":\"feature\",\"type\":\"bytes32\"},{\"internalType\":\"bool\",\"name\":\"denyAll\",\"type\":\"bool\"}],\"name\":\"setFeatureFlagDenyAll\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"uint128\",\"name\":\"accountId\",\"type\":\"uint128\"}],\"name\":\"NotEligibleForLiquidation\",\"type\":\"error\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":true,\"internalType\":\"uint128\",\"name\":\"accountId\",\"type\":\"uint128\"},{\"indexed\":false,\"internalType\":\"uint256\",\"name\":\"reward\",\"type\":\"uint256\"},{\"indexed\":false,\"internalType\":\"bool\",\"name\":\"fullLiquidation\",\"type\":\"bool\"}],\"name\":\"AccountLiquidationAttempt\",\"type\":\"event\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":true,\"internalType\":\"uint128\",\"name\":\"accountId\",\"type\":\"uint128\"},{\"indexed\":true,\"internalType\":\"uint128\",\"name\":\"marketId\",\"type\":\"uint128\"},{\"indexed\":false,\"internalType\":\"uint256\",\"name\":\"amountLiquidated\",\"type\":\"uint256\"},{\"indexed\":false,\"internalType\":\"int128\",\"name\":\"currentPositionSize\",\"type\":\"int128\"}],\"name\":\"PositionLiquidated\",\"type\":\"event\"},{\"inputs\":[{\"internalType\":\"uint128\",\"name\":\"accountId\",\"type\":\"uint128\"}],\"name\":\"canLiquidate\",\"outputs\":[{\"internalType\":\"bool\",\"name\":\"isEligible\",\"type\":\"bool\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"flaggedAccounts\",\"outputs\":[{\"internalType\":\"uint256[]\",\"name\":\"accountIds\",\"type\":\"uint256[]\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"uint128\",\"name\":\"accountId\",\"type\":\"uint128\"}],\"name\":\"liquidate\",\"outputs\":[{\"internalType\":\"uint256\",\"name\":\"liquidationReward\",\"type\":\"uint256\"}],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"uint256\",\"name\":\"maxNumberOfAccounts\",\"type\":\"uint256\"}],\"name\":\"liquidateFlagged\",\"outputs\":[{\"internalType\":\"uint256\",\"name\":\"liquidationReward\",\"type\":\"uint256\"}],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"uint128[]\",\"name\":\"accountIds\",\"type\":\"uint128[]\"}],\"name\":\"liquidateFlaggedAccounts\",\"outputs\":[{\"internalType\":\"uint256\",\"name\":\"liquidationReward\",\"type\":\"uint256\"}],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"uint128\",\"name\":\"marketId\",\"type\":\"uint128\"}],\"name\":\"liquidationCapacity\",\"outputs\":[{\"internalType\":\"uint256\",\"name\":\"capacity\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"maxLiquidationInWindow\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"latestLiquidationTimestamp\",\"type\":\"uint256\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"uint256\",\"name\":\"duration\",\"type\":\"uint256\"}],\"name\":\"InvalidSettlementWindowDuration\",\"type\":\"error\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":true,\"internalType\":\"uint128\",\"name\":\"marketId\",\"type\":\"uint128\"},{\"indexed\":false,\"internalType\":\"uint256\",\"name\":\"skewScale\",\"type\":\"uint256\"},{\"indexed\":false,\"internalType\":\"uint256\",\"name\":\"maxFundingVelocity\",\"type\":\"uint256\"}],\"name\":\"FundingParametersSet\",\"type\":\"event\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":true,\"internalType\":\"uint128\",\"name\":\"marketId\",\"type\":\"uint128\"},{\"indexed\":false,\"internalType\":\"uint256\",\"name\":\"initialMarginRatioD18\",\"type\":\"uint256\"},{\"indexed\":false,\"internalType\":\"uint256\",\"name\":\"maintenanceMarginRatioD18\",\"type\":\"uint256\"},{\"indexed\":false,\"internalType\":\"uint256\",\"name\":\"minimumInitialMarginRatioD18\",\"type\":\"uint256\"},{\"indexed\":false,\"internalType\":\"uint256\",\"name\":\"flagRewardRatioD18\",\"type\":\"uint256\"},{\"indexed\":false,\"internalType\":\"uint256\",\"name\":\"minimumPositionMargin\",\"type\":\"uint256\"}],\"name\":\"LiquidationParametersSet\",\"type\":\"event\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":true,\"internalType\":\"uint128\",\"name\":\"marketId\",\"type\":\"uint128\"},{\"indexed\":false,\"internalType\":\"uint256\",\"name\":\"lockedOiRatioD18\",\"type\":\"uint256\"}],\"name\":\"LockedOiRatioSet\",\"type\":\"event\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":true,\"internalType\":\"uint128\",\"name\":\"marketId\",\"type\":\"uint128\"},{\"indexed\":false,\"internalType\":\"bytes32\",\"name\":\"feedId\",\"type\":\"bytes32\"},{\"indexed\":false,\"internalType\":\"uint256\",\"name\":\"strictStalenessTolerance\",\"type\":\"uint256\"}],\"name\":\"MarketPriceDataUpdated\",\"type\":\"event\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":true,\"internalType\":\"uint128\",\"name\":\"marketId\",\"type\":\"uint128\"},{\"indexed\":false,\"internalType\":\"uint256\",\"name\":\"maxLiquidationLimitAccumulationMultiplier\",\"type\":\"uint256\"},{\"indexed\":false,\"internalType\":\"uint256\",\"name\":\"maxSecondsInLiquidationWindow\",\"type\":\"uint256\"},{\"indexed\":false,\"internalType\":\"uint256\",\"name\":\"maxLiquidationPd\",\"type\":\"uint256\"},{\"indexed\":false,\"internalType\":\"address\",\"name\":\"endorsedLiquidator\",\"type\":\"address\"}],\"name\":\"MaxLiquidationParametersSet\",\"type\":\"event\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":true,\"internalType\":\"uint128\",\"name\":\"marketId\",\"type\":\"uint128\"},{\"indexed\":false,\"internalType\":\"uint256\",\"name\":\"maxMarketSize\",\"type\":\"uint256\"}],\"name\":\"MaxMarketSizeSet\",\"type\":\"event\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":true,\"internalType\":\"uint128\",\"name\":\"marketId\",\"type\":\"uint128\"},{\"indexed\":false,\"internalType\":\"uint256\",\"name\":\"makerFeeRatio\",\"type\":\"uint256\"},{\"indexed\":false,\"internalType\":\"uint256\",\"name\":\"takerFeeRatio\",\"type\":\"uint256\"}],\"name\":\"OrderFeesSet\",\"type\":\"event\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":true,\"internalType\":\"uint128\",\"name\":\"marketId\",\"type\":\"uint128\"},{\"components\":[{\"internalType\":\"enumSettlementStrategy.Type\",\"name\":\"strategyType\",\"type\":\"uint8\"},{\"internalType\":\"uint256\",\"name\":\"settlementDelay\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"settlementWindowDuration\",\"type\":\"uint256\"},{\"internalType\":\"address\",\"name\":\"priceVerificationContract\",\"type\":\"address\"},{\"internalType\":\"bytes32\",\"name\":\"feedId\",\"type\":\"bytes32\"},{\"internalType\":\"string\",\"name\":\"url\",\"type\":\"string\"},{\"internalType\":\"uint256\",\"name\":\"settlementReward\",\"type\":\"uint256\"},{\"internalType\":\"bool\",\"name\":\"disabled\",\"type\":\"bool\"}],\"indexed\":false,\"internalType\":\"structSettlementStrategy.Data\",\"name\":\"strategy\",\"type\":\"tuple\"},{\"indexed\":true,\"internalType\":\"uint256\",\"name\":\"strategyId\",\"type\":\"uint256\"}],\"name\":\"SettlementStrategyAdded\",\"type\":\"event\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":true,\"internalType\":\"uint128\",\"name\":\"marketId\",\"type\":\"uint128\"},{\"indexed\":true,\"internalType\":\"uint256\",\"name\":\"strategyId\",\"type\":\"uint256\"},{\"components\":[{\"internalType\":\"enumSettlementStrategy.Type\",\"name\":\"strategyType\",\"type\":\"uint8\"},{\"internalType\":\"uint256\",\"name\":\"settlementDelay\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"settlementWindowDuration\",\"type\":\"uint256\"},{\"internalType\":\"address\",\"name\":\"priceVerificationContract\",\"type\":\"address\"},{\"internalType\":\"bytes32\",\"name\":\"feedId\",\"type\":\"bytes32\"},{\"internalType\":\"string\",\"name\":\"url\",\"type\":\"string\"},{\"internalType\":\"uint256\",\"name\":\"settlementReward\",\"type\":\"uint256\"},{\"internalType\":\"bool\",\"name\":\"disabled\",\"type\":\"bool\"}],\"indexed\":false,\"internalType\":\"structSettlementStrategy.Data\",\"name\":\"strategy\",\"type\":\"tuple\"}],\"name\":\"SettlementStrategySet\",\"type\":\"event\"},{\"inputs\":[{\"internalType\":\"uint128\",\"name\":\"marketId\",\"type\":\"uint128\"},{\"components\":[{\"internalType\":\"enumSettlementStrategy.Type\",\"name\":\"strategyType\",\"type\":\"uint8\"},{\"internalType\":\"uint256\",\"name\":\"settlementDelay\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"settlementWindowDuration\",\"type\":\"uint256\"},{\"internalType\":\"address\",\"name\":\"priceVerificationContract\",\"type\":\"address\"},{\"internalType\":\"bytes32\",\"name\":\"feedId\",\"type\":\"bytes32\"},{\"internalType\":\"string\",\"name\":\"url\",\"type\":\"string\"},{\"internalType\":\"uint256\",\"name\":\"settlementReward\",\"type\":\"uint256\"},{\"internalType\":\"bool\",\"name\":\"disabled\",\"type\":\"bool\"}],\"internalType\":\"structSettlementStrategy.Data\",\"name\":\"strategy\",\"type\":\"tuple\"}],\"name\":\"addSettlementStrategy\",\"outputs\":[{\"internalType\":\"uint256\",\"name\":\"strategyId\",\"type\":\"uint256\"}],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"uint128\",\"name\":\"marketId\",\"type\":\"uint128\"}],\"name\":\"getFundingParameters\",\"outputs\":[{\"internalType\":\"uint256\",\"name\":\"skewScale\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"maxFundingVelocity\",\"type\":\"uint256\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"uint128\",\"name\":\"marketId\",\"type\":\"uint128\"}],\"name\":\"getLiquidationParameters\",\"outputs\":[{\"internalType\":\"uint256\",\"name\":\"initialMarginRatioD18\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"minimumInitialMarginRatioD18\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"maintenanceMarginScalarD18\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"flagRewardRatioD18\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"minimumPositionMargin\",\"type\":\"uint256\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"uint128\",\"name\":\"marketId\",\"type\":\"uint128\"}],\"name\":\"getLockedOiRatio\",\"outputs\":[{\"internalType\":\"uint256\",\"name\":\"\",\"type\":\"uint256\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"uint128\",\"name\":\"marketId\",\"type\":\"uint128\"}],\"name\":\"getMaxLiquidationParameters\",\"outputs\":[{\"internalType\":\"uint256\",\"name\":\"maxLiquidationLimitAccumulationMultiplier\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"maxSecondsInLiquidationWindow\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"maxLiquidationPd\",\"type\":\"uint256\"},{\"internalType\":\"address\",\"name\":\"endorsedLiquidator\",\"type\":\"address\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"uint128\",\"name\":\"marketId\",\"type\":\"uint128\"}],\"name\":\"getMaxMarketSize\",\"outputs\":[{\"internalType\":\"uint256\",\"name\":\"maxMarketSize\",\"type\":\"uint256\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"uint128\",\"name\":\"marketId\",\"type\":\"uint128\"}],\"name\":\"getOrderFees\",\"outputs\":[{\"internalType\":\"uint256\",\"name\":\"makerFee\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"takerFee\",\"type\":\"uint256\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"uint128\",\"name\":\"perpsMarketId\",\"type\":\"uint128\"}],\"name\":\"getPriceData\",\"outputs\":[{\"internalType\":\"bytes32\",\"name\":\"feedId\",\"type\":\"bytes32\"},{\"internalType\":\"uint256\",\"name\":\"strictStalenessTolerance\",\"type\":\"uint256\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"uint128\",\"name\":\"marketId\",\"type\":\"uint128\"},{\"internalType\":\"uint256\",\"name\":\"strategyId\",\"type\":\"uint256\"}],\"name\":\"getSettlementStrategy\",\"outputs\":[{\"components\":[{\"internalType\":\"enumSettlementStrategy.Type\",\"name\":\"strategyType\",\"type\":\"uint8\"},{\"internalType\":\"uint256\",\"name\":\"settlementDelay\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"settlementWindowDuration\",\"type\":\"uint256\"},{\"internalType\":\"address\",\"name\":\"priceVerificationContract\",\"type\":\"address\"},{\"internalType\":\"bytes32\",\"name\":\"feedId\",\"type\":\"bytes32\"},{\"internalType\":\"string\",\"name\":\"url\",\"type\":\"string\"},{\"internalType\":\"uint256\",\"name\":\"settlementReward\",\"type\":\"uint256\"},{\"internalType\":\"bool\",\"name\":\"disabled\",\"type\":\"bool\"}],\"internalType\":\"structSettlementStrategy.Data\",\"name\":\"settlementStrategy\",\"type\":\"tuple\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"uint128\",\"name\":\"marketId\",\"type\":\"uint128\"},{\"internalType\":\"uint256\",\"name\":\"skewScale\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"maxFundingVelocity\",\"type\":\"uint256\"}],\"name\":\"setFundingParameters\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"uint128\",\"name\":\"marketId\",\"type\":\"uint128\"},{\"internalType\":\"uint256\",\"name\":\"initialMarginRatioD18\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"minimumInitialMarginRatioD18\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"maintenanceMarginScalarD18\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"flagRewardRatioD18\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"minimumPositionMargin\",\"type\":\"uint256\"}],\"name\":\"setLiquidationParameters\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"uint128\",\"name\":\"marketId\",\"type\":\"uint128\"},{\"internalType\":\"uint256\",\"name\":\"lockedOiRatioD18\",\"type\":\"uint256\"}],\"name\":\"setLockedOiRatio\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"uint128\",\"name\":\"marketId\",\"type\":\"uint128\"},{\"internalType\":\"uint256\",\"name\":\"maxLiquidationLimitAccumulationMultiplier\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"maxSecondsInLiquidationWindow\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"maxLiquidationPd\",\"type\":\"uint256\"},{\"internalType\":\"address\",\"name\":\"endorsedLiquidator\",\"type\":\"address\"}],\"name\":\"setMaxLiquidationParameters\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"uint128\",\"name\":\"marketId\",\"type\":\"uint128\"},{\"internalType\":\"uint256\",\"name\":\"maxMarketSize\",\"type\":\"uint256\"}],\"name\":\"setMaxMarketSize\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"uint128\",\"name\":\"marketId\",\"type\":\"uint128\"},{\"internalType\":\"uint256\",\"name\":\"makerFeeRatio\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"takerFeeRatio\",\"type\":\"uint256\"}],\"name\":\"setOrderFees\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"uint128\",\"name\":\"marketId\",\"type\":\"uint128\"},{\"internalType\":\"uint256\",\"name\":\"strategyId\",\"type\":\"uint256\"},{\"components\":[{\"internalType\":\"enumSettlementStrategy.Type\",\"name\":\"strategyType\",\"type\":\"uint8\"},{\"internalType\":\"uint256\",\"name\":\"settlementDelay\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"settlementWindowDuration\",\"type\":\"uint256\"},{\"internalType\":\"address\",\"name\":\"priceVerificationContract\",\"type\":\"address\"},{\"internalType\":\"bytes32\",\"name\":\"feedId\",\"type\":\"bytes32\"},{\"internalType\":\"string\",\"name\":\"url\",\"type\":\"string\"},{\"internalType\":\"uint256\",\"name\":\"settlementReward\",\"type\":\"uint256\"},{\"internalType\":\"bool\",\"name\":\"disabled\",\"type\":\"bool\"}],\"internalType\":\"structSettlementStrategy.Data\",\"name\":\"strategy\",\"type\":\"tuple\"}],\"name\":\"setSettlementStrategy\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"uint128\",\"name\":\"marketId\",\"type\":\"uint128\"},{\"internalType\":\"uint256\",\"name\":\"strategyId\",\"type\":\"uint256\"},{\"internalType\":\"bool\",\"name\":\"enabled\",\"type\":\"bool\"}],\"name\":\"setSettlementStrategyEnabled\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"uint128\",\"name\":\"perpsMarketId\",\"type\":\"uint128\"},{\"internalType\":\"bytes32\",\"name\":\"feedId\",\"type\":\"bytes32\"},{\"internalType\":\"uint256\",\"name\":\"strictStalenessTolerance\",\"type\":\"uint256\"}],\"name\":\"updatePriceData\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"address\",\"name\":\"invalidFeeCollector\",\"type\":\"address\"}],\"name\":\"InvalidFeeCollectorInterface\",\"type\":\"error\"},{\"inputs\":[{\"internalType\":\"uint256\",\"name\":\"shareRatioD18\",\"type\":\"uint256\"}],\"name\":\"InvalidReferrerShareRatio\",\"type\":\"error\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":true,\"internalType\":\"uint128\",\"name\":\"synthMarketId\",\"type\":\"uint128\"},{\"indexed\":false,\"internalType\":\"uint256\",\"name\":\"maxCollateralAmount\",\"type\":\"uint256\"}],\"name\":\"CollateralConfigurationSet\",\"type\":\"event\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":false,\"internalType\":\"address\",\"name\":\"feeCollector\",\"type\":\"address\"}],\"name\":\"FeeCollectorSet\",\"type\":\"event\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":false,\"internalType\":\"bytes32\",\"name\":\"keeperCostNodeId\",\"type\":\"bytes32\"}],\"name\":\"KeeperCostNodeIdUpdated\",\"type\":\"event\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":false,\"internalType\":\"uint256\",\"name\":\"minKeeperRewardUsd\",\"type\":\"uint256\"},{\"indexed\":false,\"internalType\":\"uint256\",\"name\":\"minKeeperProfitRatioD18\",\"type\":\"uint256\"},{\"indexed\":false,\"internalType\":\"uint256\",\"name\":\"maxKeeperRewardUsd\",\"type\":\"uint256\"},{\"indexed\":false,\"internalType\":\"uint256\",\"name\":\"maxKeeperScalingRatioD18\",\"type\":\"uint256\"}],\"name\":\"KeeperRewardGuardsSet\",\"type\":\"event\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":false,\"internalType\":\"uint128\",\"name\":\"maxPositionsPerAccount\",\"type\":\"uint128\"},{\"indexed\":false,\"internalType\":\"uint128\",\"name\":\"maxCollateralsPerAccount\",\"type\":\"uint128\"}],\"name\":\"PerAccountCapsSet\",\"type\":\"event\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":false,\"internalType\":\"address\",\"name\":\"referrer\",\"type\":\"address\"},{\"indexed\":false,\"internalType\":\"uint256\",\"name\":\"shareRatioD18\",\"type\":\"uint256\"}],\"name\":\"ReferrerShareUpdated\",\"type\":\"event\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":false,\"internalType\":\"uint128[]\",\"name\":\"newSynthDeductionPriority\",\"type\":\"uint128[]\"}],\"name\":\"SynthDeductionPrioritySet\",\"type\":\"event\"},{\"inputs\":[{\"internalType\":\"uint128\",\"name\":\"synthMarketId\",\"type\":\"uint128\"}],\"name\":\"getCollateralConfiguration\",\"outputs\":[{\"internalType\":\"uint256\",\"name\":\"maxCollateralAmount\",\"type\":\"uint256\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"getFeeCollector\",\"outputs\":[{\"internalType\":\"address\",\"name\":\"feeCollector\",\"type\":\"address\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"getKeeperCostNodeId\",\"outputs\":[{\"internalType\":\"bytes32\",\"name\":\"keeperCostNodeId\",\"type\":\"bytes32\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"getKeeperRewardGuards\",\"outputs\":[{\"internalType\":\"uint256\",\"name\":\"minKeeperRewardUsd\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"minKeeperProfitRatioD18\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"maxKeeperRewardUsd\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"maxKeeperScalingRatioD18\",\"type\":\"uint256\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"getMarkets\",\"outputs\":[{\"internalType\":\"uint256[]\",\"name\":\"marketIds\",\"type\":\"uint256[]\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"getPerAccountCaps\",\"outputs\":[{\"internalType\":\"uint128\",\"name\":\"maxPositionsPerAccount\",\"type\":\"uint128\"},{\"internalType\":\"uint128\",\"name\":\"maxCollateralsPerAccount\",\"type\":\"uint128\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"address\",\"name\":\"referrer\",\"type\":\"address\"}],\"name\":\"getReferrerShare\",\"outputs\":[{\"internalType\":\"uint256\",\"name\":\"shareRatioD18\",\"type\":\"uint256\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"getSupportedCollaterals\",\"outputs\":[{\"internalType\":\"uint256[]\",\"name\":\"supportedCollaterals\",\"type\":\"uint256[]\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"getSynthDeductionPriority\",\"outputs\":[{\"internalType\":\"uint128[]\",\"name\":\"\",\"type\":\"uint128[]\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"uint128\",\"name\":\"synthMarketId\",\"type\":\"uint128\"},{\"internalType\":\"uint256\",\"name\":\"maxCollateralAmount\",\"type\":\"uint256\"}],\"name\":\"setCollateralConfiguration\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"address\",\"name\":\"feeCollector\",\"type\":\"address\"}],\"name\":\"setFeeCollector\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"uint256\",\"name\":\"minKeeperRewardUsd\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"minKeeperProfitRatioD18\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"maxKeeperRewardUsd\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"maxKeeperScalingRatioD18\",\"type\":\"uint256\"}],\"name\":\"setKeeperRewardGuards\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"uint128\",\"name\":\"maxPositionsPerAccount\",\"type\":\"uint128\"},{\"internalType\":\"uint128\",\"name\":\"maxCollateralsPerAccount\",\"type\":\"uint128\"}],\"name\":\"setPerAccountCaps\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"uint128[]\",\"name\":\"newSynthDeductionPriority\",\"type\":\"uint128[]\"}],\"name\":\"setSynthDeductionPriority\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"totalGlobalCollateralValue\",\"outputs\":[{\"internalType\":\"uint256\",\"name\":\"totalCollateralValue\",\"type\":\"uint256\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"bytes32\",\"name\":\"keeperCostNodeId\",\"type\":\"bytes32\"}],\"name\":\"updateKeeperCostNodeId\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"address\",\"name\":\"referrer\",\"type\":\"address\"},{\"internalType\":\"uint256\",\"name\":\"shareRatioD18\",\"type\":\"uint256\"}],\"name\":\"updateReferrerShare\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"}]",
 }
 
 // PerpsMarketABI is the input ABI used to generate the binding from.
@@ -224,37 +223,6 @@ func (_PerpsMarket *PerpsMarketTransactorRaw) Transfer(opts *bind.TransactOpts) 
 // Transact invokes the (paid) contract method with params as input values.
 func (_PerpsMarket *PerpsMarketTransactorRaw) Transact(opts *bind.TransactOpts, method string, params ...interface{}) (*types.Transaction, error) {
 	return _PerpsMarket.Contract.contract.Transact(opts, method, params...)
-}
-
-// PRECISION is a free data retrieval call binding the contract method 0xaaf5eb68.
-//
-// Solidity: function PRECISION() view returns(int256)
-func (_PerpsMarket *PerpsMarketCaller) PRECISION(opts *bind.CallOpts) (*big.Int, error) {
-	var out []interface{}
-	err := _PerpsMarket.contract.Call(opts, &out, "PRECISION")
-
-	if err != nil {
-		return *new(*big.Int), err
-	}
-
-	out0 := *abi.ConvertType(out[0], new(*big.Int)).(**big.Int)
-
-	return out0, err
-
-}
-
-// PRECISION is a free data retrieval call binding the contract method 0xaaf5eb68.
-//
-// Solidity: function PRECISION() view returns(int256)
-func (_PerpsMarket *PerpsMarketSession) PRECISION() (*big.Int, error) {
-	return _PerpsMarket.Contract.PRECISION(&_PerpsMarket.CallOpts)
-}
-
-// PRECISION is a free data retrieval call binding the contract method 0xaaf5eb68.
-//
-// Solidity: function PRECISION() view returns(int256)
-func (_PerpsMarket *PerpsMarketCallerSession) PRECISION() (*big.Int, error) {
-	return _PerpsMarket.Contract.PRECISION(&_PerpsMarket.CallOpts)
 }
 
 // CanLiquidate is a free data retrieval call binding the contract method 0x9b922bba.
@@ -426,6 +394,68 @@ func (_PerpsMarket *PerpsMarketCallerSession) FillPrice(marketId *big.Int, order
 	return _PerpsMarket.Contract.FillPrice(&_PerpsMarket.CallOpts, marketId, orderSize, price)
 }
 
+// FlaggedAccounts is a free data retrieval call binding the contract method 0xa788d01f.
+//
+// Solidity: function flaggedAccounts() view returns(uint256[] accountIds)
+func (_PerpsMarket *PerpsMarketCaller) FlaggedAccounts(opts *bind.CallOpts) ([]*big.Int, error) {
+	var out []interface{}
+	err := _PerpsMarket.contract.Call(opts, &out, "flaggedAccounts")
+
+	if err != nil {
+		return *new([]*big.Int), err
+	}
+
+	out0 := *abi.ConvertType(out[0], new([]*big.Int)).(*[]*big.Int)
+
+	return out0, err
+
+}
+
+// FlaggedAccounts is a free data retrieval call binding the contract method 0xa788d01f.
+//
+// Solidity: function flaggedAccounts() view returns(uint256[] accountIds)
+func (_PerpsMarket *PerpsMarketSession) FlaggedAccounts() ([]*big.Int, error) {
+	return _PerpsMarket.Contract.FlaggedAccounts(&_PerpsMarket.CallOpts)
+}
+
+// FlaggedAccounts is a free data retrieval call binding the contract method 0xa788d01f.
+//
+// Solidity: function flaggedAccounts() view returns(uint256[] accountIds)
+func (_PerpsMarket *PerpsMarketCallerSession) FlaggedAccounts() ([]*big.Int, error) {
+	return _PerpsMarket.Contract.FlaggedAccounts(&_PerpsMarket.CallOpts)
+}
+
+// GetAccountCollateralIds is a free data retrieval call binding the contract method 0x9734ba0f.
+//
+// Solidity: function getAccountCollateralIds(uint128 accountId) view returns(uint256[])
+func (_PerpsMarket *PerpsMarketCaller) GetAccountCollateralIds(opts *bind.CallOpts, accountId *big.Int) ([]*big.Int, error) {
+	var out []interface{}
+	err := _PerpsMarket.contract.Call(opts, &out, "getAccountCollateralIds", accountId)
+
+	if err != nil {
+		return *new([]*big.Int), err
+	}
+
+	out0 := *abi.ConvertType(out[0], new([]*big.Int)).(*[]*big.Int)
+
+	return out0, err
+
+}
+
+// GetAccountCollateralIds is a free data retrieval call binding the contract method 0x9734ba0f.
+//
+// Solidity: function getAccountCollateralIds(uint128 accountId) view returns(uint256[])
+func (_PerpsMarket *PerpsMarketSession) GetAccountCollateralIds(accountId *big.Int) ([]*big.Int, error) {
+	return _PerpsMarket.Contract.GetAccountCollateralIds(&_PerpsMarket.CallOpts, accountId)
+}
+
+// GetAccountCollateralIds is a free data retrieval call binding the contract method 0x9734ba0f.
+//
+// Solidity: function getAccountCollateralIds(uint128 accountId) view returns(uint256[])
+func (_PerpsMarket *PerpsMarketCallerSession) GetAccountCollateralIds(accountId *big.Int) ([]*big.Int, error) {
+	return _PerpsMarket.Contract.GetAccountCollateralIds(&_PerpsMarket.CallOpts, accountId)
+}
+
 // GetAccountLastInteraction is a free data retrieval call binding the contract method 0x1b5dccdb.
 //
 // Solidity: function getAccountLastInteraction(uint128 accountId) view returns(uint256)
@@ -455,6 +485,37 @@ func (_PerpsMarket *PerpsMarketSession) GetAccountLastInteraction(accountId *big
 // Solidity: function getAccountLastInteraction(uint128 accountId) view returns(uint256)
 func (_PerpsMarket *PerpsMarketCallerSession) GetAccountLastInteraction(accountId *big.Int) (*big.Int, error) {
 	return _PerpsMarket.Contract.GetAccountLastInteraction(&_PerpsMarket.CallOpts, accountId)
+}
+
+// GetAccountOpenPositions is a free data retrieval call binding the contract method 0x35254238.
+//
+// Solidity: function getAccountOpenPositions(uint128 accountId) view returns(uint256[])
+func (_PerpsMarket *PerpsMarketCaller) GetAccountOpenPositions(opts *bind.CallOpts, accountId *big.Int) ([]*big.Int, error) {
+	var out []interface{}
+	err := _PerpsMarket.contract.Call(opts, &out, "getAccountOpenPositions", accountId)
+
+	if err != nil {
+		return *new([]*big.Int), err
+	}
+
+	out0 := *abi.ConvertType(out[0], new([]*big.Int)).(*[]*big.Int)
+
+	return out0, err
+
+}
+
+// GetAccountOpenPositions is a free data retrieval call binding the contract method 0x35254238.
+//
+// Solidity: function getAccountOpenPositions(uint128 accountId) view returns(uint256[])
+func (_PerpsMarket *PerpsMarketSession) GetAccountOpenPositions(accountId *big.Int) ([]*big.Int, error) {
+	return _PerpsMarket.Contract.GetAccountOpenPositions(&_PerpsMarket.CallOpts, accountId)
+}
+
+// GetAccountOpenPositions is a free data retrieval call binding the contract method 0x35254238.
+//
+// Solidity: function getAccountOpenPositions(uint128 accountId) view returns(uint256[])
+func (_PerpsMarket *PerpsMarketCallerSession) GetAccountOpenPositions(accountId *big.Int) ([]*big.Int, error) {
+	return _PerpsMarket.Contract.GetAccountOpenPositions(&_PerpsMarket.CallOpts, accountId)
 }
 
 // GetAccountOwner is a free data retrieval call binding the contract method 0xbf60c31d.
@@ -655,6 +716,37 @@ func (_PerpsMarket *PerpsMarketSession) GetCollateralAmount(accountId *big.Int, 
 // Solidity: function getCollateralAmount(uint128 accountId, uint128 synthMarketId) view returns(uint256)
 func (_PerpsMarket *PerpsMarketCallerSession) GetCollateralAmount(accountId *big.Int, synthMarketId *big.Int) (*big.Int, error) {
 	return _PerpsMarket.Contract.GetCollateralAmount(&_PerpsMarket.CallOpts, accountId, synthMarketId)
+}
+
+// GetCollateralConfiguration is a free data retrieval call binding the contract method 0xfd51558e.
+//
+// Solidity: function getCollateralConfiguration(uint128 synthMarketId) view returns(uint256 maxCollateralAmount)
+func (_PerpsMarket *PerpsMarketCaller) GetCollateralConfiguration(opts *bind.CallOpts, synthMarketId *big.Int) (*big.Int, error) {
+	var out []interface{}
+	err := _PerpsMarket.contract.Call(opts, &out, "getCollateralConfiguration", synthMarketId)
+
+	if err != nil {
+		return *new(*big.Int), err
+	}
+
+	out0 := *abi.ConvertType(out[0], new(*big.Int)).(**big.Int)
+
+	return out0, err
+
+}
+
+// GetCollateralConfiguration is a free data retrieval call binding the contract method 0xfd51558e.
+//
+// Solidity: function getCollateralConfiguration(uint128 synthMarketId) view returns(uint256 maxCollateralAmount)
+func (_PerpsMarket *PerpsMarketSession) GetCollateralConfiguration(synthMarketId *big.Int) (*big.Int, error) {
+	return _PerpsMarket.Contract.GetCollateralConfiguration(&_PerpsMarket.CallOpts, synthMarketId)
+}
+
+// GetCollateralConfiguration is a free data retrieval call binding the contract method 0xfd51558e.
+//
+// Solidity: function getCollateralConfiguration(uint128 synthMarketId) view returns(uint256 maxCollateralAmount)
+func (_PerpsMarket *PerpsMarketCallerSession) GetCollateralConfiguration(synthMarketId *big.Int) (*big.Int, error) {
+	return _PerpsMarket.Contract.GetCollateralConfiguration(&_PerpsMarket.CallOpts, synthMarketId)
 }
 
 // GetDeniers is a free data retrieval call binding the contract method 0xed429cf7.
@@ -888,14 +980,100 @@ func (_PerpsMarket *PerpsMarketCallerSession) GetImplementation() (common.Addres
 	return _PerpsMarket.Contract.GetImplementation(&_PerpsMarket.CallOpts)
 }
 
+// GetKeeperCostNodeId is a free data retrieval call binding the contract method 0x1f4653bb.
+//
+// Solidity: function getKeeperCostNodeId() view returns(bytes32 keeperCostNodeId)
+func (_PerpsMarket *PerpsMarketCaller) GetKeeperCostNodeId(opts *bind.CallOpts) ([32]byte, error) {
+	var out []interface{}
+	err := _PerpsMarket.contract.Call(opts, &out, "getKeeperCostNodeId")
+
+	if err != nil {
+		return *new([32]byte), err
+	}
+
+	out0 := *abi.ConvertType(out[0], new([32]byte)).(*[32]byte)
+
+	return out0, err
+
+}
+
+// GetKeeperCostNodeId is a free data retrieval call binding the contract method 0x1f4653bb.
+//
+// Solidity: function getKeeperCostNodeId() view returns(bytes32 keeperCostNodeId)
+func (_PerpsMarket *PerpsMarketSession) GetKeeperCostNodeId() ([32]byte, error) {
+	return _PerpsMarket.Contract.GetKeeperCostNodeId(&_PerpsMarket.CallOpts)
+}
+
+// GetKeeperCostNodeId is a free data retrieval call binding the contract method 0x1f4653bb.
+//
+// Solidity: function getKeeperCostNodeId() view returns(bytes32 keeperCostNodeId)
+func (_PerpsMarket *PerpsMarketCallerSession) GetKeeperCostNodeId() ([32]byte, error) {
+	return _PerpsMarket.Contract.GetKeeperCostNodeId(&_PerpsMarket.CallOpts)
+}
+
+// GetKeeperRewardGuards is a free data retrieval call binding the contract method 0x26e77e84.
+//
+// Solidity: function getKeeperRewardGuards() view returns(uint256 minKeeperRewardUsd, uint256 minKeeperProfitRatioD18, uint256 maxKeeperRewardUsd, uint256 maxKeeperScalingRatioD18)
+func (_PerpsMarket *PerpsMarketCaller) GetKeeperRewardGuards(opts *bind.CallOpts) (struct {
+	MinKeeperRewardUsd       *big.Int
+	MinKeeperProfitRatioD18  *big.Int
+	MaxKeeperRewardUsd       *big.Int
+	MaxKeeperScalingRatioD18 *big.Int
+}, error) {
+	var out []interface{}
+	err := _PerpsMarket.contract.Call(opts, &out, "getKeeperRewardGuards")
+
+	outstruct := new(struct {
+		MinKeeperRewardUsd       *big.Int
+		MinKeeperProfitRatioD18  *big.Int
+		MaxKeeperRewardUsd       *big.Int
+		MaxKeeperScalingRatioD18 *big.Int
+	})
+	if err != nil {
+		return *outstruct, err
+	}
+
+	outstruct.MinKeeperRewardUsd = *abi.ConvertType(out[0], new(*big.Int)).(**big.Int)
+	outstruct.MinKeeperProfitRatioD18 = *abi.ConvertType(out[1], new(*big.Int)).(**big.Int)
+	outstruct.MaxKeeperRewardUsd = *abi.ConvertType(out[2], new(*big.Int)).(**big.Int)
+	outstruct.MaxKeeperScalingRatioD18 = *abi.ConvertType(out[3], new(*big.Int)).(**big.Int)
+
+	return *outstruct, err
+
+}
+
+// GetKeeperRewardGuards is a free data retrieval call binding the contract method 0x26e77e84.
+//
+// Solidity: function getKeeperRewardGuards() view returns(uint256 minKeeperRewardUsd, uint256 minKeeperProfitRatioD18, uint256 maxKeeperRewardUsd, uint256 maxKeeperScalingRatioD18)
+func (_PerpsMarket *PerpsMarketSession) GetKeeperRewardGuards() (struct {
+	MinKeeperRewardUsd       *big.Int
+	MinKeeperProfitRatioD18  *big.Int
+	MaxKeeperRewardUsd       *big.Int
+	MaxKeeperScalingRatioD18 *big.Int
+}, error) {
+	return _PerpsMarket.Contract.GetKeeperRewardGuards(&_PerpsMarket.CallOpts)
+}
+
+// GetKeeperRewardGuards is a free data retrieval call binding the contract method 0x26e77e84.
+//
+// Solidity: function getKeeperRewardGuards() view returns(uint256 minKeeperRewardUsd, uint256 minKeeperProfitRatioD18, uint256 maxKeeperRewardUsd, uint256 maxKeeperScalingRatioD18)
+func (_PerpsMarket *PerpsMarketCallerSession) GetKeeperRewardGuards() (struct {
+	MinKeeperRewardUsd       *big.Int
+	MinKeeperProfitRatioD18  *big.Int
+	MaxKeeperRewardUsd       *big.Int
+	MaxKeeperScalingRatioD18 *big.Int
+}, error) {
+	return _PerpsMarket.Contract.GetKeeperRewardGuards(&_PerpsMarket.CallOpts)
+}
+
 // GetLiquidationParameters is a free data retrieval call binding the contract method 0xf94363a6.
 //
-// Solidity: function getLiquidationParameters(uint128 marketId) view returns(uint256 initialMarginRatioD18, uint256 minimumInitialMarginRatioD18, uint256 maintenanceMarginScalarD18, uint256 liquidationRewardRatioD18, uint256 minimumPositionMargin)
+// Solidity: function getLiquidationParameters(uint128 marketId) view returns(uint256 initialMarginRatioD18, uint256 minimumInitialMarginRatioD18, uint256 maintenanceMarginScalarD18, uint256 flagRewardRatioD18, uint256 minimumPositionMargin)
 func (_PerpsMarket *PerpsMarketCaller) GetLiquidationParameters(opts *bind.CallOpts, marketId *big.Int) (struct {
 	InitialMarginRatioD18        *big.Int
 	MinimumInitialMarginRatioD18 *big.Int
 	MaintenanceMarginScalarD18   *big.Int
-	LiquidationRewardRatioD18    *big.Int
+	FlagRewardRatioD18           *big.Int
 	MinimumPositionMargin        *big.Int
 }, error) {
 	var out []interface{}
@@ -905,7 +1083,7 @@ func (_PerpsMarket *PerpsMarketCaller) GetLiquidationParameters(opts *bind.CallO
 		InitialMarginRatioD18        *big.Int
 		MinimumInitialMarginRatioD18 *big.Int
 		MaintenanceMarginScalarD18   *big.Int
-		LiquidationRewardRatioD18    *big.Int
+		FlagRewardRatioD18           *big.Int
 		MinimumPositionMargin        *big.Int
 	})
 	if err != nil {
@@ -915,7 +1093,7 @@ func (_PerpsMarket *PerpsMarketCaller) GetLiquidationParameters(opts *bind.CallO
 	outstruct.InitialMarginRatioD18 = *abi.ConvertType(out[0], new(*big.Int)).(**big.Int)
 	outstruct.MinimumInitialMarginRatioD18 = *abi.ConvertType(out[1], new(*big.Int)).(**big.Int)
 	outstruct.MaintenanceMarginScalarD18 = *abi.ConvertType(out[2], new(*big.Int)).(**big.Int)
-	outstruct.LiquidationRewardRatioD18 = *abi.ConvertType(out[3], new(*big.Int)).(**big.Int)
+	outstruct.FlagRewardRatioD18 = *abi.ConvertType(out[3], new(*big.Int)).(**big.Int)
 	outstruct.MinimumPositionMargin = *abi.ConvertType(out[4], new(*big.Int)).(**big.Int)
 
 	return *outstruct, err
@@ -924,12 +1102,12 @@ func (_PerpsMarket *PerpsMarketCaller) GetLiquidationParameters(opts *bind.CallO
 
 // GetLiquidationParameters is a free data retrieval call binding the contract method 0xf94363a6.
 //
-// Solidity: function getLiquidationParameters(uint128 marketId) view returns(uint256 initialMarginRatioD18, uint256 minimumInitialMarginRatioD18, uint256 maintenanceMarginScalarD18, uint256 liquidationRewardRatioD18, uint256 minimumPositionMargin)
+// Solidity: function getLiquidationParameters(uint128 marketId) view returns(uint256 initialMarginRatioD18, uint256 minimumInitialMarginRatioD18, uint256 maintenanceMarginScalarD18, uint256 flagRewardRatioD18, uint256 minimumPositionMargin)
 func (_PerpsMarket *PerpsMarketSession) GetLiquidationParameters(marketId *big.Int) (struct {
 	InitialMarginRatioD18        *big.Int
 	MinimumInitialMarginRatioD18 *big.Int
 	MaintenanceMarginScalarD18   *big.Int
-	LiquidationRewardRatioD18    *big.Int
+	FlagRewardRatioD18           *big.Int
 	MinimumPositionMargin        *big.Int
 }, error) {
 	return _PerpsMarket.Contract.GetLiquidationParameters(&_PerpsMarket.CallOpts, marketId)
@@ -937,60 +1115,15 @@ func (_PerpsMarket *PerpsMarketSession) GetLiquidationParameters(marketId *big.I
 
 // GetLiquidationParameters is a free data retrieval call binding the contract method 0xf94363a6.
 //
-// Solidity: function getLiquidationParameters(uint128 marketId) view returns(uint256 initialMarginRatioD18, uint256 minimumInitialMarginRatioD18, uint256 maintenanceMarginScalarD18, uint256 liquidationRewardRatioD18, uint256 minimumPositionMargin)
+// Solidity: function getLiquidationParameters(uint128 marketId) view returns(uint256 initialMarginRatioD18, uint256 minimumInitialMarginRatioD18, uint256 maintenanceMarginScalarD18, uint256 flagRewardRatioD18, uint256 minimumPositionMargin)
 func (_PerpsMarket *PerpsMarketCallerSession) GetLiquidationParameters(marketId *big.Int) (struct {
 	InitialMarginRatioD18        *big.Int
 	MinimumInitialMarginRatioD18 *big.Int
 	MaintenanceMarginScalarD18   *big.Int
-	LiquidationRewardRatioD18    *big.Int
+	FlagRewardRatioD18           *big.Int
 	MinimumPositionMargin        *big.Int
 }, error) {
 	return _PerpsMarket.Contract.GetLiquidationParameters(&_PerpsMarket.CallOpts, marketId)
-}
-
-// GetLiquidationRewardGuards is a free data retrieval call binding the contract method 0x0b7f4b2d.
-//
-// Solidity: function getLiquidationRewardGuards() view returns(uint256 minLiquidationRewardUsd, uint256 maxLiquidationRewardUsd)
-func (_PerpsMarket *PerpsMarketCaller) GetLiquidationRewardGuards(opts *bind.CallOpts) (struct {
-	MinLiquidationRewardUsd *big.Int
-	MaxLiquidationRewardUsd *big.Int
-}, error) {
-	var out []interface{}
-	err := _PerpsMarket.contract.Call(opts, &out, "getLiquidationRewardGuards")
-
-	outstruct := new(struct {
-		MinLiquidationRewardUsd *big.Int
-		MaxLiquidationRewardUsd *big.Int
-	})
-	if err != nil {
-		return *outstruct, err
-	}
-
-	outstruct.MinLiquidationRewardUsd = *abi.ConvertType(out[0], new(*big.Int)).(**big.Int)
-	outstruct.MaxLiquidationRewardUsd = *abi.ConvertType(out[1], new(*big.Int)).(**big.Int)
-
-	return *outstruct, err
-
-}
-
-// GetLiquidationRewardGuards is a free data retrieval call binding the contract method 0x0b7f4b2d.
-//
-// Solidity: function getLiquidationRewardGuards() view returns(uint256 minLiquidationRewardUsd, uint256 maxLiquidationRewardUsd)
-func (_PerpsMarket *PerpsMarketSession) GetLiquidationRewardGuards() (struct {
-	MinLiquidationRewardUsd *big.Int
-	MaxLiquidationRewardUsd *big.Int
-}, error) {
-	return _PerpsMarket.Contract.GetLiquidationRewardGuards(&_PerpsMarket.CallOpts)
-}
-
-// GetLiquidationRewardGuards is a free data retrieval call binding the contract method 0x0b7f4b2d.
-//
-// Solidity: function getLiquidationRewardGuards() view returns(uint256 minLiquidationRewardUsd, uint256 maxLiquidationRewardUsd)
-func (_PerpsMarket *PerpsMarketCallerSession) GetLiquidationRewardGuards() (struct {
-	MinLiquidationRewardUsd *big.Int
-	MaxLiquidationRewardUsd *big.Int
-}, error) {
-	return _PerpsMarket.Contract.GetLiquidationRewardGuards(&_PerpsMarket.CallOpts)
 }
 
 // GetLockedOiRatio is a free data retrieval call binding the contract method 0x31edc046.
@@ -1084,37 +1217,6 @@ func (_PerpsMarket *PerpsMarketSession) GetMarkets() ([]*big.Int, error) {
 // Solidity: function getMarkets() view returns(uint256[] marketIds)
 func (_PerpsMarket *PerpsMarketCallerSession) GetMarkets() ([]*big.Int, error) {
 	return _PerpsMarket.Contract.GetMarkets(&_PerpsMarket.CallOpts)
-}
-
-// GetMaxCollateralAmount is a free data retrieval call binding the contract method 0x4ff68ae2.
-//
-// Solidity: function getMaxCollateralAmount(uint128 synthMarketId) view returns(uint256)
-func (_PerpsMarket *PerpsMarketCaller) GetMaxCollateralAmount(opts *bind.CallOpts, synthMarketId *big.Int) (*big.Int, error) {
-	var out []interface{}
-	err := _PerpsMarket.contract.Call(opts, &out, "getMaxCollateralAmount", synthMarketId)
-
-	if err != nil {
-		return *new(*big.Int), err
-	}
-
-	out0 := *abi.ConvertType(out[0], new(*big.Int)).(**big.Int)
-
-	return out0, err
-
-}
-
-// GetMaxCollateralAmount is a free data retrieval call binding the contract method 0x4ff68ae2.
-//
-// Solidity: function getMaxCollateralAmount(uint128 synthMarketId) view returns(uint256)
-func (_PerpsMarket *PerpsMarketSession) GetMaxCollateralAmount(synthMarketId *big.Int) (*big.Int, error) {
-	return _PerpsMarket.Contract.GetMaxCollateralAmount(&_PerpsMarket.CallOpts, synthMarketId)
-}
-
-// GetMaxCollateralAmount is a free data retrieval call binding the contract method 0x4ff68ae2.
-//
-// Solidity: function getMaxCollateralAmount(uint128 synthMarketId) view returns(uint256)
-func (_PerpsMarket *PerpsMarketCallerSession) GetMaxCollateralAmount(synthMarketId *big.Int) (*big.Int, error) {
-	return _PerpsMarket.Contract.GetMaxCollateralAmount(&_PerpsMarket.CallOpts, synthMarketId)
 }
 
 // GetMaxLiquidationParameters is a free data retrieval call binding the contract method 0x5443e33e.
@@ -1374,6 +1476,51 @@ func (_PerpsMarket *PerpsMarketCallerSession) GetPerAccountCaps() (struct {
 	return _PerpsMarket.Contract.GetPerAccountCaps(&_PerpsMarket.CallOpts)
 }
 
+// GetPriceData is a free data retrieval call binding the contract method 0x462b9a2d.
+//
+// Solidity: function getPriceData(uint128 perpsMarketId) view returns(bytes32 feedId, uint256 strictStalenessTolerance)
+func (_PerpsMarket *PerpsMarketCaller) GetPriceData(opts *bind.CallOpts, perpsMarketId *big.Int) (struct {
+	FeedId                   [32]byte
+	StrictStalenessTolerance *big.Int
+}, error) {
+	var out []interface{}
+	err := _PerpsMarket.contract.Call(opts, &out, "getPriceData", perpsMarketId)
+
+	outstruct := new(struct {
+		FeedId                   [32]byte
+		StrictStalenessTolerance *big.Int
+	})
+	if err != nil {
+		return *outstruct, err
+	}
+
+	outstruct.FeedId = *abi.ConvertType(out[0], new([32]byte)).(*[32]byte)
+	outstruct.StrictStalenessTolerance = *abi.ConvertType(out[1], new(*big.Int)).(**big.Int)
+
+	return *outstruct, err
+
+}
+
+// GetPriceData is a free data retrieval call binding the contract method 0x462b9a2d.
+//
+// Solidity: function getPriceData(uint128 perpsMarketId) view returns(bytes32 feedId, uint256 strictStalenessTolerance)
+func (_PerpsMarket *PerpsMarketSession) GetPriceData(perpsMarketId *big.Int) (struct {
+	FeedId                   [32]byte
+	StrictStalenessTolerance *big.Int
+}, error) {
+	return _PerpsMarket.Contract.GetPriceData(&_PerpsMarket.CallOpts, perpsMarketId)
+}
+
+// GetPriceData is a free data retrieval call binding the contract method 0x462b9a2d.
+//
+// Solidity: function getPriceData(uint128 perpsMarketId) view returns(bytes32 feedId, uint256 strictStalenessTolerance)
+func (_PerpsMarket *PerpsMarketCallerSession) GetPriceData(perpsMarketId *big.Int) (struct {
+	FeedId                   [32]byte
+	StrictStalenessTolerance *big.Int
+}, error) {
+	return _PerpsMarket.Contract.GetPriceData(&_PerpsMarket.CallOpts, perpsMarketId)
+}
+
 // GetReferrerShare is a free data retrieval call binding the contract method 0xcae77b70.
 //
 // Solidity: function getReferrerShare(address referrer) view returns(uint256 shareRatioD18)
@@ -1407,21 +1554,19 @@ func (_PerpsMarket *PerpsMarketCallerSession) GetReferrerShare(referrer common.A
 
 // GetRequiredMargins is a free data retrieval call binding the contract method 0x3c0f0753.
 //
-// Solidity: function getRequiredMargins(uint128 accountId) view returns(uint256 requiredInitialMargin, uint256 requiredMaintenanceMargin, uint256 totalAccumulatedLiquidationRewards, uint256 maxLiquidationReward)
+// Solidity: function getRequiredMargins(uint128 accountId) view returns(uint256 requiredInitialMargin, uint256 requiredMaintenanceMargin, uint256 maxLiquidationReward)
 func (_PerpsMarket *PerpsMarketCaller) GetRequiredMargins(opts *bind.CallOpts, accountId *big.Int) (struct {
-	RequiredInitialMargin              *big.Int
-	RequiredMaintenanceMargin          *big.Int
-	TotalAccumulatedLiquidationRewards *big.Int
-	MaxLiquidationReward               *big.Int
+	RequiredInitialMargin     *big.Int
+	RequiredMaintenanceMargin *big.Int
+	MaxLiquidationReward      *big.Int
 }, error) {
 	var out []interface{}
 	err := _PerpsMarket.contract.Call(opts, &out, "getRequiredMargins", accountId)
 
 	outstruct := new(struct {
-		RequiredInitialMargin              *big.Int
-		RequiredMaintenanceMargin          *big.Int
-		TotalAccumulatedLiquidationRewards *big.Int
-		MaxLiquidationReward               *big.Int
+		RequiredInitialMargin     *big.Int
+		RequiredMaintenanceMargin *big.Int
+		MaxLiquidationReward      *big.Int
 	})
 	if err != nil {
 		return *outstruct, err
@@ -1429,8 +1574,7 @@ func (_PerpsMarket *PerpsMarketCaller) GetRequiredMargins(opts *bind.CallOpts, a
 
 	outstruct.RequiredInitialMargin = *abi.ConvertType(out[0], new(*big.Int)).(**big.Int)
 	outstruct.RequiredMaintenanceMargin = *abi.ConvertType(out[1], new(*big.Int)).(**big.Int)
-	outstruct.TotalAccumulatedLiquidationRewards = *abi.ConvertType(out[2], new(*big.Int)).(**big.Int)
-	outstruct.MaxLiquidationReward = *abi.ConvertType(out[3], new(*big.Int)).(**big.Int)
+	outstruct.MaxLiquidationReward = *abi.ConvertType(out[2], new(*big.Int)).(**big.Int)
 
 	return *outstruct, err
 
@@ -1438,31 +1582,29 @@ func (_PerpsMarket *PerpsMarketCaller) GetRequiredMargins(opts *bind.CallOpts, a
 
 // GetRequiredMargins is a free data retrieval call binding the contract method 0x3c0f0753.
 //
-// Solidity: function getRequiredMargins(uint128 accountId) view returns(uint256 requiredInitialMargin, uint256 requiredMaintenanceMargin, uint256 totalAccumulatedLiquidationRewards, uint256 maxLiquidationReward)
+// Solidity: function getRequiredMargins(uint128 accountId) view returns(uint256 requiredInitialMargin, uint256 requiredMaintenanceMargin, uint256 maxLiquidationReward)
 func (_PerpsMarket *PerpsMarketSession) GetRequiredMargins(accountId *big.Int) (struct {
-	RequiredInitialMargin              *big.Int
-	RequiredMaintenanceMargin          *big.Int
-	TotalAccumulatedLiquidationRewards *big.Int
-	MaxLiquidationReward               *big.Int
+	RequiredInitialMargin     *big.Int
+	RequiredMaintenanceMargin *big.Int
+	MaxLiquidationReward      *big.Int
 }, error) {
 	return _PerpsMarket.Contract.GetRequiredMargins(&_PerpsMarket.CallOpts, accountId)
 }
 
 // GetRequiredMargins is a free data retrieval call binding the contract method 0x3c0f0753.
 //
-// Solidity: function getRequiredMargins(uint128 accountId) view returns(uint256 requiredInitialMargin, uint256 requiredMaintenanceMargin, uint256 totalAccumulatedLiquidationRewards, uint256 maxLiquidationReward)
+// Solidity: function getRequiredMargins(uint128 accountId) view returns(uint256 requiredInitialMargin, uint256 requiredMaintenanceMargin, uint256 maxLiquidationReward)
 func (_PerpsMarket *PerpsMarketCallerSession) GetRequiredMargins(accountId *big.Int) (struct {
-	RequiredInitialMargin              *big.Int
-	RequiredMaintenanceMargin          *big.Int
-	TotalAccumulatedLiquidationRewards *big.Int
-	MaxLiquidationReward               *big.Int
+	RequiredInitialMargin     *big.Int
+	RequiredMaintenanceMargin *big.Int
+	MaxLiquidationReward      *big.Int
 }, error) {
 	return _PerpsMarket.Contract.GetRequiredMargins(&_PerpsMarket.CallOpts, accountId)
 }
 
 // GetSettlementStrategy is a free data retrieval call binding the contract method 0xf74c377f.
 //
-// Solidity: function getSettlementStrategy(uint128 marketId, uint256 strategyId) view returns((uint8,uint256,uint256,uint256,address,bytes32,string,uint256,bool) settlementStrategy)
+// Solidity: function getSettlementStrategy(uint128 marketId, uint256 strategyId) view returns((uint8,uint256,uint256,address,bytes32,string,uint256,bool) settlementStrategy)
 func (_PerpsMarket *PerpsMarketCaller) GetSettlementStrategy(opts *bind.CallOpts, marketId *big.Int, strategyId *big.Int) (SettlementStrategyData, error) {
 	var out []interface{}
 	err := _PerpsMarket.contract.Call(opts, &out, "getSettlementStrategy", marketId, strategyId)
@@ -1479,16 +1621,47 @@ func (_PerpsMarket *PerpsMarketCaller) GetSettlementStrategy(opts *bind.CallOpts
 
 // GetSettlementStrategy is a free data retrieval call binding the contract method 0xf74c377f.
 //
-// Solidity: function getSettlementStrategy(uint128 marketId, uint256 strategyId) view returns((uint8,uint256,uint256,uint256,address,bytes32,string,uint256,bool) settlementStrategy)
+// Solidity: function getSettlementStrategy(uint128 marketId, uint256 strategyId) view returns((uint8,uint256,uint256,address,bytes32,string,uint256,bool) settlementStrategy)
 func (_PerpsMarket *PerpsMarketSession) GetSettlementStrategy(marketId *big.Int, strategyId *big.Int) (SettlementStrategyData, error) {
 	return _PerpsMarket.Contract.GetSettlementStrategy(&_PerpsMarket.CallOpts, marketId, strategyId)
 }
 
 // GetSettlementStrategy is a free data retrieval call binding the contract method 0xf74c377f.
 //
-// Solidity: function getSettlementStrategy(uint128 marketId, uint256 strategyId) view returns((uint8,uint256,uint256,uint256,address,bytes32,string,uint256,bool) settlementStrategy)
+// Solidity: function getSettlementStrategy(uint128 marketId, uint256 strategyId) view returns((uint8,uint256,uint256,address,bytes32,string,uint256,bool) settlementStrategy)
 func (_PerpsMarket *PerpsMarketCallerSession) GetSettlementStrategy(marketId *big.Int, strategyId *big.Int) (SettlementStrategyData, error) {
 	return _PerpsMarket.Contract.GetSettlementStrategy(&_PerpsMarket.CallOpts, marketId, strategyId)
+}
+
+// GetSupportedCollaterals is a free data retrieval call binding the contract method 0x05db8a69.
+//
+// Solidity: function getSupportedCollaterals() view returns(uint256[] supportedCollaterals)
+func (_PerpsMarket *PerpsMarketCaller) GetSupportedCollaterals(opts *bind.CallOpts) ([]*big.Int, error) {
+	var out []interface{}
+	err := _PerpsMarket.contract.Call(opts, &out, "getSupportedCollaterals")
+
+	if err != nil {
+		return *new([]*big.Int), err
+	}
+
+	out0 := *abi.ConvertType(out[0], new([]*big.Int)).(*[]*big.Int)
+
+	return out0, err
+
+}
+
+// GetSupportedCollaterals is a free data retrieval call binding the contract method 0x05db8a69.
+//
+// Solidity: function getSupportedCollaterals() view returns(uint256[] supportedCollaterals)
+func (_PerpsMarket *PerpsMarketSession) GetSupportedCollaterals() ([]*big.Int, error) {
+	return _PerpsMarket.Contract.GetSupportedCollaterals(&_PerpsMarket.CallOpts)
+}
+
+// GetSupportedCollaterals is a free data retrieval call binding the contract method 0x05db8a69.
+//
+// Solidity: function getSupportedCollaterals() view returns(uint256[] supportedCollaterals)
+func (_PerpsMarket *PerpsMarketCallerSession) GetSupportedCollaterals() ([]*big.Int, error) {
+	return _PerpsMarket.Contract.GetSupportedCollaterals(&_PerpsMarket.CallOpts)
 }
 
 // GetSynthDeductionPriority is a free data retrieval call binding the contract method 0xfea84a3f.
@@ -1989,35 +2162,6 @@ func (_PerpsMarket *PerpsMarketCallerSession) RequiredMarginForOrder(accountId *
 	return _PerpsMarket.Contract.RequiredMarginForOrder(&_PerpsMarket.CallOpts, accountId, marketId, sizeDelta)
 }
 
-// Settle is a free data retrieval call binding the contract method 0x895e3bed.
-//
-// Solidity: function settle(uint128 accountId) view returns()
-func (_PerpsMarket *PerpsMarketCaller) Settle(opts *bind.CallOpts, accountId *big.Int) error {
-	var out []interface{}
-	err := _PerpsMarket.contract.Call(opts, &out, "settle", accountId)
-
-	if err != nil {
-		return err
-	}
-
-	return err
-
-}
-
-// Settle is a free data retrieval call binding the contract method 0x895e3bed.
-//
-// Solidity: function settle(uint128 accountId) view returns()
-func (_PerpsMarket *PerpsMarketSession) Settle(accountId *big.Int) error {
-	return _PerpsMarket.Contract.Settle(&_PerpsMarket.CallOpts, accountId)
-}
-
-// Settle is a free data retrieval call binding the contract method 0x895e3bed.
-//
-// Solidity: function settle(uint128 accountId) view returns()
-func (_PerpsMarket *PerpsMarketCallerSession) Settle(accountId *big.Int) error {
-	return _PerpsMarket.Contract.Settle(&_PerpsMarket.CallOpts, accountId)
-}
-
 // Size is a free data retrieval call binding the contract method 0x2b267635.
 //
 // Solidity: function size(uint128 marketId) view returns(uint256)
@@ -2225,23 +2369,23 @@ func (_PerpsMarket *PerpsMarketTransactorSession) AcceptOwnership() (*types.Tran
 	return _PerpsMarket.Contract.AcceptOwnership(&_PerpsMarket.TransactOpts)
 }
 
-// AddSettlementStrategy is a paid mutator transaction binding the contract method 0x6bd5626d.
+// AddSettlementStrategy is a paid mutator transaction binding the contract method 0x90a871f7.
 //
-// Solidity: function addSettlementStrategy(uint128 marketId, (uint8,uint256,uint256,uint256,address,bytes32,string,uint256,bool) strategy) returns(uint256 strategyId)
+// Solidity: function addSettlementStrategy(uint128 marketId, (uint8,uint256,uint256,address,bytes32,string,uint256,bool) strategy) returns(uint256 strategyId)
 func (_PerpsMarket *PerpsMarketTransactor) AddSettlementStrategy(opts *bind.TransactOpts, marketId *big.Int, strategy SettlementStrategyData) (*types.Transaction, error) {
 	return _PerpsMarket.contract.Transact(opts, "addSettlementStrategy", marketId, strategy)
 }
 
-// AddSettlementStrategy is a paid mutator transaction binding the contract method 0x6bd5626d.
+// AddSettlementStrategy is a paid mutator transaction binding the contract method 0x90a871f7.
 //
-// Solidity: function addSettlementStrategy(uint128 marketId, (uint8,uint256,uint256,uint256,address,bytes32,string,uint256,bool) strategy) returns(uint256 strategyId)
+// Solidity: function addSettlementStrategy(uint128 marketId, (uint8,uint256,uint256,address,bytes32,string,uint256,bool) strategy) returns(uint256 strategyId)
 func (_PerpsMarket *PerpsMarketSession) AddSettlementStrategy(marketId *big.Int, strategy SettlementStrategyData) (*types.Transaction, error) {
 	return _PerpsMarket.Contract.AddSettlementStrategy(&_PerpsMarket.TransactOpts, marketId, strategy)
 }
 
-// AddSettlementStrategy is a paid mutator transaction binding the contract method 0x6bd5626d.
+// AddSettlementStrategy is a paid mutator transaction binding the contract method 0x90a871f7.
 //
-// Solidity: function addSettlementStrategy(uint128 marketId, (uint8,uint256,uint256,uint256,address,bytes32,string,uint256,bool) strategy) returns(uint256 strategyId)
+// Solidity: function addSettlementStrategy(uint128 marketId, (uint8,uint256,uint256,address,bytes32,string,uint256,bool) strategy) returns(uint256 strategyId)
 func (_PerpsMarket *PerpsMarketTransactorSession) AddSettlementStrategy(marketId *big.Int, strategy SettlementStrategyData) (*types.Transaction, error) {
 	return _PerpsMarket.Contract.AddSettlementStrategy(&_PerpsMarket.TransactOpts, marketId, strategy)
 }
@@ -2265,6 +2409,27 @@ func (_PerpsMarket *PerpsMarketSession) AddToFeatureFlagAllowlist(feature [32]by
 // Solidity: function addToFeatureFlagAllowlist(bytes32 feature, address account) returns()
 func (_PerpsMarket *PerpsMarketTransactorSession) AddToFeatureFlagAllowlist(feature [32]byte, account common.Address) (*types.Transaction, error) {
 	return _PerpsMarket.Contract.AddToFeatureFlagAllowlist(&_PerpsMarket.TransactOpts, feature, account)
+}
+
+// CancelOrder is a paid mutator transaction binding the contract method 0xdbc91396.
+//
+// Solidity: function cancelOrder(uint128 accountId) returns()
+func (_PerpsMarket *PerpsMarketTransactor) CancelOrder(opts *bind.TransactOpts, accountId *big.Int) (*types.Transaction, error) {
+	return _PerpsMarket.contract.Transact(opts, "cancelOrder", accountId)
+}
+
+// CancelOrder is a paid mutator transaction binding the contract method 0xdbc91396.
+//
+// Solidity: function cancelOrder(uint128 accountId) returns()
+func (_PerpsMarket *PerpsMarketSession) CancelOrder(accountId *big.Int) (*types.Transaction, error) {
+	return _PerpsMarket.Contract.CancelOrder(&_PerpsMarket.TransactOpts, accountId)
+}
+
+// CancelOrder is a paid mutator transaction binding the contract method 0xdbc91396.
+//
+// Solidity: function cancelOrder(uint128 accountId) returns()
+func (_PerpsMarket *PerpsMarketTransactorSession) CancelOrder(accountId *big.Int) (*types.Transaction, error) {
+	return _PerpsMarket.Contract.CancelOrder(&_PerpsMarket.TransactOpts, accountId)
 }
 
 // CommitOrder is a paid mutator transaction binding the contract method 0x9f978860.
@@ -2414,25 +2579,25 @@ func (_PerpsMarket *PerpsMarketTransactorSession) InitOrUpgradeToken(id [32]byte
 	return _PerpsMarket.Contract.InitOrUpgradeToken(&_PerpsMarket.TransactOpts, id, name, symbol, decimals, impl)
 }
 
-// InitializeFactory is a paid mutator transaction binding the contract method 0xd95de76b.
+// InitializeFactory is a paid mutator transaction binding the contract method 0x09feb470.
 //
-// Solidity: function initializeFactory() returns(uint128)
-func (_PerpsMarket *PerpsMarketTransactor) InitializeFactory(opts *bind.TransactOpts) (*types.Transaction, error) {
-	return _PerpsMarket.contract.Transact(opts, "initializeFactory")
+// Solidity: function initializeFactory(address synthetix, address spotMarket, string marketName) returns(uint128)
+func (_PerpsMarket *PerpsMarketTransactor) InitializeFactory(opts *bind.TransactOpts, synthetix common.Address, spotMarket common.Address, marketName string) (*types.Transaction, error) {
+	return _PerpsMarket.contract.Transact(opts, "initializeFactory", synthetix, spotMarket, marketName)
 }
 
-// InitializeFactory is a paid mutator transaction binding the contract method 0xd95de76b.
+// InitializeFactory is a paid mutator transaction binding the contract method 0x09feb470.
 //
-// Solidity: function initializeFactory() returns(uint128)
-func (_PerpsMarket *PerpsMarketSession) InitializeFactory() (*types.Transaction, error) {
-	return _PerpsMarket.Contract.InitializeFactory(&_PerpsMarket.TransactOpts)
+// Solidity: function initializeFactory(address synthetix, address spotMarket, string marketName) returns(uint128)
+func (_PerpsMarket *PerpsMarketSession) InitializeFactory(synthetix common.Address, spotMarket common.Address, marketName string) (*types.Transaction, error) {
+	return _PerpsMarket.Contract.InitializeFactory(&_PerpsMarket.TransactOpts, synthetix, spotMarket, marketName)
 }
 
-// InitializeFactory is a paid mutator transaction binding the contract method 0xd95de76b.
+// InitializeFactory is a paid mutator transaction binding the contract method 0x09feb470.
 //
-// Solidity: function initializeFactory() returns(uint128)
-func (_PerpsMarket *PerpsMarketTransactorSession) InitializeFactory() (*types.Transaction, error) {
-	return _PerpsMarket.Contract.InitializeFactory(&_PerpsMarket.TransactOpts)
+// Solidity: function initializeFactory(address synthetix, address spotMarket, string marketName) returns(uint128)
+func (_PerpsMarket *PerpsMarketTransactorSession) InitializeFactory(synthetix common.Address, spotMarket common.Address, marketName string) (*types.Transaction, error) {
+	return _PerpsMarket.Contract.InitializeFactory(&_PerpsMarket.TransactOpts, synthetix, spotMarket, marketName)
 }
 
 // Liquidate is a paid mutator transaction binding the contract method 0x048577de.
@@ -2456,25 +2621,46 @@ func (_PerpsMarket *PerpsMarketTransactorSession) Liquidate(accountId *big.Int) 
 	return _PerpsMarket.Contract.Liquidate(&_PerpsMarket.TransactOpts, accountId)
 }
 
-// LiquidateFlagged is a paid mutator transaction binding the contract method 0x1d6d458c.
+// LiquidateFlagged is a paid mutator transaction binding the contract method 0xac53c5ae.
 //
-// Solidity: function liquidateFlagged() returns(uint256 liquidationReward)
-func (_PerpsMarket *PerpsMarketTransactor) LiquidateFlagged(opts *bind.TransactOpts) (*types.Transaction, error) {
-	return _PerpsMarket.contract.Transact(opts, "liquidateFlagged")
+// Solidity: function liquidateFlagged(uint256 maxNumberOfAccounts) returns(uint256 liquidationReward)
+func (_PerpsMarket *PerpsMarketTransactor) LiquidateFlagged(opts *bind.TransactOpts, maxNumberOfAccounts *big.Int) (*types.Transaction, error) {
+	return _PerpsMarket.contract.Transact(opts, "liquidateFlagged", maxNumberOfAccounts)
 }
 
-// LiquidateFlagged is a paid mutator transaction binding the contract method 0x1d6d458c.
+// LiquidateFlagged is a paid mutator transaction binding the contract method 0xac53c5ae.
 //
-// Solidity: function liquidateFlagged() returns(uint256 liquidationReward)
-func (_PerpsMarket *PerpsMarketSession) LiquidateFlagged() (*types.Transaction, error) {
-	return _PerpsMarket.Contract.LiquidateFlagged(&_PerpsMarket.TransactOpts)
+// Solidity: function liquidateFlagged(uint256 maxNumberOfAccounts) returns(uint256 liquidationReward)
+func (_PerpsMarket *PerpsMarketSession) LiquidateFlagged(maxNumberOfAccounts *big.Int) (*types.Transaction, error) {
+	return _PerpsMarket.Contract.LiquidateFlagged(&_PerpsMarket.TransactOpts, maxNumberOfAccounts)
 }
 
-// LiquidateFlagged is a paid mutator transaction binding the contract method 0x1d6d458c.
+// LiquidateFlagged is a paid mutator transaction binding the contract method 0xac53c5ae.
 //
-// Solidity: function liquidateFlagged() returns(uint256 liquidationReward)
-func (_PerpsMarket *PerpsMarketTransactorSession) LiquidateFlagged() (*types.Transaction, error) {
-	return _PerpsMarket.Contract.LiquidateFlagged(&_PerpsMarket.TransactOpts)
+// Solidity: function liquidateFlagged(uint256 maxNumberOfAccounts) returns(uint256 liquidationReward)
+func (_PerpsMarket *PerpsMarketTransactorSession) LiquidateFlagged(maxNumberOfAccounts *big.Int) (*types.Transaction, error) {
+	return _PerpsMarket.Contract.LiquidateFlagged(&_PerpsMarket.TransactOpts, maxNumberOfAccounts)
+}
+
+// LiquidateFlaggedAccounts is a paid mutator transaction binding the contract method 0x3ce80659.
+//
+// Solidity: function liquidateFlaggedAccounts(uint128[] accountIds) returns(uint256 liquidationReward)
+func (_PerpsMarket *PerpsMarketTransactor) LiquidateFlaggedAccounts(opts *bind.TransactOpts, accountIds []*big.Int) (*types.Transaction, error) {
+	return _PerpsMarket.contract.Transact(opts, "liquidateFlaggedAccounts", accountIds)
+}
+
+// LiquidateFlaggedAccounts is a paid mutator transaction binding the contract method 0x3ce80659.
+//
+// Solidity: function liquidateFlaggedAccounts(uint128[] accountIds) returns(uint256 liquidationReward)
+func (_PerpsMarket *PerpsMarketSession) LiquidateFlaggedAccounts(accountIds []*big.Int) (*types.Transaction, error) {
+	return _PerpsMarket.Contract.LiquidateFlaggedAccounts(&_PerpsMarket.TransactOpts, accountIds)
+}
+
+// LiquidateFlaggedAccounts is a paid mutator transaction binding the contract method 0x3ce80659.
+//
+// Solidity: function liquidateFlaggedAccounts(uint128[] accountIds) returns(uint256 liquidationReward)
+func (_PerpsMarket *PerpsMarketTransactorSession) LiquidateFlaggedAccounts(accountIds []*big.Int) (*types.Transaction, error) {
+	return _PerpsMarket.Contract.LiquidateFlaggedAccounts(&_PerpsMarket.TransactOpts, accountIds)
 }
 
 // ModifyCollateral is a paid mutator transaction binding the contract method 0xbb58672c.
@@ -2496,27 +2682,6 @@ func (_PerpsMarket *PerpsMarketSession) ModifyCollateral(accountId *big.Int, syn
 // Solidity: function modifyCollateral(uint128 accountId, uint128 synthMarketId, int256 amountDelta) returns()
 func (_PerpsMarket *PerpsMarketTransactorSession) ModifyCollateral(accountId *big.Int, synthMarketId *big.Int, amountDelta *big.Int) (*types.Transaction, error) {
 	return _PerpsMarket.Contract.ModifyCollateral(&_PerpsMarket.TransactOpts, accountId, synthMarketId, amountDelta)
-}
-
-// Multicall is a paid mutator transaction binding the contract method 0xac9650d8.
-//
-// Solidity: function multicall(bytes[] data) payable returns(bytes[] results)
-func (_PerpsMarket *PerpsMarketTransactor) Multicall(opts *bind.TransactOpts, data [][]byte) (*types.Transaction, error) {
-	return _PerpsMarket.contract.Transact(opts, "multicall", data)
-}
-
-// Multicall is a paid mutator transaction binding the contract method 0xac9650d8.
-//
-// Solidity: function multicall(bytes[] data) payable returns(bytes[] results)
-func (_PerpsMarket *PerpsMarketSession) Multicall(data [][]byte) (*types.Transaction, error) {
-	return _PerpsMarket.Contract.Multicall(&_PerpsMarket.TransactOpts, data)
-}
-
-// Multicall is a paid mutator transaction binding the contract method 0xac9650d8.
-//
-// Solidity: function multicall(bytes[] data) payable returns(bytes[] results)
-func (_PerpsMarket *PerpsMarketTransactorSession) Multicall(data [][]byte) (*types.Transaction, error) {
-	return _PerpsMarket.Contract.Multicall(&_PerpsMarket.TransactOpts, data)
 }
 
 // NominateNewOwner is a paid mutator transaction binding the contract method 0x1627540c.
@@ -2666,6 +2831,27 @@ func (_PerpsMarket *PerpsMarketTransactorSession) RevokePermission(accountId *bi
 	return _PerpsMarket.Contract.RevokePermission(&_PerpsMarket.TransactOpts, accountId, permission, user)
 }
 
+// SetCollateralConfiguration is a paid mutator transaction binding the contract method 0xddf5a974.
+//
+// Solidity: function setCollateralConfiguration(uint128 synthMarketId, uint256 maxCollateralAmount) returns()
+func (_PerpsMarket *PerpsMarketTransactor) SetCollateralConfiguration(opts *bind.TransactOpts, synthMarketId *big.Int, maxCollateralAmount *big.Int) (*types.Transaction, error) {
+	return _PerpsMarket.contract.Transact(opts, "setCollateralConfiguration", synthMarketId, maxCollateralAmount)
+}
+
+// SetCollateralConfiguration is a paid mutator transaction binding the contract method 0xddf5a974.
+//
+// Solidity: function setCollateralConfiguration(uint128 synthMarketId, uint256 maxCollateralAmount) returns()
+func (_PerpsMarket *PerpsMarketSession) SetCollateralConfiguration(synthMarketId *big.Int, maxCollateralAmount *big.Int) (*types.Transaction, error) {
+	return _PerpsMarket.Contract.SetCollateralConfiguration(&_PerpsMarket.TransactOpts, synthMarketId, maxCollateralAmount)
+}
+
+// SetCollateralConfiguration is a paid mutator transaction binding the contract method 0xddf5a974.
+//
+// Solidity: function setCollateralConfiguration(uint128 synthMarketId, uint256 maxCollateralAmount) returns()
+func (_PerpsMarket *PerpsMarketTransactorSession) SetCollateralConfiguration(synthMarketId *big.Int, maxCollateralAmount *big.Int) (*types.Transaction, error) {
+	return _PerpsMarket.Contract.SetCollateralConfiguration(&_PerpsMarket.TransactOpts, synthMarketId, maxCollateralAmount)
+}
+
 // SetDeniers is a paid mutator transaction binding the contract method 0x715cb7d2.
 //
 // Solidity: function setDeniers(bytes32 feature, address[] deniers) returns()
@@ -2771,46 +2957,46 @@ func (_PerpsMarket *PerpsMarketTransactorSession) SetFundingParameters(marketId 
 	return _PerpsMarket.Contract.SetFundingParameters(&_PerpsMarket.TransactOpts, marketId, skewScale, maxFundingVelocity)
 }
 
-// SetLiquidationParameters is a paid mutator transaction binding the contract method 0x25e5409e.
+// SetKeeperRewardGuards is a paid mutator transaction binding the contract method 0x96e9f7a0.
 //
-// Solidity: function setLiquidationParameters(uint128 marketId, uint256 initialMarginRatioD18, uint256 minimumInitialMarginRatioD18, uint256 maintenanceMarginScalarD18, uint256 liquidationRewardRatioD18, uint256 minimumPositionMargin) returns()
-func (_PerpsMarket *PerpsMarketTransactor) SetLiquidationParameters(opts *bind.TransactOpts, marketId *big.Int, initialMarginRatioD18 *big.Int, minimumInitialMarginRatioD18 *big.Int, maintenanceMarginScalarD18 *big.Int, liquidationRewardRatioD18 *big.Int, minimumPositionMargin *big.Int) (*types.Transaction, error) {
-	return _PerpsMarket.contract.Transact(opts, "setLiquidationParameters", marketId, initialMarginRatioD18, minimumInitialMarginRatioD18, maintenanceMarginScalarD18, liquidationRewardRatioD18, minimumPositionMargin)
+// Solidity: function setKeeperRewardGuards(uint256 minKeeperRewardUsd, uint256 minKeeperProfitRatioD18, uint256 maxKeeperRewardUsd, uint256 maxKeeperScalingRatioD18) returns()
+func (_PerpsMarket *PerpsMarketTransactor) SetKeeperRewardGuards(opts *bind.TransactOpts, minKeeperRewardUsd *big.Int, minKeeperProfitRatioD18 *big.Int, maxKeeperRewardUsd *big.Int, maxKeeperScalingRatioD18 *big.Int) (*types.Transaction, error) {
+	return _PerpsMarket.contract.Transact(opts, "setKeeperRewardGuards", minKeeperRewardUsd, minKeeperProfitRatioD18, maxKeeperRewardUsd, maxKeeperScalingRatioD18)
+}
+
+// SetKeeperRewardGuards is a paid mutator transaction binding the contract method 0x96e9f7a0.
+//
+// Solidity: function setKeeperRewardGuards(uint256 minKeeperRewardUsd, uint256 minKeeperProfitRatioD18, uint256 maxKeeperRewardUsd, uint256 maxKeeperScalingRatioD18) returns()
+func (_PerpsMarket *PerpsMarketSession) SetKeeperRewardGuards(minKeeperRewardUsd *big.Int, minKeeperProfitRatioD18 *big.Int, maxKeeperRewardUsd *big.Int, maxKeeperScalingRatioD18 *big.Int) (*types.Transaction, error) {
+	return _PerpsMarket.Contract.SetKeeperRewardGuards(&_PerpsMarket.TransactOpts, minKeeperRewardUsd, minKeeperProfitRatioD18, maxKeeperRewardUsd, maxKeeperScalingRatioD18)
+}
+
+// SetKeeperRewardGuards is a paid mutator transaction binding the contract method 0x96e9f7a0.
+//
+// Solidity: function setKeeperRewardGuards(uint256 minKeeperRewardUsd, uint256 minKeeperProfitRatioD18, uint256 maxKeeperRewardUsd, uint256 maxKeeperScalingRatioD18) returns()
+func (_PerpsMarket *PerpsMarketTransactorSession) SetKeeperRewardGuards(minKeeperRewardUsd *big.Int, minKeeperProfitRatioD18 *big.Int, maxKeeperRewardUsd *big.Int, maxKeeperScalingRatioD18 *big.Int) (*types.Transaction, error) {
+	return _PerpsMarket.Contract.SetKeeperRewardGuards(&_PerpsMarket.TransactOpts, minKeeperRewardUsd, minKeeperProfitRatioD18, maxKeeperRewardUsd, maxKeeperScalingRatioD18)
 }
 
 // SetLiquidationParameters is a paid mutator transaction binding the contract method 0x25e5409e.
 //
-// Solidity: function setLiquidationParameters(uint128 marketId, uint256 initialMarginRatioD18, uint256 minimumInitialMarginRatioD18, uint256 maintenanceMarginScalarD18, uint256 liquidationRewardRatioD18, uint256 minimumPositionMargin) returns()
-func (_PerpsMarket *PerpsMarketSession) SetLiquidationParameters(marketId *big.Int, initialMarginRatioD18 *big.Int, minimumInitialMarginRatioD18 *big.Int, maintenanceMarginScalarD18 *big.Int, liquidationRewardRatioD18 *big.Int, minimumPositionMargin *big.Int) (*types.Transaction, error) {
-	return _PerpsMarket.Contract.SetLiquidationParameters(&_PerpsMarket.TransactOpts, marketId, initialMarginRatioD18, minimumInitialMarginRatioD18, maintenanceMarginScalarD18, liquidationRewardRatioD18, minimumPositionMargin)
+// Solidity: function setLiquidationParameters(uint128 marketId, uint256 initialMarginRatioD18, uint256 minimumInitialMarginRatioD18, uint256 maintenanceMarginScalarD18, uint256 flagRewardRatioD18, uint256 minimumPositionMargin) returns()
+func (_PerpsMarket *PerpsMarketTransactor) SetLiquidationParameters(opts *bind.TransactOpts, marketId *big.Int, initialMarginRatioD18 *big.Int, minimumInitialMarginRatioD18 *big.Int, maintenanceMarginScalarD18 *big.Int, flagRewardRatioD18 *big.Int, minimumPositionMargin *big.Int) (*types.Transaction, error) {
+	return _PerpsMarket.contract.Transact(opts, "setLiquidationParameters", marketId, initialMarginRatioD18, minimumInitialMarginRatioD18, maintenanceMarginScalarD18, flagRewardRatioD18, minimumPositionMargin)
 }
 
 // SetLiquidationParameters is a paid mutator transaction binding the contract method 0x25e5409e.
 //
-// Solidity: function setLiquidationParameters(uint128 marketId, uint256 initialMarginRatioD18, uint256 minimumInitialMarginRatioD18, uint256 maintenanceMarginScalarD18, uint256 liquidationRewardRatioD18, uint256 minimumPositionMargin) returns()
-func (_PerpsMarket *PerpsMarketTransactorSession) SetLiquidationParameters(marketId *big.Int, initialMarginRatioD18 *big.Int, minimumInitialMarginRatioD18 *big.Int, maintenanceMarginScalarD18 *big.Int, liquidationRewardRatioD18 *big.Int, minimumPositionMargin *big.Int) (*types.Transaction, error) {
-	return _PerpsMarket.Contract.SetLiquidationParameters(&_PerpsMarket.TransactOpts, marketId, initialMarginRatioD18, minimumInitialMarginRatioD18, maintenanceMarginScalarD18, liquidationRewardRatioD18, minimumPositionMargin)
+// Solidity: function setLiquidationParameters(uint128 marketId, uint256 initialMarginRatioD18, uint256 minimumInitialMarginRatioD18, uint256 maintenanceMarginScalarD18, uint256 flagRewardRatioD18, uint256 minimumPositionMargin) returns()
+func (_PerpsMarket *PerpsMarketSession) SetLiquidationParameters(marketId *big.Int, initialMarginRatioD18 *big.Int, minimumInitialMarginRatioD18 *big.Int, maintenanceMarginScalarD18 *big.Int, flagRewardRatioD18 *big.Int, minimumPositionMargin *big.Int) (*types.Transaction, error) {
+	return _PerpsMarket.Contract.SetLiquidationParameters(&_PerpsMarket.TransactOpts, marketId, initialMarginRatioD18, minimumInitialMarginRatioD18, maintenanceMarginScalarD18, flagRewardRatioD18, minimumPositionMargin)
 }
 
-// SetLiquidationRewardGuards is a paid mutator transaction binding the contract method 0xdbc593a9.
+// SetLiquidationParameters is a paid mutator transaction binding the contract method 0x25e5409e.
 //
-// Solidity: function setLiquidationRewardGuards(uint256 minLiquidationRewardUsd, uint256 maxLiquidationRewardUsd) returns()
-func (_PerpsMarket *PerpsMarketTransactor) SetLiquidationRewardGuards(opts *bind.TransactOpts, minLiquidationRewardUsd *big.Int, maxLiquidationRewardUsd *big.Int) (*types.Transaction, error) {
-	return _PerpsMarket.contract.Transact(opts, "setLiquidationRewardGuards", minLiquidationRewardUsd, maxLiquidationRewardUsd)
-}
-
-// SetLiquidationRewardGuards is a paid mutator transaction binding the contract method 0xdbc593a9.
-//
-// Solidity: function setLiquidationRewardGuards(uint256 minLiquidationRewardUsd, uint256 maxLiquidationRewardUsd) returns()
-func (_PerpsMarket *PerpsMarketSession) SetLiquidationRewardGuards(minLiquidationRewardUsd *big.Int, maxLiquidationRewardUsd *big.Int) (*types.Transaction, error) {
-	return _PerpsMarket.Contract.SetLiquidationRewardGuards(&_PerpsMarket.TransactOpts, minLiquidationRewardUsd, maxLiquidationRewardUsd)
-}
-
-// SetLiquidationRewardGuards is a paid mutator transaction binding the contract method 0xdbc593a9.
-//
-// Solidity: function setLiquidationRewardGuards(uint256 minLiquidationRewardUsd, uint256 maxLiquidationRewardUsd) returns()
-func (_PerpsMarket *PerpsMarketTransactorSession) SetLiquidationRewardGuards(minLiquidationRewardUsd *big.Int, maxLiquidationRewardUsd *big.Int) (*types.Transaction, error) {
-	return _PerpsMarket.Contract.SetLiquidationRewardGuards(&_PerpsMarket.TransactOpts, minLiquidationRewardUsd, maxLiquidationRewardUsd)
+// Solidity: function setLiquidationParameters(uint128 marketId, uint256 initialMarginRatioD18, uint256 minimumInitialMarginRatioD18, uint256 maintenanceMarginScalarD18, uint256 flagRewardRatioD18, uint256 minimumPositionMargin) returns()
+func (_PerpsMarket *PerpsMarketTransactorSession) SetLiquidationParameters(marketId *big.Int, initialMarginRatioD18 *big.Int, minimumInitialMarginRatioD18 *big.Int, maintenanceMarginScalarD18 *big.Int, flagRewardRatioD18 *big.Int, minimumPositionMargin *big.Int) (*types.Transaction, error) {
+	return _PerpsMarket.Contract.SetLiquidationParameters(&_PerpsMarket.TransactOpts, marketId, initialMarginRatioD18, minimumInitialMarginRatioD18, maintenanceMarginScalarD18, flagRewardRatioD18, minimumPositionMargin)
 }
 
 // SetLockedOiRatio is a paid mutator transaction binding the contract method 0x033723d9.
@@ -2832,27 +3018,6 @@ func (_PerpsMarket *PerpsMarketSession) SetLockedOiRatio(marketId *big.Int, lock
 // Solidity: function setLockedOiRatio(uint128 marketId, uint256 lockedOiRatioD18) returns()
 func (_PerpsMarket *PerpsMarketTransactorSession) SetLockedOiRatio(marketId *big.Int, lockedOiRatioD18 *big.Int) (*types.Transaction, error) {
 	return _PerpsMarket.Contract.SetLockedOiRatio(&_PerpsMarket.TransactOpts, marketId, lockedOiRatioD18)
-}
-
-// SetMaxCollateralAmount is a paid mutator transaction binding the contract method 0x6cded665.
-//
-// Solidity: function setMaxCollateralAmount(uint128 synthMarketId, uint256 collateralAmount) returns()
-func (_PerpsMarket *PerpsMarketTransactor) SetMaxCollateralAmount(opts *bind.TransactOpts, synthMarketId *big.Int, collateralAmount *big.Int) (*types.Transaction, error) {
-	return _PerpsMarket.contract.Transact(opts, "setMaxCollateralAmount", synthMarketId, collateralAmount)
-}
-
-// SetMaxCollateralAmount is a paid mutator transaction binding the contract method 0x6cded665.
-//
-// Solidity: function setMaxCollateralAmount(uint128 synthMarketId, uint256 collateralAmount) returns()
-func (_PerpsMarket *PerpsMarketSession) SetMaxCollateralAmount(synthMarketId *big.Int, collateralAmount *big.Int) (*types.Transaction, error) {
-	return _PerpsMarket.Contract.SetMaxCollateralAmount(&_PerpsMarket.TransactOpts, synthMarketId, collateralAmount)
-}
-
-// SetMaxCollateralAmount is a paid mutator transaction binding the contract method 0x6cded665.
-//
-// Solidity: function setMaxCollateralAmount(uint128 synthMarketId, uint256 collateralAmount) returns()
-func (_PerpsMarket *PerpsMarketTransactorSession) SetMaxCollateralAmount(synthMarketId *big.Int, collateralAmount *big.Int) (*types.Transaction, error) {
-	return _PerpsMarket.Contract.SetMaxCollateralAmount(&_PerpsMarket.TransactOpts, synthMarketId, collateralAmount)
 }
 
 // SetMaxLiquidationParameters is a paid mutator transaction binding the contract method 0xc7f8a94f.
@@ -2939,6 +3104,48 @@ func (_PerpsMarket *PerpsMarketTransactorSession) SetPerAccountCaps(maxPositions
 	return _PerpsMarket.Contract.SetPerAccountCaps(&_PerpsMarket.TransactOpts, maxPositionsPerAccount, maxCollateralsPerAccount)
 }
 
+// SetPerpsMarketName is a paid mutator transaction binding the contract method 0x55576c59.
+//
+// Solidity: function setPerpsMarketName(string marketName) returns()
+func (_PerpsMarket *PerpsMarketTransactor) SetPerpsMarketName(opts *bind.TransactOpts, marketName string) (*types.Transaction, error) {
+	return _PerpsMarket.contract.Transact(opts, "setPerpsMarketName", marketName)
+}
+
+// SetPerpsMarketName is a paid mutator transaction binding the contract method 0x55576c59.
+//
+// Solidity: function setPerpsMarketName(string marketName) returns()
+func (_PerpsMarket *PerpsMarketSession) SetPerpsMarketName(marketName string) (*types.Transaction, error) {
+	return _PerpsMarket.Contract.SetPerpsMarketName(&_PerpsMarket.TransactOpts, marketName)
+}
+
+// SetPerpsMarketName is a paid mutator transaction binding the contract method 0x55576c59.
+//
+// Solidity: function setPerpsMarketName(string marketName) returns()
+func (_PerpsMarket *PerpsMarketTransactorSession) SetPerpsMarketName(marketName string) (*types.Transaction, error) {
+	return _PerpsMarket.Contract.SetPerpsMarketName(&_PerpsMarket.TransactOpts, marketName)
+}
+
+// SetSettlementStrategy is a paid mutator transaction binding the contract method 0x3a1bf9bf.
+//
+// Solidity: function setSettlementStrategy(uint128 marketId, uint256 strategyId, (uint8,uint256,uint256,address,bytes32,string,uint256,bool) strategy) returns()
+func (_PerpsMarket *PerpsMarketTransactor) SetSettlementStrategy(opts *bind.TransactOpts, marketId *big.Int, strategyId *big.Int, strategy SettlementStrategyData) (*types.Transaction, error) {
+	return _PerpsMarket.contract.Transact(opts, "setSettlementStrategy", marketId, strategyId, strategy)
+}
+
+// SetSettlementStrategy is a paid mutator transaction binding the contract method 0x3a1bf9bf.
+//
+// Solidity: function setSettlementStrategy(uint128 marketId, uint256 strategyId, (uint8,uint256,uint256,address,bytes32,string,uint256,bool) strategy) returns()
+func (_PerpsMarket *PerpsMarketSession) SetSettlementStrategy(marketId *big.Int, strategyId *big.Int, strategy SettlementStrategyData) (*types.Transaction, error) {
+	return _PerpsMarket.Contract.SetSettlementStrategy(&_PerpsMarket.TransactOpts, marketId, strategyId, strategy)
+}
+
+// SetSettlementStrategy is a paid mutator transaction binding the contract method 0x3a1bf9bf.
+//
+// Solidity: function setSettlementStrategy(uint128 marketId, uint256 strategyId, (uint8,uint256,uint256,address,bytes32,string,uint256,bool) strategy) returns()
+func (_PerpsMarket *PerpsMarketTransactorSession) SetSettlementStrategy(marketId *big.Int, strategyId *big.Int, strategy SettlementStrategyData) (*types.Transaction, error) {
+	return _PerpsMarket.Contract.SetSettlementStrategy(&_PerpsMarket.TransactOpts, marketId, strategyId, strategy)
+}
+
 // SetSettlementStrategyEnabled is a paid mutator transaction binding the contract method 0x7f73a891.
 //
 // Solidity: function setSettlementStrategyEnabled(uint128 marketId, uint256 strategyId, bool enabled) returns()
@@ -2958,27 +3165,6 @@ func (_PerpsMarket *PerpsMarketSession) SetSettlementStrategyEnabled(marketId *b
 // Solidity: function setSettlementStrategyEnabled(uint128 marketId, uint256 strategyId, bool enabled) returns()
 func (_PerpsMarket *PerpsMarketTransactorSession) SetSettlementStrategyEnabled(marketId *big.Int, strategyId *big.Int, enabled bool) (*types.Transaction, error) {
 	return _PerpsMarket.Contract.SetSettlementStrategyEnabled(&_PerpsMarket.TransactOpts, marketId, strategyId, enabled)
-}
-
-// SetSpotMarket is a paid mutator transaction binding the contract method 0x92d48a4e.
-//
-// Solidity: function setSpotMarket(address spotMarket) returns()
-func (_PerpsMarket *PerpsMarketTransactor) SetSpotMarket(opts *bind.TransactOpts, spotMarket common.Address) (*types.Transaction, error) {
-	return _PerpsMarket.contract.Transact(opts, "setSpotMarket", spotMarket)
-}
-
-// SetSpotMarket is a paid mutator transaction binding the contract method 0x92d48a4e.
-//
-// Solidity: function setSpotMarket(address spotMarket) returns()
-func (_PerpsMarket *PerpsMarketSession) SetSpotMarket(spotMarket common.Address) (*types.Transaction, error) {
-	return _PerpsMarket.Contract.SetSpotMarket(&_PerpsMarket.TransactOpts, spotMarket)
-}
-
-// SetSpotMarket is a paid mutator transaction binding the contract method 0x92d48a4e.
-//
-// Solidity: function setSpotMarket(address spotMarket) returns()
-func (_PerpsMarket *PerpsMarketTransactorSession) SetSpotMarket(spotMarket common.Address) (*types.Transaction, error) {
-	return _PerpsMarket.Contract.SetSpotMarket(&_PerpsMarket.TransactOpts, spotMarket)
 }
 
 // SetSynthDeductionPriority is a paid mutator transaction binding the contract method 0x6aba84a7.
@@ -3002,46 +3188,25 @@ func (_PerpsMarket *PerpsMarketTransactorSession) SetSynthDeductionPriority(newS
 	return _PerpsMarket.Contract.SetSynthDeductionPriority(&_PerpsMarket.TransactOpts, newSynthDeductionPriority)
 }
 
-// SetSynthetix is a paid mutator transaction binding the contract method 0xfec9f9da.
+// SettleOrder is a paid mutator transaction binding the contract method 0xf89648fb.
 //
-// Solidity: function setSynthetix(address synthetix) returns()
-func (_PerpsMarket *PerpsMarketTransactor) SetSynthetix(opts *bind.TransactOpts, synthetix common.Address) (*types.Transaction, error) {
-	return _PerpsMarket.contract.Transact(opts, "setSynthetix", synthetix)
+// Solidity: function settleOrder(uint128 accountId) returns()
+func (_PerpsMarket *PerpsMarketTransactor) SettleOrder(opts *bind.TransactOpts, accountId *big.Int) (*types.Transaction, error) {
+	return _PerpsMarket.contract.Transact(opts, "settleOrder", accountId)
 }
 
-// SetSynthetix is a paid mutator transaction binding the contract method 0xfec9f9da.
+// SettleOrder is a paid mutator transaction binding the contract method 0xf89648fb.
 //
-// Solidity: function setSynthetix(address synthetix) returns()
-func (_PerpsMarket *PerpsMarketSession) SetSynthetix(synthetix common.Address) (*types.Transaction, error) {
-	return _PerpsMarket.Contract.SetSynthetix(&_PerpsMarket.TransactOpts, synthetix)
+// Solidity: function settleOrder(uint128 accountId) returns()
+func (_PerpsMarket *PerpsMarketSession) SettleOrder(accountId *big.Int) (*types.Transaction, error) {
+	return _PerpsMarket.Contract.SettleOrder(&_PerpsMarket.TransactOpts, accountId)
 }
 
-// SetSynthetix is a paid mutator transaction binding the contract method 0xfec9f9da.
+// SettleOrder is a paid mutator transaction binding the contract method 0xf89648fb.
 //
-// Solidity: function setSynthetix(address synthetix) returns()
-func (_PerpsMarket *PerpsMarketTransactorSession) SetSynthetix(synthetix common.Address) (*types.Transaction, error) {
-	return _PerpsMarket.Contract.SetSynthetix(&_PerpsMarket.TransactOpts, synthetix)
-}
-
-// SettlePythOrder is a paid mutator transaction binding the contract method 0x8a0345c6.
-//
-// Solidity: function settlePythOrder(bytes result, bytes extraData) payable returns()
-func (_PerpsMarket *PerpsMarketTransactor) SettlePythOrder(opts *bind.TransactOpts, result []byte, extraData []byte) (*types.Transaction, error) {
-	return _PerpsMarket.contract.Transact(opts, "settlePythOrder", result, extraData)
-}
-
-// SettlePythOrder is a paid mutator transaction binding the contract method 0x8a0345c6.
-//
-// Solidity: function settlePythOrder(bytes result, bytes extraData) payable returns()
-func (_PerpsMarket *PerpsMarketSession) SettlePythOrder(result []byte, extraData []byte) (*types.Transaction, error) {
-	return _PerpsMarket.Contract.SettlePythOrder(&_PerpsMarket.TransactOpts, result, extraData)
-}
-
-// SettlePythOrder is a paid mutator transaction binding the contract method 0x8a0345c6.
-//
-// Solidity: function settlePythOrder(bytes result, bytes extraData) payable returns()
-func (_PerpsMarket *PerpsMarketTransactorSession) SettlePythOrder(result []byte, extraData []byte) (*types.Transaction, error) {
-	return _PerpsMarket.Contract.SettlePythOrder(&_PerpsMarket.TransactOpts, result, extraData)
+// Solidity: function settleOrder(uint128 accountId) returns()
+func (_PerpsMarket *PerpsMarketTransactorSession) SettleOrder(accountId *big.Int) (*types.Transaction, error) {
+	return _PerpsMarket.Contract.SettleOrder(&_PerpsMarket.TransactOpts, accountId)
 }
 
 // SimulateUpgradeTo is a paid mutator transaction binding the contract method 0xc7f62cda.
@@ -3065,25 +3230,46 @@ func (_PerpsMarket *PerpsMarketTransactorSession) SimulateUpgradeTo(newImplement
 	return _PerpsMarket.Contract.SimulateUpgradeTo(&_PerpsMarket.TransactOpts, newImplementation)
 }
 
-// UpdatePriceData is a paid mutator transaction binding the contract method 0x2d73137b.
+// UpdateKeeperCostNodeId is a paid mutator transaction binding the contract method 0xf5322087.
 //
-// Solidity: function updatePriceData(uint128 perpsMarketId, bytes32 feedId) returns()
-func (_PerpsMarket *PerpsMarketTransactor) UpdatePriceData(opts *bind.TransactOpts, perpsMarketId *big.Int, feedId [32]byte) (*types.Transaction, error) {
-	return _PerpsMarket.contract.Transact(opts, "updatePriceData", perpsMarketId, feedId)
+// Solidity: function updateKeeperCostNodeId(bytes32 keeperCostNodeId) returns()
+func (_PerpsMarket *PerpsMarketTransactor) UpdateKeeperCostNodeId(opts *bind.TransactOpts, keeperCostNodeId [32]byte) (*types.Transaction, error) {
+	return _PerpsMarket.contract.Transact(opts, "updateKeeperCostNodeId", keeperCostNodeId)
 }
 
-// UpdatePriceData is a paid mutator transaction binding the contract method 0x2d73137b.
+// UpdateKeeperCostNodeId is a paid mutator transaction binding the contract method 0xf5322087.
 //
-// Solidity: function updatePriceData(uint128 perpsMarketId, bytes32 feedId) returns()
-func (_PerpsMarket *PerpsMarketSession) UpdatePriceData(perpsMarketId *big.Int, feedId [32]byte) (*types.Transaction, error) {
-	return _PerpsMarket.Contract.UpdatePriceData(&_PerpsMarket.TransactOpts, perpsMarketId, feedId)
+// Solidity: function updateKeeperCostNodeId(bytes32 keeperCostNodeId) returns()
+func (_PerpsMarket *PerpsMarketSession) UpdateKeeperCostNodeId(keeperCostNodeId [32]byte) (*types.Transaction, error) {
+	return _PerpsMarket.Contract.UpdateKeeperCostNodeId(&_PerpsMarket.TransactOpts, keeperCostNodeId)
 }
 
-// UpdatePriceData is a paid mutator transaction binding the contract method 0x2d73137b.
+// UpdateKeeperCostNodeId is a paid mutator transaction binding the contract method 0xf5322087.
 //
-// Solidity: function updatePriceData(uint128 perpsMarketId, bytes32 feedId) returns()
-func (_PerpsMarket *PerpsMarketTransactorSession) UpdatePriceData(perpsMarketId *big.Int, feedId [32]byte) (*types.Transaction, error) {
-	return _PerpsMarket.Contract.UpdatePriceData(&_PerpsMarket.TransactOpts, perpsMarketId, feedId)
+// Solidity: function updateKeeperCostNodeId(bytes32 keeperCostNodeId) returns()
+func (_PerpsMarket *PerpsMarketTransactorSession) UpdateKeeperCostNodeId(keeperCostNodeId [32]byte) (*types.Transaction, error) {
+	return _PerpsMarket.Contract.UpdateKeeperCostNodeId(&_PerpsMarket.TransactOpts, keeperCostNodeId)
+}
+
+// UpdatePriceData is a paid mutator transaction binding the contract method 0xb5848488.
+//
+// Solidity: function updatePriceData(uint128 perpsMarketId, bytes32 feedId, uint256 strictStalenessTolerance) returns()
+func (_PerpsMarket *PerpsMarketTransactor) UpdatePriceData(opts *bind.TransactOpts, perpsMarketId *big.Int, feedId [32]byte, strictStalenessTolerance *big.Int) (*types.Transaction, error) {
+	return _PerpsMarket.contract.Transact(opts, "updatePriceData", perpsMarketId, feedId, strictStalenessTolerance)
+}
+
+// UpdatePriceData is a paid mutator transaction binding the contract method 0xb5848488.
+//
+// Solidity: function updatePriceData(uint128 perpsMarketId, bytes32 feedId, uint256 strictStalenessTolerance) returns()
+func (_PerpsMarket *PerpsMarketSession) UpdatePriceData(perpsMarketId *big.Int, feedId [32]byte, strictStalenessTolerance *big.Int) (*types.Transaction, error) {
+	return _PerpsMarket.Contract.UpdatePriceData(&_PerpsMarket.TransactOpts, perpsMarketId, feedId, strictStalenessTolerance)
+}
+
+// UpdatePriceData is a paid mutator transaction binding the contract method 0xb5848488.
+//
+// Solidity: function updatePriceData(uint128 perpsMarketId, bytes32 feedId, uint256 strictStalenessTolerance) returns()
+func (_PerpsMarket *PerpsMarketTransactorSession) UpdatePriceData(perpsMarketId *big.Int, feedId [32]byte, strictStalenessTolerance *big.Int) (*types.Transaction, error) {
+	return _PerpsMarket.Contract.UpdatePriceData(&_PerpsMarket.TransactOpts, perpsMarketId, feedId, strictStalenessTolerance)
 }
 
 // UpdateReferrerShare is a paid mutator transaction binding the contract method 0x6809fb4d.
@@ -3281,9 +3467,9 @@ func (_PerpsMarket *PerpsMarketFilterer) ParseAccountCreated(log types.Log) (*Pe
 	return event, nil
 }
 
-// PerpsMarketAccountLiquidatedIterator is returned from FilterAccountLiquidated and is used to iterate over the raw logs and unpacked data for AccountLiquidated events raised by the PerpsMarket contract.
-type PerpsMarketAccountLiquidatedIterator struct {
-	Event *PerpsMarketAccountLiquidated // Event containing the contract specifics and raw log
+// PerpsMarketAccountLiquidationAttemptIterator is returned from FilterAccountLiquidationAttempt and is used to iterate over the raw logs and unpacked data for AccountLiquidationAttempt events raised by the PerpsMarket contract.
+type PerpsMarketAccountLiquidationAttemptIterator struct {
+	Event *PerpsMarketAccountLiquidationAttempt // Event containing the contract specifics and raw log
 
 	contract *bind.BoundContract // Generic contract to use for unpacking event data
 	event    string              // Event name to use for unpacking event data
@@ -3297,7 +3483,7 @@ type PerpsMarketAccountLiquidatedIterator struct {
 // Next advances the iterator to the subsequent event, returning whether there
 // are any more events found. In case of a retrieval or parsing error, false is
 // returned and Error() can be queried for the exact failure.
-func (it *PerpsMarketAccountLiquidatedIterator) Next() bool {
+func (it *PerpsMarketAccountLiquidationAttemptIterator) Next() bool {
 	// If the iterator failed, stop iterating
 	if it.fail != nil {
 		return false
@@ -3306,7 +3492,7 @@ func (it *PerpsMarketAccountLiquidatedIterator) Next() bool {
 	if it.done {
 		select {
 		case log := <-it.logs:
-			it.Event = new(PerpsMarketAccountLiquidated)
+			it.Event = new(PerpsMarketAccountLiquidationAttempt)
 			if err := it.contract.UnpackLog(it.Event, it.event, log); err != nil {
 				it.fail = err
 				return false
@@ -3321,7 +3507,7 @@ func (it *PerpsMarketAccountLiquidatedIterator) Next() bool {
 	// Iterator still in progress, wait for either a data or an error event
 	select {
 	case log := <-it.logs:
-		it.Event = new(PerpsMarketAccountLiquidated)
+		it.Event = new(PerpsMarketAccountLiquidationAttempt)
 		if err := it.contract.UnpackLog(it.Event, it.event, log); err != nil {
 			it.fail = err
 			return false
@@ -3337,53 +3523,53 @@ func (it *PerpsMarketAccountLiquidatedIterator) Next() bool {
 }
 
 // Error returns any retrieval or parsing error occurred during filtering.
-func (it *PerpsMarketAccountLiquidatedIterator) Error() error {
+func (it *PerpsMarketAccountLiquidationAttemptIterator) Error() error {
 	return it.fail
 }
 
 // Close terminates the iteration process, releasing any pending underlying
 // resources.
-func (it *PerpsMarketAccountLiquidatedIterator) Close() error {
+func (it *PerpsMarketAccountLiquidationAttemptIterator) Close() error {
 	it.sub.Unsubscribe()
 	return nil
 }
 
-// PerpsMarketAccountLiquidated represents a AccountLiquidated event raised by the PerpsMarket contract.
-type PerpsMarketAccountLiquidated struct {
+// PerpsMarketAccountLiquidationAttempt represents a AccountLiquidationAttempt event raised by the PerpsMarket contract.
+type PerpsMarketAccountLiquidationAttempt struct {
 	AccountId       *big.Int
 	Reward          *big.Int
 	FullLiquidation bool
 	Raw             types.Log // Blockchain specific contextual infos
 }
 
-// FilterAccountLiquidated is a free log retrieval operation binding the contract event 0x926f56b0a80cc150ad77b59cc60bc53cb907eab441d204924ec67b40ae64f5f5.
+// FilterAccountLiquidationAttempt is a free log retrieval operation binding the contract event 0x26ef135389b1c68384b54bcb8b8c6b329a4cc302ab22474b8991fa4e957def35.
 //
-// Solidity: event AccountLiquidated(uint128 indexed accountId, uint256 reward, bool fullLiquidation)
-func (_PerpsMarket *PerpsMarketFilterer) FilterAccountLiquidated(opts *bind.FilterOpts, accountId []*big.Int) (*PerpsMarketAccountLiquidatedIterator, error) {
+// Solidity: event AccountLiquidationAttempt(uint128 indexed accountId, uint256 reward, bool fullLiquidation)
+func (_PerpsMarket *PerpsMarketFilterer) FilterAccountLiquidationAttempt(opts *bind.FilterOpts, accountId []*big.Int) (*PerpsMarketAccountLiquidationAttemptIterator, error) {
 
 	var accountIdRule []interface{}
 	for _, accountIdItem := range accountId {
 		accountIdRule = append(accountIdRule, accountIdItem)
 	}
 
-	logs, sub, err := _PerpsMarket.contract.FilterLogs(opts, "AccountLiquidated", accountIdRule)
+	logs, sub, err := _PerpsMarket.contract.FilterLogs(opts, "AccountLiquidationAttempt", accountIdRule)
 	if err != nil {
 		return nil, err
 	}
-	return &PerpsMarketAccountLiquidatedIterator{contract: _PerpsMarket.contract, event: "AccountLiquidated", logs: logs, sub: sub}, nil
+	return &PerpsMarketAccountLiquidationAttemptIterator{contract: _PerpsMarket.contract, event: "AccountLiquidationAttempt", logs: logs, sub: sub}, nil
 }
 
-// WatchAccountLiquidated is a free log subscription operation binding the contract event 0x926f56b0a80cc150ad77b59cc60bc53cb907eab441d204924ec67b40ae64f5f5.
+// WatchAccountLiquidationAttempt is a free log subscription operation binding the contract event 0x26ef135389b1c68384b54bcb8b8c6b329a4cc302ab22474b8991fa4e957def35.
 //
-// Solidity: event AccountLiquidated(uint128 indexed accountId, uint256 reward, bool fullLiquidation)
-func (_PerpsMarket *PerpsMarketFilterer) WatchAccountLiquidated(opts *bind.WatchOpts, sink chan<- *PerpsMarketAccountLiquidated, accountId []*big.Int) (event.Subscription, error) {
+// Solidity: event AccountLiquidationAttempt(uint128 indexed accountId, uint256 reward, bool fullLiquidation)
+func (_PerpsMarket *PerpsMarketFilterer) WatchAccountLiquidationAttempt(opts *bind.WatchOpts, sink chan<- *PerpsMarketAccountLiquidationAttempt, accountId []*big.Int) (event.Subscription, error) {
 
 	var accountIdRule []interface{}
 	for _, accountIdItem := range accountId {
 		accountIdRule = append(accountIdRule, accountIdItem)
 	}
 
-	logs, sub, err := _PerpsMarket.contract.WatchLogs(opts, "AccountLiquidated", accountIdRule)
+	logs, sub, err := _PerpsMarket.contract.WatchLogs(opts, "AccountLiquidationAttempt", accountIdRule)
 	if err != nil {
 		return nil, err
 	}
@@ -3393,8 +3579,8 @@ func (_PerpsMarket *PerpsMarketFilterer) WatchAccountLiquidated(opts *bind.Watch
 			select {
 			case log := <-logs:
 				// New log arrived, parse the event and forward to the user
-				event := new(PerpsMarketAccountLiquidated)
-				if err := _PerpsMarket.contract.UnpackLog(event, "AccountLiquidated", log); err != nil {
+				event := new(PerpsMarketAccountLiquidationAttempt)
+				if err := _PerpsMarket.contract.UnpackLog(event, "AccountLiquidationAttempt", log); err != nil {
 					return err
 				}
 				event.Raw = log
@@ -3415,12 +3601,12 @@ func (_PerpsMarket *PerpsMarketFilterer) WatchAccountLiquidated(opts *bind.Watch
 	}), nil
 }
 
-// ParseAccountLiquidated is a log parse operation binding the contract event 0x926f56b0a80cc150ad77b59cc60bc53cb907eab441d204924ec67b40ae64f5f5.
+// ParseAccountLiquidationAttempt is a log parse operation binding the contract event 0x26ef135389b1c68384b54bcb8b8c6b329a4cc302ab22474b8991fa4e957def35.
 //
-// Solidity: event AccountLiquidated(uint128 indexed accountId, uint256 reward, bool fullLiquidation)
-func (_PerpsMarket *PerpsMarketFilterer) ParseAccountLiquidated(log types.Log) (*PerpsMarketAccountLiquidated, error) {
-	event := new(PerpsMarketAccountLiquidated)
-	if err := _PerpsMarket.contract.UnpackLog(event, "AccountLiquidated", log); err != nil {
+// Solidity: event AccountLiquidationAttempt(uint128 indexed accountId, uint256 reward, bool fullLiquidation)
+func (_PerpsMarket *PerpsMarketFilterer) ParseAccountLiquidationAttempt(log types.Log) (*PerpsMarketAccountLiquidationAttempt, error) {
+	event := new(PerpsMarketAccountLiquidationAttempt)
+	if err := _PerpsMarket.contract.UnpackLog(event, "AccountLiquidationAttempt", log); err != nil {
 		return nil, err
 	}
 	event.Raw = log
@@ -3576,6 +3762,287 @@ func (_PerpsMarket *PerpsMarketFilterer) WatchAssociatedSystemSet(opts *bind.Wat
 func (_PerpsMarket *PerpsMarketFilterer) ParseAssociatedSystemSet(log types.Log) (*PerpsMarketAssociatedSystemSet, error) {
 	event := new(PerpsMarketAssociatedSystemSet)
 	if err := _PerpsMarket.contract.UnpackLog(event, "AssociatedSystemSet", log); err != nil {
+		return nil, err
+	}
+	event.Raw = log
+	return event, nil
+}
+
+// PerpsMarketCollateralConfigurationSetIterator is returned from FilterCollateralConfigurationSet and is used to iterate over the raw logs and unpacked data for CollateralConfigurationSet events raised by the PerpsMarket contract.
+type PerpsMarketCollateralConfigurationSetIterator struct {
+	Event *PerpsMarketCollateralConfigurationSet // Event containing the contract specifics and raw log
+
+	contract *bind.BoundContract // Generic contract to use for unpacking event data
+	event    string              // Event name to use for unpacking event data
+
+	logs chan types.Log        // Log channel receiving the found contract events
+	sub  ethereum.Subscription // Subscription for errors, completion and termination
+	done bool                  // Whether the subscription completed delivering logs
+	fail error                 // Occurred error to stop iteration
+}
+
+// Next advances the iterator to the subsequent event, returning whether there
+// are any more events found. In case of a retrieval or parsing error, false is
+// returned and Error() can be queried for the exact failure.
+func (it *PerpsMarketCollateralConfigurationSetIterator) Next() bool {
+	// If the iterator failed, stop iterating
+	if it.fail != nil {
+		return false
+	}
+	// If the iterator completed, deliver directly whatever's available
+	if it.done {
+		select {
+		case log := <-it.logs:
+			it.Event = new(PerpsMarketCollateralConfigurationSet)
+			if err := it.contract.UnpackLog(it.Event, it.event, log); err != nil {
+				it.fail = err
+				return false
+			}
+			it.Event.Raw = log
+			return true
+
+		default:
+			return false
+		}
+	}
+	// Iterator still in progress, wait for either a data or an error event
+	select {
+	case log := <-it.logs:
+		it.Event = new(PerpsMarketCollateralConfigurationSet)
+		if err := it.contract.UnpackLog(it.Event, it.event, log); err != nil {
+			it.fail = err
+			return false
+		}
+		it.Event.Raw = log
+		return true
+
+	case err := <-it.sub.Err():
+		it.done = true
+		it.fail = err
+		return it.Next()
+	}
+}
+
+// Error returns any retrieval or parsing error occurred during filtering.
+func (it *PerpsMarketCollateralConfigurationSetIterator) Error() error {
+	return it.fail
+}
+
+// Close terminates the iteration process, releasing any pending underlying
+// resources.
+func (it *PerpsMarketCollateralConfigurationSetIterator) Close() error {
+	it.sub.Unsubscribe()
+	return nil
+}
+
+// PerpsMarketCollateralConfigurationSet represents a CollateralConfigurationSet event raised by the PerpsMarket contract.
+type PerpsMarketCollateralConfigurationSet struct {
+	SynthMarketId       *big.Int
+	MaxCollateralAmount *big.Int
+	Raw                 types.Log // Blockchain specific contextual infos
+}
+
+// FilterCollateralConfigurationSet is a free log retrieval operation binding the contract event 0x09c99258910b178f427c0a0700e2f50e13ca60cb99967efd0282dbd204c22104.
+//
+// Solidity: event CollateralConfigurationSet(uint128 indexed synthMarketId, uint256 maxCollateralAmount)
+func (_PerpsMarket *PerpsMarketFilterer) FilterCollateralConfigurationSet(opts *bind.FilterOpts, synthMarketId []*big.Int) (*PerpsMarketCollateralConfigurationSetIterator, error) {
+
+	var synthMarketIdRule []interface{}
+	for _, synthMarketIdItem := range synthMarketId {
+		synthMarketIdRule = append(synthMarketIdRule, synthMarketIdItem)
+	}
+
+	logs, sub, err := _PerpsMarket.contract.FilterLogs(opts, "CollateralConfigurationSet", synthMarketIdRule)
+	if err != nil {
+		return nil, err
+	}
+	return &PerpsMarketCollateralConfigurationSetIterator{contract: _PerpsMarket.contract, event: "CollateralConfigurationSet", logs: logs, sub: sub}, nil
+}
+
+// WatchCollateralConfigurationSet is a free log subscription operation binding the contract event 0x09c99258910b178f427c0a0700e2f50e13ca60cb99967efd0282dbd204c22104.
+//
+// Solidity: event CollateralConfigurationSet(uint128 indexed synthMarketId, uint256 maxCollateralAmount)
+func (_PerpsMarket *PerpsMarketFilterer) WatchCollateralConfigurationSet(opts *bind.WatchOpts, sink chan<- *PerpsMarketCollateralConfigurationSet, synthMarketId []*big.Int) (event.Subscription, error) {
+
+	var synthMarketIdRule []interface{}
+	for _, synthMarketIdItem := range synthMarketId {
+		synthMarketIdRule = append(synthMarketIdRule, synthMarketIdItem)
+	}
+
+	logs, sub, err := _PerpsMarket.contract.WatchLogs(opts, "CollateralConfigurationSet", synthMarketIdRule)
+	if err != nil {
+		return nil, err
+	}
+	return event.NewSubscription(func(quit <-chan struct{}) error {
+		defer sub.Unsubscribe()
+		for {
+			select {
+			case log := <-logs:
+				// New log arrived, parse the event and forward to the user
+				event := new(PerpsMarketCollateralConfigurationSet)
+				if err := _PerpsMarket.contract.UnpackLog(event, "CollateralConfigurationSet", log); err != nil {
+					return err
+				}
+				event.Raw = log
+
+				select {
+				case sink <- event:
+				case err := <-sub.Err():
+					return err
+				case <-quit:
+					return nil
+				}
+			case err := <-sub.Err():
+				return err
+			case <-quit:
+				return nil
+			}
+		}
+	}), nil
+}
+
+// ParseCollateralConfigurationSet is a log parse operation binding the contract event 0x09c99258910b178f427c0a0700e2f50e13ca60cb99967efd0282dbd204c22104.
+//
+// Solidity: event CollateralConfigurationSet(uint128 indexed synthMarketId, uint256 maxCollateralAmount)
+func (_PerpsMarket *PerpsMarketFilterer) ParseCollateralConfigurationSet(log types.Log) (*PerpsMarketCollateralConfigurationSet, error) {
+	event := new(PerpsMarketCollateralConfigurationSet)
+	if err := _PerpsMarket.contract.UnpackLog(event, "CollateralConfigurationSet", log); err != nil {
+		return nil, err
+	}
+	event.Raw = log
+	return event, nil
+}
+
+// PerpsMarketCollateralDeductedIterator is returned from FilterCollateralDeducted and is used to iterate over the raw logs and unpacked data for CollateralDeducted events raised by the PerpsMarket contract.
+type PerpsMarketCollateralDeductedIterator struct {
+	Event *PerpsMarketCollateralDeducted // Event containing the contract specifics and raw log
+
+	contract *bind.BoundContract // Generic contract to use for unpacking event data
+	event    string              // Event name to use for unpacking event data
+
+	logs chan types.Log        // Log channel receiving the found contract events
+	sub  ethereum.Subscription // Subscription for errors, completion and termination
+	done bool                  // Whether the subscription completed delivering logs
+	fail error                 // Occurred error to stop iteration
+}
+
+// Next advances the iterator to the subsequent event, returning whether there
+// are any more events found. In case of a retrieval or parsing error, false is
+// returned and Error() can be queried for the exact failure.
+func (it *PerpsMarketCollateralDeductedIterator) Next() bool {
+	// If the iterator failed, stop iterating
+	if it.fail != nil {
+		return false
+	}
+	// If the iterator completed, deliver directly whatever's available
+	if it.done {
+		select {
+		case log := <-it.logs:
+			it.Event = new(PerpsMarketCollateralDeducted)
+			if err := it.contract.UnpackLog(it.Event, it.event, log); err != nil {
+				it.fail = err
+				return false
+			}
+			it.Event.Raw = log
+			return true
+
+		default:
+			return false
+		}
+	}
+	// Iterator still in progress, wait for either a data or an error event
+	select {
+	case log := <-it.logs:
+		it.Event = new(PerpsMarketCollateralDeducted)
+		if err := it.contract.UnpackLog(it.Event, it.event, log); err != nil {
+			it.fail = err
+			return false
+		}
+		it.Event.Raw = log
+		return true
+
+	case err := <-it.sub.Err():
+		it.done = true
+		it.fail = err
+		return it.Next()
+	}
+}
+
+// Error returns any retrieval or parsing error occurred during filtering.
+func (it *PerpsMarketCollateralDeductedIterator) Error() error {
+	return it.fail
+}
+
+// Close terminates the iteration process, releasing any pending underlying
+// resources.
+func (it *PerpsMarketCollateralDeductedIterator) Close() error {
+	it.sub.Unsubscribe()
+	return nil
+}
+
+// PerpsMarketCollateralDeducted represents a CollateralDeducted event raised by the PerpsMarket contract.
+type PerpsMarketCollateralDeducted struct {
+	Account       *big.Int
+	SynthMarketId *big.Int
+	Amount        *big.Int
+	Raw           types.Log // Blockchain specific contextual infos
+}
+
+// FilterCollateralDeducted is a free log retrieval operation binding the contract event 0x4598943fbcec152538b18c5a7c3625f352c9e2b8844d3bfbe55d65452afdf665.
+//
+// Solidity: event CollateralDeducted(uint256 account, uint128 synthMarketId, uint256 amount)
+func (_PerpsMarket *PerpsMarketFilterer) FilterCollateralDeducted(opts *bind.FilterOpts) (*PerpsMarketCollateralDeductedIterator, error) {
+
+	logs, sub, err := _PerpsMarket.contract.FilterLogs(opts, "CollateralDeducted")
+	if err != nil {
+		return nil, err
+	}
+	return &PerpsMarketCollateralDeductedIterator{contract: _PerpsMarket.contract, event: "CollateralDeducted", logs: logs, sub: sub}, nil
+}
+
+// WatchCollateralDeducted is a free log subscription operation binding the contract event 0x4598943fbcec152538b18c5a7c3625f352c9e2b8844d3bfbe55d65452afdf665.
+//
+// Solidity: event CollateralDeducted(uint256 account, uint128 synthMarketId, uint256 amount)
+func (_PerpsMarket *PerpsMarketFilterer) WatchCollateralDeducted(opts *bind.WatchOpts, sink chan<- *PerpsMarketCollateralDeducted) (event.Subscription, error) {
+
+	logs, sub, err := _PerpsMarket.contract.WatchLogs(opts, "CollateralDeducted")
+	if err != nil {
+		return nil, err
+	}
+	return event.NewSubscription(func(quit <-chan struct{}) error {
+		defer sub.Unsubscribe()
+		for {
+			select {
+			case log := <-logs:
+				// New log arrived, parse the event and forward to the user
+				event := new(PerpsMarketCollateralDeducted)
+				if err := _PerpsMarket.contract.UnpackLog(event, "CollateralDeducted", log); err != nil {
+					return err
+				}
+				event.Raw = log
+
+				select {
+				case sink <- event:
+				case err := <-sub.Err():
+					return err
+				case <-quit:
+					return nil
+				}
+			case err := <-sub.Err():
+				return err
+			case <-quit:
+				return nil
+			}
+		}
+	}), nil
+}
+
+// ParseCollateralDeducted is a log parse operation binding the contract event 0x4598943fbcec152538b18c5a7c3625f352c9e2b8844d3bfbe55d65452afdf665.
+//
+// Solidity: event CollateralDeducted(uint256 account, uint128 synthMarketId, uint256 amount)
+func (_PerpsMarket *PerpsMarketFilterer) ParseCollateralDeducted(log types.Log) (*PerpsMarketCollateralDeducted, error) {
+	event := new(PerpsMarketCollateralDeducted)
+	if err := _PerpsMarket.contract.UnpackLog(event, "CollateralDeducted", log); err != nil {
 		return nil, err
 	}
 	event.Raw = log
@@ -4886,6 +5353,277 @@ func (_PerpsMarket *PerpsMarketFilterer) ParseFundingParametersSet(log types.Log
 	return event, nil
 }
 
+// PerpsMarketKeeperCostNodeIdUpdatedIterator is returned from FilterKeeperCostNodeIdUpdated and is used to iterate over the raw logs and unpacked data for KeeperCostNodeIdUpdated events raised by the PerpsMarket contract.
+type PerpsMarketKeeperCostNodeIdUpdatedIterator struct {
+	Event *PerpsMarketKeeperCostNodeIdUpdated // Event containing the contract specifics and raw log
+
+	contract *bind.BoundContract // Generic contract to use for unpacking event data
+	event    string              // Event name to use for unpacking event data
+
+	logs chan types.Log        // Log channel receiving the found contract events
+	sub  ethereum.Subscription // Subscription for errors, completion and termination
+	done bool                  // Whether the subscription completed delivering logs
+	fail error                 // Occurred error to stop iteration
+}
+
+// Next advances the iterator to the subsequent event, returning whether there
+// are any more events found. In case of a retrieval or parsing error, false is
+// returned and Error() can be queried for the exact failure.
+func (it *PerpsMarketKeeperCostNodeIdUpdatedIterator) Next() bool {
+	// If the iterator failed, stop iterating
+	if it.fail != nil {
+		return false
+	}
+	// If the iterator completed, deliver directly whatever's available
+	if it.done {
+		select {
+		case log := <-it.logs:
+			it.Event = new(PerpsMarketKeeperCostNodeIdUpdated)
+			if err := it.contract.UnpackLog(it.Event, it.event, log); err != nil {
+				it.fail = err
+				return false
+			}
+			it.Event.Raw = log
+			return true
+
+		default:
+			return false
+		}
+	}
+	// Iterator still in progress, wait for either a data or an error event
+	select {
+	case log := <-it.logs:
+		it.Event = new(PerpsMarketKeeperCostNodeIdUpdated)
+		if err := it.contract.UnpackLog(it.Event, it.event, log); err != nil {
+			it.fail = err
+			return false
+		}
+		it.Event.Raw = log
+		return true
+
+	case err := <-it.sub.Err():
+		it.done = true
+		it.fail = err
+		return it.Next()
+	}
+}
+
+// Error returns any retrieval or parsing error occurred during filtering.
+func (it *PerpsMarketKeeperCostNodeIdUpdatedIterator) Error() error {
+	return it.fail
+}
+
+// Close terminates the iteration process, releasing any pending underlying
+// resources.
+func (it *PerpsMarketKeeperCostNodeIdUpdatedIterator) Close() error {
+	it.sub.Unsubscribe()
+	return nil
+}
+
+// PerpsMarketKeeperCostNodeIdUpdated represents a KeeperCostNodeIdUpdated event raised by the PerpsMarket contract.
+type PerpsMarketKeeperCostNodeIdUpdated struct {
+	KeeperCostNodeId [32]byte
+	Raw              types.Log // Blockchain specific contextual infos
+}
+
+// FilterKeeperCostNodeIdUpdated is a free log retrieval operation binding the contract event 0x60cb06323d52fe6ab34750c42db77ba8dd1e013bb393edb9e1c88a88dee500a7.
+//
+// Solidity: event KeeperCostNodeIdUpdated(bytes32 keeperCostNodeId)
+func (_PerpsMarket *PerpsMarketFilterer) FilterKeeperCostNodeIdUpdated(opts *bind.FilterOpts) (*PerpsMarketKeeperCostNodeIdUpdatedIterator, error) {
+
+	logs, sub, err := _PerpsMarket.contract.FilterLogs(opts, "KeeperCostNodeIdUpdated")
+	if err != nil {
+		return nil, err
+	}
+	return &PerpsMarketKeeperCostNodeIdUpdatedIterator{contract: _PerpsMarket.contract, event: "KeeperCostNodeIdUpdated", logs: logs, sub: sub}, nil
+}
+
+// WatchKeeperCostNodeIdUpdated is a free log subscription operation binding the contract event 0x60cb06323d52fe6ab34750c42db77ba8dd1e013bb393edb9e1c88a88dee500a7.
+//
+// Solidity: event KeeperCostNodeIdUpdated(bytes32 keeperCostNodeId)
+func (_PerpsMarket *PerpsMarketFilterer) WatchKeeperCostNodeIdUpdated(opts *bind.WatchOpts, sink chan<- *PerpsMarketKeeperCostNodeIdUpdated) (event.Subscription, error) {
+
+	logs, sub, err := _PerpsMarket.contract.WatchLogs(opts, "KeeperCostNodeIdUpdated")
+	if err != nil {
+		return nil, err
+	}
+	return event.NewSubscription(func(quit <-chan struct{}) error {
+		defer sub.Unsubscribe()
+		for {
+			select {
+			case log := <-logs:
+				// New log arrived, parse the event and forward to the user
+				event := new(PerpsMarketKeeperCostNodeIdUpdated)
+				if err := _PerpsMarket.contract.UnpackLog(event, "KeeperCostNodeIdUpdated", log); err != nil {
+					return err
+				}
+				event.Raw = log
+
+				select {
+				case sink <- event:
+				case err := <-sub.Err():
+					return err
+				case <-quit:
+					return nil
+				}
+			case err := <-sub.Err():
+				return err
+			case <-quit:
+				return nil
+			}
+		}
+	}), nil
+}
+
+// ParseKeeperCostNodeIdUpdated is a log parse operation binding the contract event 0x60cb06323d52fe6ab34750c42db77ba8dd1e013bb393edb9e1c88a88dee500a7.
+//
+// Solidity: event KeeperCostNodeIdUpdated(bytes32 keeperCostNodeId)
+func (_PerpsMarket *PerpsMarketFilterer) ParseKeeperCostNodeIdUpdated(log types.Log) (*PerpsMarketKeeperCostNodeIdUpdated, error) {
+	event := new(PerpsMarketKeeperCostNodeIdUpdated)
+	if err := _PerpsMarket.contract.UnpackLog(event, "KeeperCostNodeIdUpdated", log); err != nil {
+		return nil, err
+	}
+	event.Raw = log
+	return event, nil
+}
+
+// PerpsMarketKeeperRewardGuardsSetIterator is returned from FilterKeeperRewardGuardsSet and is used to iterate over the raw logs and unpacked data for KeeperRewardGuardsSet events raised by the PerpsMarket contract.
+type PerpsMarketKeeperRewardGuardsSetIterator struct {
+	Event *PerpsMarketKeeperRewardGuardsSet // Event containing the contract specifics and raw log
+
+	contract *bind.BoundContract // Generic contract to use for unpacking event data
+	event    string              // Event name to use for unpacking event data
+
+	logs chan types.Log        // Log channel receiving the found contract events
+	sub  ethereum.Subscription // Subscription for errors, completion and termination
+	done bool                  // Whether the subscription completed delivering logs
+	fail error                 // Occurred error to stop iteration
+}
+
+// Next advances the iterator to the subsequent event, returning whether there
+// are any more events found. In case of a retrieval or parsing error, false is
+// returned and Error() can be queried for the exact failure.
+func (it *PerpsMarketKeeperRewardGuardsSetIterator) Next() bool {
+	// If the iterator failed, stop iterating
+	if it.fail != nil {
+		return false
+	}
+	// If the iterator completed, deliver directly whatever's available
+	if it.done {
+		select {
+		case log := <-it.logs:
+			it.Event = new(PerpsMarketKeeperRewardGuardsSet)
+			if err := it.contract.UnpackLog(it.Event, it.event, log); err != nil {
+				it.fail = err
+				return false
+			}
+			it.Event.Raw = log
+			return true
+
+		default:
+			return false
+		}
+	}
+	// Iterator still in progress, wait for either a data or an error event
+	select {
+	case log := <-it.logs:
+		it.Event = new(PerpsMarketKeeperRewardGuardsSet)
+		if err := it.contract.UnpackLog(it.Event, it.event, log); err != nil {
+			it.fail = err
+			return false
+		}
+		it.Event.Raw = log
+		return true
+
+	case err := <-it.sub.Err():
+		it.done = true
+		it.fail = err
+		return it.Next()
+	}
+}
+
+// Error returns any retrieval or parsing error occurred during filtering.
+func (it *PerpsMarketKeeperRewardGuardsSetIterator) Error() error {
+	return it.fail
+}
+
+// Close terminates the iteration process, releasing any pending underlying
+// resources.
+func (it *PerpsMarketKeeperRewardGuardsSetIterator) Close() error {
+	it.sub.Unsubscribe()
+	return nil
+}
+
+// PerpsMarketKeeperRewardGuardsSet represents a KeeperRewardGuardsSet event raised by the PerpsMarket contract.
+type PerpsMarketKeeperRewardGuardsSet struct {
+	MinKeeperRewardUsd       *big.Int
+	MinKeeperProfitRatioD18  *big.Int
+	MaxKeeperRewardUsd       *big.Int
+	MaxKeeperScalingRatioD18 *big.Int
+	Raw                      types.Log // Blockchain specific contextual infos
+}
+
+// FilterKeeperRewardGuardsSet is a free log retrieval operation binding the contract event 0xdc784d5448d4b3c13f36956adb978d1e276f2e0c8d37e78c262b5be7641d8b54.
+//
+// Solidity: event KeeperRewardGuardsSet(uint256 minKeeperRewardUsd, uint256 minKeeperProfitRatioD18, uint256 maxKeeperRewardUsd, uint256 maxKeeperScalingRatioD18)
+func (_PerpsMarket *PerpsMarketFilterer) FilterKeeperRewardGuardsSet(opts *bind.FilterOpts) (*PerpsMarketKeeperRewardGuardsSetIterator, error) {
+
+	logs, sub, err := _PerpsMarket.contract.FilterLogs(opts, "KeeperRewardGuardsSet")
+	if err != nil {
+		return nil, err
+	}
+	return &PerpsMarketKeeperRewardGuardsSetIterator{contract: _PerpsMarket.contract, event: "KeeperRewardGuardsSet", logs: logs, sub: sub}, nil
+}
+
+// WatchKeeperRewardGuardsSet is a free log subscription operation binding the contract event 0xdc784d5448d4b3c13f36956adb978d1e276f2e0c8d37e78c262b5be7641d8b54.
+//
+// Solidity: event KeeperRewardGuardsSet(uint256 minKeeperRewardUsd, uint256 minKeeperProfitRatioD18, uint256 maxKeeperRewardUsd, uint256 maxKeeperScalingRatioD18)
+func (_PerpsMarket *PerpsMarketFilterer) WatchKeeperRewardGuardsSet(opts *bind.WatchOpts, sink chan<- *PerpsMarketKeeperRewardGuardsSet) (event.Subscription, error) {
+
+	logs, sub, err := _PerpsMarket.contract.WatchLogs(opts, "KeeperRewardGuardsSet")
+	if err != nil {
+		return nil, err
+	}
+	return event.NewSubscription(func(quit <-chan struct{}) error {
+		defer sub.Unsubscribe()
+		for {
+			select {
+			case log := <-logs:
+				// New log arrived, parse the event and forward to the user
+				event := new(PerpsMarketKeeperRewardGuardsSet)
+				if err := _PerpsMarket.contract.UnpackLog(event, "KeeperRewardGuardsSet", log); err != nil {
+					return err
+				}
+				event.Raw = log
+
+				select {
+				case sink <- event:
+				case err := <-sub.Err():
+					return err
+				case <-quit:
+					return nil
+				}
+			case err := <-sub.Err():
+				return err
+			case <-quit:
+				return nil
+			}
+		}
+	}), nil
+}
+
+// ParseKeeperRewardGuardsSet is a log parse operation binding the contract event 0xdc784d5448d4b3c13f36956adb978d1e276f2e0c8d37e78c262b5be7641d8b54.
+//
+// Solidity: event KeeperRewardGuardsSet(uint256 minKeeperRewardUsd, uint256 minKeeperProfitRatioD18, uint256 maxKeeperRewardUsd, uint256 maxKeeperScalingRatioD18)
+func (_PerpsMarket *PerpsMarketFilterer) ParseKeeperRewardGuardsSet(log types.Log) (*PerpsMarketKeeperRewardGuardsSet, error) {
+	event := new(PerpsMarketKeeperRewardGuardsSet)
+	if err := _PerpsMarket.contract.UnpackLog(event, "KeeperRewardGuardsSet", log); err != nil {
+		return nil, err
+	}
+	event.Raw = log
+	return event, nil
+}
+
 // PerpsMarketLiquidationParametersSetIterator is returned from FilterLiquidationParametersSet and is used to iterate over the raw logs and unpacked data for LiquidationParametersSet events raised by the PerpsMarket contract.
 type PerpsMarketLiquidationParametersSetIterator struct {
 	Event *PerpsMarketLiquidationParametersSet // Event containing the contract specifics and raw log
@@ -4959,14 +5697,14 @@ type PerpsMarketLiquidationParametersSet struct {
 	InitialMarginRatioD18        *big.Int
 	MaintenanceMarginRatioD18    *big.Int
 	MinimumInitialMarginRatioD18 *big.Int
-	LiquidationRewardRatioD18    *big.Int
+	FlagRewardRatioD18           *big.Int
 	MinimumPositionMargin        *big.Int
 	Raw                          types.Log // Blockchain specific contextual infos
 }
 
 // FilterLiquidationParametersSet is a free log retrieval operation binding the contract event 0xa0c87f048ec4f5924e50d554aa4a6e65a935f133a2114e5222590c1690e1a7b8.
 //
-// Solidity: event LiquidationParametersSet(uint128 indexed marketId, uint256 initialMarginRatioD18, uint256 maintenanceMarginRatioD18, uint256 minimumInitialMarginRatioD18, uint256 liquidationRewardRatioD18, uint256 minimumPositionMargin)
+// Solidity: event LiquidationParametersSet(uint128 indexed marketId, uint256 initialMarginRatioD18, uint256 maintenanceMarginRatioD18, uint256 minimumInitialMarginRatioD18, uint256 flagRewardRatioD18, uint256 minimumPositionMargin)
 func (_PerpsMarket *PerpsMarketFilterer) FilterLiquidationParametersSet(opts *bind.FilterOpts, marketId []*big.Int) (*PerpsMarketLiquidationParametersSetIterator, error) {
 
 	var marketIdRule []interface{}
@@ -4983,7 +5721,7 @@ func (_PerpsMarket *PerpsMarketFilterer) FilterLiquidationParametersSet(opts *bi
 
 // WatchLiquidationParametersSet is a free log subscription operation binding the contract event 0xa0c87f048ec4f5924e50d554aa4a6e65a935f133a2114e5222590c1690e1a7b8.
 //
-// Solidity: event LiquidationParametersSet(uint128 indexed marketId, uint256 initialMarginRatioD18, uint256 maintenanceMarginRatioD18, uint256 minimumInitialMarginRatioD18, uint256 liquidationRewardRatioD18, uint256 minimumPositionMargin)
+// Solidity: event LiquidationParametersSet(uint128 indexed marketId, uint256 initialMarginRatioD18, uint256 maintenanceMarginRatioD18, uint256 minimumInitialMarginRatioD18, uint256 flagRewardRatioD18, uint256 minimumPositionMargin)
 func (_PerpsMarket *PerpsMarketFilterer) WatchLiquidationParametersSet(opts *bind.WatchOpts, sink chan<- *PerpsMarketLiquidationParametersSet, marketId []*big.Int) (event.Subscription, error) {
 
 	var marketIdRule []interface{}
@@ -5025,163 +5763,10 @@ func (_PerpsMarket *PerpsMarketFilterer) WatchLiquidationParametersSet(opts *bin
 
 // ParseLiquidationParametersSet is a log parse operation binding the contract event 0xa0c87f048ec4f5924e50d554aa4a6e65a935f133a2114e5222590c1690e1a7b8.
 //
-// Solidity: event LiquidationParametersSet(uint128 indexed marketId, uint256 initialMarginRatioD18, uint256 maintenanceMarginRatioD18, uint256 minimumInitialMarginRatioD18, uint256 liquidationRewardRatioD18, uint256 minimumPositionMargin)
+// Solidity: event LiquidationParametersSet(uint128 indexed marketId, uint256 initialMarginRatioD18, uint256 maintenanceMarginRatioD18, uint256 minimumInitialMarginRatioD18, uint256 flagRewardRatioD18, uint256 minimumPositionMargin)
 func (_PerpsMarket *PerpsMarketFilterer) ParseLiquidationParametersSet(log types.Log) (*PerpsMarketLiquidationParametersSet, error) {
 	event := new(PerpsMarketLiquidationParametersSet)
 	if err := _PerpsMarket.contract.UnpackLog(event, "LiquidationParametersSet", log); err != nil {
-		return nil, err
-	}
-	event.Raw = log
-	return event, nil
-}
-
-// PerpsMarketLiquidationRewardGuardsSetIterator is returned from FilterLiquidationRewardGuardsSet and is used to iterate over the raw logs and unpacked data for LiquidationRewardGuardsSet events raised by the PerpsMarket contract.
-type PerpsMarketLiquidationRewardGuardsSetIterator struct {
-	Event *PerpsMarketLiquidationRewardGuardsSet // Event containing the contract specifics and raw log
-
-	contract *bind.BoundContract // Generic contract to use for unpacking event data
-	event    string              // Event name to use for unpacking event data
-
-	logs chan types.Log        // Log channel receiving the found contract events
-	sub  ethereum.Subscription // Subscription for errors, completion and termination
-	done bool                  // Whether the subscription completed delivering logs
-	fail error                 // Occurred error to stop iteration
-}
-
-// Next advances the iterator to the subsequent event, returning whether there
-// are any more events found. In case of a retrieval or parsing error, false is
-// returned and Error() can be queried for the exact failure.
-func (it *PerpsMarketLiquidationRewardGuardsSetIterator) Next() bool {
-	// If the iterator failed, stop iterating
-	if it.fail != nil {
-		return false
-	}
-	// If the iterator completed, deliver directly whatever's available
-	if it.done {
-		select {
-		case log := <-it.logs:
-			it.Event = new(PerpsMarketLiquidationRewardGuardsSet)
-			if err := it.contract.UnpackLog(it.Event, it.event, log); err != nil {
-				it.fail = err
-				return false
-			}
-			it.Event.Raw = log
-			return true
-
-		default:
-			return false
-		}
-	}
-	// Iterator still in progress, wait for either a data or an error event
-	select {
-	case log := <-it.logs:
-		it.Event = new(PerpsMarketLiquidationRewardGuardsSet)
-		if err := it.contract.UnpackLog(it.Event, it.event, log); err != nil {
-			it.fail = err
-			return false
-		}
-		it.Event.Raw = log
-		return true
-
-	case err := <-it.sub.Err():
-		it.done = true
-		it.fail = err
-		return it.Next()
-	}
-}
-
-// Error returns any retrieval or parsing error occurred during filtering.
-func (it *PerpsMarketLiquidationRewardGuardsSetIterator) Error() error {
-	return it.fail
-}
-
-// Close terminates the iteration process, releasing any pending underlying
-// resources.
-func (it *PerpsMarketLiquidationRewardGuardsSetIterator) Close() error {
-	it.sub.Unsubscribe()
-	return nil
-}
-
-// PerpsMarketLiquidationRewardGuardsSet represents a LiquidationRewardGuardsSet event raised by the PerpsMarket contract.
-type PerpsMarketLiquidationRewardGuardsSet struct {
-	MinLiquidationRewardUsd *big.Int
-	MaxLiquidationRewardUsd *big.Int
-	Raw                     types.Log // Blockchain specific contextual infos
-}
-
-// FilterLiquidationRewardGuardsSet is a free log retrieval operation binding the contract event 0xbb7f8eb17b00549c0f234a3c363ef3eb39329f98b52048416480cf62d0f0e1f5.
-//
-// Solidity: event LiquidationRewardGuardsSet(uint256 indexed minLiquidationRewardUsd, uint256 indexed maxLiquidationRewardUsd)
-func (_PerpsMarket *PerpsMarketFilterer) FilterLiquidationRewardGuardsSet(opts *bind.FilterOpts, minLiquidationRewardUsd []*big.Int, maxLiquidationRewardUsd []*big.Int) (*PerpsMarketLiquidationRewardGuardsSetIterator, error) {
-
-	var minLiquidationRewardUsdRule []interface{}
-	for _, minLiquidationRewardUsdItem := range minLiquidationRewardUsd {
-		minLiquidationRewardUsdRule = append(minLiquidationRewardUsdRule, minLiquidationRewardUsdItem)
-	}
-	var maxLiquidationRewardUsdRule []interface{}
-	for _, maxLiquidationRewardUsdItem := range maxLiquidationRewardUsd {
-		maxLiquidationRewardUsdRule = append(maxLiquidationRewardUsdRule, maxLiquidationRewardUsdItem)
-	}
-
-	logs, sub, err := _PerpsMarket.contract.FilterLogs(opts, "LiquidationRewardGuardsSet", minLiquidationRewardUsdRule, maxLiquidationRewardUsdRule)
-	if err != nil {
-		return nil, err
-	}
-	return &PerpsMarketLiquidationRewardGuardsSetIterator{contract: _PerpsMarket.contract, event: "LiquidationRewardGuardsSet", logs: logs, sub: sub}, nil
-}
-
-// WatchLiquidationRewardGuardsSet is a free log subscription operation binding the contract event 0xbb7f8eb17b00549c0f234a3c363ef3eb39329f98b52048416480cf62d0f0e1f5.
-//
-// Solidity: event LiquidationRewardGuardsSet(uint256 indexed minLiquidationRewardUsd, uint256 indexed maxLiquidationRewardUsd)
-func (_PerpsMarket *PerpsMarketFilterer) WatchLiquidationRewardGuardsSet(opts *bind.WatchOpts, sink chan<- *PerpsMarketLiquidationRewardGuardsSet, minLiquidationRewardUsd []*big.Int, maxLiquidationRewardUsd []*big.Int) (event.Subscription, error) {
-
-	var minLiquidationRewardUsdRule []interface{}
-	for _, minLiquidationRewardUsdItem := range minLiquidationRewardUsd {
-		minLiquidationRewardUsdRule = append(minLiquidationRewardUsdRule, minLiquidationRewardUsdItem)
-	}
-	var maxLiquidationRewardUsdRule []interface{}
-	for _, maxLiquidationRewardUsdItem := range maxLiquidationRewardUsd {
-		maxLiquidationRewardUsdRule = append(maxLiquidationRewardUsdRule, maxLiquidationRewardUsdItem)
-	}
-
-	logs, sub, err := _PerpsMarket.contract.WatchLogs(opts, "LiquidationRewardGuardsSet", minLiquidationRewardUsdRule, maxLiquidationRewardUsdRule)
-	if err != nil {
-		return nil, err
-	}
-	return event.NewSubscription(func(quit <-chan struct{}) error {
-		defer sub.Unsubscribe()
-		for {
-			select {
-			case log := <-logs:
-				// New log arrived, parse the event and forward to the user
-				event := new(PerpsMarketLiquidationRewardGuardsSet)
-				if err := _PerpsMarket.contract.UnpackLog(event, "LiquidationRewardGuardsSet", log); err != nil {
-					return err
-				}
-				event.Raw = log
-
-				select {
-				case sink <- event:
-				case err := <-sub.Err():
-					return err
-				case <-quit:
-					return nil
-				}
-			case err := <-sub.Err():
-				return err
-			case <-quit:
-				return nil
-			}
-		}
-	}), nil
-}
-
-// ParseLiquidationRewardGuardsSet is a log parse operation binding the contract event 0xbb7f8eb17b00549c0f234a3c363ef3eb39329f98b52048416480cf62d0f0e1f5.
-//
-// Solidity: event LiquidationRewardGuardsSet(uint256 indexed minLiquidationRewardUsd, uint256 indexed maxLiquidationRewardUsd)
-func (_PerpsMarket *PerpsMarketFilterer) ParseLiquidationRewardGuardsSet(log types.Log) (*PerpsMarketLiquidationRewardGuardsSet, error) {
-	event := new(PerpsMarketLiquidationRewardGuardsSet)
-	if err := _PerpsMarket.contract.UnpackLog(event, "LiquidationRewardGuardsSet", log); err != nil {
 		return nil, err
 	}
 	event.Raw = log
@@ -5548,14 +6133,15 @@ func (it *PerpsMarketMarketPriceDataUpdatedIterator) Close() error {
 
 // PerpsMarketMarketPriceDataUpdated represents a MarketPriceDataUpdated event raised by the PerpsMarket contract.
 type PerpsMarketMarketPriceDataUpdated struct {
-	MarketId *big.Int
-	FeedId   [32]byte
-	Raw      types.Log // Blockchain specific contextual infos
+	MarketId                 *big.Int
+	FeedId                   [32]byte
+	StrictStalenessTolerance *big.Int
+	Raw                      types.Log // Blockchain specific contextual infos
 }
 
-// FilterMarketPriceDataUpdated is a free log retrieval operation binding the contract event 0xd5ec22bbdbde803d8585a5aa89d991c67dc62c6a7bc3c4fa000b4e263b6783a0.
+// FilterMarketPriceDataUpdated is a free log retrieval operation binding the contract event 0x6cf30df68198cadbabcf0342baee973e970617ec00e3cd564a8dc130b0d82dac.
 //
-// Solidity: event MarketPriceDataUpdated(uint128 indexed marketId, bytes32 feedId)
+// Solidity: event MarketPriceDataUpdated(uint128 indexed marketId, bytes32 feedId, uint256 strictStalenessTolerance)
 func (_PerpsMarket *PerpsMarketFilterer) FilterMarketPriceDataUpdated(opts *bind.FilterOpts, marketId []*big.Int) (*PerpsMarketMarketPriceDataUpdatedIterator, error) {
 
 	var marketIdRule []interface{}
@@ -5570,9 +6156,9 @@ func (_PerpsMarket *PerpsMarketFilterer) FilterMarketPriceDataUpdated(opts *bind
 	return &PerpsMarketMarketPriceDataUpdatedIterator{contract: _PerpsMarket.contract, event: "MarketPriceDataUpdated", logs: logs, sub: sub}, nil
 }
 
-// WatchMarketPriceDataUpdated is a free log subscription operation binding the contract event 0xd5ec22bbdbde803d8585a5aa89d991c67dc62c6a7bc3c4fa000b4e263b6783a0.
+// WatchMarketPriceDataUpdated is a free log subscription operation binding the contract event 0x6cf30df68198cadbabcf0342baee973e970617ec00e3cd564a8dc130b0d82dac.
 //
-// Solidity: event MarketPriceDataUpdated(uint128 indexed marketId, bytes32 feedId)
+// Solidity: event MarketPriceDataUpdated(uint128 indexed marketId, bytes32 feedId, uint256 strictStalenessTolerance)
 func (_PerpsMarket *PerpsMarketFilterer) WatchMarketPriceDataUpdated(opts *bind.WatchOpts, sink chan<- *PerpsMarketMarketPriceDataUpdated, marketId []*big.Int) (event.Subscription, error) {
 
 	var marketIdRule []interface{}
@@ -5612,9 +6198,9 @@ func (_PerpsMarket *PerpsMarketFilterer) WatchMarketPriceDataUpdated(opts *bind.
 	}), nil
 }
 
-// ParseMarketPriceDataUpdated is a log parse operation binding the contract event 0xd5ec22bbdbde803d8585a5aa89d991c67dc62c6a7bc3c4fa000b4e263b6783a0.
+// ParseMarketPriceDataUpdated is a log parse operation binding the contract event 0x6cf30df68198cadbabcf0342baee973e970617ec00e3cd564a8dc130b0d82dac.
 //
-// Solidity: event MarketPriceDataUpdated(uint128 indexed marketId, bytes32 feedId)
+// Solidity: event MarketPriceDataUpdated(uint128 indexed marketId, bytes32 feedId, uint256 strictStalenessTolerance)
 func (_PerpsMarket *PerpsMarketFilterer) ParseMarketPriceDataUpdated(log types.Log) (*PerpsMarketMarketPriceDataUpdated, error) {
 	event := new(PerpsMarketMarketPriceDataUpdated)
 	if err := _PerpsMarket.contract.UnpackLog(event, "MarketPriceDataUpdated", log); err != nil {
@@ -5758,151 +6344,6 @@ func (_PerpsMarket *PerpsMarketFilterer) WatchMarketUpdated(opts *bind.WatchOpts
 func (_PerpsMarket *PerpsMarketFilterer) ParseMarketUpdated(log types.Log) (*PerpsMarketMarketUpdated, error) {
 	event := new(PerpsMarketMarketUpdated)
 	if err := _PerpsMarket.contract.UnpackLog(event, "MarketUpdated", log); err != nil {
-		return nil, err
-	}
-	event.Raw = log
-	return event, nil
-}
-
-// PerpsMarketMaxCollateralAmountSetIterator is returned from FilterMaxCollateralAmountSet and is used to iterate over the raw logs and unpacked data for MaxCollateralAmountSet events raised by the PerpsMarket contract.
-type PerpsMarketMaxCollateralAmountSetIterator struct {
-	Event *PerpsMarketMaxCollateralAmountSet // Event containing the contract specifics and raw log
-
-	contract *bind.BoundContract // Generic contract to use for unpacking event data
-	event    string              // Event name to use for unpacking event data
-
-	logs chan types.Log        // Log channel receiving the found contract events
-	sub  ethereum.Subscription // Subscription for errors, completion and termination
-	done bool                  // Whether the subscription completed delivering logs
-	fail error                 // Occurred error to stop iteration
-}
-
-// Next advances the iterator to the subsequent event, returning whether there
-// are any more events found. In case of a retrieval or parsing error, false is
-// returned and Error() can be queried for the exact failure.
-func (it *PerpsMarketMaxCollateralAmountSetIterator) Next() bool {
-	// If the iterator failed, stop iterating
-	if it.fail != nil {
-		return false
-	}
-	// If the iterator completed, deliver directly whatever's available
-	if it.done {
-		select {
-		case log := <-it.logs:
-			it.Event = new(PerpsMarketMaxCollateralAmountSet)
-			if err := it.contract.UnpackLog(it.Event, it.event, log); err != nil {
-				it.fail = err
-				return false
-			}
-			it.Event.Raw = log
-			return true
-
-		default:
-			return false
-		}
-	}
-	// Iterator still in progress, wait for either a data or an error event
-	select {
-	case log := <-it.logs:
-		it.Event = new(PerpsMarketMaxCollateralAmountSet)
-		if err := it.contract.UnpackLog(it.Event, it.event, log); err != nil {
-			it.fail = err
-			return false
-		}
-		it.Event.Raw = log
-		return true
-
-	case err := <-it.sub.Err():
-		it.done = true
-		it.fail = err
-		return it.Next()
-	}
-}
-
-// Error returns any retrieval or parsing error occurred during filtering.
-func (it *PerpsMarketMaxCollateralAmountSetIterator) Error() error {
-	return it.fail
-}
-
-// Close terminates the iteration process, releasing any pending underlying
-// resources.
-func (it *PerpsMarketMaxCollateralAmountSetIterator) Close() error {
-	it.sub.Unsubscribe()
-	return nil
-}
-
-// PerpsMarketMaxCollateralAmountSet represents a MaxCollateralAmountSet event raised by the PerpsMarket contract.
-type PerpsMarketMaxCollateralAmountSet struct {
-	SynthMarketId    *big.Int
-	CollateralAmount *big.Int
-	Raw              types.Log // Blockchain specific contextual infos
-}
-
-// FilterMaxCollateralAmountSet is a free log retrieval operation binding the contract event 0xa552ba0f2552ec13b62b479a41e6e7dfcef9f10aea18527e5a3e1b3963bf70d7.
-//
-// Solidity: event MaxCollateralAmountSet(uint128 indexed synthMarketId, uint256 collateralAmount)
-func (_PerpsMarket *PerpsMarketFilterer) FilterMaxCollateralAmountSet(opts *bind.FilterOpts, synthMarketId []*big.Int) (*PerpsMarketMaxCollateralAmountSetIterator, error) {
-
-	var synthMarketIdRule []interface{}
-	for _, synthMarketIdItem := range synthMarketId {
-		synthMarketIdRule = append(synthMarketIdRule, synthMarketIdItem)
-	}
-
-	logs, sub, err := _PerpsMarket.contract.FilterLogs(opts, "MaxCollateralAmountSet", synthMarketIdRule)
-	if err != nil {
-		return nil, err
-	}
-	return &PerpsMarketMaxCollateralAmountSetIterator{contract: _PerpsMarket.contract, event: "MaxCollateralAmountSet", logs: logs, sub: sub}, nil
-}
-
-// WatchMaxCollateralAmountSet is a free log subscription operation binding the contract event 0xa552ba0f2552ec13b62b479a41e6e7dfcef9f10aea18527e5a3e1b3963bf70d7.
-//
-// Solidity: event MaxCollateralAmountSet(uint128 indexed synthMarketId, uint256 collateralAmount)
-func (_PerpsMarket *PerpsMarketFilterer) WatchMaxCollateralAmountSet(opts *bind.WatchOpts, sink chan<- *PerpsMarketMaxCollateralAmountSet, synthMarketId []*big.Int) (event.Subscription, error) {
-
-	var synthMarketIdRule []interface{}
-	for _, synthMarketIdItem := range synthMarketId {
-		synthMarketIdRule = append(synthMarketIdRule, synthMarketIdItem)
-	}
-
-	logs, sub, err := _PerpsMarket.contract.WatchLogs(opts, "MaxCollateralAmountSet", synthMarketIdRule)
-	if err != nil {
-		return nil, err
-	}
-	return event.NewSubscription(func(quit <-chan struct{}) error {
-		defer sub.Unsubscribe()
-		for {
-			select {
-			case log := <-logs:
-				// New log arrived, parse the event and forward to the user
-				event := new(PerpsMarketMaxCollateralAmountSet)
-				if err := _PerpsMarket.contract.UnpackLog(event, "MaxCollateralAmountSet", log); err != nil {
-					return err
-				}
-				event.Raw = log
-
-				select {
-				case sink <- event:
-				case err := <-sub.Err():
-					return err
-				case <-quit:
-					return nil
-				}
-			case err := <-sub.Err():
-				return err
-			case <-quit:
-				return nil
-			}
-		}
-	}), nil
-}
-
-// ParseMaxCollateralAmountSet is a log parse operation binding the contract event 0xa552ba0f2552ec13b62b479a41e6e7dfcef9f10aea18527e5a3e1b3963bf70d7.
-//
-// Solidity: event MaxCollateralAmountSet(uint128 indexed synthMarketId, uint256 collateralAmount)
-func (_PerpsMarket *PerpsMarketFilterer) ParseMaxCollateralAmountSet(log types.Log) (*PerpsMarketMaxCollateralAmountSet, error) {
-	event := new(PerpsMarketMaxCollateralAmountSet)
-	if err := _PerpsMarket.contract.UnpackLog(event, "MaxCollateralAmountSet", log); err != nil {
 		return nil, err
 	}
 	event.Raw = log
@@ -6202,6 +6643,175 @@ func (_PerpsMarket *PerpsMarketFilterer) ParseMaxMarketSizeSet(log types.Log) (*
 	return event, nil
 }
 
+// PerpsMarketOrderCancelledIterator is returned from FilterOrderCancelled and is used to iterate over the raw logs and unpacked data for OrderCancelled events raised by the PerpsMarket contract.
+type PerpsMarketOrderCancelledIterator struct {
+	Event *PerpsMarketOrderCancelled // Event containing the contract specifics and raw log
+
+	contract *bind.BoundContract // Generic contract to use for unpacking event data
+	event    string              // Event name to use for unpacking event data
+
+	logs chan types.Log        // Log channel receiving the found contract events
+	sub  ethereum.Subscription // Subscription for errors, completion and termination
+	done bool                  // Whether the subscription completed delivering logs
+	fail error                 // Occurred error to stop iteration
+}
+
+// Next advances the iterator to the subsequent event, returning whether there
+// are any more events found. In case of a retrieval or parsing error, false is
+// returned and Error() can be queried for the exact failure.
+func (it *PerpsMarketOrderCancelledIterator) Next() bool {
+	// If the iterator failed, stop iterating
+	if it.fail != nil {
+		return false
+	}
+	// If the iterator completed, deliver directly whatever's available
+	if it.done {
+		select {
+		case log := <-it.logs:
+			it.Event = new(PerpsMarketOrderCancelled)
+			if err := it.contract.UnpackLog(it.Event, it.event, log); err != nil {
+				it.fail = err
+				return false
+			}
+			it.Event.Raw = log
+			return true
+
+		default:
+			return false
+		}
+	}
+	// Iterator still in progress, wait for either a data or an error event
+	select {
+	case log := <-it.logs:
+		it.Event = new(PerpsMarketOrderCancelled)
+		if err := it.contract.UnpackLog(it.Event, it.event, log); err != nil {
+			it.fail = err
+			return false
+		}
+		it.Event.Raw = log
+		return true
+
+	case err := <-it.sub.Err():
+		it.done = true
+		it.fail = err
+		return it.Next()
+	}
+}
+
+// Error returns any retrieval or parsing error occurred during filtering.
+func (it *PerpsMarketOrderCancelledIterator) Error() error {
+	return it.fail
+}
+
+// Close terminates the iteration process, releasing any pending underlying
+// resources.
+func (it *PerpsMarketOrderCancelledIterator) Close() error {
+	it.sub.Unsubscribe()
+	return nil
+}
+
+// PerpsMarketOrderCancelled represents a OrderCancelled event raised by the PerpsMarket contract.
+type PerpsMarketOrderCancelled struct {
+	MarketId         *big.Int
+	AccountId        *big.Int
+	DesiredPrice     *big.Int
+	FillPrice        *big.Int
+	SizeDelta        *big.Int
+	SettlementReward *big.Int
+	TrackingCode     [32]byte
+	Settler          common.Address
+	Raw              types.Log // Blockchain specific contextual infos
+}
+
+// FilterOrderCancelled is a free log retrieval operation binding the contract event 0x7415070016cafa6a064ae5b74d75f9968c033ce38621b3dc6d8e7a3b1e64e3ed.
+//
+// Solidity: event OrderCancelled(uint128 indexed marketId, uint128 indexed accountId, uint256 desiredPrice, uint256 fillPrice, int128 sizeDelta, uint256 settlementReward, bytes32 indexed trackingCode, address settler)
+func (_PerpsMarket *PerpsMarketFilterer) FilterOrderCancelled(opts *bind.FilterOpts, marketId []*big.Int, accountId []*big.Int, trackingCode [][32]byte) (*PerpsMarketOrderCancelledIterator, error) {
+
+	var marketIdRule []interface{}
+	for _, marketIdItem := range marketId {
+		marketIdRule = append(marketIdRule, marketIdItem)
+	}
+	var accountIdRule []interface{}
+	for _, accountIdItem := range accountId {
+		accountIdRule = append(accountIdRule, accountIdItem)
+	}
+
+	var trackingCodeRule []interface{}
+	for _, trackingCodeItem := range trackingCode {
+		trackingCodeRule = append(trackingCodeRule, trackingCodeItem)
+	}
+
+	logs, sub, err := _PerpsMarket.contract.FilterLogs(opts, "OrderCancelled", marketIdRule, accountIdRule, trackingCodeRule)
+	if err != nil {
+		return nil, err
+	}
+	return &PerpsMarketOrderCancelledIterator{contract: _PerpsMarket.contract, event: "OrderCancelled", logs: logs, sub: sub}, nil
+}
+
+// WatchOrderCancelled is a free log subscription operation binding the contract event 0x7415070016cafa6a064ae5b74d75f9968c033ce38621b3dc6d8e7a3b1e64e3ed.
+//
+// Solidity: event OrderCancelled(uint128 indexed marketId, uint128 indexed accountId, uint256 desiredPrice, uint256 fillPrice, int128 sizeDelta, uint256 settlementReward, bytes32 indexed trackingCode, address settler)
+func (_PerpsMarket *PerpsMarketFilterer) WatchOrderCancelled(opts *bind.WatchOpts, sink chan<- *PerpsMarketOrderCancelled, marketId []*big.Int, accountId []*big.Int, trackingCode [][32]byte) (event.Subscription, error) {
+
+	var marketIdRule []interface{}
+	for _, marketIdItem := range marketId {
+		marketIdRule = append(marketIdRule, marketIdItem)
+	}
+	var accountIdRule []interface{}
+	for _, accountIdItem := range accountId {
+		accountIdRule = append(accountIdRule, accountIdItem)
+	}
+
+	var trackingCodeRule []interface{}
+	for _, trackingCodeItem := range trackingCode {
+		trackingCodeRule = append(trackingCodeRule, trackingCodeItem)
+	}
+
+	logs, sub, err := _PerpsMarket.contract.WatchLogs(opts, "OrderCancelled", marketIdRule, accountIdRule, trackingCodeRule)
+	if err != nil {
+		return nil, err
+	}
+	return event.NewSubscription(func(quit <-chan struct{}) error {
+		defer sub.Unsubscribe()
+		for {
+			select {
+			case log := <-logs:
+				// New log arrived, parse the event and forward to the user
+				event := new(PerpsMarketOrderCancelled)
+				if err := _PerpsMarket.contract.UnpackLog(event, "OrderCancelled", log); err != nil {
+					return err
+				}
+				event.Raw = log
+
+				select {
+				case sink <- event:
+				case err := <-sub.Err():
+					return err
+				case <-quit:
+					return nil
+				}
+			case err := <-sub.Err():
+				return err
+			case <-quit:
+				return nil
+			}
+		}
+	}), nil
+}
+
+// ParseOrderCancelled is a log parse operation binding the contract event 0x7415070016cafa6a064ae5b74d75f9968c033ce38621b3dc6d8e7a3b1e64e3ed.
+//
+// Solidity: event OrderCancelled(uint128 indexed marketId, uint128 indexed accountId, uint256 desiredPrice, uint256 fillPrice, int128 sizeDelta, uint256 settlementReward, bytes32 indexed trackingCode, address settler)
+func (_PerpsMarket *PerpsMarketFilterer) ParseOrderCancelled(log types.Log) (*PerpsMarketOrderCancelled, error) {
+	event := new(PerpsMarketOrderCancelled)
+	if err := _PerpsMarket.contract.UnpackLog(event, "OrderCancelled", log); err != nil {
+		return nil, err
+	}
+	event.Raw = log
+	return event, nil
+}
+
 // PerpsMarketOrderCommittedIterator is returned from FilterOrderCommitted and is used to iterate over the raw logs and unpacked data for OrderCommitted events raised by the PerpsMarket contract.
 type PerpsMarketOrderCommittedIterator struct {
 	Event *PerpsMarketOrderCommitted // Event containing the contract specifics and raw log
@@ -6276,6 +6886,7 @@ type PerpsMarketOrderCommitted struct {
 	OrderType       uint8
 	SizeDelta       *big.Int
 	AcceptablePrice *big.Int
+	CommitmentTime  *big.Int
 	SettlementTime  *big.Int
 	ExpirationTime  *big.Int
 	TrackingCode    [32]byte
@@ -6283,9 +6894,9 @@ type PerpsMarketOrderCommitted struct {
 	Raw             types.Log // Blockchain specific contextual infos
 }
 
-// FilterOrderCommitted is a free log retrieval operation binding the contract event 0xc74e8cf044fc959dcef2695245eb90f7e9fb5676532a71eec5b3c513d4793709.
+// FilterOrderCommitted is a free log retrieval operation binding the contract event 0x0f367b4709dff1c8185b0f7a0c636c8b6d9556f8291a6a04589b821142c803db.
 //
-// Solidity: event OrderCommitted(uint128 indexed marketId, uint128 indexed accountId, uint8 orderType, int128 sizeDelta, uint256 acceptablePrice, uint256 settlementTime, uint256 expirationTime, bytes32 indexed trackingCode, address sender)
+// Solidity: event OrderCommitted(uint128 indexed marketId, uint128 indexed accountId, uint8 orderType, int128 sizeDelta, uint256 acceptablePrice, uint256 commitmentTime, uint256 settlementTime, uint256 expirationTime, bytes32 indexed trackingCode, address sender)
 func (_PerpsMarket *PerpsMarketFilterer) FilterOrderCommitted(opts *bind.FilterOpts, marketId []*big.Int, accountId []*big.Int, trackingCode [][32]byte) (*PerpsMarketOrderCommittedIterator, error) {
 
 	var marketIdRule []interface{}
@@ -6309,9 +6920,9 @@ func (_PerpsMarket *PerpsMarketFilterer) FilterOrderCommitted(opts *bind.FilterO
 	return &PerpsMarketOrderCommittedIterator{contract: _PerpsMarket.contract, event: "OrderCommitted", logs: logs, sub: sub}, nil
 }
 
-// WatchOrderCommitted is a free log subscription operation binding the contract event 0xc74e8cf044fc959dcef2695245eb90f7e9fb5676532a71eec5b3c513d4793709.
+// WatchOrderCommitted is a free log subscription operation binding the contract event 0x0f367b4709dff1c8185b0f7a0c636c8b6d9556f8291a6a04589b821142c803db.
 //
-// Solidity: event OrderCommitted(uint128 indexed marketId, uint128 indexed accountId, uint8 orderType, int128 sizeDelta, uint256 acceptablePrice, uint256 settlementTime, uint256 expirationTime, bytes32 indexed trackingCode, address sender)
+// Solidity: event OrderCommitted(uint128 indexed marketId, uint128 indexed accountId, uint8 orderType, int128 sizeDelta, uint256 acceptablePrice, uint256 commitmentTime, uint256 settlementTime, uint256 expirationTime, bytes32 indexed trackingCode, address sender)
 func (_PerpsMarket *PerpsMarketFilterer) WatchOrderCommitted(opts *bind.WatchOpts, sink chan<- *PerpsMarketOrderCommitted, marketId []*big.Int, accountId []*big.Int, trackingCode [][32]byte) (event.Subscription, error) {
 
 	var marketIdRule []interface{}
@@ -6360,9 +6971,9 @@ func (_PerpsMarket *PerpsMarketFilterer) WatchOrderCommitted(opts *bind.WatchOpt
 	}), nil
 }
 
-// ParseOrderCommitted is a log parse operation binding the contract event 0xc74e8cf044fc959dcef2695245eb90f7e9fb5676532a71eec5b3c513d4793709.
+// ParseOrderCommitted is a log parse operation binding the contract event 0x0f367b4709dff1c8185b0f7a0c636c8b6d9556f8291a6a04589b821142c803db.
 //
-// Solidity: event OrderCommitted(uint128 indexed marketId, uint128 indexed accountId, uint8 orderType, int128 sizeDelta, uint256 acceptablePrice, uint256 settlementTime, uint256 expirationTime, bytes32 indexed trackingCode, address sender)
+// Solidity: event OrderCommitted(uint128 indexed marketId, uint128 indexed accountId, uint8 orderType, int128 sizeDelta, uint256 acceptablePrice, uint256 commitmentTime, uint256 settlementTime, uint256 expirationTime, bytes32 indexed trackingCode, address sender)
 func (_PerpsMarket *PerpsMarketFilterer) ParseOrderCommitted(log types.Log) (*PerpsMarketOrderCommitted, error) {
 	event := new(PerpsMarketOrderCommitted)
 	if err := _PerpsMarket.contract.UnpackLog(event, "OrderCommitted", log); err != nil {
@@ -7650,14 +8261,14 @@ type PerpsMarketPreviousOrderExpired struct {
 	AccountId       *big.Int
 	SizeDelta       *big.Int
 	AcceptablePrice *big.Int
-	SettlementTime  *big.Int
+	CommitmentTime  *big.Int
 	TrackingCode    [32]byte
 	Raw             types.Log // Blockchain specific contextual infos
 }
 
 // FilterPreviousOrderExpired is a free log retrieval operation binding the contract event 0x6d83c6751813f50325d75bc054621f83299659c5814d1e5fe6ac117860710dde.
 //
-// Solidity: event PreviousOrderExpired(uint128 indexed marketId, uint128 indexed accountId, int128 sizeDelta, uint256 acceptablePrice, uint256 settlementTime, bytes32 indexed trackingCode)
+// Solidity: event PreviousOrderExpired(uint128 indexed marketId, uint128 indexed accountId, int128 sizeDelta, uint256 acceptablePrice, uint256 commitmentTime, bytes32 indexed trackingCode)
 func (_PerpsMarket *PerpsMarketFilterer) FilterPreviousOrderExpired(opts *bind.FilterOpts, marketId []*big.Int, accountId []*big.Int, trackingCode [][32]byte) (*PerpsMarketPreviousOrderExpiredIterator, error) {
 
 	var marketIdRule []interface{}
@@ -7683,7 +8294,7 @@ func (_PerpsMarket *PerpsMarketFilterer) FilterPreviousOrderExpired(opts *bind.F
 
 // WatchPreviousOrderExpired is a free log subscription operation binding the contract event 0x6d83c6751813f50325d75bc054621f83299659c5814d1e5fe6ac117860710dde.
 //
-// Solidity: event PreviousOrderExpired(uint128 indexed marketId, uint128 indexed accountId, int128 sizeDelta, uint256 acceptablePrice, uint256 settlementTime, bytes32 indexed trackingCode)
+// Solidity: event PreviousOrderExpired(uint128 indexed marketId, uint128 indexed accountId, int128 sizeDelta, uint256 acceptablePrice, uint256 commitmentTime, bytes32 indexed trackingCode)
 func (_PerpsMarket *PerpsMarketFilterer) WatchPreviousOrderExpired(opts *bind.WatchOpts, sink chan<- *PerpsMarketPreviousOrderExpired, marketId []*big.Int, accountId []*big.Int, trackingCode [][32]byte) (event.Subscription, error) {
 
 	var marketIdRule []interface{}
@@ -7734,7 +8345,7 @@ func (_PerpsMarket *PerpsMarketFilterer) WatchPreviousOrderExpired(opts *bind.Wa
 
 // ParsePreviousOrderExpired is a log parse operation binding the contract event 0x6d83c6751813f50325d75bc054621f83299659c5814d1e5fe6ac117860710dde.
 //
-// Solidity: event PreviousOrderExpired(uint128 indexed marketId, uint128 indexed accountId, int128 sizeDelta, uint256 acceptablePrice, uint256 settlementTime, bytes32 indexed trackingCode)
+// Solidity: event PreviousOrderExpired(uint128 indexed marketId, uint128 indexed accountId, int128 sizeDelta, uint256 acceptablePrice, uint256 commitmentTime, bytes32 indexed trackingCode)
 func (_PerpsMarket *PerpsMarketFilterer) ParsePreviousOrderExpired(log types.Log) (*PerpsMarketPreviousOrderExpired, error) {
 	event := new(PerpsMarketPreviousOrderExpired)
 	if err := _PerpsMarket.contract.UnpackLog(event, "PreviousOrderExpired", log); err != nil {
@@ -7954,9 +8565,9 @@ type PerpsMarketSettlementStrategyAdded struct {
 	Raw        types.Log // Blockchain specific contextual infos
 }
 
-// FilterSettlementStrategyAdded is a free log retrieval operation binding the contract event 0xba2ece29eb53e3cc8cbe3bb5e85c899c5b6a9b84edff3e0503309f22a05d48ef.
+// FilterSettlementStrategyAdded is a free log retrieval operation binding the contract event 0x7b65e958e6a1069f7675c1f0bd79bed340e152a0f946dc044b9bf4e6c2bb5493.
 //
-// Solidity: event SettlementStrategyAdded(uint128 indexed marketId, (uint8,uint256,uint256,uint256,address,bytes32,string,uint256,bool) strategy, uint256 indexed strategyId)
+// Solidity: event SettlementStrategyAdded(uint128 indexed marketId, (uint8,uint256,uint256,address,bytes32,string,uint256,bool) strategy, uint256 indexed strategyId)
 func (_PerpsMarket *PerpsMarketFilterer) FilterSettlementStrategyAdded(opts *bind.FilterOpts, marketId []*big.Int, strategyId []*big.Int) (*PerpsMarketSettlementStrategyAddedIterator, error) {
 
 	var marketIdRule []interface{}
@@ -7976,9 +8587,9 @@ func (_PerpsMarket *PerpsMarketFilterer) FilterSettlementStrategyAdded(opts *bin
 	return &PerpsMarketSettlementStrategyAddedIterator{contract: _PerpsMarket.contract, event: "SettlementStrategyAdded", logs: logs, sub: sub}, nil
 }
 
-// WatchSettlementStrategyAdded is a free log subscription operation binding the contract event 0xba2ece29eb53e3cc8cbe3bb5e85c899c5b6a9b84edff3e0503309f22a05d48ef.
+// WatchSettlementStrategyAdded is a free log subscription operation binding the contract event 0x7b65e958e6a1069f7675c1f0bd79bed340e152a0f946dc044b9bf4e6c2bb5493.
 //
-// Solidity: event SettlementStrategyAdded(uint128 indexed marketId, (uint8,uint256,uint256,uint256,address,bytes32,string,uint256,bool) strategy, uint256 indexed strategyId)
+// Solidity: event SettlementStrategyAdded(uint128 indexed marketId, (uint8,uint256,uint256,address,bytes32,string,uint256,bool) strategy, uint256 indexed strategyId)
 func (_PerpsMarket *PerpsMarketFilterer) WatchSettlementStrategyAdded(opts *bind.WatchOpts, sink chan<- *PerpsMarketSettlementStrategyAdded, marketId []*big.Int, strategyId []*big.Int) (event.Subscription, error) {
 
 	var marketIdRule []interface{}
@@ -8023,9 +8634,9 @@ func (_PerpsMarket *PerpsMarketFilterer) WatchSettlementStrategyAdded(opts *bind
 	}), nil
 }
 
-// ParseSettlementStrategyAdded is a log parse operation binding the contract event 0xba2ece29eb53e3cc8cbe3bb5e85c899c5b6a9b84edff3e0503309f22a05d48ef.
+// ParseSettlementStrategyAdded is a log parse operation binding the contract event 0x7b65e958e6a1069f7675c1f0bd79bed340e152a0f946dc044b9bf4e6c2bb5493.
 //
-// Solidity: event SettlementStrategyAdded(uint128 indexed marketId, (uint8,uint256,uint256,uint256,address,bytes32,string,uint256,bool) strategy, uint256 indexed strategyId)
+// Solidity: event SettlementStrategyAdded(uint128 indexed marketId, (uint8,uint256,uint256,address,bytes32,string,uint256,bool) strategy, uint256 indexed strategyId)
 func (_PerpsMarket *PerpsMarketFilterer) ParseSettlementStrategyAdded(log types.Log) (*PerpsMarketSettlementStrategyAdded, error) {
 	event := new(PerpsMarketSettlementStrategyAdded)
 	if err := _PerpsMarket.contract.UnpackLog(event, "SettlementStrategyAdded", log); err != nil {
@@ -8035,9 +8646,9 @@ func (_PerpsMarket *PerpsMarketFilterer) ParseSettlementStrategyAdded(log types.
 	return event, nil
 }
 
-// PerpsMarketSettlementStrategyEnabledIterator is returned from FilterSettlementStrategyEnabled and is used to iterate over the raw logs and unpacked data for SettlementStrategyEnabled events raised by the PerpsMarket contract.
-type PerpsMarketSettlementStrategyEnabledIterator struct {
-	Event *PerpsMarketSettlementStrategyEnabled // Event containing the contract specifics and raw log
+// PerpsMarketSettlementStrategySetIterator is returned from FilterSettlementStrategySet and is used to iterate over the raw logs and unpacked data for SettlementStrategySet events raised by the PerpsMarket contract.
+type PerpsMarketSettlementStrategySetIterator struct {
+	Event *PerpsMarketSettlementStrategySet // Event containing the contract specifics and raw log
 
 	contract *bind.BoundContract // Generic contract to use for unpacking event data
 	event    string              // Event name to use for unpacking event data
@@ -8051,7 +8662,7 @@ type PerpsMarketSettlementStrategyEnabledIterator struct {
 // Next advances the iterator to the subsequent event, returning whether there
 // are any more events found. In case of a retrieval or parsing error, false is
 // returned and Error() can be queried for the exact failure.
-func (it *PerpsMarketSettlementStrategyEnabledIterator) Next() bool {
+func (it *PerpsMarketSettlementStrategySetIterator) Next() bool {
 	// If the iterator failed, stop iterating
 	if it.fail != nil {
 		return false
@@ -8060,7 +8671,7 @@ func (it *PerpsMarketSettlementStrategyEnabledIterator) Next() bool {
 	if it.done {
 		select {
 		case log := <-it.logs:
-			it.Event = new(PerpsMarketSettlementStrategyEnabled)
+			it.Event = new(PerpsMarketSettlementStrategySet)
 			if err := it.contract.UnpackLog(it.Event, it.event, log); err != nil {
 				it.fail = err
 				return false
@@ -8075,7 +8686,7 @@ func (it *PerpsMarketSettlementStrategyEnabledIterator) Next() bool {
 	// Iterator still in progress, wait for either a data or an error event
 	select {
 	case log := <-it.logs:
-		it.Event = new(PerpsMarketSettlementStrategyEnabled)
+		it.Event = new(PerpsMarketSettlementStrategySet)
 		if err := it.contract.UnpackLog(it.Event, it.event, log); err != nil {
 			it.fail = err
 			return false
@@ -8091,53 +8702,61 @@ func (it *PerpsMarketSettlementStrategyEnabledIterator) Next() bool {
 }
 
 // Error returns any retrieval or parsing error occurred during filtering.
-func (it *PerpsMarketSettlementStrategyEnabledIterator) Error() error {
+func (it *PerpsMarketSettlementStrategySetIterator) Error() error {
 	return it.fail
 }
 
 // Close terminates the iteration process, releasing any pending underlying
 // resources.
-func (it *PerpsMarketSettlementStrategyEnabledIterator) Close() error {
+func (it *PerpsMarketSettlementStrategySetIterator) Close() error {
 	it.sub.Unsubscribe()
 	return nil
 }
 
-// PerpsMarketSettlementStrategyEnabled represents a SettlementStrategyEnabled event raised by the PerpsMarket contract.
-type PerpsMarketSettlementStrategyEnabled struct {
+// PerpsMarketSettlementStrategySet represents a SettlementStrategySet event raised by the PerpsMarket contract.
+type PerpsMarketSettlementStrategySet struct {
 	MarketId   *big.Int
 	StrategyId *big.Int
-	Enabled    bool
+	Strategy   SettlementStrategyData
 	Raw        types.Log // Blockchain specific contextual infos
 }
 
-// FilterSettlementStrategyEnabled is a free log retrieval operation binding the contract event 0x4803eb4e51b45b2471b0c87d8c17e0c2d8961ae080cc4a930883eab155e0fa22.
+// FilterSettlementStrategySet is a free log retrieval operation binding the contract event 0xa9119a80ed7f829a6107da2aef0de2cfbc1fa35940a1c492e5dcc437931b4de9.
 //
-// Solidity: event SettlementStrategyEnabled(uint128 indexed marketId, uint256 strategyId, bool enabled)
-func (_PerpsMarket *PerpsMarketFilterer) FilterSettlementStrategyEnabled(opts *bind.FilterOpts, marketId []*big.Int) (*PerpsMarketSettlementStrategyEnabledIterator, error) {
+// Solidity: event SettlementStrategySet(uint128 indexed marketId, uint256 indexed strategyId, (uint8,uint256,uint256,address,bytes32,string,uint256,bool) strategy)
+func (_PerpsMarket *PerpsMarketFilterer) FilterSettlementStrategySet(opts *bind.FilterOpts, marketId []*big.Int, strategyId []*big.Int) (*PerpsMarketSettlementStrategySetIterator, error) {
 
 	var marketIdRule []interface{}
 	for _, marketIdItem := range marketId {
 		marketIdRule = append(marketIdRule, marketIdItem)
 	}
+	var strategyIdRule []interface{}
+	for _, strategyIdItem := range strategyId {
+		strategyIdRule = append(strategyIdRule, strategyIdItem)
+	}
 
-	logs, sub, err := _PerpsMarket.contract.FilterLogs(opts, "SettlementStrategyEnabled", marketIdRule)
+	logs, sub, err := _PerpsMarket.contract.FilterLogs(opts, "SettlementStrategySet", marketIdRule, strategyIdRule)
 	if err != nil {
 		return nil, err
 	}
-	return &PerpsMarketSettlementStrategyEnabledIterator{contract: _PerpsMarket.contract, event: "SettlementStrategyEnabled", logs: logs, sub: sub}, nil
+	return &PerpsMarketSettlementStrategySetIterator{contract: _PerpsMarket.contract, event: "SettlementStrategySet", logs: logs, sub: sub}, nil
 }
 
-// WatchSettlementStrategyEnabled is a free log subscription operation binding the contract event 0x4803eb4e51b45b2471b0c87d8c17e0c2d8961ae080cc4a930883eab155e0fa22.
+// WatchSettlementStrategySet is a free log subscription operation binding the contract event 0xa9119a80ed7f829a6107da2aef0de2cfbc1fa35940a1c492e5dcc437931b4de9.
 //
-// Solidity: event SettlementStrategyEnabled(uint128 indexed marketId, uint256 strategyId, bool enabled)
-func (_PerpsMarket *PerpsMarketFilterer) WatchSettlementStrategyEnabled(opts *bind.WatchOpts, sink chan<- *PerpsMarketSettlementStrategyEnabled, marketId []*big.Int) (event.Subscription, error) {
+// Solidity: event SettlementStrategySet(uint128 indexed marketId, uint256 indexed strategyId, (uint8,uint256,uint256,address,bytes32,string,uint256,bool) strategy)
+func (_PerpsMarket *PerpsMarketFilterer) WatchSettlementStrategySet(opts *bind.WatchOpts, sink chan<- *PerpsMarketSettlementStrategySet, marketId []*big.Int, strategyId []*big.Int) (event.Subscription, error) {
 
 	var marketIdRule []interface{}
 	for _, marketIdItem := range marketId {
 		marketIdRule = append(marketIdRule, marketIdItem)
 	}
+	var strategyIdRule []interface{}
+	for _, strategyIdItem := range strategyId {
+		strategyIdRule = append(strategyIdRule, strategyIdItem)
+	}
 
-	logs, sub, err := _PerpsMarket.contract.WatchLogs(opts, "SettlementStrategyEnabled", marketIdRule)
+	logs, sub, err := _PerpsMarket.contract.WatchLogs(opts, "SettlementStrategySet", marketIdRule, strategyIdRule)
 	if err != nil {
 		return nil, err
 	}
@@ -8147,8 +8766,8 @@ func (_PerpsMarket *PerpsMarketFilterer) WatchSettlementStrategyEnabled(opts *bi
 			select {
 			case log := <-logs:
 				// New log arrived, parse the event and forward to the user
-				event := new(PerpsMarketSettlementStrategyEnabled)
-				if err := _PerpsMarket.contract.UnpackLog(event, "SettlementStrategyEnabled", log); err != nil {
+				event := new(PerpsMarketSettlementStrategySet)
+				if err := _PerpsMarket.contract.UnpackLog(event, "SettlementStrategySet", log); err != nil {
 					return err
 				}
 				event.Raw = log
@@ -8169,12 +8788,12 @@ func (_PerpsMarket *PerpsMarketFilterer) WatchSettlementStrategyEnabled(opts *bi
 	}), nil
 }
 
-// ParseSettlementStrategyEnabled is a log parse operation binding the contract event 0x4803eb4e51b45b2471b0c87d8c17e0c2d8961ae080cc4a930883eab155e0fa22.
+// ParseSettlementStrategySet is a log parse operation binding the contract event 0xa9119a80ed7f829a6107da2aef0de2cfbc1fa35940a1c492e5dcc437931b4de9.
 //
-// Solidity: event SettlementStrategyEnabled(uint128 indexed marketId, uint256 strategyId, bool enabled)
-func (_PerpsMarket *PerpsMarketFilterer) ParseSettlementStrategyEnabled(log types.Log) (*PerpsMarketSettlementStrategyEnabled, error) {
-	event := new(PerpsMarketSettlementStrategyEnabled)
-	if err := _PerpsMarket.contract.UnpackLog(event, "SettlementStrategyEnabled", log); err != nil {
+// Solidity: event SettlementStrategySet(uint128 indexed marketId, uint256 indexed strategyId, (uint8,uint256,uint256,address,bytes32,string,uint256,bool) strategy)
+func (_PerpsMarket *PerpsMarketFilterer) ParseSettlementStrategySet(log types.Log) (*PerpsMarketSettlementStrategySet, error) {
+	event := new(PerpsMarketSettlementStrategySet)
+	if err := _PerpsMarket.contract.UnpackLog(event, "SettlementStrategySet", log); err != nil {
 		return nil, err
 	}
 	event.Raw = log

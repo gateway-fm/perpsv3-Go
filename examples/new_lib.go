@@ -3,7 +3,6 @@ package main
 import (
 	perpsv3_Go "github.com/gateway-fm/perpsv3-Go"
 	"log"
-	"math/big"
 )
 
 func main() {
@@ -23,26 +22,66 @@ func main() {
 
 	// POSITION
 
-	accs, err := lib.FormatAccountsLimit(20000)
-	if err != nil {
-		log.Fatal(err)
-	}
-
-	log.Println("accs", len(accs))
-
-	for _, a := range accs {
-		_, err := lib.GetPosition(a.ID, big.NewInt(100))
-		if err != nil {
-			log.Println("id", a.ID.String(), "market", 100)
-			log.Println(err.Error())
-		}
-
-		_, err = lib.GetPosition(a.ID, big.NewInt(200))
-		if err != nil {
-			log.Println("id", a.ID.String(), "market", 200)
-			log.Println(err.Error())
-		}
-	}
+	//accs, err := lib.FormatAccountsLimit(20000)
+	//if err != nil {
+	//	log.Fatal(err)
+	//}
+	//
+	//log.Println("accs", len(accs))
+	//
+	//good100 := 0
+	//good200 := 0
+	//good300 := 0
+	//good400 := 0
+	//good500 := 0
+	//
+	//for _, a := range accs {
+	//	_, err := lib.GetPosition(a.ID, big.NewInt(100))
+	//	if err != nil {
+	//		log.Println("id", a.ID.String(), "market", 100)
+	//		log.Println(err.Error())
+	//	} else {
+	//		good100++
+	//	}
+	//
+	//	_, err = lib.GetPosition(a.ID, big.NewInt(200))
+	//	if err != nil {
+	//		log.Println("id", a.ID.String(), "market", 200)
+	//		log.Println(err.Error())
+	//	} else {
+	//		good200++
+	//	}
+	//
+	//	_, err = lib.GetPosition(a.ID, big.NewInt(300))
+	//	if err != nil {
+	//		log.Println("id", a.ID.String(), "market", 300)
+	//		log.Println(err.Error())
+	//	} else {
+	//		good300++
+	//	}
+	//
+	//	_, err = lib.GetPosition(a.ID, big.NewInt(400))
+	//	if err != nil {
+	//		log.Println("id", a.ID.String(), "market", 400)
+	//		log.Println(err.Error())
+	//	} else {
+	//		good400++
+	//	}
+	//
+	//	_, err = lib.GetPosition(a.ID, big.NewInt(500))
+	//	if err != nil {
+	//		log.Println("id", a.ID.String(), "market", 500)
+	//		log.Println(err.Error())
+	//	} else {
+	//		good500++
+	//	}
+	//}
+	//
+	//log.Println("good100:", good100)
+	//log.Println("good200:", good200)
+	//log.Println("good300:", good300)
+	//log.Println("good400:", good400)
+	//log.Println("good500:", good500)
 
 	//id := new(big.Int)
 	//id.SetString("170141183460469231731687303715884105753", 10)
@@ -96,69 +135,45 @@ func main() {
 
 	// MARKETS
 
-	//ids, err := lib.GetMarketIDs()
-	//if err != nil {
-	//	log.Println(err.Error())
-	//} else {
-	//	log.Println(ids)
-	//}
-	//
-	//summary100, err := lib.GetMarketSummary(big.NewInt(100))
-	//if err != nil {
-	//	log.Println(err.Error())
-	//} else {
-	//	log.Println(summary100)
-	//}
-	//
-	//summary200, err := lib.GetMarketSummary(big.NewInt(200))
-	//if err != nil {
-	//	log.Println(err.Error())
-	//} else {
-	//	log.Println(summary200)
-	//}
-	//
-	//meta100, err := lib.GetMarketMetadata(big.NewInt(100))
-	//if err != nil {
-	//	log.Println(err.Error())
-	//} else {
-	//	log.Println(meta100)
-	//}
-	//
-	//meta200, err := lib.GetMarketMetadata(big.NewInt(200))
-	//if err != nil {
-	//	log.Println(err.Error())
-	//} else {
-	//	log.Println(meta200)
-	//}
-	//
-	//liq100, err := lib.GetLiquidationParameters(big.NewInt(100))
-	//if err != nil {
-	//	log.Println(err.Error())
-	//} else {
-	//	log.Println(liq100)
-	//}
-	//
-	//liq200, err := lib.GetLiquidationParameters(big.NewInt(200))
-	//if err != nil {
-	//	log.Println(err.Error())
-	//} else {
-	//	log.Println(liq200)
-	//}
-	//
-	//found100, err := lib.GetFoundingRate(big.NewInt(100))
-	//if err != nil {
-	//	log.Println(err.Error())
-	//} else {
-	//	log.Println(found100)
-	//}
-	//
-	//found200, err := lib.GetFoundingRate(big.NewInt(200))
-	//if err != nil {
-	//	log.Println(err.Error())
-	//} else {
-	//	log.Println(found200)
-	//}
+	ids, err := lib.GetMarketIDs()
+	if err != nil {
+		log.Println(err.Error())
+	} else {
+		log.Println(ids)
+	}
 
+	for _, i := range ids {
+		log.Println("market:", i.String())
+
+		summaryi, err := lib.GetMarketSummary(i)
+		if err != nil {
+			log.Println(err.Error())
+		} else {
+			log.Println("summary", summaryi)
+		}
+
+		metai, err := lib.GetMarketMetadata(i)
+		if err != nil {
+			log.Println(err.Error())
+		} else {
+			log.Println("meta:", metai)
+		}
+
+		liqi, err := lib.GetLiquidationParameters(i)
+		if err != nil {
+			log.Println(err.Error())
+		} else {
+			log.Println("liquidation:", liqi)
+		}
+
+		foundi, err := lib.GetFoundingRate(i)
+		if err != nil {
+			log.Println(err.Error())
+		} else {
+			log.Println("founding rate:", foundi)
+		}
+
+	}
 	//...
 	// call needed methods
 	// ...

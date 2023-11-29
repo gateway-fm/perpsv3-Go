@@ -13,13 +13,13 @@ import (
 type AccountLiquidatedSubscription struct {
 	*basicSubscription
 	AccountLiquidated chan *models.AccountLiquidated
-	contractEventChan chan *perpsMarket.PerpsMarketAccountLiquidated
+	contractEventChan chan *perpsMarket.PerpsMarketAccountLiquidationAttempt
 }
 
 func (e *Events) ListenAccountLiquidated() (*AccountLiquidatedSubscription, error) {
-	createdChan := make(chan *perpsMarket.PerpsMarketAccountLiquidated)
+	createdChan := make(chan *perpsMarket.PerpsMarketAccountLiquidationAttempt)
 
-	liquidatedSub, err := e.perpsMarket.WatchAccountLiquidated(nil, createdChan, nil)
+	liquidatedSub, err := e.perpsMarket.WatchAccountLiquidationAttempt(nil, createdChan, nil)
 	if err != nil {
 		logger.Log().WithField("layer", "Events-AccountLiquidated").Errorf("error watch account liquidated: %v", err.Error())
 		return nil, errors.GetEventListenErr(err, "AccountLiquidated")
@@ -35,7 +35,7 @@ func (e *Events) ListenAccountLiquidated() (*AccountLiquidatedSubscription, erro
 // newAccountsSubscription
 func newAccountLiquidatedSubscription(
 	eventSub event.Subscription,
-	created chan *perpsMarket.PerpsMarketAccountLiquidated,
+	created chan *perpsMarket.PerpsMarketAccountLiquidationAttempt,
 ) *AccountLiquidatedSubscription {
 	return &AccountLiquidatedSubscription{
 		basicSubscription: newBasicSubscription(eventSub),

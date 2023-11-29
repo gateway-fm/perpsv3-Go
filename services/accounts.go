@@ -80,7 +80,7 @@ func (s *Service) RetrieveAccountLiquidationsLimit(limit uint64) ([]*models.Acco
 
 		opts := s.getFilterOptsPerpsMarket(fromBlock, &toBlock)
 
-		iterator, err := s.perpsMarket.FilterAccountLiquidated(opts, nil)
+		iterator, err := s.perpsMarket.FilterAccountLiquidationAttempt(opts, nil)
 		if err != nil {
 			logger.Log().WithField("layer", "Service-QueryAccountLiquidatedLimit").Errorf("error get iterator: %v", err.Error())
 			return nil, errors.GetFilterErr(err, "perps market")
