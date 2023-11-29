@@ -2,21 +2,26 @@ package rawContracts
 
 import (
 	"fmt"
+
 	"github.com/ethereum/go-ethereum/accounts/abi"
 	"github.com/ethereum/go-ethereum/accounts/abi/bind"
 	"github.com/ethereum/go-ethereum/common"
 	"github.com/ethereum/go-ethereum/common/hexutil"
 	"github.com/ethereum/go-ethereum/ethclient"
+
 	"github.com/gateway-fm/perpsv3-Go/contracts/forwarder"
 	"github.com/gateway-fm/perpsv3-Go/errors"
-	"log"
 )
 
+// IRawForwarderContract is a trustedMulticallForwarder interface
 type IRawForwarderContract interface {
+	// Aggregate3Value is used to call aggregate3Value contract method
 	Aggregate3Value(arg []forwarder.TrustedMulticallForwarderCall3Value) ([]ForwarderResult, error)
+	// Address is used to get contract address
 	Address() common.Address
 }
 
+// Forwarder is an implementation of the trustedMulticallForwarder contract
 type Forwarder struct {
 	abi      *abi.ABI
 	address  common.Address
@@ -24,11 +29,13 @@ type Forwarder struct {
 	contract *bind.BoundContract
 }
 
+// ForwarderResult is a data struct for the trustedMulticallForwarder method response
 type ForwarderResult struct {
 	Success    bool
 	ReturnData []byte
 }
 
+// NewForwarder is used to get new Forwarder instance
 func NewForwarder(address common.Address, provider *ethclient.Client) (IRawForwarderContract, error) {
 	c := &Forwarder{}
 
@@ -76,13 +83,11 @@ func (p *Forwarder) rawCall(value uint64, results *[]interface{}, method string,
 
 	var hex hexutil.Bytes
 
-	log.Println(hexutil.Bytes(input))
-
 	arg := map[string]interface{}{
 		"from":  common.HexToAddress("0x0000000000000000000000000000000000000000"),
 		"to":    &p.address,
 		"input": hexutil.Bytes(input),
-		"value": hexutil.EncodeUint64(1),
+		"value": hexutil.EncodeUint64(value),
 	}
 
 	if err := cl.Call(&hex, "eth_call", arg, "latest"); err != nil {

@@ -9,6 +9,7 @@ import (
 	"os"
 )
 
+// gerABI is used to get contract ABI instance from given ABI file data path
 func getABI(abiFilePath string) (*abi.ABI, error) {
 	abiFile, err := os.Open(abiFilePath)
 	if err != nil {
