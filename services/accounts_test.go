@@ -1,6 +1,7 @@
 package services
 
 import (
+	"github.com/gateway-fm/perpsv3-Go/config"
 	"log"
 	"math/big"
 	"os"
@@ -22,6 +23,8 @@ func TestService_FormatAccount_OnChain(t *testing.T) {
 	}
 
 	rpcClient, _ := ethclient.Dial(rpc)
+
+	conf := config.GetBaseAndromedaDefaultConfig(rpc)
 
 	coreC, _ := core.NewCore(common.HexToAddress("0x76490713314fCEC173f44e99346F54c6e92a8E42"), rpcClient)
 	perps, _ := perpsMarket.NewPerpsMarket(common.HexToAddress("0xf272382cB3BE898A8CdB1A23BE056fA2Fcf4513b"), rpcClient)
@@ -56,7 +59,7 @@ func TestService_FormatAccount_OnChain(t *testing.T) {
 	}
 	for _, tt := range testCases {
 		t.Run(tt.name, func(t *testing.T) {
-			s := NewService(rpcClient, coreC, 11664658, perps, 12708889)
+			s, _ := NewService(rpcClient, conf, coreC, perps)
 
 			res, err := s.FormatAccount(tt.id)
 
@@ -78,10 +81,12 @@ func TestService_FormatAccounts_OnChain_Limit(t *testing.T) {
 
 	rpcClient, _ := ethclient.Dial(rpc)
 
+	conf := config.GetBaseAndromedaDefaultConfig(rpc)
+
 	coreC, _ := core.NewCore(common.HexToAddress("0x76490713314fCEC173f44e99346F54c6e92a8E42"), rpcClient)
 	perps, _ := perpsMarket.NewPerpsMarket(common.HexToAddress("0xf272382cB3BE898A8CdB1A23BE056fA2Fcf4513b"), rpcClient)
 
-	s := NewService(rpcClient, coreC, 11664658, perps, 12708889)
+	s, _ := NewService(rpcClient, conf, coreC, perps)
 
 	_, err := s.FormatAccountsLimit(20000)
 
