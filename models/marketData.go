@@ -1,9 +1,10 @@
 package models
 
 import (
-	"github.com/gateway-fm/perpsv3-Go/contracts/perpsMarketGoerli"
-	"github.com/gateway-fm/perpsv3-Go/pkg/logger"
 	"math/big"
+
+	"github.com/gateway-fm/perpsv3-Go/contracts/perpsMarket"
+	"github.com/gateway-fm/perpsv3-Go/pkg/logger"
 )
 
 // MarketUpdate
@@ -108,15 +109,17 @@ func GetFundingParameters(resp struct {
 	}
 }
 
+// LiquidationRewardRatioD18 changed to FlagRewardRatioD18
+
 func GetLiquidationParameters(resp struct {
 	InitialMarginRatioD18        *big.Int
 	MinimumInitialMarginRatioD18 *big.Int
 	MaintenanceMarginScalarD18   *big.Int
-	LiquidationRewardRatioD18    *big.Int
+	FlagRewardRatioD18           *big.Int
 	MinimumPositionMargin        *big.Int
 }) *LiquidationParameters {
 	return &LiquidationParameters{
-		LiquidationRewardRatio:    resp.LiquidationRewardRatioD18,
+		LiquidationRewardRatio:    resp.FlagRewardRatioD18,
 		MinimumInitialMarginRatio: resp.MinimumInitialMarginRatioD18,
 		MaintenanceMarginScalar:   resp.MaintenanceMarginScalarD18,
 		InitialMarginRatio:        resp.InitialMarginRatioD18,
@@ -125,7 +128,7 @@ func GetLiquidationParameters(resp struct {
 }
 
 // GetMarketUpdateFromEvent is used to get MarketUpdate struct from given event and block timestamp
-func GetMarketUpdateFromEvent(event *perpsMarketGoerli.PerpsMarketGoerliMarketUpdated, time uint64) *MarketUpdate {
+func GetMarketUpdateFromEvent(event *perpsMarket.PerpsMarketMarketUpdated, time uint64) *MarketUpdate {
 	if event == nil {
 		logger.Log().WithField("layer", "Models-MarketUpdate").Warning("nil event received")
 		return &MarketUpdate{}
@@ -181,7 +184,7 @@ func GetMarketUpdateFromEvent(event *perpsMarketGoerli.PerpsMarketGoerliMarketUp
 }
 
 // GetMarketUpdateBigFromEvent is used to get MarketUpdateBig model from given event and block timestamp
-func GetMarketUpdateBigFromEvent(event *perpsMarketGoerli.PerpsMarketGoerliMarketUpdated, time uint64) *MarketUpdateBig {
+func GetMarketUpdateBigFromEvent(event *perpsMarket.PerpsMarketMarketUpdated, time uint64) *MarketUpdateBig {
 	if event == nil {
 		logger.Log().WithField("layer", "Models-GetMarketUpdateBigFromEvent").Warning("nil event received")
 		return &MarketUpdateBig{BlockTimestamp: time}
@@ -211,7 +214,7 @@ func GetMarketMetadataFromContractResponse(id *big.Int, name string, symbol stri
 }
 
 // GetMarketSummaryFromContractModel is used to get MarketSummary from contract data struct
-func GetMarketSummaryFromContractModel(summary perpsMarketGoerli.IPerpsMarketModuleMarketSummary, marketID *big.Int, time uint64) *MarketSummary {
+func GetMarketSummaryFromContractModel(summary perpsMarket.IPerpsMarketModuleMarketSummary, marketID *big.Int, time uint64) *MarketSummary {
 	return &MarketSummary{
 		MarketID:               marketID,
 		Skew:                   summary.Skew,

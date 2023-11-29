@@ -6,7 +6,7 @@ import (
 
 	"github.com/ethereum/go-ethereum/accounts/abi/bind"
 
-	"github.com/gateway-fm/perpsv3-Go/contracts/perpsMarketGoerli"
+	"github.com/gateway-fm/perpsv3-Go/contracts/perpsMarket"
 	"github.com/gateway-fm/perpsv3-Go/errors"
 	"github.com/gateway-fm/perpsv3-Go/models"
 	"github.com/gateway-fm/perpsv3-Go/pkg/logger"
@@ -88,7 +88,7 @@ func (s *Service) retrieveTrades(opts *bind.FilterOpts) ([]*models.Trade, error)
 }
 
 // getTrade is used to get models.Trade from given event and block number
-func (s *Service) getTrade(event *perpsMarketGoerli.PerpsMarketGoerliOrderSettled, blockN uint64) (*models.Trade, error) {
+func (s *Service) getTrade(event *perpsMarket.PerpsMarketOrderSettled, blockN uint64) (*models.Trade, error) {
 	block, err := s.rpcClient.HeaderByNumber(context.Background(), big.NewInt(int64(blockN)))
 	if err != nil {
 		logger.Log().WithField("layer", "Service-RetrieveTrades").Errorf(

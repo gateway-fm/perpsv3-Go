@@ -1,15 +1,13 @@
 package perpsv3_Go
 
 import (
+	"github.com/ethereum/go-ethereum/ethclient"
 	"math/big"
 
 	"github.com/ethereum/go-ethereum/common"
-	"github.com/ethereum/go-ethereum/ethclient"
-
 	"github.com/gateway-fm/perpsv3-Go/config"
-	"github.com/gateway-fm/perpsv3-Go/contracts/coreGoerli"
-	"github.com/gateway-fm/perpsv3-Go/contracts/perpsMarketGoerli"
-	"github.com/gateway-fm/perpsv3-Go/contracts/spotMarketGoerli"
+	"github.com/gateway-fm/perpsv3-Go/contracts/core"
+	"github.com/gateway-fm/perpsv3-Go/contracts/perpsMarket"
 	"github.com/gateway-fm/perpsv3-Go/errors"
 	"github.com/gateway-fm/perpsv3-Go/events"
 	"github.com/gateway-fm/perpsv3-Go/models"
@@ -187,6 +185,14 @@ func Create(conf *config.PerpsvConfig) (IPerpsv3, error) {
 	return lib, nil
 }
 
+func GetOptimismGoerliDefaultConfig(rpcURL string) *config.PerpsvConfig {
+	return config.GetOptimismGoerliDefaultConfig(rpcURL)
+}
+
+func GetBaseAndromedaDefaultConfig(rpcURL string) *config.PerpsvConfig {
+	return config.GetBaseAndromedaDefaultConfig(rpcURL)
+}
+
 func (p *Perpsv3) RetrieveTrades(fromBlock uint64, toBLock *uint64) ([]*models.Trade, error) {
 	return p.service.RetrieveTrades(fromBlock, toBLock)
 }
@@ -345,66 +351,36 @@ func (p *Perpsv3) init() error {
 
 	p.rpcClient = rpcClient
 
-	core, err := p.getGoerliCoreContract()
+	coreContact, err := p.getCoreContract()
 	if err != nil {
 		return err
 	}
 
-	spotMarket, err := p.getGoerliSpotMarketContract()
+	perpsMarketContract, err := p.getPerpsMarket()
 	if err != nil {
 		return err
 	}
 
-	perpsMarket, err := p.getGoerliPerpsMarket()
+	srv, err := services.NewService(rpcClient, p.config, coreContact, perpsMarketContract)
 	if err != nil {
 		return err
 	}
 
-	p.service = services.NewService(
-		rpcClient,
-		core,
-		p.config.FirstContractBlocks.Core,
-		spotMarket,
-		p.config.FirstContractBlocks.SpotMarket,
-		perpsMarket,
-		p.config.FirstContractBlocks.PerpsMarket,
-	)
-
-	p.events = events.NewEvents(rpcClient, core, spotMarket, perpsMarket)
+	p.service = srv
+	p.events = events.NewEvents(rpcClient, coreContact, perpsMarketContract)
 
 	return nil
 }
 
-// getGoerliSpotMarketContract is used to get spot market contract instance deployed on goerli test net
-func (p *Perpsv3) getGoerliSpotMarketContract() (*spotMarketGoerli.SpotMarketGoerli, error) {
-	if p.config.ContractAddresses.SpotMarket != "" {
-		addr, err := getAddr(p.config.ContractAddresses.SpotMarket, "spot market")
-		if err != nil {
-			return nil, err
-		}
-
-		contract, err := spotMarketGoerli.NewSpotMarketGoerli(addr, p.rpcClient)
-		if err != nil {
-			logger.Log().WithField("layer", "Init").Errorf("error getting spot market contract: %v", err.Error())
-			return nil, errors.GetInitContractErr(err)
-		}
-
-		return contract, nil
-	} else {
-		logger.Log().WithField("layer", "Init").Errorf("no spot market contract address")
-		return nil, errors.BlankContractAddrErr
-	}
-}
-
 // getGoerliCoreContract is used to get core contract instance deployed on goerli test net
-func (p *Perpsv3) getGoerliCoreContract() (*coreGoerli.CoreGoerli, error) {
+func (p *Perpsv3) getCoreContract() (*core.Core, error) {
 	if p.config.ContractAddresses.Core != "" {
 		addr, err := getAddr(p.config.ContractAddresses.Core, "core")
 		if err != nil {
 			return nil, err
 		}
 
-		contract, err := coreGoerli.NewCoreGoerli(addr, p.rpcClient)
+		contract, err := core.NewCore(addr, p.rpcClient)
 		if err != nil {
 			logger.Log().WithField("layer", "Init").Errorf("error getting core contract: %v", err.Error())
 			return nil, errors.GetInitContractErr(err)
@@ -417,15 +393,15 @@ func (p *Perpsv3) getGoerliCoreContract() (*coreGoerli.CoreGoerli, error) {
 	}
 }
 
-// getGoerliPerpsMarket is used to get perps market contract instance deployed on goerli test net
-func (p *Perpsv3) getGoerliPerpsMarket() (*perpsMarketGoerli.PerpsMarketGoerli, error) {
+// getGoerliPerpsMarket is used to get perps market contract instance
+func (p *Perpsv3) getPerpsMarket() (*perpsMarket.PerpsMarket, error) {
 	if p.config.ContractAddresses.PerpsMarket != "" {
-		addr, err := getAddr(p.config.ContractAddresses.PerpsMarket, "core")
+		addr, err := getAddr(p.config.ContractAddresses.PerpsMarket, "perps")
 		if err != nil {
 			return nil, err
 		}
 
-		contract, err := perpsMarketGoerli.NewPerpsMarketGoerli(addr, p.rpcClient)
+		contract, err := perpsMarket.NewPerpsMarket(addr, p.rpcClient)
 		if err != nil {
 			logger.Log().WithField("layer", "Init").Errorf("error getting perps market contract: %v", err.Error())
 			return nil, errors.GetInitContractErr(err)

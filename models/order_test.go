@@ -1,6 +1,7 @@
 package models
 
 import (
+	"github.com/gateway-fm/perpsv3-Go/contracts/perpsMarket"
 	"math/big"
 	"testing"
 	"time"
@@ -8,7 +9,6 @@ import (
 	"github.com/ethereum/go-ethereum/common"
 	"github.com/ethereum/go-ethereum/core/types"
 	"github.com/ethereum/go-ethereum/crypto"
-	"github.com/gateway-fm/perpsv3-Go/contracts/perpsMarketGoerli"
 	"github.com/stretchr/testify/require"
 )
 
@@ -17,7 +17,7 @@ func TestGetOrderFromEvent(t *testing.T) {
 
 	testCases := []struct {
 		name  string
-		event *perpsMarketGoerli.PerpsMarketGoerliOrderCommitted
+		event *perpsMarket.PerpsMarketOrderCommitted
 		time  uint64
 		want  *Order
 	}{
@@ -27,7 +27,7 @@ func TestGetOrderFromEvent(t *testing.T) {
 		},
 		{
 			name: "only market ID",
-			event: &perpsMarketGoerli.PerpsMarketGoerliOrderCommitted{
+			event: &perpsMarket.PerpsMarketOrderCommitted{
 				MarketId: big.NewInt(1),
 			},
 			want: &Order{
@@ -36,7 +36,7 @@ func TestGetOrderFromEvent(t *testing.T) {
 		},
 		{
 			name: "only account ID",
-			event: &perpsMarketGoerli.PerpsMarketGoerliOrderCommitted{
+			event: &perpsMarket.PerpsMarketOrderCommitted{
 				AccountId: big.NewInt(1),
 			},
 			want: &Order{
@@ -45,7 +45,7 @@ func TestGetOrderFromEvent(t *testing.T) {
 		},
 		{
 			name: "only settlement time",
-			event: &perpsMarketGoerli.PerpsMarketGoerliOrderCommitted{
+			event: &perpsMarket.PerpsMarketOrderCommitted{
 				SettlementTime: big.NewInt(1),
 			},
 			want: &Order{
@@ -54,7 +54,7 @@ func TestGetOrderFromEvent(t *testing.T) {
 		},
 		{
 			name: "only expiration time",
-			event: &perpsMarketGoerli.PerpsMarketGoerliOrderCommitted{
+			event: &perpsMarket.PerpsMarketOrderCommitted{
 				ExpirationTime: big.NewInt(1),
 			},
 			want: &Order{
@@ -63,7 +63,7 @@ func TestGetOrderFromEvent(t *testing.T) {
 		},
 		{
 			name: "full event",
-			event: &perpsMarketGoerli.PerpsMarketGoerliOrderCommitted{
+			event: &perpsMarket.PerpsMarketOrderCommitted{
 				MarketId:        big.NewInt(1),
 				AccountId:       big.NewInt(2),
 				OrderType:       uint8(3),

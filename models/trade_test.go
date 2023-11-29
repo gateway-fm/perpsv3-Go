@@ -1,6 +1,7 @@
 package models
 
 import (
+	"github.com/gateway-fm/perpsv3-Go/contracts/perpsMarket"
 	"math/big"
 	"testing"
 	"time"
@@ -8,7 +9,6 @@ import (
 	"github.com/ethereum/go-ethereum/common"
 	"github.com/ethereum/go-ethereum/core/types"
 	"github.com/ethereum/go-ethereum/crypto"
-	"github.com/gateway-fm/perpsv3-Go/contracts/perpsMarketGoerli"
 	"github.com/stretchr/testify/require"
 )
 
@@ -17,7 +17,7 @@ func TestGetTradeFromEvent(t *testing.T) {
 
 	testCases := []struct {
 		name  string
-		event *perpsMarketGoerli.PerpsMarketGoerliOrderSettled
+		event *perpsMarket.PerpsMarketOrderSettled
 		time  uint64
 		want  *Trade
 	}{
@@ -27,7 +27,7 @@ func TestGetTradeFromEvent(t *testing.T) {
 		},
 		{
 			name: "only market ID",
-			event: &perpsMarketGoerli.PerpsMarketGoerliOrderSettled{
+			event: &perpsMarket.PerpsMarketOrderSettled{
 				MarketId: big.NewInt(1),
 			},
 			want: &Trade{
@@ -37,7 +37,7 @@ func TestGetTradeFromEvent(t *testing.T) {
 		},
 		{
 			name: "only account ID",
-			event: &perpsMarketGoerli.PerpsMarketGoerliOrderSettled{
+			event: &perpsMarket.PerpsMarketOrderSettled{
 				AccountId: big.NewInt(1),
 			},
 			want: &Trade{
@@ -47,7 +47,7 @@ func TestGetTradeFromEvent(t *testing.T) {
 		},
 		{
 			name: "full event",
-			event: &perpsMarketGoerli.PerpsMarketGoerliOrderSettled{
+			event: &perpsMarket.PerpsMarketOrderSettled{
 				MarketId:         big.NewInt(1),
 				AccountId:        big.NewInt(2),
 				FillPrice:        big.NewInt(3),

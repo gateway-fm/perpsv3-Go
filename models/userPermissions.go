@@ -1,10 +1,10 @@
 package models
 
 import (
-	"github.com/ethereum/go-ethereum/common"
 	"math/big"
 
-	"github.com/gateway-fm/perpsv3-Go/contracts/perpsMarketGoerli"
+	"github.com/ethereum/go-ethereum/common"
+	"github.com/gateway-fm/perpsv3-Go/contracts/perpsMarket"
 )
 
 // UserPermissions is a struct for permissions granted by account owner to User with a list of Permissions
@@ -21,7 +21,7 @@ type PermissionChanged struct {
 }
 
 // getUserPermissions is used to get UserPermissions slice from given contract user permissions slice
-func getUserPermissions(perms []perpsMarketGoerli.IAccountModuleAccountPermissions) (res []*UserPermissions) {
+func getUserPermissions(perms []perpsMarket.IAccountModuleAccountPermissions) (res []*UserPermissions) {
 	for _, p := range perms {
 		perm := &UserPermissions{
 			User:        p.User,

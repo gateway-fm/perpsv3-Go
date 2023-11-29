@@ -2,18 +2,19 @@ package services
 
 import (
 	"context"
+	"github.com/ethereum/go-ethereum/common"
+	"github.com/gateway-fm/perpsv3-Go/config"
+	"github.com/gateway-fm/perpsv3-Go/rawContracts"
 	"math/big"
-
-	"github.com/gateway-fm/perpsv3-Go/errors"
-	"github.com/gateway-fm/perpsv3-Go/pkg/logger"
 
 	"github.com/ethereum/go-ethereum/accounts/abi/bind"
 	"github.com/ethereum/go-ethereum/ethclient"
 
-	"github.com/gateway-fm/perpsv3-Go/contracts/coreGoerli"
-	"github.com/gateway-fm/perpsv3-Go/contracts/perpsMarketGoerli"
-	"github.com/gateway-fm/perpsv3-Go/contracts/spotMarketGoerli"
+	"github.com/gateway-fm/perpsv3-Go/contracts/core"
+	"github.com/gateway-fm/perpsv3-Go/contracts/perpsMarket"
+	"github.com/gateway-fm/perpsv3-Go/errors"
 	"github.com/gateway-fm/perpsv3-Go/models"
+	"github.com/gateway-fm/perpsv3-Go/pkg/logger"
 )
 
 // IService is a service layer interface
@@ -106,34 +107,62 @@ type IService interface {
 
 // Service is an implementation of IService interface
 type Service struct {
-	rpcClient             *ethclient.Client
-	core                  *coreGoerli.CoreGoerli
-	coreFirstBlock        uint64
-	spotMarket            *spotMarketGoerli.SpotMarketGoerli
-	spotMarketFirstBlock  uint64
-	perpsMarket           *perpsMarketGoerli.PerpsMarketGoerli
+	chainID   config.ChainID
+	rpcClient *ethclient.Client
+
+	core           *core.Core
+	coreFirstBlock uint64
+
+	perpsMarket           *perpsMarket.PerpsMarket
+	rawPerpsContract      rawContracts.IRawPerpsContract
 	perpsMarketFirstBlock uint64
+
+	rawERC7412   rawContracts.IRawERC7412Contract
+	rawForwarder rawContracts.IRawForwarderContract
 }
 
 // NewService is used to get instance of Service
 func NewService(
 	rpc *ethclient.Client,
-	core *coreGoerli.CoreGoerli,
-	coreFirstBlock uint64,
-	spotMarket *spotMarketGoerli.SpotMarketGoerli,
-	spotMarketFirstBlock uint64,
-	perpsMarket *perpsMarketGoerli.PerpsMarketGoerli,
-	perpsMarketFirstBlock uint64,
-) IService {
-	return &Service{
-		rpcClient:             rpc,
-		core:                  core,
-		coreFirstBlock:        coreFirstBlock,
-		spotMarket:            spotMarket,
-		spotMarketFirstBlock:  spotMarketFirstBlock,
-		perpsMarket:           perpsMarket,
-		perpsMarketFirstBlock: perpsMarketFirstBlock,
+	conf *config.PerpsvConfig,
+	core *core.Core,
+	perps *perpsMarket.PerpsMarket,
+) (IService, error) {
+	s := &Service{
+		chainID:   conf.ChainID,
+		rpcClient: rpc,
+
+		core:           core,
+		coreFirstBlock: conf.FirstContractBlocks.Core,
+
+		perpsMarket:           perps,
+		perpsMarketFirstBlock: conf.FirstContractBlocks.PerpsMarket,
 	}
+
+	rawPerpsContract, err := rawContracts.NewPerps(common.HexToAddress(conf.ContractAddresses.PerpsMarket), rpc)
+	if err != nil {
+		return nil, err
+	}
+
+	s.rawPerpsContract = rawPerpsContract
+
+	if conf.ChainID == config.BaseAndromeda {
+		rawERC7412, err := rawContracts.NewERC7412(common.HexToAddress(conf.ContractAddresses.ERC7412), rpc)
+		if err != nil {
+			return nil, err
+		}
+
+		s.rawERC7412 = rawERC7412
+
+		rawForwarder, err := rawContracts.NewForwarder(common.HexToAddress(conf.ContractAddresses.Forwarder), rpc)
+		if err != nil {
+			return nil, err
+		}
+
+		s.rawForwarder = rawForwarder
+	}
+
+	return s, nil
 }
 
 // getIterationsForLimitQuery is used to get iterations of querying data from the contract with given rpc limit for blocks

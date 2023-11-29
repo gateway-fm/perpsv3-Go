@@ -1,13 +1,13 @@
 package models
 
 import (
+	"github.com/gateway-fm/perpsv3-Go/contracts/perpsMarket"
 	"math/big"
 	"testing"
 	"time"
 
 	"github.com/ethereum/go-ethereum/common"
 	"github.com/ethereum/go-ethereum/core/types"
-	"github.com/gateway-fm/perpsv3-Go/contracts/perpsMarketGoerli"
 	"github.com/stretchr/testify/require"
 )
 
@@ -16,7 +16,7 @@ func TestGetMarketUpdateFromEvent(t *testing.T) {
 
 	testCases := []struct {
 		name  string
-		event *perpsMarketGoerli.PerpsMarketGoerliMarketUpdated
+		event *perpsMarket.PerpsMarketMarketUpdated
 		time  uint64
 		want  *MarketUpdate
 	}{
@@ -26,7 +26,7 @@ func TestGetMarketUpdateFromEvent(t *testing.T) {
 		},
 		{
 			name: "only market ID",
-			event: &perpsMarketGoerli.PerpsMarketGoerliMarketUpdated{
+			event: &perpsMarket.PerpsMarketMarketUpdated{
 				MarketId: big.NewInt(1),
 			},
 			want: &MarketUpdate{
@@ -36,7 +36,7 @@ func TestGetMarketUpdateFromEvent(t *testing.T) {
 		},
 		{
 			name: "only price",
-			event: &perpsMarketGoerli.PerpsMarketGoerliMarketUpdated{
+			event: &perpsMarket.PerpsMarketMarketUpdated{
 				Price: big.NewInt(1),
 			},
 			want: &MarketUpdate{
@@ -46,7 +46,7 @@ func TestGetMarketUpdateFromEvent(t *testing.T) {
 		},
 		{
 			name: "only skew",
-			event: &perpsMarketGoerli.PerpsMarketGoerliMarketUpdated{
+			event: &perpsMarket.PerpsMarketMarketUpdated{
 				Skew: big.NewInt(1),
 			},
 			want: &MarketUpdate{
@@ -56,7 +56,7 @@ func TestGetMarketUpdateFromEvent(t *testing.T) {
 		},
 		{
 			name: "only size",
-			event: &perpsMarketGoerli.PerpsMarketGoerliMarketUpdated{
+			event: &perpsMarket.PerpsMarketMarketUpdated{
 				Size: big.NewInt(1),
 			},
 			want: &MarketUpdate{
@@ -66,7 +66,7 @@ func TestGetMarketUpdateFromEvent(t *testing.T) {
 		},
 		{
 			name: "only size delta",
-			event: &perpsMarketGoerli.PerpsMarketGoerliMarketUpdated{
+			event: &perpsMarket.PerpsMarketMarketUpdated{
 				SizeDelta: big.NewInt(1),
 			},
 			want: &MarketUpdate{
@@ -76,7 +76,7 @@ func TestGetMarketUpdateFromEvent(t *testing.T) {
 		},
 		{
 			name: "only size delta",
-			event: &perpsMarketGoerli.PerpsMarketGoerliMarketUpdated{
+			event: &perpsMarket.PerpsMarketMarketUpdated{
 				SizeDelta: big.NewInt(1),
 			},
 			want: &MarketUpdate{
@@ -86,7 +86,7 @@ func TestGetMarketUpdateFromEvent(t *testing.T) {
 		},
 		{
 			name: "only current funding rate",
-			event: &perpsMarketGoerli.PerpsMarketGoerliMarketUpdated{
+			event: &perpsMarket.PerpsMarketMarketUpdated{
 				CurrentFundingRate: big.NewInt(1),
 			},
 			want: &MarketUpdate{
@@ -96,7 +96,7 @@ func TestGetMarketUpdateFromEvent(t *testing.T) {
 		},
 		{
 			name: "only current funding velocity",
-			event: &perpsMarketGoerli.PerpsMarketGoerliMarketUpdated{
+			event: &perpsMarket.PerpsMarketMarketUpdated{
 				CurrentFundingVelocity: big.NewInt(1),
 			},
 			want: &MarketUpdate{
@@ -107,7 +107,7 @@ func TestGetMarketUpdateFromEvent(t *testing.T) {
 
 		{
 			name: "full event",
-			event: &perpsMarketGoerli.PerpsMarketGoerliMarketUpdated{
+			event: &perpsMarket.PerpsMarketMarketUpdated{
 				MarketId:               big.NewInt(1),
 				Price:                  big.NewInt(2),
 				Skew:                   big.NewInt(3),
@@ -150,7 +150,7 @@ func TestGetMarketUpdateBigFromEvent(t *testing.T) {
 
 	testCases := []struct {
 		name  string
-		event *perpsMarketGoerli.PerpsMarketGoerliMarketUpdated
+		event *perpsMarket.PerpsMarketMarketUpdated
 		time  uint64
 		want  *MarketUpdateBig
 	}{
@@ -160,7 +160,7 @@ func TestGetMarketUpdateBigFromEvent(t *testing.T) {
 		},
 		{
 			name: "full event",
-			event: &perpsMarketGoerli.PerpsMarketGoerliMarketUpdated{
+			event: &perpsMarket.PerpsMarketMarketUpdated{
 				MarketId:               big.NewInt(1),
 				Price:                  big.NewInt(2),
 				Skew:                   big.NewInt(3),
@@ -240,7 +240,7 @@ func TestGetMarketMetadataFromContractResponse(t *testing.T) {
 func TestGetMarketSummaryFromContractModel(t *testing.T) {
 	testCases := []struct {
 		name     string
-		summary  perpsMarketGoerli.IPerpsMarketModuleMarketSummary
+		summary  perpsMarket.IPerpsMarketModuleMarketSummary
 		marketID *big.Int
 		time     uint64
 		want     *MarketSummary
@@ -251,7 +251,7 @@ func TestGetMarketSummaryFromContractModel(t *testing.T) {
 		},
 		{
 			name: "full object",
-			summary: perpsMarketGoerli.IPerpsMarketModuleMarketSummary{
+			summary: perpsMarket.IPerpsMarketModuleMarketSummary{
 				Skew:                   big.NewInt(100),
 				Size:                   big.NewInt(200),
 				MaxOpenInterest:        big.NewInt(300),

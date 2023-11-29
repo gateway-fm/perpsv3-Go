@@ -24,7 +24,7 @@ func TestInit(t *testing.T) {
 	}{
 		{
 			name: "goerli default config",
-			conf: config.GetGoerliDefaultPerpsvConfig(),
+			conf: config.GetOptimismGoerliDefaultConfig(""),
 		},
 		// No default perps market address on mainnet
 		//
@@ -37,8 +37,7 @@ func TestInit(t *testing.T) {
 			conf: &config.PerpsvConfig{
 				RPC: "",
 				ContractAddresses: &config.ContractAddresses{
-					Core:       "0x76490713314fCEC173f44e99346F54c6e92a8E42",
-					SpotMarket: "0x5FF4b3aacdeC86782d8c757FAa638d8790799E83",
+					Core: "0x76490713314fCEC173f44e99346F54c6e92a8E42",
 				},
 				ConnectionTimeout: time.Second * 30,
 				ReadTimeout:       time.Second * 15,
@@ -50,8 +49,7 @@ func TestInit(t *testing.T) {
 			conf: &config.PerpsvConfig{
 				RPC: "not-url",
 				ContractAddresses: &config.ContractAddresses{
-					Core:       "0x76490713314fCEC173f44e99346F54c6e92a8E42",
-					SpotMarket: "0x5FF4b3aacdeC86782d8c757FAa638d8790799E83",
+					Core: "0x76490713314fCEC173f44e99346F54c6e92a8E42",
 				},
 				ConnectionTimeout: time.Second * 30,
 				ReadTimeout:       time.Second * 15,
@@ -63,8 +61,7 @@ func TestInit(t *testing.T) {
 			conf: &config.PerpsvConfig{
 				RPC: "https://rpc.goerli.optimism.gateway.fm",
 				ContractAddresses: &config.ContractAddresses{
-					Core:       "",
-					SpotMarket: "0x5FF4b3aacdeC86782d8c757FAa638d8790799E83",
+					Core: "",
 				},
 				ConnectionTimeout: time.Second * 30,
 				ReadTimeout:       time.Second * 15,
@@ -76,34 +73,7 @@ func TestInit(t *testing.T) {
 			conf: &config.PerpsvConfig{
 				RPC: "https://rpc.goerli.optimism.gateway.fm",
 				ContractAddresses: &config.ContractAddresses{
-					Core:       "not-addr",
-					SpotMarket: "0x5FF4b3aacdeC86782d8c757FAa638d8790799E83",
-				},
-				ConnectionTimeout: time.Second * 30,
-				ReadTimeout:       time.Second * 15,
-			},
-			wantErr: errors.InvalidContractAddrErr,
-		},
-		{
-			name: "no spot market addr",
-			conf: &config.PerpsvConfig{
-				RPC: "https://rpc.goerli.optimism.gateway.fm",
-				ContractAddresses: &config.ContractAddresses{
-					Core:       "0x76490713314fCEC173f44e99346F54c6e92a8E42",
-					SpotMarket: "",
-				},
-				ConnectionTimeout: time.Second * 30,
-				ReadTimeout:       time.Second * 15,
-			},
-			wantErr: errors.BlankContractAddrErr,
-		},
-		{
-			name: "bad spot market addr",
-			conf: &config.PerpsvConfig{
-				RPC: "https://rpc.goerli.optimism.gateway.fm",
-				ContractAddresses: &config.ContractAddresses{
-					Core:       "0x76490713314fCEC173f44e99346F54c6e92a8E42",
-					SpotMarket: "not-addr",
+					Core: "not-addr",
 				},
 				ConnectionTimeout: time.Second * 30,
 				ReadTimeout:       time.Second * 15,
@@ -175,28 +145,28 @@ func TestPerpsv3_RetrieveTrades(t *testing.T) {
 	}{
 		{
 			name:       "no error default values",
-			conf:       config.GetGoerliDefaultPerpsvConfig(),
+			conf:       config.GetOptimismGoerliDefaultConfig(""),
 			startBlock: 0,
 			endBlock:   nil,
 			wantRes:    []*models.Trade{trade, trade, trade},
 		},
 		{
 			name:       "no error custom values",
-			conf:       config.GetGoerliDefaultPerpsvConfig(),
+			conf:       config.GetOptimismGoerliDefaultConfig(""),
 			startBlock: blockN,
 			endBlock:   &blockN,
 			wantRes:    []*models.Trade{trade},
 		},
 		{
 			name:       "no error custom values blank result",
-			conf:       config.GetGoerliDefaultPerpsvConfig(),
+			conf:       config.GetOptimismGoerliDefaultConfig(""),
 			startBlock: blockN,
 			endBlock:   &blockN,
 			wantRes:    []*models.Trade{},
 		},
 		{
 			name:       "error",
-			conf:       config.GetGoerliDefaultPerpsvConfig(),
+			conf:       config.GetOptimismGoerliDefaultConfig(""),
 			startBlock: 0,
 			endBlock:   nil,
 			wantErr:    errors.FilterErr,
@@ -273,25 +243,25 @@ func TestPerpsv3_RetrieveTradesLimit(t *testing.T) {
 	}{
 		{
 			name:    "no error default values",
-			conf:    config.GetGoerliDefaultPerpsvConfig(),
+			conf:    config.GetOptimismGoerliDefaultConfig(""),
 			limit:   0,
 			wantRes: []*models.Trade{trade, trade, trade},
 		},
 		{
 			name:    "no error custom values",
-			conf:    config.GetGoerliDefaultPerpsvConfig(),
+			conf:    config.GetOptimismGoerliDefaultConfig(""),
 			limit:   1,
 			wantRes: []*models.Trade{trade},
 		},
 		{
 			name:    "no error custom values blank result",
-			conf:    config.GetGoerliDefaultPerpsvConfig(),
+			conf:    config.GetOptimismGoerliDefaultConfig(""),
 			limit:   1,
 			wantRes: []*models.Trade{},
 		},
 		{
 			name:    "error",
-			conf:    config.GetGoerliDefaultPerpsvConfig(),
+			conf:    config.GetOptimismGoerliDefaultConfig(""),
 			limit:   1,
 			wantErr: errors.FilterErr,
 		},
@@ -353,28 +323,28 @@ func TestPerpsv3_RetrieveOrders(t *testing.T) {
 	}{
 		{
 			name:       "no error default values",
-			conf:       config.GetGoerliDefaultPerpsvConfig(),
+			conf:       config.GetOptimismGoerliDefaultConfig(""),
 			startBlock: 0,
 			endBlock:   nil,
 			wantRes:    []*models.Order{liquidation, liquidation, liquidation},
 		},
 		{
 			name:       "no error custom values",
-			conf:       config.GetGoerliDefaultPerpsvConfig(),
+			conf:       config.GetOptimismGoerliDefaultConfig(""),
 			startBlock: blockN,
 			endBlock:   &blockN,
 			wantRes:    []*models.Order{liquidation},
 		},
 		{
 			name:       "no error custom values blank result",
-			conf:       config.GetGoerliDefaultPerpsvConfig(),
+			conf:       config.GetOptimismGoerliDefaultConfig(""),
 			startBlock: blockN,
 			endBlock:   &blockN,
 			wantRes:    []*models.Order{},
 		},
 		{
 			name:       "error",
-			conf:       config.GetGoerliDefaultPerpsvConfig(),
+			conf:       config.GetOptimismGoerliDefaultConfig(""),
 			startBlock: 0,
 			endBlock:   nil,
 			wantErr:    errors.FilterErr,
@@ -434,25 +404,25 @@ func TestPerpsv3_RetrieveOrdersLimit(t *testing.T) {
 	}{
 		{
 			name:    "no error default values",
-			conf:    config.GetGoerliDefaultPerpsvConfig(),
+			conf:    config.GetOptimismGoerliDefaultConfig(""),
 			limit:   0,
 			wantRes: []*models.Order{liquidation, liquidation, liquidation},
 		},
 		{
 			name:    "no error custom values",
-			conf:    config.GetGoerliDefaultPerpsvConfig(),
+			conf:    config.GetOptimismGoerliDefaultConfig(""),
 			limit:   1,
 			wantRes: []*models.Order{liquidation},
 		},
 		{
 			name:    "no error custom values blank result",
-			conf:    config.GetGoerliDefaultPerpsvConfig(),
+			conf:    config.GetOptimismGoerliDefaultConfig(""),
 			limit:   1,
 			wantRes: []*models.Order{},
 		},
 		{
 			name:    "error",
-			conf:    config.GetGoerliDefaultPerpsvConfig(),
+			conf:    config.GetOptimismGoerliDefaultConfig(""),
 			limit:   1,
 			wantErr: errors.FilterErr,
 		},
@@ -503,28 +473,28 @@ func TestPerpsv3_RetrieveLiquidations(t *testing.T) {
 	}{
 		{
 			name:       "no error default values",
-			conf:       config.GetGoerliDefaultPerpsvConfig(),
+			conf:       config.GetOptimismGoerliDefaultConfig(""),
 			startBlock: 0,
 			endBlock:   nil,
 			wantRes:    []*models.Liquidation{liquidation, liquidation, liquidation},
 		},
 		{
 			name:       "no error custom values",
-			conf:       config.GetGoerliDefaultPerpsvConfig(),
+			conf:       config.GetOptimismGoerliDefaultConfig(""),
 			startBlock: blockN,
 			endBlock:   &blockN,
 			wantRes:    []*models.Liquidation{liquidation},
 		},
 		{
 			name:       "no error custom values blank result",
-			conf:       config.GetGoerliDefaultPerpsvConfig(),
+			conf:       config.GetOptimismGoerliDefaultConfig(""),
 			startBlock: blockN,
 			endBlock:   &blockN,
 			wantRes:    []*models.Liquidation{},
 		},
 		{
 			name:       "error",
-			conf:       config.GetGoerliDefaultPerpsvConfig(),
+			conf:       config.GetOptimismGoerliDefaultConfig(""),
 			startBlock: 0,
 			endBlock:   nil,
 			wantErr:    errors.FilterErr,
@@ -573,25 +543,25 @@ func TestPerpsv3_RetrieveLiquidationsLimit(t *testing.T) {
 	}{
 		{
 			name:    "no error default values",
-			conf:    config.GetGoerliDefaultPerpsvConfig(),
+			conf:    config.GetOptimismGoerliDefaultConfig(""),
 			limit:   0,
 			wantRes: []*models.Liquidation{liquidation, liquidation, liquidation},
 		},
 		{
 			name:    "no error custom values",
-			conf:    config.GetGoerliDefaultPerpsvConfig(),
+			conf:    config.GetOptimismGoerliDefaultConfig(""),
 			limit:   10,
 			wantRes: []*models.Liquidation{liquidation},
 		},
 		{
 			name:    "no error custom values blank result",
-			conf:    config.GetGoerliDefaultPerpsvConfig(),
+			conf:    config.GetOptimismGoerliDefaultConfig(""),
 			limit:   10,
 			wantRes: []*models.Liquidation{},
 		},
 		{
 			name:    "error",
-			conf:    config.GetGoerliDefaultPerpsvConfig(),
+			conf:    config.GetOptimismGoerliDefaultConfig(""),
 			limit:   0,
 			wantErr: errors.FilterErr,
 		},
@@ -652,28 +622,28 @@ func TestPerpsv3_RetrieveMarketUpdates(t *testing.T) {
 	}{
 		{
 			name:       "no error default values",
-			conf:       config.GetGoerliDefaultPerpsvConfig(),
+			conf:       config.GetOptimismGoerliDefaultConfig(""),
 			startBlock: 0,
 			endBlock:   nil,
 			wantRes:    []*models.MarketUpdate{marketUpdate, marketUpdate, marketUpdate},
 		},
 		{
 			name:       "no error custom values",
-			conf:       config.GetGoerliDefaultPerpsvConfig(),
+			conf:       config.GetOptimismGoerliDefaultConfig(""),
 			startBlock: blockN,
 			endBlock:   &blockN,
 			wantRes:    []*models.MarketUpdate{marketUpdate},
 		},
 		{
 			name:       "no error custom values blank result",
-			conf:       config.GetGoerliDefaultPerpsvConfig(),
+			conf:       config.GetOptimismGoerliDefaultConfig(""),
 			startBlock: blockN,
 			endBlock:   &blockN,
 			wantRes:    []*models.MarketUpdate{},
 		},
 		{
 			name:       "error",
-			conf:       config.GetGoerliDefaultPerpsvConfig(),
+			conf:       config.GetOptimismGoerliDefaultConfig(""),
 			startBlock: 0,
 			endBlock:   nil,
 			wantErr:    errors.FilterErr,
@@ -732,25 +702,25 @@ func TestPerpsv3_RetrieveMarketUpdatesLimit(t *testing.T) {
 	}{
 		{
 			name:    "no error default values",
-			conf:    config.GetGoerliDefaultPerpsvConfig(),
+			conf:    config.GetOptimismGoerliDefaultConfig(""),
 			limit:   0,
 			wantRes: []*models.MarketUpdate{marketUpdate, marketUpdate, marketUpdate},
 		},
 		{
 			name:    "no error custom values",
-			conf:    config.GetGoerliDefaultPerpsvConfig(),
+			conf:    config.GetOptimismGoerliDefaultConfig(""),
 			limit:   1,
 			wantRes: []*models.MarketUpdate{marketUpdate},
 		},
 		{
 			name:    "no error custom values blank result",
-			conf:    config.GetGoerliDefaultPerpsvConfig(),
+			conf:    config.GetOptimismGoerliDefaultConfig(""),
 			limit:   1,
 			wantRes: []*models.MarketUpdate{},
 		},
 		{
 			name:    "error",
-			conf:    config.GetGoerliDefaultPerpsvConfig(),
+			conf:    config.GetOptimismGoerliDefaultConfig(""),
 			limit:   1,
 			wantErr: errors.FilterErr,
 		},
@@ -805,28 +775,28 @@ func TestPerpsv3_RetrieveMarketUpdatesBig(t *testing.T) {
 	}{
 		{
 			name:       "no error default values",
-			conf:       config.GetGoerliDefaultPerpsvConfig(),
+			conf:       config.GetOptimismGoerliDefaultConfig(""),
 			startBlock: 0,
 			endBlock:   nil,
 			wantRes:    []*models.MarketUpdateBig{marketUpdate, marketUpdate, marketUpdate},
 		},
 		{
 			name:       "no error custom values",
-			conf:       config.GetGoerliDefaultPerpsvConfig(),
+			conf:       config.GetOptimismGoerliDefaultConfig(""),
 			startBlock: blockN,
 			endBlock:   &blockN,
 			wantRes:    []*models.MarketUpdateBig{marketUpdate},
 		},
 		{
 			name:       "no error custom values blank result",
-			conf:       config.GetGoerliDefaultPerpsvConfig(),
+			conf:       config.GetOptimismGoerliDefaultConfig(""),
 			startBlock: blockN,
 			endBlock:   &blockN,
 			wantRes:    []*models.MarketUpdateBig{},
 		},
 		{
 			name:       "error",
-			conf:       config.GetGoerliDefaultPerpsvConfig(),
+			conf:       config.GetOptimismGoerliDefaultConfig(""),
 			startBlock: 0,
 			endBlock:   nil,
 			wantErr:    errors.FilterErr,
@@ -879,25 +849,25 @@ func TestPerpsv3_RetrieveMarketUpdatesBigLimit(t *testing.T) {
 	}{
 		{
 			name:    "no error default values",
-			conf:    config.GetGoerliDefaultPerpsvConfig(),
+			conf:    config.GetOptimismGoerliDefaultConfig(""),
 			limit:   0,
 			wantRes: []*models.MarketUpdateBig{marketUpdate, marketUpdate, marketUpdate},
 		},
 		{
 			name:    "no error custom values",
-			conf:    config.GetGoerliDefaultPerpsvConfig(),
+			conf:    config.GetOptimismGoerliDefaultConfig(""),
 			limit:   1,
 			wantRes: []*models.MarketUpdateBig{marketUpdate},
 		},
 		{
 			name:    "no error custom values blank result",
-			conf:    config.GetGoerliDefaultPerpsvConfig(),
+			conf:    config.GetOptimismGoerliDefaultConfig(""),
 			limit:   1,
 			wantRes: []*models.MarketUpdateBig{},
 		},
 		{
 			name:    "error",
-			conf:    config.GetGoerliDefaultPerpsvConfig(),
+			conf:    config.GetOptimismGoerliDefaultConfig(""),
 			limit:   1,
 			wantErr: errors.FilterErr,
 		},
@@ -949,7 +919,7 @@ func TestPerpsv3_ListenTrades(t *testing.T) {
 			defer ctrl.Finish()
 			mockEvents := mock_events.NewMockIEvents(ctrl)
 
-			p, _ := createTest(config.GetGoerliDefaultPerpsvConfig())
+			p, _ := createTest(config.GetOptimismGoerliDefaultConfig(""))
 			p.events = mockEvents
 
 			mockEvents.EXPECT().ListenTrades().Return(tt.sub, tt.wantErr)
@@ -989,7 +959,7 @@ func TestPerpsv3_ListenOrders(t *testing.T) {
 			defer ctrl.Finish()
 			mockEvents := mock_events.NewMockIEvents(ctrl)
 
-			p, _ := createTest(config.GetGoerliDefaultPerpsvConfig())
+			p, _ := createTest(config.GetOptimismGoerliDefaultConfig(""))
 			p.events = mockEvents
 
 			mockEvents.EXPECT().ListenOrders().Return(tt.sub, tt.wantErr)
@@ -1029,7 +999,7 @@ func TestPerpsv3_ListenMarketUpdates(t *testing.T) {
 			defer ctrl.Finish()
 			mockEvents := mock_events.NewMockIEvents(ctrl)
 
-			p, _ := createTest(config.GetGoerliDefaultPerpsvConfig())
+			p, _ := createTest(config.GetOptimismGoerliDefaultConfig(""))
 			p.events = mockEvents
 
 			mockEvents.EXPECT().ListenMarketUpdates().Return(tt.sub, tt.wantErr)
@@ -1078,7 +1048,7 @@ func TestPerpsv3_GetPosition(t *testing.T) {
 			defer ctrl.Finish()
 			mockService := mock_services.NewMockIService(ctrl)
 
-			p, _ := createTest(config.GetGoerliDefaultPerpsvConfig())
+			p, _ := createTest(config.GetOptimismGoerliDefaultConfig(""))
 			p.service = mockService
 
 			mockService.EXPECT().GetPosition(tt.accountID, tt.marketID).Return(tt.wantRes, tt.wantErr)
@@ -1124,7 +1094,7 @@ func TestPerpsv3_GetMarketMetadata(t *testing.T) {
 			defer ctrl.Finish()
 			mockService := mock_services.NewMockIService(ctrl)
 
-			p, _ := createTest(config.GetGoerliDefaultPerpsvConfig())
+			p, _ := createTest(config.GetOptimismGoerliDefaultConfig(""))
 			p.service = mockService
 
 			mockService.EXPECT().GetMarketMetadata(tt.marketID).Return(tt.wantRes, tt.wantErr)
@@ -1182,7 +1152,7 @@ func TestPerpsv3_FormatAccount(t *testing.T) {
 			defer ctrl.Finish()
 			mockService := mock_services.NewMockIService(ctrl)
 
-			p, _ := createTest(config.GetGoerliDefaultPerpsvConfig())
+			p, _ := createTest(config.GetOptimismGoerliDefaultConfig(""))
 			p.service = mockService
 
 			mockService.EXPECT().FormatAccount(tt.accountID).Return(tt.wantRes, tt.wantErr)
@@ -1255,7 +1225,7 @@ func TestPerpsv3_FormatAccounts(t *testing.T) {
 			defer ctrl.Finish()
 			mockService := mock_services.NewMockIService(ctrl)
 
-			p, _ := createTest(config.GetGoerliDefaultPerpsvConfig())
+			p, _ := createTest(config.GetOptimismGoerliDefaultConfig(""))
 			p.service = mockService
 
 			mockService.EXPECT().FormatAccounts().Return(tt.wantRes, tt.wantErr)
@@ -1332,7 +1302,7 @@ func TestPerpsv3_FormatAccountsLimit(t *testing.T) {
 			defer ctrl.Finish()
 			mockService := mock_services.NewMockIService(ctrl)
 
-			p, _ := createTest(config.GetGoerliDefaultPerpsvConfig())
+			p, _ := createTest(config.GetOptimismGoerliDefaultConfig(""))
 			p.service = mockService
 
 			mockService.EXPECT().FormatAccountsLimit(tt.limit).Return(tt.wantRes, tt.wantErr)
@@ -1382,7 +1352,7 @@ func TestPerpsv3_GetMarketSummary(t *testing.T) {
 			defer ctrl.Finish()
 			mockService := mock_services.NewMockIService(ctrl)
 
-			p, _ := createTest(config.GetGoerliDefaultPerpsvConfig())
+			p, _ := createTest(config.GetOptimismGoerliDefaultConfig(""))
 			p.service = mockService
 
 			mockService.EXPECT().GetMarketSummary(tt.marketID).Return(tt.summary, tt.wantErr)

@@ -2,11 +2,11 @@ package services
 
 import (
 	"context"
+	"github.com/gateway-fm/perpsv3-Go/contracts/perpsMarket"
 	"math/big"
 
 	"github.com/ethereum/go-ethereum/accounts/abi/bind"
 
-	"github.com/gateway-fm/perpsv3-Go/contracts/perpsMarketGoerli"
 	"github.com/gateway-fm/perpsv3-Go/errors"
 	"github.com/gateway-fm/perpsv3-Go/models"
 	"github.com/gateway-fm/perpsv3-Go/pkg/logger"
@@ -87,7 +87,7 @@ func (s *Service) retrieveOrders(opts *bind.FilterOpts) ([]*models.Order, error)
 }
 
 // getOrder is used to get models.Order from given event and block number
-func (s *Service) getOrder(event *perpsMarketGoerli.PerpsMarketGoerliOrderCommitted, blockN uint64) (*models.Order, error) {
+func (s *Service) getOrder(event *perpsMarket.PerpsMarketOrderCommitted, blockN uint64) (*models.Order, error) {
 	block, err := s.rpcClient.HeaderByNumber(context.Background(), big.NewInt(int64(blockN)))
 	if err != nil {
 		logger.Log().WithField("layer", "Service-RetrieveTrades").Errorf(

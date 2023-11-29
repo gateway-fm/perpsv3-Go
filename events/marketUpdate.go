@@ -7,7 +7,7 @@ import (
 	"github.com/ethereum/go-ethereum/ethclient"
 	"github.com/ethereum/go-ethereum/event"
 
-	"github.com/gateway-fm/perpsv3-Go/contracts/perpsMarketGoerli"
+	"github.com/gateway-fm/perpsv3-Go/contracts/perpsMarket"
 	"github.com/gateway-fm/perpsv3-Go/errors"
 	"github.com/gateway-fm/perpsv3-Go/models"
 	"github.com/gateway-fm/perpsv3-Go/pkg/logger"
@@ -17,18 +17,18 @@ import (
 type MarketUpdateSubscription struct {
 	*basicSubscription
 	MarketUpdatesChan chan *models.MarketUpdate
-	contractEventChan chan *perpsMarketGoerli.PerpsMarketGoerliMarketUpdated
+	contractEventChan chan *perpsMarket.PerpsMarketMarketUpdated
 }
 
 // MarketUpdateSubscriptionBig is a struct for listening to all 'MarketUpdated' contract events and return them as models.MarketUpdateBig struct
 type MarketUpdateSubscriptionBig struct {
 	*basicSubscription
 	MarketUpdatesChan chan *models.MarketUpdateBig
-	contractEventChan chan *perpsMarketGoerli.PerpsMarketGoerliMarketUpdated
+	contractEventChan chan *perpsMarket.PerpsMarketMarketUpdated
 }
 
 func (e *Events) ListenMarketUpdatesBig() (*MarketUpdateSubscriptionBig, error) {
-	contractEventChan := make(chan *perpsMarketGoerli.PerpsMarketGoerliMarketUpdated)
+	contractEventChan := make(chan *perpsMarket.PerpsMarketMarketUpdated)
 
 	contractSub, err := e.perpsMarket.WatchMarketUpdated(nil, contractEventChan)
 	if err != nil {
@@ -44,7 +44,7 @@ func (e *Events) ListenMarketUpdatesBig() (*MarketUpdateSubscriptionBig, error) 
 }
 
 func (e *Events) ListenMarketUpdates() (*MarketUpdateSubscription, error) {
-	contractEventChan := make(chan *perpsMarketGoerli.PerpsMarketGoerliMarketUpdated)
+	contractEventChan := make(chan *perpsMarket.PerpsMarketMarketUpdated)
 
 	contractSub, err := e.perpsMarket.WatchMarketUpdated(nil, contractEventChan)
 	if err != nil {
@@ -60,7 +60,7 @@ func (e *Events) ListenMarketUpdates() (*MarketUpdateSubscription, error) {
 }
 
 // newMarketUpdateSubscription is used to create new MarketUpdateSubscription instance
-func newMarketUpdateSubscription(eventSub event.Subscription, contractEventChan chan *perpsMarketGoerli.PerpsMarketGoerliMarketUpdated) *MarketUpdateSubscription {
+func newMarketUpdateSubscription(eventSub event.Subscription, contractEventChan chan *perpsMarket.PerpsMarketMarketUpdated) *MarketUpdateSubscription {
 	return &MarketUpdateSubscription{
 		basicSubscription: newBasicSubscription(eventSub),
 		contractEventChan: contractEventChan,
@@ -69,7 +69,7 @@ func newMarketUpdateSubscription(eventSub event.Subscription, contractEventChan 
 }
 
 // newMarketUpdateSubscription is used to create new MarketUpdateSubscription instance
-func newMarketUpdateSubscriptionBig(eventSub event.Subscription, contractEventChan chan *perpsMarketGoerli.PerpsMarketGoerliMarketUpdated) *MarketUpdateSubscriptionBig {
+func newMarketUpdateSubscriptionBig(eventSub event.Subscription, contractEventChan chan *perpsMarket.PerpsMarketMarketUpdated) *MarketUpdateSubscriptionBig {
 	return &MarketUpdateSubscriptionBig{
 		basicSubscription: newBasicSubscription(eventSub),
 		contractEventChan: contractEventChan,

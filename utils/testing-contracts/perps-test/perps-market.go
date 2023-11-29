@@ -12,8 +12,8 @@ import (
 	"github.com/ethereum/go-ethereum/crypto"
 	"github.com/ethereum/go-ethereum/ethclient"
 
-	"github.com/gateway-fm/perpsv3-Go/contracts/perpsMarketGoerli"
-	"github.com/gateway-fm/perpsv3-Go/contracts/sUSDTGoerli"
+	"github.com/gateway-fm/perpsv3-Go/contracts/perpsMarket"
+	"github.com/gateway-fm/perpsv3-Go/contracts/sUSDT"
 	"github.com/gateway-fm/perpsv3-Go/pkg/logger"
 )
 
@@ -23,9 +23,9 @@ type TestPerpsMarket struct {
 	TestAccount     *big.Int
 	chainID         *big.Int
 	rpcClient       *ethclient.Client
-	perpsMarket     *perpsMarketGoerli.PerpsMarketGoerli
+	perpsMarket     *perpsMarket.PerpsMarket
 	perpsMarketAddr common.Address
-	snxUSDT         *sUSDTGoerli.SUSDTGoerli
+	snxUSDT         *sUSDT.SUSDT
 }
 
 func GetTestPerpsMarket(rpcUrl string, perpsMarketAddress string, sUSDTAddress string, chainID int) *TestPerpsMarket {
@@ -44,12 +44,12 @@ func GetTestPerpsMarket(rpcUrl string, perpsMarketAddress string, sUSDTAddress s
 		logger.Log().WithField("layer", "TestPerpsMarket-GetTestPerpsMarket").Fatalf("dial rpc error: %v", err.Error())
 	}
 
-	perpsMarket, err := perpsMarketGoerli.NewPerpsMarketGoerli(common.HexToAddress(perpsMarketAddress), rpcClient)
+	perpsMarket, err := perpsMarket.NewPerpsMarket(common.HexToAddress(perpsMarketAddress), rpcClient)
 	if err != nil {
 		logger.Log().WithField("layer", "TestPerpsMarket-GetTestPerpsMarket").Fatalf("create perps contract err: %v", err.Error())
 	}
 
-	snxUSDT, err := sUSDTGoerli.NewSUSDTGoerli(common.HexToAddress(sUSDTAddress), rpcClient)
+	snxUSDT, err := sUSDT.NewSUSDT(common.HexToAddress(sUSDTAddress), rpcClient)
 	if err != nil {
 		logger.Log().WithField("layer", "TestPerpsMarket-GetTestPerpsMarket").Fatalf("create s-usdt contract err: %v", err.Error())
 	}
@@ -150,16 +150,16 @@ func (m *TestPerpsMarket) GetCollateralAmount(marketIDS string) {
 	logger.Log().WithField("layer", "TestPerpsMarket-GetCollateralAmount").Infof("collateral amount: %v", amount.String())
 }
 
-func (m *TestPerpsMarket) GetMaxCollateralAmount(marketIDS string) {
-	marketID := m.getBig(marketIDS)
-
-	amount, err := m.perpsMarket.GetMaxCollateralAmount(nil, marketID)
-	if err != nil {
-		logger.Log().WithField("layer", "TestPerpsMarket-GetMaxCollateralAmount").Fatalf("get max collateral amount err: %v", err.Error())
-	}
-
-	logger.Log().WithField("layer", "TestPerpsMarket-GetMaxCollateralAmount").Infof("max collateral amount: %v", amount.String())
-}
+//func (m *TestPerpsMarket) GetMaxCollateralAmount(marketIDS string) {
+//	marketID := m.getBig(marketIDS)
+//
+//	amount, err := m.perpsMarket.GetMaxCollateralAmount(nil, marketID)
+//	if err != nil {
+//		logger.Log().WithField("layer", "TestPerpsMarket-GetMaxCollateralAmount").Fatalf("get max collateral amount err: %v", err.Error())
+//	}
+//
+//	logger.Log().WithField("layer", "TestPerpsMarket-GetMaxCollateralAmount").Infof("max collateral amount: %v", amount.String())
+//}
 
 func (m *TestPerpsMarket) ModifyCollateral(marketIDS string, amountS string) {
 	aut := m.getAut("ModifyCollateral")
@@ -188,7 +188,7 @@ func (m *TestPerpsMarket) CommitOrder(marketIDS string, sizeS string) {
 
 	logger.Log().WithField("layer", "TestPerpsMarket-CommitOrder").Infof("index price: %v", summary.IndexPrice.String())
 
-	req := perpsMarketGoerli.AsyncOrderOrderCommitmentRequest{
+	req := perpsMarket.AsyncOrderOrderCommitmentRequest{
 		MarketId:             marketID,
 		AccountId:            m.TestAccount,
 		SizeDelta:            size,

@@ -6,6 +6,7 @@ require (
 	github.com/ethereum/go-ethereum v1.12.2
 	github.com/golang/mock v1.6.0
 	github.com/sirupsen/logrus v1.9.3
+	github.com/status-im/keycard-go v0.2.0
 	github.com/stretchr/testify v1.8.1
 	github.com/t-tomalak/logrus-easy-formatter v0.0.0-20190827215021-c074f06c5816
 )

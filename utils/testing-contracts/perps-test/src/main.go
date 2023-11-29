@@ -37,10 +37,10 @@ func main() {
 			// Market ID
 			perps.GetCollateralAmount(args[2])
 			perps.Close()
-		case "GetMaxCollateralAmount":
-			// Market ID
-			perps.GetMaxCollateralAmount(args[2])
-			perps.Close()
+		//case "GetMaxCollateralAmount":
+		//	// Market ID
+		//	perps.GetMaxCollateralAmount(args[2])
+		//	perps.Close()
 		case "SetApproval":
 			// Amount
 			perps.SetApproval(args[2])

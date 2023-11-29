@@ -2,11 +2,14 @@ package services
 
 import (
 	"context"
+	"fmt"
 	"math/big"
 
 	"github.com/ethereum/go-ethereum/accounts/abi/bind"
 
-	"github.com/gateway-fm/perpsv3-Go/contracts/perpsMarketGoerli"
+	"github.com/gateway-fm/perpsv3-Go/config"
+	"github.com/gateway-fm/perpsv3-Go/contracts/forwarder"
+	"github.com/gateway-fm/perpsv3-Go/contracts/perpsMarket"
 	"github.com/gateway-fm/perpsv3-Go/errors"
 	"github.com/gateway-fm/perpsv3-Go/models"
 	"github.com/gateway-fm/perpsv3-Go/pkg/logger"
@@ -131,15 +134,20 @@ func (s *Service) GetMarketSummary(marketID *big.Int) (*models.MarketSummary, er
 		return nil, errors.GetInvalidArgumentErr("market id cannot be nil")
 	}
 
-	res, err := s.perpsMarket.GetMarketSummary(nil, marketID)
+	var res perpsMarket.IPerpsMarketModuleMarketSummary
+	var err error
+
+	switch s.chainID {
+	case config.OptimismGoerli:
+		res, err = s.getMarketSummary(marketID)
+	case config.BaseAndromeda:
+		res, err = s.getMarketSummaryMultiCall(marketID)
+	default:
+		return nil, errors.GetInvalidArgumentErr("chain id not supported for GetMarketSummary method")
+	}
+
 	if err != nil {
-		if err.Error() == "execution reverted" {
-			logger.Log().WithField("layer", "Service-GetMarketSummary").Errorf("contract error, market does not exist")
-			return nil, errors.GetInvalidArgumentErr("market does not exist")
-		} else {
-			logger.Log().WithField("layer", "Service-GetMarketSummary").Errorf("error from the contract: %v", err.Error())
-			return nil, errors.GetReadContractErr(err, "perpsMarket", "getMarketSummary")
-		}
+		return nil, err
 	}
 
 	block, err := s.rpcClient.HeaderByNumber(context.Background(), nil)
@@ -151,6 +159,84 @@ func (s *Service) GetMarketSummary(marketID *big.Int) (*models.MarketSummary, er
 	}
 
 	return models.GetMarketSummaryFromContractModel(res, marketID, block.Time), nil
+}
+
+// getMarketSummary is used to get market summary using Forwarder contract
+func (s *Service) getMarketSummaryMultiCall(marketID *big.Int) (res perpsMarket.IPerpsMarketModuleMarketSummary, err error) {
+	getMarketSummaryCallData, err := s.rawPerpsContract.GetCallDataMarketSummary(marketID)
+	if err != nil {
+		return res, err
+	}
+
+	callSummary := forwarder.TrustedMulticallForwarderCall3Value{
+		Target:       s.rawPerpsContract.Address(),
+		AllowFailure: false,
+		Value:        big.NewInt(0),
+		CallData:     getMarketSummaryCallData,
+	}
+
+	feedID := models.GetPriceFeedIDFromMarketID(marketID)
+	if feedID == models.UNKNOWN {
+		logger.Log().WithField("layer", "getMarketSummaryMultiCall").Errorf(
+			"market ud: %v not supported on andromeda net", marketID.String(),
+		)
+		return res, errors.GetReadContractErr(fmt.Errorf("market %v not supported", marketID.String()), "rawForwarder", "Aggregate3Value")
+	}
+
+	fulfillOracleQueryCallData, err := s.rawERC7412.GetCallFulfillOracleQuery(feedID.String())
+	if err != nil {
+		return res, err
+	}
+
+	callFulfill := forwarder.TrustedMulticallForwarderCall3Value{
+		Target:       s.rawERC7412.Address(),
+		AllowFailure: false,
+		Value:        big.NewInt(1),
+		CallData:     fulfillOracleQueryCallData,
+	}
+
+	call, err := s.rawForwarder.Aggregate3Value([]forwarder.TrustedMulticallForwarderCall3Value{callFulfill, callSummary})
+	if err != nil {
+		return res, err
+	}
+
+	if len(call) != 2 {
+		logger.Log().WithField("layer", "getMarketSummaryMultiCall").Errorf("received %v from rawForwarder contract, expected 2", len(call))
+		return res, errors.GetReadContractErr(fmt.Errorf("invalid call"), "rawForwarder", "Aggregate3Value")
+	}
+
+	if !call[0].Success {
+		logger.Log().WithField("layer", "getMarketSummaryMultiCall").Error("call to erc7412 unsuccessful")
+		return res, errors.GetReadContractErr(fmt.Errorf("invalid call to erc7412"), "rawForwarder", "Aggregate3Value")
+	}
+
+	if !call[1].Success {
+		logger.Log().WithField("layer", "getMarketSummaryMultiCall").Error("call to erc7412 unsuccessful")
+		return res, errors.GetReadContractErr(fmt.Errorf("invalid call to perps market"), "rawForwarder", "Aggregate3Value")
+	}
+
+	unpackedSummary, err := s.rawPerpsContract.UnpackGetMarketSummary(call[1].ReturnData)
+	if err != nil {
+		return res, err
+	}
+
+	return *unpackedSummary, nil
+}
+
+// getMarketSummary is used to get market summary straight from the perps contract
+func (s *Service) getMarketSummary(marketID *big.Int) (res perpsMarket.IPerpsMarketModuleMarketSummary, err error) {
+	res, err = s.perpsMarket.GetMarketSummary(nil, marketID)
+	if err != nil {
+		if err.Error() == "execution reverted" {
+			logger.Log().WithField("layer", "Service-GetMarketSummary").Errorf("contract error, market does not exist")
+			err = errors.GetInvalidArgumentErr("market does not exist")
+		} else {
+			logger.Log().WithField("layer", "Service-GetMarketSummary").Errorf("error from the contract: %v", err.Error())
+			err = errors.GetReadContractErr(err, "perpsMarket", "getMarketSummary")
+		}
+	}
+
+	return res, err
 }
 
 func (s *Service) GetMarketIDs() ([]*big.Int, error) {
@@ -246,7 +332,7 @@ func (s *Service) retrieveMarketUpdatesBig(opts *bind.FilterOpts) ([]*models.Mar
 }
 
 // getMarketUpdate is used to get models.MarketUpdate from given event and block number
-func (s *Service) getMarketUpdate(event *perpsMarketGoerli.PerpsMarketGoerliMarketUpdated, blockN uint64) (*models.MarketUpdate, error) {
+func (s *Service) getMarketUpdate(event *perpsMarket.PerpsMarketMarketUpdated, blockN uint64) (*models.MarketUpdate, error) {
 	block, err := s.rpcClient.HeaderByNumber(context.Background(), big.NewInt(int64(blockN)))
 	if err != nil {
 		logger.Log().WithField("layer", "Service-getMarketUpdate").Errorf(
@@ -259,7 +345,7 @@ func (s *Service) getMarketUpdate(event *perpsMarketGoerli.PerpsMarketGoerliMark
 }
 
 // getMarketUpdate is used to get models.MarketUpdate from given event and block number
-func (s *Service) getMarketUpdateBig(event *perpsMarketGoerli.PerpsMarketGoerliMarketUpdated, blockN uint64) (*models.MarketUpdateBig, error) {
+func (s *Service) getMarketUpdateBig(event *perpsMarket.PerpsMarketMarketUpdated, blockN uint64) (*models.MarketUpdateBig, error) {
 	block, err := s.rpcClient.HeaderByNumber(context.Background(), big.NewInt(int64(blockN)))
 	if err != nil {
 		logger.Log().WithField("layer", "Service-getMarketUpdate").Errorf(

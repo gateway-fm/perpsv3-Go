@@ -5,7 +5,7 @@ import (
 
 	"github.com/ethereum/go-ethereum/common"
 
-	"github.com/gateway-fm/perpsv3-Go/contracts/perpsMarketGoerli"
+	"github.com/gateway-fm/perpsv3-Go/contracts/perpsMarket"
 )
 
 // Account is a struct for account model
@@ -35,7 +35,7 @@ func FormatAccount(
 	id *big.Int,
 	owner common.Address,
 	lastInteraction uint64,
-	permissions []perpsMarketGoerli.IAccountModuleAccountPermissions,
+	permissions []perpsMarket.IAccountModuleAccountPermissions,
 ) *Account {
 	return &Account{
 		ID:              id,

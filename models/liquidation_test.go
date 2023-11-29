@@ -2,7 +2,7 @@ package models
 
 import (
 	"github.com/ethereum/go-ethereum/core/types"
-	"github.com/gateway-fm/perpsv3-Go/contracts/perpsMarketGoerli"
+	"github.com/gateway-fm/perpsv3-Go/contracts/perpsMarket"
 	"github.com/stretchr/testify/require"
 	"math/big"
 	"testing"
@@ -14,7 +14,7 @@ func TestGetLiquidationFromEvent(t *testing.T) {
 
 	testCases := []struct {
 		name  string
-		event *perpsMarketGoerli.PerpsMarketGoerliPositionLiquidated
+		event *perpsMarket.PerpsMarketPositionLiquidated
 		time  uint64
 		want  *Liquidation
 	}{
@@ -24,7 +24,7 @@ func TestGetLiquidationFromEvent(t *testing.T) {
 		},
 		{
 			name: "only market ID",
-			event: &perpsMarketGoerli.PerpsMarketGoerliPositionLiquidated{
+			event: &perpsMarket.PerpsMarketPositionLiquidated{
 				MarketId: big.NewInt(1),
 			},
 			want: &Liquidation{
@@ -33,7 +33,7 @@ func TestGetLiquidationFromEvent(t *testing.T) {
 		},
 		{
 			name: "only account ID",
-			event: &perpsMarketGoerli.PerpsMarketGoerliPositionLiquidated{
+			event: &perpsMarket.PerpsMarketPositionLiquidated{
 				AccountId: big.NewInt(1),
 			},
 			want: &Liquidation{
@@ -42,7 +42,7 @@ func TestGetLiquidationFromEvent(t *testing.T) {
 		},
 		{
 			name: "full event",
-			event: &perpsMarketGoerli.PerpsMarketGoerliPositionLiquidated{
+			event: &perpsMarket.PerpsMarketPositionLiquidated{
 				MarketId:            big.NewInt(1),
 				AccountId:           big.NewInt(2),
 				AmountLiquidated:    big.NewInt(3),

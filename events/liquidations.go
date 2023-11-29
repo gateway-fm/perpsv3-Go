@@ -7,7 +7,7 @@ import (
 	"github.com/ethereum/go-ethereum/ethclient"
 	"github.com/ethereum/go-ethereum/event"
 
-	"github.com/gateway-fm/perpsv3-Go/contracts/perpsMarketGoerli"
+	"github.com/gateway-fm/perpsv3-Go/contracts/perpsMarket"
 	"github.com/gateway-fm/perpsv3-Go/errors"
 	"github.com/gateway-fm/perpsv3-Go/models"
 	"github.com/gateway-fm/perpsv3-Go/pkg/logger"
@@ -17,11 +17,11 @@ import (
 type LiquidationSubscription struct {
 	*basicSubscription
 	LiquidationsChan  chan *models.Liquidation
-	contractEventChan chan *perpsMarketGoerli.PerpsMarketGoerliPositionLiquidated
+	contractEventChan chan *perpsMarket.PerpsMarketPositionLiquidated
 }
 
 func (e *Events) ListenLiquidations() (*LiquidationSubscription, error) {
-	contractEventChan := make(chan *perpsMarketGoerli.PerpsMarketGoerliPositionLiquidated)
+	contractEventChan := make(chan *perpsMarket.PerpsMarketPositionLiquidated)
 
 	contractSub, err := e.perpsMarket.WatchPositionLiquidated(nil, contractEventChan, nil, nil)
 	if err != nil {
@@ -37,7 +37,7 @@ func (e *Events) ListenLiquidations() (*LiquidationSubscription, error) {
 }
 
 // newLiquidationSubscription is used to create new LiquidationSubscription instance
-func newLiquidationSubscription(eventSub event.Subscription, contractEventChan chan *perpsMarketGoerli.PerpsMarketGoerliPositionLiquidated) *LiquidationSubscription {
+func newLiquidationSubscription(eventSub event.Subscription, contractEventChan chan *perpsMarket.PerpsMarketPositionLiquidated) *LiquidationSubscription {
 	return &LiquidationSubscription{
 		basicSubscription: newBasicSubscription(eventSub),
 		contractEventChan: contractEventChan,
