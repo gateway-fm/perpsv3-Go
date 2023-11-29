@@ -4,6 +4,7 @@ import (
 	"encoding/base64"
 	"encoding/json"
 	"fmt"
+	erc7412 "github.com/gateway-fm/perpsv3-Go/contracts/ERC7412"
 	"io"
 	"net/http"
 
@@ -39,7 +40,7 @@ type ERC7412 struct {
 func NewERC7412(address common.Address, provider *ethclient.Client) (IRawERC7412Contract, error) {
 	c := &ERC7412{}
 
-	abiInstance, err := getABI("./contracts/84531-ERC7412.json")
+	abiInstance, err := getABI(erc7412.Erc7412MetaData)
 	if err != nil {
 		return nil, err
 	}

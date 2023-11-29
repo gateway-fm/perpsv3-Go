@@ -42,7 +42,7 @@ type Perps struct {
 func NewPerps(address common.Address, provider *ethclient.Client) (IRawPerpsContract, error) {
 	c := &Perps{}
 
-	abiInstance, err := getABI("./contracts/84531-andromeda-PerpsMarket.json")
+	abiInstance, err := getABI(perpsMarket.PerpsMarketMetaData)
 	if err != nil {
 		return nil, err
 	}
