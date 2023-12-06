@@ -3422,7 +3422,7 @@ func (_PerpsMarket *PerpsMarketFilterer) WatchAccountCreated(opts *bind.WatchOpt
 		ownerRule = append(ownerRule, ownerItem)
 	}
 
-	logs, sub, err := _PerpsMarket.contract.WatchLogs(opts, "AccountCreated", accountIdRule, ownerRule)
+	logs, sub, err := _PerpsMarket.contract.WatchLogs(opts, "AccountCreated")
 	if err != nil {
 		return nil, err
 	}
@@ -3568,7 +3568,7 @@ func (_PerpsMarket *PerpsMarketFilterer) WatchAccountLiquidationAttempt(opts *bi
 		accountIdRule = append(accountIdRule, accountIdItem)
 	}
 
-	logs, sub, err := _PerpsMarket.contract.WatchLogs(opts, "AccountLiquidationAttempt", accountIdRule)
+	logs, sub, err := _PerpsMarket.contract.WatchLogs(opts, "AccountLiquidationAttempt")
 	if err != nil {
 		return nil, err
 	}
@@ -6938,7 +6938,7 @@ func (_PerpsMarket *PerpsMarketFilterer) WatchOrderCommitted(opts *bind.WatchOpt
 		trackingCodeRule = append(trackingCodeRule, trackingCodeItem)
 	}
 
-	logs, sub, err := _PerpsMarket.contract.WatchLogs(opts, "OrderCommitted", marketIdRule, accountIdRule, trackingCodeRule)
+	logs, sub, err := _PerpsMarket.contract.WatchLogs(opts, "OrderCommitted")
 	if err != nil {
 		return nil, err
 	}
@@ -7258,7 +7258,7 @@ func (_PerpsMarket *PerpsMarketFilterer) WatchOrderSettled(opts *bind.WatchOpts,
 		trackingCodeRule = append(trackingCodeRule, trackingCodeItem)
 	}
 
-	logs, sub, err := _PerpsMarket.contract.WatchLogs(opts, "OrderSettled", marketIdRule, accountIdRule, trackingCodeRule)
+	logs, sub, err := _PerpsMarket.contract.WatchLogs(opts, "OrderSettled")
 	if err != nil {
 		return nil, err
 	}
@@ -7825,7 +7825,7 @@ func (_PerpsMarket *PerpsMarketFilterer) WatchPermissionGranted(opts *bind.Watch
 		userRule = append(userRule, userItem)
 	}
 
-	logs, sub, err := _PerpsMarket.contract.WatchLogs(opts, "PermissionGranted", accountIdRule, permissionRule, userRule)
+	logs, sub, err := _PerpsMarket.contract.WatchLogs(opts, "PermissionGranted")
 	if err != nil {
 		return nil, err
 	}
@@ -7988,7 +7988,7 @@ func (_PerpsMarket *PerpsMarketFilterer) WatchPermissionRevoked(opts *bind.Watch
 		userRule = append(userRule, userItem)
 	}
 
-	logs, sub, err := _PerpsMarket.contract.WatchLogs(opts, "PermissionRevoked", accountIdRule, permissionRule, userRule)
+	logs, sub, err := _PerpsMarket.contract.WatchLogs(opts, "PermissionRevoked")
 	if err != nil {
 		return nil, err
 	}
@@ -8143,7 +8143,7 @@ func (_PerpsMarket *PerpsMarketFilterer) WatchPositionLiquidated(opts *bind.Watc
 		marketIdRule = append(marketIdRule, marketIdItem)
 	}
 
-	logs, sub, err := _PerpsMarket.contract.WatchLogs(opts, "PositionLiquidated", accountIdRule, marketIdRule)
+	logs, sub, err := _PerpsMarket.contract.WatchLogs(opts, "PositionLiquidated")
 	if err != nil {
 		return nil, err
 	}
