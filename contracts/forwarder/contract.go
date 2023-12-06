@@ -29,14 +29,15 @@ var (
 	_ = abi.ConvertType
 )
 
-// MinimalForwarderForwardRequest is an auto generated low-level Go binding around an user-defined struct.
-type MinimalForwarderForwardRequest struct {
-	From  common.Address
-	To    common.Address
-	Value *big.Int
-	Gas   *big.Int
-	Nonce *big.Int
-	Data  []byte
+// ERC2771ForwarderForwardRequestData is an auto generated low-level Go binding around an user-defined struct.
+type ERC2771ForwarderForwardRequestData struct {
+	From      common.Address
+	To        common.Address
+	Value     *big.Int
+	Gas       *big.Int
+	Deadline  *big.Int
+	Data      []byte
+	Signature []byte
 }
 
 // TrustedMulticallForwarderCall is an auto generated low-level Go binding around an user-defined struct.
@@ -68,7 +69,7 @@ type TrustedMulticallForwarderResult struct {
 
 // ForwarderMetaData contains all meta data concerning the Forwarder contract.
 var ForwarderMetaData = &bind.MetaData{
-	ABI: "[{\"inputs\":[],\"name\":\"InvalidShortString\",\"type\":\"error\"},{\"inputs\":[{\"internalType\":\"string\",\"name\":\"str\",\"type\":\"string\"}],\"name\":\"StringTooLong\",\"type\":\"error\"},{\"anonymous\":false,\"inputs\":[],\"name\":\"EIP712DomainChanged\",\"type\":\"event\"},{\"inputs\":[{\"components\":[{\"internalType\":\"address\",\"name\":\"target\",\"type\":\"address\"},{\"internalType\":\"bytes\",\"name\":\"callData\",\"type\":\"bytes\"}],\"internalType\":\"structTrustedMulticallForwarder.Call[]\",\"name\":\"calls\",\"type\":\"tuple[]\"}],\"name\":\"aggregate\",\"outputs\":[{\"internalType\":\"uint256\",\"name\":\"blockNumber\",\"type\":\"uint256\"},{\"internalType\":\"bytes[]\",\"name\":\"returnData\",\"type\":\"bytes[]\"}],\"stateMutability\":\"payable\",\"type\":\"function\"},{\"inputs\":[{\"components\":[{\"internalType\":\"address\",\"name\":\"target\",\"type\":\"address\"},{\"internalType\":\"bool\",\"name\":\"allowFailure\",\"type\":\"bool\"},{\"internalType\":\"bytes\",\"name\":\"callData\",\"type\":\"bytes\"}],\"internalType\":\"structTrustedMulticallForwarder.Call3[]\",\"name\":\"calls\",\"type\":\"tuple[]\"}],\"name\":\"aggregate3\",\"outputs\":[{\"components\":[{\"internalType\":\"bool\",\"name\":\"success\",\"type\":\"bool\"},{\"internalType\":\"bytes\",\"name\":\"returnData\",\"type\":\"bytes\"}],\"internalType\":\"structTrustedMulticallForwarder.Result[]\",\"name\":\"returnData\",\"type\":\"tuple[]\"}],\"stateMutability\":\"payable\",\"type\":\"function\"},{\"inputs\":[{\"components\":[{\"internalType\":\"address\",\"name\":\"target\",\"type\":\"address\"},{\"internalType\":\"bool\",\"name\":\"allowFailure\",\"type\":\"bool\"},{\"internalType\":\"uint256\",\"name\":\"value\",\"type\":\"uint256\"},{\"internalType\":\"bytes\",\"name\":\"callData\",\"type\":\"bytes\"}],\"internalType\":\"structTrustedMulticallForwarder.Call3Value[]\",\"name\":\"calls\",\"type\":\"tuple[]\"}],\"name\":\"aggregate3Value\",\"outputs\":[{\"components\":[{\"internalType\":\"bool\",\"name\":\"success\",\"type\":\"bool\"},{\"internalType\":\"bytes\",\"name\":\"returnData\",\"type\":\"bytes\"}],\"internalType\":\"structTrustedMulticallForwarder.Result[]\",\"name\":\"returnData\",\"type\":\"tuple[]\"}],\"stateMutability\":\"payable\",\"type\":\"function\"},{\"inputs\":[{\"components\":[{\"internalType\":\"address\",\"name\":\"target\",\"type\":\"address\"},{\"internalType\":\"bytes\",\"name\":\"callData\",\"type\":\"bytes\"}],\"internalType\":\"structTrustedMulticallForwarder.Call[]\",\"name\":\"calls\",\"type\":\"tuple[]\"}],\"name\":\"blockAndAggregate\",\"outputs\":[{\"internalType\":\"uint256\",\"name\":\"blockNumber\",\"type\":\"uint256\"},{\"internalType\":\"bytes32\",\"name\":\"blockHash\",\"type\":\"bytes32\"},{\"components\":[{\"internalType\":\"bool\",\"name\":\"success\",\"type\":\"bool\"},{\"internalType\":\"bytes\",\"name\":\"returnData\",\"type\":\"bytes\"}],\"internalType\":\"structTrustedMulticallForwarder.Result[]\",\"name\":\"returnData\",\"type\":\"tuple[]\"}],\"stateMutability\":\"payable\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"eip712Domain\",\"outputs\":[{\"internalType\":\"bytes1\",\"name\":\"fields\",\"type\":\"bytes1\"},{\"internalType\":\"string\",\"name\":\"name\",\"type\":\"string\"},{\"internalType\":\"string\",\"name\":\"version\",\"type\":\"string\"},{\"internalType\":\"uint256\",\"name\":\"chainId\",\"type\":\"uint256\"},{\"internalType\":\"address\",\"name\":\"verifyingContract\",\"type\":\"address\"},{\"internalType\":\"bytes32\",\"name\":\"salt\",\"type\":\"bytes32\"},{\"internalType\":\"uint256[]\",\"name\":\"extensions\",\"type\":\"uint256[]\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"components\":[{\"internalType\":\"address\",\"name\":\"from\",\"type\":\"address\"},{\"internalType\":\"address\",\"name\":\"to\",\"type\":\"address\"},{\"internalType\":\"uint256\",\"name\":\"value\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"gas\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"nonce\",\"type\":\"uint256\"},{\"internalType\":\"bytes\",\"name\":\"data\",\"type\":\"bytes\"}],\"internalType\":\"structMinimalForwarder.ForwardRequest\",\"name\":\"req\",\"type\":\"tuple\"},{\"internalType\":\"bytes\",\"name\":\"signature\",\"type\":\"bytes\"}],\"name\":\"execute\",\"outputs\":[{\"internalType\":\"bool\",\"name\":\"\",\"type\":\"bool\"},{\"internalType\":\"bytes\",\"name\":\"\",\"type\":\"bytes\"}],\"stateMutability\":\"payable\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"getBasefee\",\"outputs\":[{\"internalType\":\"uint256\",\"name\":\"basefee\",\"type\":\"uint256\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"uint256\",\"name\":\"blockNumber\",\"type\":\"uint256\"}],\"name\":\"getBlockHash\",\"outputs\":[{\"internalType\":\"bytes32\",\"name\":\"blockHash\",\"type\":\"bytes32\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"getBlockNumber\",\"outputs\":[{\"internalType\":\"uint256\",\"name\":\"blockNumber\",\"type\":\"uint256\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"getChainId\",\"outputs\":[{\"internalType\":\"uint256\",\"name\":\"chainid\",\"type\":\"uint256\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"getCurrentBlockCoinbase\",\"outputs\":[{\"internalType\":\"address\",\"name\":\"coinbase\",\"type\":\"address\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"getCurrentBlockDifficulty\",\"outputs\":[{\"internalType\":\"uint256\",\"name\":\"difficulty\",\"type\":\"uint256\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"getCurrentBlockGasLimit\",\"outputs\":[{\"internalType\":\"uint256\",\"name\":\"gaslimit\",\"type\":\"uint256\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"getCurrentBlockTimestamp\",\"outputs\":[{\"internalType\":\"uint256\",\"name\":\"timestamp\",\"type\":\"uint256\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"address\",\"name\":\"addr\",\"type\":\"address\"}],\"name\":\"getEthBalance\",\"outputs\":[{\"internalType\":\"uint256\",\"name\":\"balance\",\"type\":\"uint256\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"getLastBlockHash\",\"outputs\":[{\"internalType\":\"bytes32\",\"name\":\"blockHash\",\"type\":\"bytes32\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"address\",\"name\":\"from\",\"type\":\"address\"}],\"name\":\"getNonce\",\"outputs\":[{\"internalType\":\"uint256\",\"name\":\"\",\"type\":\"uint256\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"bool\",\"name\":\"requireSuccess\",\"type\":\"bool\"},{\"components\":[{\"internalType\":\"address\",\"name\":\"target\",\"type\":\"address\"},{\"internalType\":\"bytes\",\"name\":\"callData\",\"type\":\"bytes\"}],\"internalType\":\"structTrustedMulticallForwarder.Call[]\",\"name\":\"calls\",\"type\":\"tuple[]\"}],\"name\":\"tryAggregate\",\"outputs\":[{\"components\":[{\"internalType\":\"bool\",\"name\":\"success\",\"type\":\"bool\"},{\"internalType\":\"bytes\",\"name\":\"returnData\",\"type\":\"bytes\"}],\"internalType\":\"structTrustedMulticallForwarder.Result[]\",\"name\":\"returnData\",\"type\":\"tuple[]\"}],\"stateMutability\":\"payable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"bool\",\"name\":\"requireSuccess\",\"type\":\"bool\"},{\"components\":[{\"internalType\":\"address\",\"name\":\"target\",\"type\":\"address\"},{\"internalType\":\"bytes\",\"name\":\"callData\",\"type\":\"bytes\"}],\"internalType\":\"structTrustedMulticallForwarder.Call[]\",\"name\":\"calls\",\"type\":\"tuple[]\"}],\"name\":\"tryBlockAndAggregate\",\"outputs\":[{\"internalType\":\"uint256\",\"name\":\"blockNumber\",\"type\":\"uint256\"},{\"internalType\":\"bytes32\",\"name\":\"blockHash\",\"type\":\"bytes32\"},{\"components\":[{\"internalType\":\"bool\",\"name\":\"success\",\"type\":\"bool\"},{\"internalType\":\"bytes\",\"name\":\"returnData\",\"type\":\"bytes\"}],\"internalType\":\"structTrustedMulticallForwarder.Result[]\",\"name\":\"returnData\",\"type\":\"tuple[]\"}],\"stateMutability\":\"payable\",\"type\":\"function\"},{\"inputs\":[{\"components\":[{\"internalType\":\"address\",\"name\":\"from\",\"type\":\"address\"},{\"internalType\":\"address\",\"name\":\"to\",\"type\":\"address\"},{\"internalType\":\"uint256\",\"name\":\"value\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"gas\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"nonce\",\"type\":\"uint256\"},{\"internalType\":\"bytes\",\"name\":\"data\",\"type\":\"bytes\"}],\"internalType\":\"structMinimalForwarder.ForwardRequest\",\"name\":\"req\",\"type\":\"tuple\"},{\"internalType\":\"bytes\",\"name\":\"signature\",\"type\":\"bytes\"}],\"name\":\"verify\",\"outputs\":[{\"internalType\":\"bool\",\"name\":\"\",\"type\":\"bool\"}],\"stateMutability\":\"view\",\"type\":\"function\"}]",
+	ABI: "[{\"inputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"constructor\"},{\"inputs\":[{\"internalType\":\"address\",\"name\":\"account\",\"type\":\"address\"}],\"name\":\"AddressInsufficientBalance\",\"type\":\"error\"},{\"inputs\":[{\"internalType\":\"uint48\",\"name\":\"deadline\",\"type\":\"uint48\"}],\"name\":\"ERC2771ForwarderExpiredRequest\",\"type\":\"error\"},{\"inputs\":[{\"internalType\":\"address\",\"name\":\"signer\",\"type\":\"address\"},{\"internalType\":\"address\",\"name\":\"from\",\"type\":\"address\"}],\"name\":\"ERC2771ForwarderInvalidSigner\",\"type\":\"error\"},{\"inputs\":[{\"internalType\":\"uint256\",\"name\":\"requestedValue\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"msgValue\",\"type\":\"uint256\"}],\"name\":\"ERC2771ForwarderMismatchedValue\",\"type\":\"error\"},{\"inputs\":[{\"internalType\":\"address\",\"name\":\"target\",\"type\":\"address\"},{\"internalType\":\"address\",\"name\":\"forwarder\",\"type\":\"address\"}],\"name\":\"ERC2771UntrustfulTarget\",\"type\":\"error\"},{\"inputs\":[],\"name\":\"FailedInnerCall\",\"type\":\"error\"},{\"inputs\":[{\"internalType\":\"address\",\"name\":\"account\",\"type\":\"address\"},{\"internalType\":\"uint256\",\"name\":\"currentNonce\",\"type\":\"uint256\"}],\"name\":\"InvalidAccountNonce\",\"type\":\"error\"},{\"inputs\":[],\"name\":\"InvalidShortString\",\"type\":\"error\"},{\"inputs\":[{\"internalType\":\"string\",\"name\":\"str\",\"type\":\"string\"}],\"name\":\"StringTooLong\",\"type\":\"error\"},{\"anonymous\":false,\"inputs\":[],\"name\":\"EIP712DomainChanged\",\"type\":\"event\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":true,\"internalType\":\"address\",\"name\":\"signer\",\"type\":\"address\"},{\"indexed\":false,\"internalType\":\"uint256\",\"name\":\"nonce\",\"type\":\"uint256\"},{\"indexed\":false,\"internalType\":\"bool\",\"name\":\"success\",\"type\":\"bool\"}],\"name\":\"ExecutedForwardRequest\",\"type\":\"event\"},{\"inputs\":[{\"components\":[{\"internalType\":\"address\",\"name\":\"target\",\"type\":\"address\"},{\"internalType\":\"bytes\",\"name\":\"callData\",\"type\":\"bytes\"}],\"internalType\":\"structTrustedMulticallForwarder.Call[]\",\"name\":\"calls\",\"type\":\"tuple[]\"}],\"name\":\"aggregate\",\"outputs\":[{\"internalType\":\"uint256\",\"name\":\"blockNumber\",\"type\":\"uint256\"},{\"internalType\":\"bytes[]\",\"name\":\"returnData\",\"type\":\"bytes[]\"}],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"components\":[{\"internalType\":\"address\",\"name\":\"target\",\"type\":\"address\"},{\"internalType\":\"bool\",\"name\":\"allowFailure\",\"type\":\"bool\"},{\"internalType\":\"bytes\",\"name\":\"callData\",\"type\":\"bytes\"}],\"internalType\":\"structTrustedMulticallForwarder.Call3[]\",\"name\":\"calls\",\"type\":\"tuple[]\"}],\"name\":\"aggregate3\",\"outputs\":[{\"components\":[{\"internalType\":\"bool\",\"name\":\"success\",\"type\":\"bool\"},{\"internalType\":\"bytes\",\"name\":\"returnData\",\"type\":\"bytes\"}],\"internalType\":\"structTrustedMulticallForwarder.Result[]\",\"name\":\"returnData\",\"type\":\"tuple[]\"}],\"stateMutability\":\"payable\",\"type\":\"function\"},{\"inputs\":[{\"components\":[{\"internalType\":\"address\",\"name\":\"target\",\"type\":\"address\"},{\"internalType\":\"bool\",\"name\":\"allowFailure\",\"type\":\"bool\"},{\"internalType\":\"uint256\",\"name\":\"value\",\"type\":\"uint256\"},{\"internalType\":\"bytes\",\"name\":\"callData\",\"type\":\"bytes\"}],\"internalType\":\"structTrustedMulticallForwarder.Call3Value[]\",\"name\":\"calls\",\"type\":\"tuple[]\"}],\"name\":\"aggregate3Value\",\"outputs\":[{\"components\":[{\"internalType\":\"bool\",\"name\":\"success\",\"type\":\"bool\"},{\"internalType\":\"bytes\",\"name\":\"returnData\",\"type\":\"bytes\"}],\"internalType\":\"structTrustedMulticallForwarder.Result[]\",\"name\":\"returnData\",\"type\":\"tuple[]\"}],\"stateMutability\":\"payable\",\"type\":\"function\"},{\"inputs\":[{\"components\":[{\"internalType\":\"address\",\"name\":\"target\",\"type\":\"address\"},{\"internalType\":\"bytes\",\"name\":\"callData\",\"type\":\"bytes\"}],\"internalType\":\"structTrustedMulticallForwarder.Call[]\",\"name\":\"calls\",\"type\":\"tuple[]\"}],\"name\":\"blockAndAggregate\",\"outputs\":[{\"internalType\":\"uint256\",\"name\":\"blockNumber\",\"type\":\"uint256\"},{\"internalType\":\"bytes32\",\"name\":\"blockHash\",\"type\":\"bytes32\"},{\"components\":[{\"internalType\":\"bool\",\"name\":\"success\",\"type\":\"bool\"},{\"internalType\":\"bytes\",\"name\":\"returnData\",\"type\":\"bytes\"}],\"internalType\":\"structTrustedMulticallForwarder.Result[]\",\"name\":\"returnData\",\"type\":\"tuple[]\"}],\"stateMutability\":\"payable\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"eip712Domain\",\"outputs\":[{\"internalType\":\"bytes1\",\"name\":\"fields\",\"type\":\"bytes1\"},{\"internalType\":\"string\",\"name\":\"name\",\"type\":\"string\"},{\"internalType\":\"string\",\"name\":\"version\",\"type\":\"string\"},{\"internalType\":\"uint256\",\"name\":\"chainId\",\"type\":\"uint256\"},{\"internalType\":\"address\",\"name\":\"verifyingContract\",\"type\":\"address\"},{\"internalType\":\"bytes32\",\"name\":\"salt\",\"type\":\"bytes32\"},{\"internalType\":\"uint256[]\",\"name\":\"extensions\",\"type\":\"uint256[]\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"components\":[{\"internalType\":\"address\",\"name\":\"from\",\"type\":\"address\"},{\"internalType\":\"address\",\"name\":\"to\",\"type\":\"address\"},{\"internalType\":\"uint256\",\"name\":\"value\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"gas\",\"type\":\"uint256\"},{\"internalType\":\"uint48\",\"name\":\"deadline\",\"type\":\"uint48\"},{\"internalType\":\"bytes\",\"name\":\"data\",\"type\":\"bytes\"},{\"internalType\":\"bytes\",\"name\":\"signature\",\"type\":\"bytes\"}],\"internalType\":\"structERC2771Forwarder.ForwardRequestData\",\"name\":\"request\",\"type\":\"tuple\"}],\"name\":\"execute\",\"outputs\":[],\"stateMutability\":\"payable\",\"type\":\"function\"},{\"inputs\":[{\"components\":[{\"internalType\":\"address\",\"name\":\"from\",\"type\":\"address\"},{\"internalType\":\"address\",\"name\":\"to\",\"type\":\"address\"},{\"internalType\":\"uint256\",\"name\":\"value\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"gas\",\"type\":\"uint256\"},{\"internalType\":\"uint48\",\"name\":\"deadline\",\"type\":\"uint48\"},{\"internalType\":\"bytes\",\"name\":\"data\",\"type\":\"bytes\"},{\"internalType\":\"bytes\",\"name\":\"signature\",\"type\":\"bytes\"}],\"internalType\":\"structERC2771Forwarder.ForwardRequestData[]\",\"name\":\"requests\",\"type\":\"tuple[]\"}],\"name\":\"executeBatch\",\"outputs\":[{\"components\":[{\"internalType\":\"bool\",\"name\":\"success\",\"type\":\"bool\"},{\"internalType\":\"bytes\",\"name\":\"returnData\",\"type\":\"bytes\"}],\"internalType\":\"structTrustedMulticallForwarder.Result[]\",\"name\":\"returnData\",\"type\":\"tuple[]\"}],\"stateMutability\":\"payable\",\"type\":\"function\"},{\"inputs\":[{\"components\":[{\"internalType\":\"address\",\"name\":\"from\",\"type\":\"address\"},{\"internalType\":\"address\",\"name\":\"to\",\"type\":\"address\"},{\"internalType\":\"uint256\",\"name\":\"value\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"gas\",\"type\":\"uint256\"},{\"internalType\":\"uint48\",\"name\":\"deadline\",\"type\":\"uint48\"},{\"internalType\":\"bytes\",\"name\":\"data\",\"type\":\"bytes\"},{\"internalType\":\"bytes\",\"name\":\"signature\",\"type\":\"bytes\"}],\"internalType\":\"structERC2771Forwarder.ForwardRequestData[]\",\"name\":\"requests\",\"type\":\"tuple[]\"},{\"internalType\":\"addresspayable\",\"name\":\"refundReceiver\",\"type\":\"address\"}],\"name\":\"executeBatch\",\"outputs\":[],\"stateMutability\":\"payable\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"getBasefee\",\"outputs\":[{\"internalType\":\"uint256\",\"name\":\"basefee\",\"type\":\"uint256\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"uint256\",\"name\":\"blockNumber\",\"type\":\"uint256\"}],\"name\":\"getBlockHash\",\"outputs\":[{\"internalType\":\"bytes32\",\"name\":\"blockHash\",\"type\":\"bytes32\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"getBlockNumber\",\"outputs\":[{\"internalType\":\"uint256\",\"name\":\"blockNumber\",\"type\":\"uint256\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"getChainId\",\"outputs\":[{\"internalType\":\"uint256\",\"name\":\"chainid\",\"type\":\"uint256\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"getCurrentBlockCoinbase\",\"outputs\":[{\"internalType\":\"address\",\"name\":\"coinbase\",\"type\":\"address\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"getCurrentBlockGasLimit\",\"outputs\":[{\"internalType\":\"uint256\",\"name\":\"gaslimit\",\"type\":\"uint256\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"getCurrentBlockTimestamp\",\"outputs\":[{\"internalType\":\"uint256\",\"name\":\"timestamp\",\"type\":\"uint256\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"address\",\"name\":\"addr\",\"type\":\"address\"}],\"name\":\"getEthBalance\",\"outputs\":[{\"internalType\":\"uint256\",\"name\":\"balance\",\"type\":\"uint256\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"getLastBlockHash\",\"outputs\":[{\"internalType\":\"bytes32\",\"name\":\"blockHash\",\"type\":\"bytes32\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"getPrevRandao\",\"outputs\":[{\"internalType\":\"uint256\",\"name\":\"prevrandao\",\"type\":\"uint256\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"address\",\"name\":\"owner\",\"type\":\"address\"}],\"name\":\"nonces\",\"outputs\":[{\"internalType\":\"uint256\",\"name\":\"\",\"type\":\"uint256\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"bool\",\"name\":\"requireSuccess\",\"type\":\"bool\"},{\"components\":[{\"internalType\":\"address\",\"name\":\"target\",\"type\":\"address\"},{\"internalType\":\"bytes\",\"name\":\"callData\",\"type\":\"bytes\"}],\"internalType\":\"structTrustedMulticallForwarder.Call[]\",\"name\":\"calls\",\"type\":\"tuple[]\"}],\"name\":\"tryAggregate\",\"outputs\":[{\"components\":[{\"internalType\":\"bool\",\"name\":\"success\",\"type\":\"bool\"},{\"internalType\":\"bytes\",\"name\":\"returnData\",\"type\":\"bytes\"}],\"internalType\":\"structTrustedMulticallForwarder.Result[]\",\"name\":\"returnData\",\"type\":\"tuple[]\"}],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"bool\",\"name\":\"requireSuccess\",\"type\":\"bool\"},{\"components\":[{\"internalType\":\"address\",\"name\":\"target\",\"type\":\"address\"},{\"internalType\":\"bytes\",\"name\":\"callData\",\"type\":\"bytes\"}],\"internalType\":\"structTrustedMulticallForwarder.Call[]\",\"name\":\"calls\",\"type\":\"tuple[]\"}],\"name\":\"tryBlockAndAggregate\",\"outputs\":[{\"internalType\":\"uint256\",\"name\":\"blockNumber\",\"type\":\"uint256\"},{\"internalType\":\"bytes32\",\"name\":\"blockHash\",\"type\":\"bytes32\"},{\"components\":[{\"internalType\":\"bool\",\"name\":\"success\",\"type\":\"bool\"},{\"internalType\":\"bytes\",\"name\":\"returnData\",\"type\":\"bytes\"}],\"internalType\":\"structTrustedMulticallForwarder.Result[]\",\"name\":\"returnData\",\"type\":\"tuple[]\"}],\"stateMutability\":\"payable\",\"type\":\"function\"},{\"inputs\":[{\"components\":[{\"internalType\":\"address\",\"name\":\"from\",\"type\":\"address\"},{\"internalType\":\"address\",\"name\":\"to\",\"type\":\"address\"},{\"internalType\":\"uint256\",\"name\":\"value\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"gas\",\"type\":\"uint256\"},{\"internalType\":\"uint48\",\"name\":\"deadline\",\"type\":\"uint48\"},{\"internalType\":\"bytes\",\"name\":\"data\",\"type\":\"bytes\"},{\"internalType\":\"bytes\",\"name\":\"signature\",\"type\":\"bytes\"}],\"internalType\":\"structERC2771Forwarder.ForwardRequestData\",\"name\":\"request\",\"type\":\"tuple\"}],\"name\":\"verify\",\"outputs\":[{\"internalType\":\"bool\",\"name\":\"\",\"type\":\"bool\"}],\"stateMutability\":\"view\",\"type\":\"function\"}]",
 }
 
 // ForwarderABI is the input ABI used to generate the binding from.
@@ -442,37 +443,6 @@ func (_Forwarder *ForwarderCallerSession) GetCurrentBlockCoinbase() (common.Addr
 	return _Forwarder.Contract.GetCurrentBlockCoinbase(&_Forwarder.CallOpts)
 }
 
-// GetCurrentBlockDifficulty is a free data retrieval call binding the contract method 0x72425d9d.
-//
-// Solidity: function getCurrentBlockDifficulty() view returns(uint256 difficulty)
-func (_Forwarder *ForwarderCaller) GetCurrentBlockDifficulty(opts *bind.CallOpts) (*big.Int, error) {
-	var out []interface{}
-	err := _Forwarder.contract.Call(opts, &out, "getCurrentBlockDifficulty")
-
-	if err != nil {
-		return *new(*big.Int), err
-	}
-
-	out0 := *abi.ConvertType(out[0], new(*big.Int)).(**big.Int)
-
-	return out0, err
-
-}
-
-// GetCurrentBlockDifficulty is a free data retrieval call binding the contract method 0x72425d9d.
-//
-// Solidity: function getCurrentBlockDifficulty() view returns(uint256 difficulty)
-func (_Forwarder *ForwarderSession) GetCurrentBlockDifficulty() (*big.Int, error) {
-	return _Forwarder.Contract.GetCurrentBlockDifficulty(&_Forwarder.CallOpts)
-}
-
-// GetCurrentBlockDifficulty is a free data retrieval call binding the contract method 0x72425d9d.
-//
-// Solidity: function getCurrentBlockDifficulty() view returns(uint256 difficulty)
-func (_Forwarder *ForwarderCallerSession) GetCurrentBlockDifficulty() (*big.Int, error) {
-	return _Forwarder.Contract.GetCurrentBlockDifficulty(&_Forwarder.CallOpts)
-}
-
 // GetCurrentBlockGasLimit is a free data retrieval call binding the contract method 0x86d516e8.
 //
 // Solidity: function getCurrentBlockGasLimit() view returns(uint256 gaslimit)
@@ -597,12 +567,12 @@ func (_Forwarder *ForwarderCallerSession) GetLastBlockHash() ([32]byte, error) {
 	return _Forwarder.Contract.GetLastBlockHash(&_Forwarder.CallOpts)
 }
 
-// GetNonce is a free data retrieval call binding the contract method 0x2d0335ab.
+// GetPrevRandao is a free data retrieval call binding the contract method 0xf4c3a9b8.
 //
-// Solidity: function getNonce(address from) view returns(uint256)
-func (_Forwarder *ForwarderCaller) GetNonce(opts *bind.CallOpts, from common.Address) (*big.Int, error) {
+// Solidity: function getPrevRandao() view returns(uint256 prevrandao)
+func (_Forwarder *ForwarderCaller) GetPrevRandao(opts *bind.CallOpts) (*big.Int, error) {
 	var out []interface{}
-	err := _Forwarder.contract.Call(opts, &out, "getNonce", from)
+	err := _Forwarder.contract.Call(opts, &out, "getPrevRandao")
 
 	if err != nil {
 		return *new(*big.Int), err
@@ -614,26 +584,57 @@ func (_Forwarder *ForwarderCaller) GetNonce(opts *bind.CallOpts, from common.Add
 
 }
 
-// GetNonce is a free data retrieval call binding the contract method 0x2d0335ab.
+// GetPrevRandao is a free data retrieval call binding the contract method 0xf4c3a9b8.
 //
-// Solidity: function getNonce(address from) view returns(uint256)
-func (_Forwarder *ForwarderSession) GetNonce(from common.Address) (*big.Int, error) {
-	return _Forwarder.Contract.GetNonce(&_Forwarder.CallOpts, from)
+// Solidity: function getPrevRandao() view returns(uint256 prevrandao)
+func (_Forwarder *ForwarderSession) GetPrevRandao() (*big.Int, error) {
+	return _Forwarder.Contract.GetPrevRandao(&_Forwarder.CallOpts)
 }
 
-// GetNonce is a free data retrieval call binding the contract method 0x2d0335ab.
+// GetPrevRandao is a free data retrieval call binding the contract method 0xf4c3a9b8.
 //
-// Solidity: function getNonce(address from) view returns(uint256)
-func (_Forwarder *ForwarderCallerSession) GetNonce(from common.Address) (*big.Int, error) {
-	return _Forwarder.Contract.GetNonce(&_Forwarder.CallOpts, from)
+// Solidity: function getPrevRandao() view returns(uint256 prevrandao)
+func (_Forwarder *ForwarderCallerSession) GetPrevRandao() (*big.Int, error) {
+	return _Forwarder.Contract.GetPrevRandao(&_Forwarder.CallOpts)
 }
 
-// Verify is a free data retrieval call binding the contract method 0xbf5d3bdb.
+// Nonces is a free data retrieval call binding the contract method 0x7ecebe00.
 //
-// Solidity: function verify((address,address,uint256,uint256,uint256,bytes) req, bytes signature) view returns(bool)
-func (_Forwarder *ForwarderCaller) Verify(opts *bind.CallOpts, req MinimalForwarderForwardRequest, signature []byte) (bool, error) {
+// Solidity: function nonces(address owner) view returns(uint256)
+func (_Forwarder *ForwarderCaller) Nonces(opts *bind.CallOpts, owner common.Address) (*big.Int, error) {
 	var out []interface{}
-	err := _Forwarder.contract.Call(opts, &out, "verify", req, signature)
+	err := _Forwarder.contract.Call(opts, &out, "nonces", owner)
+
+	if err != nil {
+		return *new(*big.Int), err
+	}
+
+	out0 := *abi.ConvertType(out[0], new(*big.Int)).(**big.Int)
+
+	return out0, err
+
+}
+
+// Nonces is a free data retrieval call binding the contract method 0x7ecebe00.
+//
+// Solidity: function nonces(address owner) view returns(uint256)
+func (_Forwarder *ForwarderSession) Nonces(owner common.Address) (*big.Int, error) {
+	return _Forwarder.Contract.Nonces(&_Forwarder.CallOpts, owner)
+}
+
+// Nonces is a free data retrieval call binding the contract method 0x7ecebe00.
+//
+// Solidity: function nonces(address owner) view returns(uint256)
+func (_Forwarder *ForwarderCallerSession) Nonces(owner common.Address) (*big.Int, error) {
+	return _Forwarder.Contract.Nonces(&_Forwarder.CallOpts, owner)
+}
+
+// Verify is a free data retrieval call binding the contract method 0x19d8d38c.
+//
+// Solidity: function verify((address,address,uint256,uint256,uint48,bytes,bytes) request) view returns(bool)
+func (_Forwarder *ForwarderCaller) Verify(opts *bind.CallOpts, request ERC2771ForwarderForwardRequestData) (bool, error) {
+	var out []interface{}
+	err := _Forwarder.contract.Call(opts, &out, "verify", request)
 
 	if err != nil {
 		return *new(bool), err
@@ -645,37 +646,37 @@ func (_Forwarder *ForwarderCaller) Verify(opts *bind.CallOpts, req MinimalForwar
 
 }
 
-// Verify is a free data retrieval call binding the contract method 0xbf5d3bdb.
+// Verify is a free data retrieval call binding the contract method 0x19d8d38c.
 //
-// Solidity: function verify((address,address,uint256,uint256,uint256,bytes) req, bytes signature) view returns(bool)
-func (_Forwarder *ForwarderSession) Verify(req MinimalForwarderForwardRequest, signature []byte) (bool, error) {
-	return _Forwarder.Contract.Verify(&_Forwarder.CallOpts, req, signature)
+// Solidity: function verify((address,address,uint256,uint256,uint48,bytes,bytes) request) view returns(bool)
+func (_Forwarder *ForwarderSession) Verify(request ERC2771ForwarderForwardRequestData) (bool, error) {
+	return _Forwarder.Contract.Verify(&_Forwarder.CallOpts, request)
 }
 
-// Verify is a free data retrieval call binding the contract method 0xbf5d3bdb.
+// Verify is a free data retrieval call binding the contract method 0x19d8d38c.
 //
-// Solidity: function verify((address,address,uint256,uint256,uint256,bytes) req, bytes signature) view returns(bool)
-func (_Forwarder *ForwarderCallerSession) Verify(req MinimalForwarderForwardRequest, signature []byte) (bool, error) {
-	return _Forwarder.Contract.Verify(&_Forwarder.CallOpts, req, signature)
+// Solidity: function verify((address,address,uint256,uint256,uint48,bytes,bytes) request) view returns(bool)
+func (_Forwarder *ForwarderCallerSession) Verify(request ERC2771ForwarderForwardRequestData) (bool, error) {
+	return _Forwarder.Contract.Verify(&_Forwarder.CallOpts, request)
 }
 
 // Aggregate is a paid mutator transaction binding the contract method 0x252dba42.
 //
-// Solidity: function aggregate((address,bytes)[] calls) payable returns(uint256 blockNumber, bytes[] returnData)
+// Solidity: function aggregate((address,bytes)[] calls) returns(uint256 blockNumber, bytes[] returnData)
 func (_Forwarder *ForwarderTransactor) Aggregate(opts *bind.TransactOpts, calls []TrustedMulticallForwarderCall) (*types.Transaction, error) {
 	return _Forwarder.contract.Transact(opts, "aggregate", calls)
 }
 
 // Aggregate is a paid mutator transaction binding the contract method 0x252dba42.
 //
-// Solidity: function aggregate((address,bytes)[] calls) payable returns(uint256 blockNumber, bytes[] returnData)
+// Solidity: function aggregate((address,bytes)[] calls) returns(uint256 blockNumber, bytes[] returnData)
 func (_Forwarder *ForwarderSession) Aggregate(calls []TrustedMulticallForwarderCall) (*types.Transaction, error) {
 	return _Forwarder.Contract.Aggregate(&_Forwarder.TransactOpts, calls)
 }
 
 // Aggregate is a paid mutator transaction binding the contract method 0x252dba42.
 //
-// Solidity: function aggregate((address,bytes)[] calls) payable returns(uint256 blockNumber, bytes[] returnData)
+// Solidity: function aggregate((address,bytes)[] calls) returns(uint256 blockNumber, bytes[] returnData)
 func (_Forwarder *ForwarderTransactorSession) Aggregate(calls []TrustedMulticallForwarderCall) (*types.Transaction, error) {
 	return _Forwarder.Contract.Aggregate(&_Forwarder.TransactOpts, calls)
 }
@@ -743,44 +744,86 @@ func (_Forwarder *ForwarderTransactorSession) BlockAndAggregate(calls []TrustedM
 	return _Forwarder.Contract.BlockAndAggregate(&_Forwarder.TransactOpts, calls)
 }
 
-// Execute is a paid mutator transaction binding the contract method 0x47153f82.
+// Execute is a paid mutator transaction binding the contract method 0xdf905caf.
 //
-// Solidity: function execute((address,address,uint256,uint256,uint256,bytes) req, bytes signature) payable returns(bool, bytes)
-func (_Forwarder *ForwarderTransactor) Execute(opts *bind.TransactOpts, req MinimalForwarderForwardRequest, signature []byte) (*types.Transaction, error) {
-	return _Forwarder.contract.Transact(opts, "execute", req, signature)
+// Solidity: function execute((address,address,uint256,uint256,uint48,bytes,bytes) request) payable returns()
+func (_Forwarder *ForwarderTransactor) Execute(opts *bind.TransactOpts, request ERC2771ForwarderForwardRequestData) (*types.Transaction, error) {
+	return _Forwarder.contract.Transact(opts, "execute", request)
 }
 
-// Execute is a paid mutator transaction binding the contract method 0x47153f82.
+// Execute is a paid mutator transaction binding the contract method 0xdf905caf.
 //
-// Solidity: function execute((address,address,uint256,uint256,uint256,bytes) req, bytes signature) payable returns(bool, bytes)
-func (_Forwarder *ForwarderSession) Execute(req MinimalForwarderForwardRequest, signature []byte) (*types.Transaction, error) {
-	return _Forwarder.Contract.Execute(&_Forwarder.TransactOpts, req, signature)
+// Solidity: function execute((address,address,uint256,uint256,uint48,bytes,bytes) request) payable returns()
+func (_Forwarder *ForwarderSession) Execute(request ERC2771ForwarderForwardRequestData) (*types.Transaction, error) {
+	return _Forwarder.Contract.Execute(&_Forwarder.TransactOpts, request)
 }
 
-// Execute is a paid mutator transaction binding the contract method 0x47153f82.
+// Execute is a paid mutator transaction binding the contract method 0xdf905caf.
 //
-// Solidity: function execute((address,address,uint256,uint256,uint256,bytes) req, bytes signature) payable returns(bool, bytes)
-func (_Forwarder *ForwarderTransactorSession) Execute(req MinimalForwarderForwardRequest, signature []byte) (*types.Transaction, error) {
-	return _Forwarder.Contract.Execute(&_Forwarder.TransactOpts, req, signature)
+// Solidity: function execute((address,address,uint256,uint256,uint48,bytes,bytes) request) payable returns()
+func (_Forwarder *ForwarderTransactorSession) Execute(request ERC2771ForwarderForwardRequestData) (*types.Transaction, error) {
+	return _Forwarder.Contract.Execute(&_Forwarder.TransactOpts, request)
+}
+
+// ExecuteBatch is a paid mutator transaction binding the contract method 0x79165ff3.
+//
+// Solidity: function executeBatch((address,address,uint256,uint256,uint48,bytes,bytes)[] requests) payable returns((bool,bytes)[] returnData)
+func (_Forwarder *ForwarderTransactor) ExecuteBatch(opts *bind.TransactOpts, requests []ERC2771ForwarderForwardRequestData) (*types.Transaction, error) {
+	return _Forwarder.contract.Transact(opts, "executeBatch", requests)
+}
+
+// ExecuteBatch is a paid mutator transaction binding the contract method 0x79165ff3.
+//
+// Solidity: function executeBatch((address,address,uint256,uint256,uint48,bytes,bytes)[] requests) payable returns((bool,bytes)[] returnData)
+func (_Forwarder *ForwarderSession) ExecuteBatch(requests []ERC2771ForwarderForwardRequestData) (*types.Transaction, error) {
+	return _Forwarder.Contract.ExecuteBatch(&_Forwarder.TransactOpts, requests)
+}
+
+// ExecuteBatch is a paid mutator transaction binding the contract method 0x79165ff3.
+//
+// Solidity: function executeBatch((address,address,uint256,uint256,uint48,bytes,bytes)[] requests) payable returns((bool,bytes)[] returnData)
+func (_Forwarder *ForwarderTransactorSession) ExecuteBatch(requests []ERC2771ForwarderForwardRequestData) (*types.Transaction, error) {
+	return _Forwarder.Contract.ExecuteBatch(&_Forwarder.TransactOpts, requests)
+}
+
+// ExecuteBatch0 is a paid mutator transaction binding the contract method 0xccf96b4a.
+//
+// Solidity: function executeBatch((address,address,uint256,uint256,uint48,bytes,bytes)[] requests, address refundReceiver) payable returns()
+func (_Forwarder *ForwarderTransactor) ExecuteBatch0(opts *bind.TransactOpts, requests []ERC2771ForwarderForwardRequestData, refundReceiver common.Address) (*types.Transaction, error) {
+	return _Forwarder.contract.Transact(opts, "executeBatch0", requests, refundReceiver)
+}
+
+// ExecuteBatch0 is a paid mutator transaction binding the contract method 0xccf96b4a.
+//
+// Solidity: function executeBatch((address,address,uint256,uint256,uint48,bytes,bytes)[] requests, address refundReceiver) payable returns()
+func (_Forwarder *ForwarderSession) ExecuteBatch0(requests []ERC2771ForwarderForwardRequestData, refundReceiver common.Address) (*types.Transaction, error) {
+	return _Forwarder.Contract.ExecuteBatch0(&_Forwarder.TransactOpts, requests, refundReceiver)
+}
+
+// ExecuteBatch0 is a paid mutator transaction binding the contract method 0xccf96b4a.
+//
+// Solidity: function executeBatch((address,address,uint256,uint256,uint48,bytes,bytes)[] requests, address refundReceiver) payable returns()
+func (_Forwarder *ForwarderTransactorSession) ExecuteBatch0(requests []ERC2771ForwarderForwardRequestData, refundReceiver common.Address) (*types.Transaction, error) {
+	return _Forwarder.Contract.ExecuteBatch0(&_Forwarder.TransactOpts, requests, refundReceiver)
 }
 
 // TryAggregate is a paid mutator transaction binding the contract method 0xbce38bd7.
 //
-// Solidity: function tryAggregate(bool requireSuccess, (address,bytes)[] calls) payable returns((bool,bytes)[] returnData)
+// Solidity: function tryAggregate(bool requireSuccess, (address,bytes)[] calls) returns((bool,bytes)[] returnData)
 func (_Forwarder *ForwarderTransactor) TryAggregate(opts *bind.TransactOpts, requireSuccess bool, calls []TrustedMulticallForwarderCall) (*types.Transaction, error) {
 	return _Forwarder.contract.Transact(opts, "tryAggregate", requireSuccess, calls)
 }
 
 // TryAggregate is a paid mutator transaction binding the contract method 0xbce38bd7.
 //
-// Solidity: function tryAggregate(bool requireSuccess, (address,bytes)[] calls) payable returns((bool,bytes)[] returnData)
+// Solidity: function tryAggregate(bool requireSuccess, (address,bytes)[] calls) returns((bool,bytes)[] returnData)
 func (_Forwarder *ForwarderSession) TryAggregate(requireSuccess bool, calls []TrustedMulticallForwarderCall) (*types.Transaction, error) {
 	return _Forwarder.Contract.TryAggregate(&_Forwarder.TransactOpts, requireSuccess, calls)
 }
 
 // TryAggregate is a paid mutator transaction binding the contract method 0xbce38bd7.
 //
-// Solidity: function tryAggregate(bool requireSuccess, (address,bytes)[] calls) payable returns((bool,bytes)[] returnData)
+// Solidity: function tryAggregate(bool requireSuccess, (address,bytes)[] calls) returns((bool,bytes)[] returnData)
 func (_Forwarder *ForwarderTransactorSession) TryAggregate(requireSuccess bool, calls []TrustedMulticallForwarderCall) (*types.Transaction, error) {
 	return _Forwarder.Contract.TryAggregate(&_Forwarder.TransactOpts, requireSuccess, calls)
 }
@@ -933,6 +976,152 @@ func (_Forwarder *ForwarderFilterer) WatchEIP712DomainChanged(opts *bind.WatchOp
 func (_Forwarder *ForwarderFilterer) ParseEIP712DomainChanged(log types.Log) (*ForwarderEIP712DomainChanged, error) {
 	event := new(ForwarderEIP712DomainChanged)
 	if err := _Forwarder.contract.UnpackLog(event, "EIP712DomainChanged", log); err != nil {
+		return nil, err
+	}
+	event.Raw = log
+	return event, nil
+}
+
+// ForwarderExecutedForwardRequestIterator is returned from FilterExecutedForwardRequest and is used to iterate over the raw logs and unpacked data for ExecutedForwardRequest events raised by the Forwarder contract.
+type ForwarderExecutedForwardRequestIterator struct {
+	Event *ForwarderExecutedForwardRequest // Event containing the contract specifics and raw log
+
+	contract *bind.BoundContract // Generic contract to use for unpacking event data
+	event    string              // Event name to use for unpacking event data
+
+	logs chan types.Log        // Log channel receiving the found contract events
+	sub  ethereum.Subscription // Subscription for errors, completion and termination
+	done bool                  // Whether the subscription completed delivering logs
+	fail error                 // Occurred error to stop iteration
+}
+
+// Next advances the iterator to the subsequent event, returning whether there
+// are any more events found. In case of a retrieval or parsing error, false is
+// returned and Error() can be queried for the exact failure.
+func (it *ForwarderExecutedForwardRequestIterator) Next() bool {
+	// If the iterator failed, stop iterating
+	if it.fail != nil {
+		return false
+	}
+	// If the iterator completed, deliver directly whatever's available
+	if it.done {
+		select {
+		case log := <-it.logs:
+			it.Event = new(ForwarderExecutedForwardRequest)
+			if err := it.contract.UnpackLog(it.Event, it.event, log); err != nil {
+				it.fail = err
+				return false
+			}
+			it.Event.Raw = log
+			return true
+
+		default:
+			return false
+		}
+	}
+	// Iterator still in progress, wait for either a data or an error event
+	select {
+	case log := <-it.logs:
+		it.Event = new(ForwarderExecutedForwardRequest)
+		if err := it.contract.UnpackLog(it.Event, it.event, log); err != nil {
+			it.fail = err
+			return false
+		}
+		it.Event.Raw = log
+		return true
+
+	case err := <-it.sub.Err():
+		it.done = true
+		it.fail = err
+		return it.Next()
+	}
+}
+
+// Error returns any retrieval or parsing error occurred during filtering.
+func (it *ForwarderExecutedForwardRequestIterator) Error() error {
+	return it.fail
+}
+
+// Close terminates the iteration process, releasing any pending underlying
+// resources.
+func (it *ForwarderExecutedForwardRequestIterator) Close() error {
+	it.sub.Unsubscribe()
+	return nil
+}
+
+// ForwarderExecutedForwardRequest represents a ExecutedForwardRequest event raised by the Forwarder contract.
+type ForwarderExecutedForwardRequest struct {
+	Signer  common.Address
+	Nonce   *big.Int
+	Success bool
+	Raw     types.Log // Blockchain specific contextual infos
+}
+
+// FilterExecutedForwardRequest is a free log retrieval operation binding the contract event 0x842fb24a83793558587a3dab2be7674da4a51d09c5542d6dd354e5d0ea70813c.
+//
+// Solidity: event ExecutedForwardRequest(address indexed signer, uint256 nonce, bool success)
+func (_Forwarder *ForwarderFilterer) FilterExecutedForwardRequest(opts *bind.FilterOpts, signer []common.Address) (*ForwarderExecutedForwardRequestIterator, error) {
+
+	var signerRule []interface{}
+	for _, signerItem := range signer {
+		signerRule = append(signerRule, signerItem)
+	}
+
+	logs, sub, err := _Forwarder.contract.FilterLogs(opts, "ExecutedForwardRequest", signerRule)
+	if err != nil {
+		return nil, err
+	}
+	return &ForwarderExecutedForwardRequestIterator{contract: _Forwarder.contract, event: "ExecutedForwardRequest", logs: logs, sub: sub}, nil
+}
+
+// WatchExecutedForwardRequest is a free log subscription operation binding the contract event 0x842fb24a83793558587a3dab2be7674da4a51d09c5542d6dd354e5d0ea70813c.
+//
+// Solidity: event ExecutedForwardRequest(address indexed signer, uint256 nonce, bool success)
+func (_Forwarder *ForwarderFilterer) WatchExecutedForwardRequest(opts *bind.WatchOpts, sink chan<- *ForwarderExecutedForwardRequest, signer []common.Address) (event.Subscription, error) {
+
+	var signerRule []interface{}
+	for _, signerItem := range signer {
+		signerRule = append(signerRule, signerItem)
+	}
+
+	logs, sub, err := _Forwarder.contract.WatchLogs(opts, "ExecutedForwardRequest", signerRule)
+	if err != nil {
+		return nil, err
+	}
+	return event.NewSubscription(func(quit <-chan struct{}) error {
+		defer sub.Unsubscribe()
+		for {
+			select {
+			case log := <-logs:
+				// New log arrived, parse the event and forward to the user
+				event := new(ForwarderExecutedForwardRequest)
+				if err := _Forwarder.contract.UnpackLog(event, "ExecutedForwardRequest", log); err != nil {
+					return err
+				}
+				event.Raw = log
+
+				select {
+				case sink <- event:
+				case err := <-sub.Err():
+					return err
+				case <-quit:
+					return nil
+				}
+			case err := <-sub.Err():
+				return err
+			case <-quit:
+				return nil
+			}
+		}
+	}), nil
+}
+
+// ParseExecutedForwardRequest is a log parse operation binding the contract event 0x842fb24a83793558587a3dab2be7674da4a51d09c5542d6dd354e5d0ea70813c.
+//
+// Solidity: event ExecutedForwardRequest(address indexed signer, uint256 nonce, bool success)
+func (_Forwarder *ForwarderFilterer) ParseExecutedForwardRequest(log types.Log) (*ForwarderExecutedForwardRequest, error) {
+	event := new(ForwarderExecutedForwardRequest)
+	if err := _Forwarder.contract.UnpackLog(event, "ExecutedForwardRequest", log); err != nil {
 		return nil, err
 	}
 	event.Raw = log
