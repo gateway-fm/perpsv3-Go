@@ -2,13 +2,10 @@ package services
 
 import (
 	"context"
-	"fmt"
 	"math/big"
 
 	"github.com/ethereum/go-ethereum/accounts/abi/bind"
 
-	"github.com/gateway-fm/perpsv3-Go/config"
-	"github.com/gateway-fm/perpsv3-Go/contracts/forwarder"
 	"github.com/gateway-fm/perpsv3-Go/contracts/perpsMarket"
 	"github.com/gateway-fm/perpsv3-Go/errors"
 	"github.com/gateway-fm/perpsv3-Go/models"
@@ -134,18 +131,7 @@ func (s *Service) GetMarketSummary(marketID *big.Int) (*models.MarketSummary, er
 		return nil, errors.GetInvalidArgumentErr("market id cannot be nil")
 	}
 
-	var res perpsMarket.IPerpsMarketModuleMarketSummary
-	var err error
-
-	switch s.chainID {
-	case config.OptimismGoerli:
-		res, err = s.getMarketSummary(marketID)
-	case config.BaseAndromeda:
-		res, err = s.getMarketSummaryMultiCall(marketID)
-	default:
-		return nil, errors.GetInvalidArgumentErr("chain id not supported for GetMarketSummary method")
-	}
-
+	res, err := s.getMarketSummary(marketID)
 	if err != nil {
 		return nil, err
 	}
@@ -161,67 +147,68 @@ func (s *Service) GetMarketSummary(marketID *big.Int) (*models.MarketSummary, er
 	return models.GetMarketSummaryFromContractModel(res, marketID, block.Time), nil
 }
 
+// DEPRECATED
 // getMarketSummary is used to get market summary using Forwarder contract
-func (s *Service) getMarketSummaryMultiCall(marketID *big.Int) (res perpsMarket.IPerpsMarketModuleMarketSummary, err error) {
-	getMarketSummaryCallData, err := s.rawPerpsContract.GetCallDataMarketSummary(marketID)
-	if err != nil {
-		return res, err
-	}
-
-	callSummary := forwarder.TrustedMulticallForwarderCall3Value{
-		Target:       s.rawPerpsContract.Address(),
-		AllowFailure: false,
-		Value:        big.NewInt(0),
-		CallData:     getMarketSummaryCallData,
-	}
-
-	feedID := models.GetPriceFeedIDFromMarketID(marketID)
-	if feedID == models.UNKNOWN {
-		logger.Log().WithField("layer", "getMarketSummaryMultiCall").Errorf(
-			"market ud: %v not supported on andromeda net", marketID.String(),
-		)
-		return res, errors.GetReadContractErr(fmt.Errorf("market %v not supported", marketID.String()), "rawForwarder", "Aggregate3Value")
-	}
-
-	fulfillOracleQueryCallData, err := s.rawERC7412.GetCallFulfillOracleQuery(feedID.String())
-	if err != nil {
-		return res, err
-	}
-
-	callFulfill := forwarder.TrustedMulticallForwarderCall3Value{
-		Target:       s.rawERC7412.Address(),
-		AllowFailure: false,
-		Value:        big.NewInt(1),
-		CallData:     fulfillOracleQueryCallData,
-	}
-
-	call, err := s.rawForwarder.Aggregate3Value([]forwarder.TrustedMulticallForwarderCall3Value{callFulfill, callSummary})
-	if err != nil {
-		return res, err
-	}
-
-	if len(call) != 2 {
-		logger.Log().WithField("layer", "getMarketSummaryMultiCall").Errorf("received %v from rawForwarder contract, expected 2", len(call))
-		return res, errors.GetReadContractErr(fmt.Errorf("invalid call"), "rawForwarder", "Aggregate3Value")
-	}
-
-	if !call[0].Success {
-		logger.Log().WithField("layer", "getMarketSummaryMultiCall").Error("call to erc7412 unsuccessful")
-		return res, errors.GetReadContractErr(fmt.Errorf("invalid call to erc7412"), "rawForwarder", "Aggregate3Value")
-	}
-
-	if !call[1].Success {
-		logger.Log().WithField("layer", "getMarketSummaryMultiCall").Error("call to erc7412 unsuccessful")
-		return res, errors.GetReadContractErr(fmt.Errorf("invalid call to perps market"), "rawForwarder", "Aggregate3Value")
-	}
-
-	unpackedSummary, err := s.rawPerpsContract.UnpackGetMarketSummary(call[1].ReturnData)
-	if err != nil {
-		return res, err
-	}
-
-	return *unpackedSummary, nil
-}
+//func (s *Service) getMarketSummaryMultiCall(marketID *big.Int) (res perpsMarket.IPerpsMarketModuleMarketSummary, err error) {
+//	getMarketSummaryCallData, err := s.rawPerpsContract.GetCallDataMarketSummary(marketID)
+//	if err != nil {
+//		return res, err
+//	}
+//
+//	callSummary := forwarder.TrustedMulticallForwarderCall3Value{
+//		Target:       s.rawPerpsContract.Address(),
+//		AllowFailure: false,
+//		Value:        big.NewInt(0),
+//		CallData:     getMarketSummaryCallData,
+//	}
+//
+//	feedID := models.GetPriceFeedIDFromMarketID(marketID)
+//	if feedID == models.UNKNOWN {
+//		logger.Log().WithField("layer", "getMarketSummaryMultiCall").Errorf(
+//			"market ud: %v not supported on andromeda net", marketID.String(),
+//		)
+//		return res, errors.GetReadContractErr(fmt.Errorf("market %v not supported", marketID.String()), "rawForwarder", "Aggregate3Value")
+//	}
+//
+//	fulfillOracleQueryCallData, err := s.rawERC7412.GetCallFulfillOracleQuery(feedID.String())
+//	if err != nil {
+//		return res, err
+//	}
+//
+//	callFulfill := forwarder.TrustedMulticallForwarderCall3Value{
+//		Target:       s.rawERC7412.Address(),
+//		AllowFailure: false,
+//		Value:        big.NewInt(1),
+//		CallData:     fulfillOracleQueryCallData,
+//	}
+//
+//	call, err := s.rawForwarder.Aggregate3Value([]forwarder.TrustedMulticallForwarderCall3Value{callFulfill, callSummary})
+//	if err != nil {
+//		return res, err
+//	}
+//
+//	if len(call) != 2 {
+//		logger.Log().WithField("layer", "getMarketSummaryMultiCall").Errorf("received %v from rawForwarder contract, expected 2", len(call))
+//		return res, errors.GetReadContractErr(fmt.Errorf("invalid call"), "rawForwarder", "Aggregate3Value")
+//	}
+//
+//	if !call[0].Success {
+//		logger.Log().WithField("layer", "getMarketSummaryMultiCall").Error("call to erc7412 unsuccessful")
+//		return res, errors.GetReadContractErr(fmt.Errorf("invalid call to erc7412"), "rawForwarder", "Aggregate3Value")
+//	}
+//
+//	if !call[1].Success {
+//		logger.Log().WithField("layer", "getMarketSummaryMultiCall").Error("call to erc7412 unsuccessful")
+//		return res, errors.GetReadContractErr(fmt.Errorf("invalid call to perps market"), "rawForwarder", "Aggregate3Value")
+//	}
+//
+//	unpackedSummary, err := s.rawPerpsContract.UnpackGetMarketSummary(call[1].ReturnData)
+//	if err != nil {
+//		return res, err
+//	}
+//
+//	return *unpackedSummary, nil
+//}
 
 // getMarketSummary is used to get market summary straight from the perps contract
 func (s *Service) getMarketSummary(marketID *big.Int) (res perpsMarket.IPerpsMarketModuleMarketSummary, err error) {
