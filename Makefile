@@ -14,6 +14,11 @@ generate-perps_market-andromeda:
 	go run ./utils/getAbis/get-abis.go --get-mkdir ./Synthetix-Gitbook-v3/for-developers/abis/84531-andromeda-PerpsMarket.json ./contracts/perpsMarket
 	abigen --abi=./contracts/84531-andromeda-PerpsMarket.json --pkg=perpsMarket --out=./contracts/perpsMarket/contract.go
 
+# generate go file for PerpsMarket contract on andromeda net from cannon abi
+generate-perps_market-andromeda-c:
+	go run ./utils/getAbis/get-abis.go --get-mkdir ./cannon-synthetix/andromeda/perpsFactory/PerpsMarketProxy.json ./contracts/perpsMarket
+	abigen --abi=./contracts/PerpsMarketProxy.json --pkg=perpsMarket --out=./contracts/perpsMarket/contract.go
+
 # generate go file for snxUSDT contract on andromeda net
 generate-susdt-andromeda:
 	go run ./utils/getAbis/get-abis.go --get-mkdir ./Synthetix-Gitbook-v3/for-developers/abis/84531-andromeda-snxUSDToken.json ./contracts/sUSDT
