@@ -33,6 +33,10 @@ generate-erc7412-andromeda:
 update-subtree:
 	git subtree pull --prefix Synthetix-Gitbook-v3 git@github.com:Synthetixio/Synthetix-Gitbook-v3.git en --squash
 
+# fetch ABIs from cannon
+fetch-cannon-andromeda:
+	cannon inspect synthetix-omnibus:latest@andromeda --chain-id 84531 -w ./cannon-synthetix/andromeda --sources
+
 # generate mock for service interface for testing
 mock-service:
 	mockgen -source=services/service.go -destination=mocks/service/mockService.go
