@@ -14,6 +14,11 @@ generate-perps_market-andromeda:
 	go run ./utils/getAbis/get-abis.go --get-mkdir ./Synthetix-Gitbook-v3/for-developers/abis/84531-andromeda-PerpsMarket.json ./contracts/perpsMarket
 	abigen --abi=./contracts/84531-andromeda-PerpsMarket.json --pkg=perpsMarket --out=./contracts/perpsMarket/contract.go
 
+# generate go file for PerpsMarket contract on andromeda net from cannon abi
+generate-perps_market-andromeda-c:
+	go run ./utils/getAbis/get-abis.go --get-mkdir ./cannon-synthetix/andromeda/perpsFactory/PerpsMarketProxy.json ./contracts/perpsMarket
+	abigen --abi=./contracts/PerpsMarketProxy.json --pkg=perpsMarket --out=./contracts/perpsMarket/contract.go
+
 # generate go file for snxUSDT contract on andromeda net
 generate-susdt-andromeda:
 	go run ./utils/getAbis/get-abis.go --get-mkdir ./Synthetix-Gitbook-v3/for-developers/abis/84531-andromeda-snxUSDToken.json ./contracts/sUSDT
@@ -32,6 +37,10 @@ generate-erc7412-andromeda:
 # update Synthetix-Gitbook-v3 subtree
 update-subtree:
 	git subtree pull --prefix Synthetix-Gitbook-v3 git@github.com:Synthetixio/Synthetix-Gitbook-v3.git en --squash
+
+# fetch ABIs from cannon
+fetch-cannon-andromeda:
+	cannon inspect synthetix-omnibus:latest@andromeda --chain-id 84531 -w ./cannon-synthetix/andromeda --sources
 
 # generate mock for service interface for testing
 mock-service:
