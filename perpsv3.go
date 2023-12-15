@@ -144,6 +144,9 @@ type IPerpsv3 interface {
 	// GetAccountOwner is used to get accounts owner address for given account ID
 	GetAccountOwner(accountId *big.Int) (string, error)
 
+	// GetCollateralAmount is used to get accounts collateral amount for given market ID
+	GetCollateralAmount(accountId *big.Int, marketId *big.Int) (*big.Int, error)
+
 	// GetRequiredMaintenanceMargin is used to get required maintenance margin for given account ID
 	GetRequiredMaintenanceMargin(accountId *big.Int) (*big.Int, error)
 
@@ -311,6 +314,10 @@ func (p *Perpsv3) GetAccountLastInteraction(accountId *big.Int) (*big.Int, error
 
 func (p *Perpsv3) GetAccountOwner(accountId *big.Int) (string, error) {
 	return p.service.GetAccountOwner(accountId)
+}
+
+func (p *Perpsv3) GetCollateralAmount(accountId *big.Int, marketId *big.Int) (*big.Int, error) {
+	return p.service.GetCollateralAmount(accountId, marketId)
 }
 
 func (p *Perpsv3) GetRequiredMaintenanceMargin(accountId *big.Int) (*big.Int, error) {

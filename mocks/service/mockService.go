@@ -125,6 +125,21 @@ func (mr *MockIServiceMockRecorder) GetAvailableMargin(accountId interface{}) *g
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetAvailableMargin", reflect.TypeOf((*MockIService)(nil).GetAvailableMargin), accountId)
 }
 
+// GetCollateralAmount mocks base method.
+func (m *MockIService) GetCollateralAmount(accountId, marketId *big.Int) (*big.Int, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "GetCollateralAmount", accountId, marketId)
+	ret0, _ := ret[0].(*big.Int)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// GetCollateralAmount indicates an expected call of GetCollateralAmount.
+func (mr *MockIServiceMockRecorder) GetCollateralAmount(accountId, marketId interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetCollateralAmount", reflect.TypeOf((*MockIService)(nil).GetCollateralAmount), accountId, marketId)
+}
+
 // GetFoundingRate mocks base method.
 func (m *MockIService) GetFoundingRate(marketId *big.Int) (*big.Int, error) {
 	m.ctrl.T.Helper()
