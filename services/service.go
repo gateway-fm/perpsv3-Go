@@ -91,6 +91,9 @@ type IService interface {
 	// GetAccountOwner is used to get accounts owner address for given account ID
 	GetAccountOwner(accountId *big.Int) (string, error)
 
+	// GetCollateralAmount is used to get accounts collateral amount for given market ID
+	GetCollateralAmount(accountId *big.Int, marketId *big.Int) (*big.Int, error)
+
 	// GetRequiredMaintenanceMargin is used to get required maintenance margin for given account ID
 	GetRequiredMaintenanceMargin(accountId *big.Int) (*big.Int, error)
 

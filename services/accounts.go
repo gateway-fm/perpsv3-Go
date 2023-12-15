@@ -163,6 +163,16 @@ func (s *Service) GetAccountOwner(accountId *big.Int) (string, error) {
 	return owner.Hex(), nil
 }
 
+func (s *Service) GetCollateralAmount(accountId *big.Int, marketId *big.Int) (*big.Int, error) {
+	amount, err := s.perpsMarket.GetCollateralAmount(nil, accountId, marketId)
+	if err != nil {
+		logger.Log().WithField("layer", "Service-GetCollateralAmount").Errorf("get colleteral amount error: %v", err.Error())
+		return nil, errors.GetReadContractErr(err, "perps market", "GetCollateralAmount")
+	}
+
+	return amount, nil
+}
+
 // formatAccounts is used to get accounts from the contract using event filter function for 'AccountCreated' event
 // and given filter options
 func (s *Service) formatAccounts(opts *bind.FilterOpts) ([]*models.Account, error) {
