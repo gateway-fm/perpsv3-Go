@@ -16,7 +16,7 @@ generate-perps_market-andromeda:
 
 # generate go file for PerpsMarket contract on andromeda net from cannon abi
 generate-perps_market-andromeda-c:
-	go run ./utils/getAbis/get-abis.go --get-mkdir ./cannon-synthetix/andromeda/perpsFactory/PerpsMarketProxy.json ./contracts/perpsMarket
+	go run ./utils/getAbis/get-abis.go --get-mkdir ./cannon-synthetix/base/perpsFactory/PerpsMarketProxy.json ./contracts/perpsMarket
 	abigen --abi=./contracts/PerpsMarketProxy.json --pkg=perpsMarket --out=./contracts/perpsMarket/contract.go
 
 # generate go file for snxUSDT contract on andromeda net
@@ -41,6 +41,11 @@ update-subtree:
 # fetch ABIs from cannon
 fetch-cannon-andromeda:
 	cannon inspect synthetix-omnibus:latest@andromeda --chain-id 84531 -w ./cannon-synthetix/andromeda --sources
+
+# fetch ABIs from cannon
+fetch-cannon-base:
+	cannon inspect synthetix-omnibus:latest@andromeda --chain-id 8453 -w ./cannon-synthetix/base --sources
+
 
 # generate mock for service interface for testing
 mock-service:

@@ -196,6 +196,10 @@ func GetBaseAndromedaDefaultConfig(rpcURL string) *config.PerpsvConfig {
 	return config.GetBaseAndromedaDefaultConfig(rpcURL)
 }
 
+func GetBaseMainnetDefaultConfig(rpcURL string) *config.PerpsvConfig {
+	return config.GetBaseMainnetDefaultConfig(rpcURL)
+}
+
 func (p *Perpsv3) RetrieveTrades(fromBlock uint64, toBLock *uint64) ([]*models.Trade, error) {
 	return p.service.RetrieveTrades(fromBlock, toBLock)
 }

@@ -5,18 +5,21 @@ type ChainID int
 
 const (
 	Unknown ChainID = iota
+	BaseMainnet
 	OptimismGoerli
 	BaseAndromeda
 )
 
 var chainIDStrings = [...]string{
 	Unknown:        "Unknown",
+	BaseMainnet:    "BaseMainnet",
 	OptimismGoerli: "OptimismGoerli",
 	BaseAndromeda:  "BaseAndromeda",
 }
 
 var chainIDNums = [...]int{
 	Unknown:        0,
+	BaseMainnet:    8453,
 	OptimismGoerli: 420,
 	BaseAndromeda:  84513,
 }
