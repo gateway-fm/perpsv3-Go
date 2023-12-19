@@ -876,10 +876,10 @@
   ],
   "constructorArgs": [],
   "linkedLibraries": {},
-  "deployTxnHash": "0xf5858aeadb89c153524cb869ffa095fb38f069d86ca825d3d853f0fb345e75b9",
+  "deployTxnHash": "0x7b896326cf68b6d14b05ae24352ed900527c39609cccf48ec756e83c48016b35",
   "sourceName": "src/TrustedMulticallForwarder.sol",
   "contractName": "TrustedMulticallForwarder",
   "deployedOn": "contract.TrustedMulticallForwarder",
-  "gasUsed": 2033737,
-  "gasCost": "1500000254"
+  "gasUsed": 2033103,
+  "gasCost": "1500000054"
 }

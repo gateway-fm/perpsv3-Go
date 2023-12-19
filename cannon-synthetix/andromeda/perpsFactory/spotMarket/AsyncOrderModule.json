@@ -1,5 +1,5 @@
 {
-  "address": "0x9245e9EA0D6F8e410f6933BA3C3329A7d24c8220",
+  "address": "0xAD35498D97f3b1a0B99de42da7Ad81c91156BA77",
   "abi": [
     {
       "inputs": [
@@ -418,10 +418,10 @@
   ],
   "constructorArgs": [],
   "linkedLibraries": {},
-  "deployTxnHash": "0xc8b295e871bbd26ed0e52d3927a61c9c49aaa5ec410446e1c50e6c883c9f6dba",
+  "deployTxnHash": "0x54fa61922cbf229067a32f446b79ad9ab2a8c42b74e1b85d464d3e15f1f0a4cd",
   "sourceName": "contracts/modules/AsyncOrderModule.sol",
   "contractName": "AsyncOrderModule",
   "deployedOn": "contract.AsyncOrderModule",
-  "gasUsed": 1317254,
-  "gasCost": "3000000256"
+  "gasUsed": 1316886,
+  "gasCost": "1500000051"
 }

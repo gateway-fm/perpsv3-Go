@@ -1,5 +1,5 @@
 {
-  "address": "0x578d1C2a5938572CDeCEB2AA8273C2100b94f22a",
+  "address": "0x20042b9D44B8168c2CB2A5EDB021E436010dbdEC",
   "abi": [
     {
       "inputs": [
@@ -376,10 +376,10 @@
   ],
   "constructorArgs": [],
   "linkedLibraries": {},
-  "deployTxnHash": "0x901a1185e79179ea72ce3433f5297e43140589cb6fe591927a6d2cb65105b80d",
+  "deployTxnHash": "0xde6dbaeeb025bfb336c162d736a8e71de6983c9f5505ea4db70ac0dd6608e494",
   "sourceName": "contracts/modules/WrapperModule.sol",
   "contractName": "WrapperModule",
   "deployedOn": "contract.WrapperModule",
-  "gasUsed": 1657499,
-  "gasCost": "100000255"
+  "gasUsed": 1657031,
+  "gasCost": "1500000050"
 }

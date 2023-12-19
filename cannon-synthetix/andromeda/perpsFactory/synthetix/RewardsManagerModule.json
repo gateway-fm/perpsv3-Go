@@ -1,5 +1,5 @@
 {
-  "address": "0x90AfA26D7AB2f00bC19Ab20a8b1b5AA88866Bc26",
+  "address": "0xa51b344Beb72bb9DaC84A70cb9b77cA33DB1675b",
   "abi": [
     {
       "inputs": [
@@ -480,10 +480,10 @@
   ],
   "constructorArgs": [],
   "linkedLibraries": {},
-  "deployTxnHash": "0x65d53c81d8e2baba1655ad5fe62cd5ea8d670b0fa2c91319b7399bf259651814",
+  "deployTxnHash": "0x5db895fb591e39acb64bc91bc4c356455f5192e9e6495c1011169b6b906da0e6",
   "sourceName": "contracts/modules/core/RewardsManagerModule.sol",
   "contractName": "RewardsManagerModule",
   "deployedOn": "contract.RewardsManagerModule",
-  "gasUsed": 2131621,
-  "gasCost": "100000257"
+  "gasUsed": 2131017,
+  "gasCost": "1500000050"
 }

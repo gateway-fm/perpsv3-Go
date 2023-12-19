@@ -17,8 +17,8 @@ const (
 // priceFeedIDs is mapping PriceFeedID to its string value
 var priceFeedIDs = [...]string{
 	UNKNOWN: "UNKNOWN",
-	ETH:     "0xca80ba6dc32e08d06f1aa886011eed1d77c77be9eb761cc10d72b7d0a2fd57a6",
-	BTC:     "0xf9c0172ba10dfa4d19088d94f5bf61d3b54d5bd7483a322a982e1373ee8ea31b",
+	ETH:     "0xff61491a931112ddf1bd8147cd1b641375f79f5825126d665480874634fd0ace",
+	BTC:     "0xe62df6c8b4a85fe1a67db44dc12de5db330f7ac66b72dc658afedf0f4a415b43",
 	LINK:    "0x83be4ed61dd8a3518d198098ce37240c494710a7b9d85e35d9fceac21df08994",
 	OP:      "0x71334dcd37620ce3c33e3bafef04cc80dec083042e49b734315b36d1aad7991f",
 	SNX:     "0xe956a4199936e913b402474cb29576066f15108121d434606a19b34036e6d5cc",

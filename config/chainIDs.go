@@ -21,7 +21,7 @@ var chainIDNums = [...]int{
 	Unknown:        0,
 	BaseMainnet:    8453,
 	OptimismGoerli: 420,
-	BaseAndromeda:  84513,
+	BaseAndromeda:  84531,
 }
 
 func (i ChainID) String() string {

@@ -1,5 +1,5 @@
 {
-  "address": "0x8f23855A2eD7f5638f99e050CD80834e29bEaB1c",
+  "address": "0xF5C78bAB6d1e52EA3c2BE6c657BB4Ef29244E0f5",
   "abi": [
     {
       "inputs": [
@@ -96,10 +96,10 @@
   ],
   "constructorArgs": [],
   "linkedLibraries": {},
-  "deployTxnHash": "0x4bfc067caf183222959d722c29772290e0f09bbdaca0034bf250419477e6d572",
+  "deployTxnHash": "0x903492615ff524db3c0f83f3cb72a86a86348d9cb34dd95ca55a54f422052a9e",
   "sourceName": "contracts/modules/core/CrossChainUSDModule.sol",
   "contractName": "CrossChainUSDModule",
   "deployedOn": "contract.CrossChainUSDModule",
-  "gasUsed": 595289,
-  "gasCost": "350700280"
+  "gasUsed": 595129,
+  "gasCost": "1500000050"
 }
