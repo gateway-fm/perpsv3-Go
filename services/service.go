@@ -149,7 +149,7 @@ func NewService(
 
 	s.rawPerpsContract = rawPerpsContract
 
-	if conf.ChainID == config.BaseAndromeda {
+	if conf.ChainID == config.BaseMainnet {
 		rawERC7412, err := rawContracts.NewERC7412(common.HexToAddress(conf.ContractAddresses.ERC7412), rpc)
 		if err != nil {
 			return nil, err

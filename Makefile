@@ -16,7 +16,7 @@ generate-perps_market-andromeda:
 
 # generate go file for PerpsMarket contract on andromeda net from cannon abi
 generate-perps_market-andromeda-c:
-	go run ./utils/getAbis/get-abis.go --get-mkdir ./cannon-synthetix/andromeda/perpsFactory/PerpsMarketProxy.json ./contracts/perpsMarket
+	go run ./utils/getAbis/get-abis.go --get-mkdir ./cannon-synthetix/base/perpsFactory/PerpsMarketProxy.json ./contracts/perpsMarket
 	abigen --abi=./contracts/PerpsMarketProxy.json --pkg=perpsMarket --out=./contracts/perpsMarket/contract.go
 
 # generate go file for snxUSDT contract on andromeda net
@@ -29,10 +29,19 @@ generate-forwarder-andromeda:
 	go run ./utils/getAbis/get-abis.go --get-mkdir ./additional-abis/84531-TrustedMulticallForwarder.json ./contracts/forwarder
 	abigen --abi=./contracts/84531-TrustedMulticallForwarder.json --pkg=forwarder --out=./contracts/forwarder/contract.go
 
+generate-forwarder-mainnet-c:
+	go run ./utils/getAbis/get-abis.go --get-mkdir ./cannon-synthetix/base/system/trusted_multicall_forwarder/TrustedMulticallForwarder.json ./contracts/forwarder
+	abigen --abi=./contracts/TrustedMulticallForwarder.json --pkg=forwarder --out=./contracts/forwarder/contract.go
+
+
 # generate go file for ERC7412 contract on andromeda net
 generate-erc7412-andromeda:
 	go run ./utils/getAbis/get-abis.go --get-mkdir ./additional-abis/84531-ERC7412.json ./contracts/ERC7412
 	abigen --abi=./contracts/84531-ERC7412.json --pkg=erc7412 --out=./contracts/ERC7412/contract.go
+
+generate-erc7412-mainnet-c:
+	go run ./utils/getAbis/get-abis.go --get-mkdir ./cannon-synthetix/base/pyth_erc7412_wrapper/PythERC7412Wrapper.json ./contracts/ERC7412
+	abigen --abi=./contracts/PythERC7412Wrapper.json --pkg=ERC7412 --out=./contracts/ERC7412/contract.go
 
 # update Synthetix-Gitbook-v3 subtree
 update-subtree:
@@ -41,6 +50,10 @@ update-subtree:
 # fetch ABIs from cannon
 fetch-cannon-andromeda:
 	cannon inspect synthetix-omnibus:latest@andromeda --chain-id 84531 -w ./cannon-synthetix/andromeda --sources
+
+# fetch ABIs from cannon
+fetch-cannon-base:
+	cannon inspect synthetix-omnibus:latest@andromeda --chain-id 8453 -w ./cannon-synthetix/andromeda --sources
 
 # generate mock for service interface for testing
 mock-service:

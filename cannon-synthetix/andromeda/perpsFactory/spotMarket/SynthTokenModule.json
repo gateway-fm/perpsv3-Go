@@ -1,5 +1,5 @@
 {
-  "address": "0xC5706c198D33bCe87ADB48ea37130e8de9Ab23B7",
+  "address": "0x832258D2744fEf7DdaB4eEE269d1B21B8DC0f116",
   "abi": [
     {
       "inputs": [],
@@ -490,10 +490,10 @@
   ],
   "constructorArgs": [],
   "linkedLibraries": {},
-  "deployTxnHash": "0x02ebfa36c4a301c8d1d95bacd9ffe1094c053346702d3a858780760fe5550bfd",
+  "deployTxnHash": "0x029ed1eab40a905aa2eaf3f67fbb52045efa26a01497957ebfb8b46e68e5e891",
   "sourceName": "contracts/modules/token/SynthTokenModule.sol",
   "contractName": "SynthTokenModule",
   "deployedOn": "contract.SynthTokenModule",
-  "gasUsed": 1207447,
-  "gasCost": "20725312"
+  "gasUsed": 1207111,
+  "gasCost": "1500000050"
 }

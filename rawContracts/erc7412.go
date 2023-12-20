@@ -17,8 +17,7 @@ import (
 	"github.com/gateway-fm/perpsv3-Go/utils/abiCoder"
 )
 
-// TODO: change to prod url
-const oracleURL = "https://xc-testnet.pyth.network/api/latest_vaas?ids[]="
+const oracleURL = "https://hermes.pyth.network/api/latest_vaas?ids[]="
 
 // IRawERC7412Contract is a ERC7412 contract interface
 type IRawERC7412Contract interface {
@@ -40,7 +39,7 @@ type ERC7412 struct {
 func NewERC7412(address common.Address, provider *ethclient.Client) (IRawERC7412Contract, error) {
 	c := &ERC7412{}
 
-	abiInstance, err := getABI(erc7412.Erc7412MetaData)
+	abiInstance, err := getABI(erc7412.ERC7412MetaData)
 	if err != nil {
 		return nil, err
 	}
