@@ -191,7 +191,7 @@ func (s *Service) getMarketSummaryMultiCall(marketID *big.Int) (res perpsMarket.
 		CallData:       fulfillOracleQueryCallData,
 	}
 
-	call, err := s.rawForwarder.Aggregate3Value([]forwarder.TrustedMulticallForwarderCall3Value{callFulfill, callSummary})
+	call, err := s.rawForwarder.Aggregate3Value(1, []forwarder.TrustedMulticallForwarderCall3Value{callFulfill, callSummary})
 	if err != nil {
 		return res, err
 	}
