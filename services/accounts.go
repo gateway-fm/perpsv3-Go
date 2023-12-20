@@ -6,6 +6,8 @@ import (
 
 	"github.com/ethereum/go-ethereum/accounts/abi/bind"
 
+	"github.com/gateway-fm/perpsv3-Go/config"
+	"github.com/gateway-fm/perpsv3-Go/contracts/forwarder"
 	"github.com/gateway-fm/perpsv3-Go/errors"
 	"github.com/gateway-fm/perpsv3-Go/models"
 	"github.com/gateway-fm/perpsv3-Go/pkg/logger"
@@ -120,6 +122,85 @@ func (s *Service) FormatAccounts() ([]*models.Account, error) {
 }
 
 func (s *Service) GetAvailableMargin(accountId *big.Int) (*big.Int, error) {
+	if s.chainID == config.BaseMainnet {
+		return s.getAvailableMarginMulticall(accountId)
+	} else {
+		return s.getAvailableMargin(accountId)
+	}
+}
+
+func (s *Service) getAvailableMarginMulticall(accountId *big.Int) (res *big.Int, err error) {
+	getMarginCallData, err := s.rawPerpsContract.GetCallDataAvailableMargin(accountId)
+	if err != nil {
+		return res, err
+	}
+
+	callMargins := forwarder.TrustedMulticallForwarderCall3Value{
+		Target:         s.rawPerpsContract.Address(),
+		RequireSuccess: true,
+		Value:          big.NewInt(0),
+		CallData:       getMarginCallData,
+	}
+
+	marketIDs, err := s.GetMarketIDs()
+	if err != nil {
+		return nil, err
+	}
+
+	feedIDs := []string{}
+	for _, m := range marketIDs {
+		feedID := models.GetPriceFeedIDFromMarketID(m)
+		if feedID == models.UNKNOWN {
+			logger.Log().WithField("layer", "getAvailableMarginMulticall").Errorf(
+				"market ud: %v not supported on andromeda net", m.String(),
+			)
+			return res, errors.GetReadContractErr(fmt.Errorf("market %v not supported", m.String()), "rawForwarder", "Aggregate3Value")
+		}
+
+		feedIDs = append(feedIDs, feedID.String())
+	}
+
+	fulfillOracleQueryCallData, err := s.rawERC7412.GetCallFulfillOracleQueryAll(feedIDs)
+	if err != nil {
+		return res, err
+	}
+
+	callFulfill := forwarder.TrustedMulticallForwarderCall3Value{
+		Target:         s.rawERC7412.Address(),
+		RequireSuccess: true,
+		Value:          big.NewInt(2),
+		CallData:       fulfillOracleQueryCallData,
+	}
+
+	call, err := s.rawForwarder.Aggregate3Value(2, []forwarder.TrustedMulticallForwarderCall3Value{callFulfill, callMargins})
+	if err != nil {
+		return res, err
+	}
+
+	if len(call) != 2 {
+		logger.Log().WithField("layer", "getAvailableMarginMulticall").Errorf("received %v from rawForwarder contract, expected 2", len(call))
+		return res, errors.GetReadContractErr(fmt.Errorf("invalid call"), "rawForwarder", "Aggregate3Value")
+	}
+
+	if !call[0].Success {
+		logger.Log().WithField("layer", "getAvailableMarginMulticall").Error("call to erc7412 unsuccessful")
+		return res, errors.GetReadContractErr(fmt.Errorf("invalid call to erc7412"), "rawForwarder", "Aggregate3Value")
+	}
+
+	if !call[1].Success {
+		logger.Log().WithField("layer", "getAvailableMarginMulticall").Error("call to perps unsuccessful")
+		return res, errors.GetReadContractErr(fmt.Errorf("invalid call to perps market"), "rawForwarder", "Aggregate3Value")
+	}
+
+	unpackedMargin, err := s.rawPerpsContract.UnpackAvailableMargin(call[1].ReturnData)
+	if err != nil {
+		return res, err
+	}
+
+	return unpackedMargin, nil
+}
+
+func (s *Service) getAvailableMargin(accountId *big.Int) (*big.Int, error) {
 	margin, err := s.perpsMarket.GetAvailableMargin(nil, accountId)
 	if err != nil {
 		logger.Log().WithField("layer", "").Errorf("get avaliable margin error: %v", err.Error())
@@ -130,6 +211,85 @@ func (s *Service) GetAvailableMargin(accountId *big.Int) (*big.Int, error) {
 }
 
 func (s *Service) GetRequiredMaintenanceMargin(accountId *big.Int) (*big.Int, error) {
+	if s.chainID == config.BaseMainnet {
+		return s.getRequiredMaintenanceMarginMulticall(accountId)
+	} else {
+		return s.getRequiredMaintenanceMargin(accountId)
+	}
+}
+
+func (s *Service) getRequiredMaintenanceMarginMulticall(accountId *big.Int) (res *big.Int, err error) {
+	getMarginsCallData, err := s.rawPerpsContract.GetCallDataRequiredMargins(accountId)
+	if err != nil {
+		return res, err
+	}
+
+	callMargins := forwarder.TrustedMulticallForwarderCall3Value{
+		Target:         s.rawPerpsContract.Address(),
+		RequireSuccess: true,
+		Value:          big.NewInt(0),
+		CallData:       getMarginsCallData,
+	}
+
+	marketIDs, err := s.GetMarketIDs()
+	if err != nil {
+		return nil, err
+	}
+
+	feedIDs := []string{}
+	for _, m := range marketIDs {
+		feedID := models.GetPriceFeedIDFromMarketID(m)
+		if feedID == models.UNKNOWN {
+			logger.Log().WithField("layer", "getRequiredMaintenanceMarginMulticall").Errorf(
+				"market ud: %v not supported on andromeda net", m.String(),
+			)
+			return res, errors.GetReadContractErr(fmt.Errorf("market %v not supported", m.String()), "rawForwarder", "Aggregate3Value")
+		}
+
+		feedIDs = append(feedIDs, feedID.String())
+	}
+
+	fulfillOracleQueryCallData, err := s.rawERC7412.GetCallFulfillOracleQueryAll(feedIDs)
+	if err != nil {
+		return res, err
+	}
+
+	callFulfill := forwarder.TrustedMulticallForwarderCall3Value{
+		Target:         s.rawERC7412.Address(),
+		RequireSuccess: true,
+		Value:          big.NewInt(2),
+		CallData:       fulfillOracleQueryCallData,
+	}
+
+	call, err := s.rawForwarder.Aggregate3Value(2, []forwarder.TrustedMulticallForwarderCall3Value{callFulfill, callMargins})
+	if err != nil {
+		return res, err
+	}
+
+	if len(call) != 2 {
+		logger.Log().WithField("layer", "getRequiredMaintenanceMarginMulticall").Errorf("received %v from rawForwarder contract, expected 2", len(call))
+		return res, errors.GetReadContractErr(fmt.Errorf("invalid call"), "rawForwarder", "Aggregate3Value")
+	}
+
+	if !call[0].Success {
+		logger.Log().WithField("layer", "getRequiredMaintenanceMarginMulticall").Error("call to erc7412 unsuccessful")
+		return res, errors.GetReadContractErr(fmt.Errorf("invalid call to erc7412"), "rawForwarder", "Aggregate3Value")
+	}
+
+	if !call[1].Success {
+		logger.Log().WithField("layer", "getRequiredMaintenanceMarginMulticall").Error("call to perps unsuccessful")
+		return res, errors.GetReadContractErr(fmt.Errorf("invalid call to perps market"), "rawForwarder", "Aggregate3Value")
+	}
+
+	unpackedMargins, err := s.rawPerpsContract.UnpackRequiredMargins(call[1].ReturnData)
+	if err != nil {
+		return res, err
+	}
+
+	return unpackedMargins.RequiredMaintenanceMargin, nil
+}
+
+func (s *Service) getRequiredMaintenanceMargin(accountId *big.Int) (*big.Int, error) {
 	requiredMargins, err := s.perpsMarket.GetRequiredMargins(nil, accountId)
 	if err != nil {
 		logger.Log().WithField("layer", "").Errorf("get required margins error: %v", err.Error())

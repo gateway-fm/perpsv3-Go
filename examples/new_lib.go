@@ -19,7 +19,7 @@ func main() {
 		log.Fatal(err)
 	}
 
-	res, err := lib.GetMarketSummary(big.NewInt(100))
+	res, err := lib.GetFoundingRate(big.NewInt(100))
 	if err != nil {
 		log.Fatal(err)
 	}

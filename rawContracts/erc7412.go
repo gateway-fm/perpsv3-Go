@@ -23,6 +23,8 @@ const oracleURL = "https://hermes.pyth.network/api/latest_vaas?ids[]="
 type IRawERC7412Contract interface {
 	// GetCallFulfillOracleQuery is used to get calldata for fulfillOracleQuery method
 	GetCallFulfillOracleQuery(feedID string) ([]byte, error)
+	//
+	GetCallFulfillOracleQueryAll(feedIDs []string) ([]byte, error)
 	// Address is used to get contract address
 	Address() common.Address
 }
@@ -60,6 +62,66 @@ func NewERC7412(address common.Address, provider *ethclient.Client) (IRawERC7412
 
 func (p *ERC7412) Address() common.Address {
 	return p.address
+}
+
+func (p *ERC7412) GetCallFulfillOracleQueryAll(feedIDs []string) ([]byte, error) {
+	rawFeedIDs := [][32]byte{}
+	data := [][]byte{}
+
+	for _, f := range feedIDs {
+		feedIDRaw := common.FromHex(f)
+		feedIDRaw32 := *abi.ConvertType(feedIDRaw, new([32]byte)).(*[32]byte)
+
+		rawFeedIDs = append(rawFeedIDs, feedIDRaw32)
+
+		resp, err := http.Get(fmt.Sprintf("%s%s", oracleURL, f))
+		if err != nil {
+			logErr("GetCallFulfillOracleQueryAll", fmt.Sprintln("err fetch oracle:", err.Error()))
+			return nil, errors.GetFetchErr(err, "pyth oracle")
+		}
+
+		body, err := io.ReadAll(resp.Body)
+		if err != nil {
+			logErr("GetCallFulfillOracleQueryAll", fmt.Sprintln("err oracle response read:", err.Error()))
+			return nil, errors.GetFetchErr(err, "pyth oracle")
+		}
+
+		bodyStrings := []string{}
+
+		if err := json.Unmarshal(body, &bodyStrings); err != nil {
+			logErr("GetCallFulfillOracleQueryAll", fmt.Sprintln("err oracle response unmarshal:", err.Error()))
+			return nil, errors.GetFetchErr(err, "pyth oracle")
+		}
+
+		updateData := make([]byte, base64.StdEncoding.DecodedLen(len(bodyStrings[0])))
+		_, err = base64.StdEncoding.Decode(updateData, []byte(bodyStrings[0]))
+		if err != nil {
+			logErr("GetCallFulfillOracleQueryAll", fmt.Sprintln("err oracle response decode:", err.Error()))
+			return nil, errors.GetFetchErr(err, "pyth oracle")
+		}
+
+		data = append(data, updateData)
+	}
+
+	coder, err := abiCoder.NewCoder([]string{"uint8", "uint64", "bytes32[]", "bytes[]"})
+	if err != nil {
+		logErr("GetCallFulfillOracleQueryAll", fmt.Sprintln("err pack:", err.Error()))
+		return nil, errors.GetReadContractErr(err, "ERC7412", "encode call data")
+	}
+
+	callDataOracleArgHex, err := coder.Bytes(uint8(1), uint64(30), rawFeedIDs, data)
+	if err != nil {
+		logErr("GetCallFulfillOracleQueryAll", fmt.Sprintln("err pack:", err.Error()))
+		return nil, errors.GetReadContractErr(err, "ERC7412", "encode call data")
+	}
+
+	callDataOracle, err := p.abi.Pack("fulfillOracleQuery", callDataOracleArgHex)
+	if err != nil {
+		logErr("GetCallFulfillOracleQueryAll", fmt.Sprintln("err pack:", err.Error()))
+		return nil, errors.GetReadContractErr(err, "ERC7412", "fulfillOracleQuery")
+	}
+
+	return callDataOracle, nil
 }
 
 func (p *ERC7412) GetCallFulfillOracleQuery(feedID string) ([]byte, error) {

@@ -80,7 +80,7 @@ func (s *Service) getPositionMultiCall(opts *bind.CallOpts, accountID *big.Int, 
 		CallData:       fulfillOracleQueryCallData,
 	}
 
-	call, err := s.rawForwarder.Aggregate3Value([]forwarder.TrustedMulticallForwarderCall3Value{callFulfill, callPostion})
+	call, err := s.rawForwarder.Aggregate3Value(1, []forwarder.TrustedMulticallForwarderCall3Value{callFulfill, callPostion})
 	if err != nil {
 		return res, err
 	}

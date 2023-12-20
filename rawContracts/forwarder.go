@@ -14,7 +14,7 @@ import (
 // IRawForwarderContract is a trustedMulticallForwarder interface
 type IRawForwarderContract interface {
 	// Aggregate3Value is used to call aggregate3Value contract method
-	Aggregate3Value(arg []forwarder.TrustedMulticallForwarderCall3Value) ([]ForwarderResult, error)
+	Aggregate3Value(value uint64, arg []forwarder.TrustedMulticallForwarderCall3Value) ([]ForwarderResult, error)
 	// Address is used to get contract address
 	Address() common.Address
 }
@@ -60,10 +60,10 @@ func (p *Forwarder) Address() common.Address {
 	return p.address
 }
 
-func (p *Forwarder) Aggregate3Value(arg []forwarder.TrustedMulticallForwarderCall3Value) ([]ForwarderResult, error) {
+func (p *Forwarder) Aggregate3Value(value uint64, arg []forwarder.TrustedMulticallForwarderCall3Value) ([]ForwarderResult, error) {
 	out := []interface{}{}
 
-	if err := p.rawCall(1, &out, "aggregate3Value", arg); err != nil {
+	if err := p.rawCall(value, &out, "aggregate3Value", arg); err != nil {
 		logErr("Aggregate3Value", fmt.Sprintln("err call contract method:", err.Error()))
 		return nil, errors.GetReadContractErr(err, "RawForwarder", "aggregate3Value")
 	}
