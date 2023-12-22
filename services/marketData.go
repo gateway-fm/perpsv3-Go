@@ -189,7 +189,6 @@ func (s *Service) getMarketSummaryMultiCallNoPyth(marketID *big.Int, retry bool)
 	call, err := s.rawForwarder.Aggregate3Value(0, []forwarder.TrustedMulticallForwarderCall3Value{callSummary})
 	if err != nil {
 		if retry {
-			logger.Log().WithField("layer", "getMarketSummaryMultiCallNoPyth").Errorf("err call forwarder: %v calling getMarketSummaryMultiCall", err.Error())
 			return s.getMarketSummaryMultiCall(marketID, false)
 		}
 
@@ -251,7 +250,6 @@ func (s *Service) getMarketSummaryMultiCall(marketID *big.Int, retry bool) (res 
 	call, err := s.rawForwarder.Aggregate3Value(1, []forwarder.TrustedMulticallForwarderCall3Value{callFulfill, callSummary})
 	if err != nil {
 		if retry {
-			logger.Log().WithField("layer", "getMarketSummaryMultiCall").Errorf("err call forwarder: %v calling getMarketSummaryMultiCallNoPyth", err.Error())
 			return s.getMarketSummaryMultiCallNoPyth(marketID, false)
 		}
 

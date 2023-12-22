@@ -163,7 +163,6 @@ func (s *Service) getAvailableMarginMulticallNoPyth(accountId *big.Int, retry bo
 	call, err := s.rawForwarder.Aggregate3Value(0, []forwarder.TrustedMulticallForwarderCall3Value{callMargins})
 	if err != nil {
 		if retry {
-			logger.Log().WithField("layer", "getAvailableMarginMulticallNoPyth").Errorf("err call forwarder: %v calling getAvailableMarginMulticall", err.Error())
 			return s.getAvailableMarginMulticall(accountId, false)
 		}
 		return res, err
@@ -220,6 +219,9 @@ func (s *Service) getAvailableMarginMulticall(accountId *big.Int, retry bool) (r
 
 	fulfillOracleQueryCallData, err := s.rawERC7412.GetCallFulfillOracleQueryAll(feedIDs)
 	if err != nil {
+		logger.Log().WithField("layer", "getAvailableMarginMulticall").Errorf(
+			"err GetCallFulfillOracleQueryAll",
+		)
 		return res, err
 	}
 
@@ -233,7 +235,6 @@ func (s *Service) getAvailableMarginMulticall(accountId *big.Int, retry bool) (r
 	call, err := s.rawForwarder.Aggregate3Value(2, []forwarder.TrustedMulticallForwarderCall3Value{callFulfill, callMargins})
 	if err != nil {
 		if retry {
-			logger.Log().WithField("layer", "getAvailableMarginMulticall").Errorf("err call forwarder: %v calling getAvailableMarginMulticallNoPyth", err.Error())
 			return s.getAvailableMarginMulticallNoPyth(accountId, false)
 		}
 		return res, err
@@ -282,16 +283,16 @@ func (s *Service) getRequiredMaintenanceMarginRetries(accountId *big.Int, fails 
 		res, err = s.getRequiredMaintenanceMarginMulticallNoPyth(accountId, true)
 		if err != nil && fails <= s.multicallRetries {
 			time.Sleep(s.multicallWait)
-			return s.getAvailableMarginMulticallRetries(accountId, fails+1)
+			return s.getRequiredMaintenanceMarginRetries(accountId, fails+1)
 		}
 	case config.BaseMainnet:
 		res, err = s.getRequiredMaintenanceMarginMulticall(accountId, true)
 		if err != nil && fails <= s.multicallRetries {
 			time.Sleep(s.multicallWait)
-			return s.getAvailableMarginMulticallRetries(accountId, fails+1)
+			return s.getRequiredMaintenanceMarginRetries(accountId, fails+1)
 		}
 	default:
-		res, err = s.getAvailableMargin(accountId)
+		res, err = s.getRequiredMaintenanceMargin(accountId)
 	}
 
 	return res, err
@@ -369,9 +370,9 @@ func (s *Service) getRequiredMaintenanceMarginMulticall(accountId *big.Int, retr
 
 	fulfillOracleQueryCallData, err := s.rawERC7412.GetCallFulfillOracleQueryAll(feedIDs)
 	if err != nil {
-		if retries {
-			return s.getRequiredMaintenanceMarginMulticallNoPyth(accountId, false)
-		}
+		logger.Log().WithField("layer", "getRequiredMaintenanceMarginMulticall").Errorf(
+			"err GetCallFulfillOracleQueryAll",
+		)
 		return res, err
 	}
 
@@ -384,6 +385,9 @@ func (s *Service) getRequiredMaintenanceMarginMulticall(accountId *big.Int, retr
 
 	call, err := s.rawForwarder.Aggregate3Value(2, []forwarder.TrustedMulticallForwarderCall3Value{callFulfill, callMargins})
 	if err != nil {
+		if retries {
+			return s.getRequiredMaintenanceMarginMulticallNoPyth(accountId, false)
+		}
 		return res, err
 	}
 

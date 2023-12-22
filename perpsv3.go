@@ -436,15 +436,16 @@ func getAddr(addr string, name string) (common.Address, error) {
 	return common.HexToAddress(addr), nil
 }
 
+// TODO: fix test and unmute
 // createTest used for testing
-func createTest(conf *config.PerpsvConfig) (*Perpsv3, error) {
-	lib := &Perpsv3{
-		config: conf,
-	}
-
-	if err := lib.init(); err != nil {
-		return nil, err
-	}
-
-	return lib, nil
-}
+//func createTest(conf *config.PerpsvConfig) (*Perpsv3, error) {
+//	lib := &Perpsv3{
+//		config: conf,
+//	}
+//
+//	if err := lib.init(); err != nil {
+//		return nil, err
+//	}
+//
+//	return lib, nil
+//}

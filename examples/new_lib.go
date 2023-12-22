@@ -3,6 +3,7 @@ package main
 import (
 	perpsv3_Go "github.com/gateway-fm/perpsv3-Go"
 	"log"
+	"math/big"
 )
 
 func main() {
@@ -17,6 +18,13 @@ func main() {
 	if err != nil {
 		log.Fatal(err)
 	}
+
+	res, err := lib.GetAvailableMargin(big.NewInt(1))
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	log.Println(res)
 
 	//...
 	// call needed methods
