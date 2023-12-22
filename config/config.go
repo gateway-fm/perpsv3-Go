@@ -59,7 +59,7 @@ func GetOptimismGoerliDefaultConfig(rpcURL string) *PerpsvConfig {
 // GetBaseAndromedaDefaultConfig is used to get default lib config for base andromeda test net
 func GetBaseAndromedaDefaultConfig(rpcURL string) *PerpsvConfig {
 	if rpcURL == "" {
-		rpcURL = "https://base-goerli.publicnode.com"
+		rpcURL = "https://rpc.ankr.com/base_goerli/6259fa6541ffabb10ca241f7f437c2389ab7dda38c7be817ab0fb76992e73ae5"
 	}
 
 	return &PerpsvConfig{
@@ -87,7 +87,7 @@ func GetBaseAndromedaDefaultConfig(rpcURL string) *PerpsvConfig {
 // GetBaseMainnetDefaultConfig is used to get default lib config for base main net
 func GetBaseMainnetDefaultConfig(rpcURL string) *PerpsvConfig {
 	if rpcURL == "" {
-		rpcURL = "https://base.fastnode.cc/FNqVEtfWuTiChBumceweFPGEbNkZxtDXrAsHaoklAKNmfQhfxhVQBMijfetdNKMV/"
+		rpcURL = "https://rpc.ankr.com/base/6259fa6541ffabb10ca241f7f437c2389ab7dda38c7be817ab0fb76992e73ae5"
 	}
 
 	return &PerpsvConfig{

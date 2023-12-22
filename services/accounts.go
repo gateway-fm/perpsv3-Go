@@ -283,13 +283,13 @@ func (s *Service) getRequiredMaintenanceMarginRetries(accountId *big.Int, fails 
 		res, err = s.getRequiredMaintenanceMarginMulticallNoPyth(accountId, true)
 		if err != nil && fails <= s.multicallRetries {
 			time.Sleep(s.multicallWait)
-			return s.getAvailableMarginMulticallRetries(accountId, fails+1)
+			return s.getRequiredMaintenanceMarginRetries(accountId, fails+1)
 		}
 	case config.BaseMainnet:
 		res, err = s.getRequiredMaintenanceMarginMulticall(accountId, true)
 		if err != nil && fails <= s.multicallRetries {
 			time.Sleep(s.multicallWait)
-			return s.getAvailableMarginMulticallRetries(accountId, fails+1)
+			return s.getRequiredMaintenanceMarginRetries(accountId, fails+1)
 		}
 	default:
 		res, err = s.getRequiredMaintenanceMargin(accountId)
