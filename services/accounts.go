@@ -3,6 +3,7 @@ package services
 import (
 	"fmt"
 	"math/big"
+	"time"
 
 	"github.com/ethereum/go-ethereum/accounts/abi/bind"
 
@@ -122,14 +123,71 @@ func (s *Service) FormatAccounts() ([]*models.Account, error) {
 }
 
 func (s *Service) GetAvailableMargin(accountId *big.Int) (*big.Int, error) {
-	if s.chainID == config.BaseMainnet {
-		return s.getAvailableMarginMulticall(accountId)
-	} else {
-		return s.getAvailableMargin(accountId)
-	}
+	return s.getAvailableMarginMulticallRetries(accountId, 0)
 }
 
-func (s *Service) getAvailableMarginMulticall(accountId *big.Int) (res *big.Int, err error) {
+func (s *Service) getAvailableMarginMulticallRetries(accountId *big.Int, fails int) (res *big.Int, err error) {
+	switch s.chainID {
+	case config.BaseAndromeda:
+		res, err = s.getAvailableMarginMulticallNoPyth(accountId, true)
+		if err != nil && fails <= s.multicallRetries {
+			time.Sleep(s.multicallWait)
+			return s.getAvailableMarginMulticallRetries(accountId, fails+1)
+		}
+	case config.BaseMainnet:
+		res, err = s.getAvailableMarginMulticall(accountId, true)
+		if err != nil && fails <= s.multicallRetries {
+			time.Sleep(s.multicallWait)
+			return s.getAvailableMarginMulticallRetries(accountId, fails+1)
+		}
+	default:
+		res, err = s.getAvailableMargin(accountId)
+	}
+
+	return res, err
+}
+
+func (s *Service) getAvailableMarginMulticallNoPyth(accountId *big.Int, retry bool) (res *big.Int, err error) {
+	getMarginCallData, err := s.rawPerpsContract.GetCallDataAvailableMargin(accountId)
+	if err != nil {
+		return res, err
+	}
+
+	callMargins := forwarder.TrustedMulticallForwarderCall3Value{
+		Target:         s.rawPerpsContract.Address(),
+		RequireSuccess: true,
+		Value:          big.NewInt(0),
+		CallData:       getMarginCallData,
+	}
+
+	call, err := s.rawForwarder.Aggregate3Value(0, []forwarder.TrustedMulticallForwarderCall3Value{callMargins})
+	if err != nil {
+		if retry {
+			logger.Log().WithField("layer", "getAvailableMarginMulticallNoPyth").Errorf("err call forwarder: %v calling getAvailableMarginMulticall", err.Error())
+			return s.getAvailableMarginMulticall(accountId, false)
+		}
+		return res, err
+	}
+
+	if len(call) != 1 {
+		logger.Log().WithField("layer", "getAvailableMarginMulticallNoPyth").Errorf("received %v from rawForwarder contract, expected 1", len(call))
+		return res, errors.GetReadContractErr(fmt.Errorf("invalid call"), "rawForwarder", "Aggregate3Value")
+	}
+
+	if !call[0].Success {
+		logger.Log().WithField("layer", "getAvailableMarginMulticallNoPyth").Error("call to perps unsuccessful")
+		return res, errors.GetReadContractErr(fmt.Errorf("invalid call to peprs"), "rawForwarder", "Aggregate3Value")
+	}
+
+	unpackedMargin, err := s.rawPerpsContract.UnpackAvailableMargin(call[0].ReturnData)
+	if err != nil {
+		return res, err
+	}
+
+	return unpackedMargin, nil
+}
+
+func (s *Service) getAvailableMarginMulticall(accountId *big.Int, retry bool) (res *big.Int, err error) {
 	getMarginCallData, err := s.rawPerpsContract.GetCallDataAvailableMargin(accountId)
 	if err != nil {
 		return res, err
@@ -174,6 +232,10 @@ func (s *Service) getAvailableMarginMulticall(accountId *big.Int) (res *big.Int,
 
 	call, err := s.rawForwarder.Aggregate3Value(2, []forwarder.TrustedMulticallForwarderCall3Value{callFulfill, callMargins})
 	if err != nil {
+		if retry {
+			logger.Log().WithField("layer", "getAvailableMarginMulticall").Errorf("err call forwarder: %v calling getAvailableMarginMulticallNoPyth", err.Error())
+			return s.getAvailableMarginMulticallNoPyth(accountId, false)
+		}
 		return res, err
 	}
 
@@ -211,14 +273,70 @@ func (s *Service) getAvailableMargin(accountId *big.Int) (*big.Int, error) {
 }
 
 func (s *Service) GetRequiredMaintenanceMargin(accountId *big.Int) (*big.Int, error) {
-	if s.chainID == config.BaseMainnet {
-		return s.getRequiredMaintenanceMarginMulticall(accountId)
-	} else {
-		return s.getRequiredMaintenanceMargin(accountId)
-	}
+	return s.getRequiredMaintenanceMarginRetries(accountId, 0)
 }
 
-func (s *Service) getRequiredMaintenanceMarginMulticall(accountId *big.Int) (res *big.Int, err error) {
+func (s *Service) getRequiredMaintenanceMarginRetries(accountId *big.Int, fails int) (res *big.Int, err error) {
+	switch s.chainID {
+	case config.BaseAndromeda:
+		res, err = s.getRequiredMaintenanceMarginMulticallNoPyth(accountId, true)
+		if err != nil && fails <= s.multicallRetries {
+			time.Sleep(s.multicallWait)
+			return s.getAvailableMarginMulticallRetries(accountId, fails+1)
+		}
+	case config.BaseMainnet:
+		res, err = s.getRequiredMaintenanceMarginMulticall(accountId, true)
+		if err != nil && fails <= s.multicallRetries {
+			time.Sleep(s.multicallWait)
+			return s.getAvailableMarginMulticallRetries(accountId, fails+1)
+		}
+	default:
+		res, err = s.getAvailableMargin(accountId)
+	}
+
+	return res, err
+}
+
+func (s *Service) getRequiredMaintenanceMarginMulticallNoPyth(accountId *big.Int, retries bool) (res *big.Int, err error) {
+	getMarginsCallData, err := s.rawPerpsContract.GetCallDataRequiredMargins(accountId)
+	if err != nil {
+		return res, err
+	}
+
+	callMargins := forwarder.TrustedMulticallForwarderCall3Value{
+		Target:         s.rawPerpsContract.Address(),
+		RequireSuccess: true,
+		Value:          big.NewInt(0),
+		CallData:       getMarginsCallData,
+	}
+
+	call, err := s.rawForwarder.Aggregate3Value(0, []forwarder.TrustedMulticallForwarderCall3Value{callMargins})
+	if err != nil {
+		if retries {
+			return s.getRequiredMaintenanceMarginMulticall(accountId, false)
+		}
+		return res, err
+	}
+
+	if len(call) != 1 {
+		logger.Log().WithField("layer", "getRequiredMaintenanceMarginMulticallNoPyth").Errorf("received %v from rawForwarder contract, expected 2", len(call))
+		return res, errors.GetReadContractErr(fmt.Errorf("invalid call"), "rawForwarder", "Aggregate3Value")
+	}
+
+	if !call[0].Success {
+		logger.Log().WithField("layer", "getRequiredMaintenanceMarginMulticallNoPyth").Error("call to erc7412 unsuccessful")
+		return res, errors.GetReadContractErr(fmt.Errorf("invalid call to perps"), "rawForwarder", "Aggregate3Value")
+	}
+
+	unpackedMargins, err := s.rawPerpsContract.UnpackRequiredMargins(call[0].ReturnData)
+	if err != nil {
+		return res, err
+	}
+
+	return unpackedMargins.RequiredMaintenanceMargin, nil
+}
+
+func (s *Service) getRequiredMaintenanceMarginMulticall(accountId *big.Int, retries bool) (res *big.Int, err error) {
 	getMarginsCallData, err := s.rawPerpsContract.GetCallDataRequiredMargins(accountId)
 	if err != nil {
 		return res, err
@@ -251,6 +369,9 @@ func (s *Service) getRequiredMaintenanceMarginMulticall(accountId *big.Int) (res
 
 	fulfillOracleQueryCallData, err := s.rawERC7412.GetCallFulfillOracleQueryAll(feedIDs)
 	if err != nil {
+		if retries {
+			return s.getRequiredMaintenanceMarginMulticallNoPyth(accountId, false)
+		}
 		return res, err
 	}
 

@@ -1,5 +1,5 @@
 {
-  "address": "0x53f1E640C058337a12D036265681bC172e6fB962",
+  "address": "0x5345994E21ba45D803600A0d97c2FD9e4bBbeAE3",
   "abi": [
     {
       "inputs": [
@@ -184,16 +184,16 @@
   "constructorArgs": [
     "10000000000000000",
     "500000000000000000",
-    "0x3d07CBC5Cb9376A67E76C0655Fe239dDa8E2B264",
-    "0xeaedabbf2f1796bfa84463de1630473226fa7e0beb281ee6da5a5f5b33668f03",
-    "0x22e6966B799c4D5B13BE962E1D117b56327FDa66",
-    "0x09d51516F38980035153a554c26Df3C6f51a23C3"
+    "0x439e6cbAaF61C63f406687907022960088801EC0",
+    "0xc2fb651e249d25defdb88929aa17c31bf085c482d5c94f43be4c146022fde851",
+    "0x3116E4EB8E2126e38963E278b4C29Cd351594360",
+    "0xa89163A087fe38022690C313b5D4BBF12574637f"
   ],
   "linkedLibraries": {},
-  "deployTxnHash": "0x71eeff572189159a66e806d4f151abcbc99b2fa9277fa6ea718f01b5f627a3b2",
+  "deployTxnHash": "0x5331c408f784543f57e07051266952b122121c23f92509bd5a075122cab5db83",
   "sourceName": "contracts/BuybackSnx.sol",
   "contractName": "BuybackSnx",
   "deployedOn": "contract.buyback_snx",
-  "gasUsed": 580393,
-  "gasCost": "1500000051"
+  "gasUsed": 580531,
+  "gasCost": "1500000880"
 }

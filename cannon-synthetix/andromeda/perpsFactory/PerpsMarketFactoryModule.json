@@ -1,5 +1,5 @@
 {
-  "address": "0x60F83b3dC91FF77791C4d4D3B3e436deba07E266",
+  "address": "0xE55331C2f9Ff0d05415C11Da17401ffCcc50658b",
   "abi": [
     {
       "inputs": [
@@ -273,10 +273,10 @@
   ],
   "constructorArgs": [],
   "linkedLibraries": {},
-  "deployTxnHash": "0x9c002605d4843c9d00e45e2b3e7a656f1ec318b18f5aa59d8e8126db8bc1fc3b",
+  "deployTxnHash": "0xfa52459a5392e8ad59ecec5e5624fbb5533c2bebe6004e27d26fc6f9bfb5d5b6",
   "sourceName": "contracts/modules/PerpsMarketFactoryModule.sol",
   "contractName": "PerpsMarketFactoryModule",
   "deployedOn": "contract.PerpsMarketFactoryModule",
-  "gasUsed": 1589558,
-  "gasCost": "1500000051"
+  "gasUsed": 1590006,
+  "gasCost": "1000000002"
 }

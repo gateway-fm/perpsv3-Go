@@ -1,5 +1,5 @@
 {
-  "address": "0x32C222A9A159782aFD7529c87FA34b96CA72C696",
+  "address": "0xF4Df9Dd327Fd30695d478c3c8a2fffAddcdD0d31",
   "abi": [
     {
       "inputs": [
@@ -206,13 +206,13 @@
   ],
   "constructorArgs": [
     "0x828EED723cAF0A8F822249231266E38dF614923C",
-    "0xEde8a407913A874Dd7e3d5B731AFcA135D30375E"
+    "0x48914229deDd5A9922f44441ffCCfC2Cb7856Ee9"
   ],
   "linkedLibraries": {},
-  "deployTxnHash": "0x07b3c3dbbba4f34d0ee877e111767baf17dfa22df7289982a813ab34916be1c5",
+  "deployTxnHash": "0x2de05190ce7ab63e52aabd2c51cef713ada4e570241a2409f693a6cb05e34783",
   "sourceName": "contracts/Proxy.sol",
   "contractName": "Proxy",
   "deployedOn": "contract.InitialCoreProxy",
-  "gasUsed": 185298,
-  "gasCost": "1500000055"
+  "gasUsed": 185358,
+  "gasCost": "1500000254"
 }

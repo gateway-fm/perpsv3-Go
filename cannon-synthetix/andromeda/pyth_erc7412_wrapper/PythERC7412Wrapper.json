@@ -1,5 +1,5 @@
 {
-  "address": "0xEb38e347F24ea04ffA945a475BdD949E0c383A0F",
+  "address": "0xEa7a8f0fDD16Ccd46BA541Fb657a0A7FD7E36261",
   "abi": [
     {
       "inputs": [
@@ -157,13 +157,13 @@
     }
   ],
   "constructorArgs": [
-    "0x8250f4aF4B972684F7b336503E2D6dFeDeB1487a"
+    "0xEbe57e8045F2F230872523bbff7374986E45C486"
   ],
   "linkedLibraries": {},
-  "deployTxnHash": "0x5bc4d91afeda4a21899bb28bd32226be9086bcd7a7c550d2382f17f171bd24ff",
+  "deployTxnHash": "0xbb1694fe8e321cdc8dc16ca9706a01d5bab670feed6a8396d76616329c45bf23",
   "sourceName": "contracts/PythERC7412Wrapper.sol",
   "contractName": "PythERC7412Wrapper",
   "deployedOn": "contract.PythERC7412Wrapper",
-  "gasUsed": 1109299,
-  "gasCost": "1500000050"
+  "gasUsed": 1109617,
+  "gasCost": "1500000254"
 }

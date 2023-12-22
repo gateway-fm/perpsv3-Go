@@ -1,5 +1,5 @@
 {
-  "address": "0xef0E3210A07A803527ed20B87E0F5A204cdc653f",
+  "address": "0x3b4DC2b8Ec468B8dF48253f2bfFe1c23FA5B083f",
   "abi": [
     {
       "inputs": [
@@ -206,10 +206,10 @@
   ],
   "constructorArgs": [],
   "linkedLibraries": {},
-  "deployTxnHash": "0x588e9904ed46ca8074a6f4fbd5baf6abbc598b17022addd933c0490d013a7b5e",
+  "deployTxnHash": "0xacc018925fca06ae5bd28d2269060b15e9268900fdb5be3dde064b0b9cc4573c",
   "sourceName": "contracts/modules/CoreModule.sol",
   "contractName": "CoreModule",
   "deployedOn": "contract.CoreModule",
-  "gasUsed": 942307,
-  "gasCost": "1500000050"
+  "gasUsed": 942585,
+  "gasCost": "1500000255"
 }
