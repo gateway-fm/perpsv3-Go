@@ -1,5 +1,5 @@
 {
-  "address": "0x6a8a998A0C4a7C687Cee4E362F64481b2Bd8bEe5",
+  "address": "0xAE55c944509DBd7958A632c7054D70fF90C7C118",
   "abi": [
     {
       "inputs": [
@@ -310,10 +310,10 @@
   ],
   "constructorArgs": [],
   "linkedLibraries": {},
-  "deployTxnHash": "0x45a96b9b08d7730e21136758e90413e158dd501fd31ce6a1cc50ea0e1e5ea639",
+  "deployTxnHash": "0xbd5fbb460eedc4b924420413188186d63b0f41687db5d25b8d39eafa2c02a5a5",
   "sourceName": "contracts/modules/FeatureFlagModule.sol",
   "contractName": "FeatureFlagModule",
   "deployedOn": "contract.FeatureFlagModule",
-  "gasUsed": 764968,
-  "gasCost": "1500000051"
+  "gasUsed": 765178,
+  "gasCost": "10825293"
 }

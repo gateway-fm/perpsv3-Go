@@ -1,5 +1,5 @@
 {
-  "address": "0x6B9db85A008424b1C985FE132D58dDaD80099b91",
+  "address": "0x3116E4EB8E2126e38963E278b4C29Cd351594360",
   "abi": [
     {
       "inputs": [
@@ -12,6 +12,11 @@
           "internalType": "string",
           "name": "symbol",
           "type": "string"
+        },
+        {
+          "internalType": "uint8",
+          "name": "tokenDecimals",
+          "type": "uint8"
         },
         {
           "internalType": "uint256",
@@ -45,6 +50,25 @@
         }
       ],
       "name": "Approval",
+      "type": "event"
+    },
+    {
+      "anonymous": false,
+      "inputs": [
+        {
+          "indexed": true,
+          "internalType": "address",
+          "name": "previousOwner",
+          "type": "address"
+        },
+        {
+          "indexed": true,
+          "internalType": "address",
+          "name": "newOwner",
+          "type": "address"
+        }
+      ],
+      "name": "OwnershipTransferred",
       "type": "event"
     },
     {
@@ -233,6 +257,26 @@
     },
     {
       "inputs": [],
+      "name": "owner",
+      "outputs": [
+        {
+          "internalType": "address",
+          "name": "",
+          "type": "address"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "renounceOwnership",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [],
       "name": "symbol",
       "outputs": [
         {
@@ -309,19 +353,33 @@
       ],
       "stateMutability": "nonpayable",
       "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "address",
+          "name": "newOwner",
+          "type": "address"
+        }
+      ],
+      "name": "transferOwnership",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
     }
   ],
   "constructorArgs": [
     "Fake Wrapped SNX",
     "fwSNX",
+    "18",
     "0"
   ],
   "linkedLibraries": {},
-  "deployTxnHash": "0x31eb276c27c2ec1c4963d6f60c6abdd59523ea8ba603fd09bd821e95275ba573",
-  "sourceName": "src/MintableTokenPermissionlessMint.sol",
-  "contractName": "MintableTokenPermissionlessMint",
+  "deployTxnHash": "0x64db3eb59ef04e232d5bf8fb8f512bb105c58ab15c01c83d47b751af794de4f7",
+  "sourceName": "src/MintableToken.sol",
+  "contractName": "MintableToken",
   "deployedOn": "contract.MintableToken",
   "highlight": true,
-  "gasUsed": 642802,
-  "gasCost": "1500000254"
+  "gasUsed": 771841,
+  "gasCost": "1500000255"
 }

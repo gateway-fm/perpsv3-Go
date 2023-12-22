@@ -6,6 +6,7 @@ import (
 	"github.com/gateway-fm/perpsv3-Go/config"
 	"github.com/gateway-fm/perpsv3-Go/contracts/forwarder"
 	"math/big"
+	"time"
 
 	"github.com/ethereum/go-ethereum/accounts/abi/bind"
 
@@ -128,20 +129,34 @@ func (s *Service) GetMarketMetadata(marketID *big.Int) (*models.MarketMetadata, 
 	return models.GetMarketMetadataFromContractResponse(marketID, res.Name, res.Symbol), nil
 }
 
+func (s *Service) getMarketSummaryRetries(marketID *big.Int, fails int) (res perpsMarket.IPerpsMarketModuleMarketSummary, err error) {
+	switch s.chainID {
+	case config.BaseAndromeda:
+		res, err = s.getMarketSummaryMultiCallNoPyth(marketID, true)
+		if err != nil && fails <= s.multicallRetries {
+			time.Sleep(s.multicallWait)
+			return s.getMarketSummaryRetries(marketID, fails+1)
+		}
+	case config.BaseMainnet:
+		res, err = s.getMarketSummaryMultiCall(marketID, true)
+		if err != nil && fails <= s.multicallRetries {
+			time.Sleep(s.multicallWait)
+			return s.getMarketSummaryRetries(marketID, fails+1)
+		}
+	default:
+		res, err = s.getMarketSummary(marketID)
+	}
+
+	return res, err
+}
+
 func (s *Service) GetMarketSummary(marketID *big.Int) (*models.MarketSummary, error) {
 	if marketID == nil {
 		logger.Log().WithField("layer", "Service-GetMarketSummary").Errorf("received nil market id")
 		return nil, errors.GetInvalidArgumentErr("market id cannot be nil")
 	}
 
-	var res perpsMarket.IPerpsMarketModuleMarketSummary
-	var err error
-	if s.chainID == config.BaseMainnet {
-		res, err = s.getMarketSummaryMultiCall(marketID)
-	} else {
-		res, err = s.getMarketSummary(marketID)
-	}
-
+	res, err := s.getMarketSummaryRetries(marketID, s.multicallRetries)
 	if err != nil {
 		return nil, err
 	}
@@ -157,8 +172,50 @@ func (s *Service) GetMarketSummary(marketID *big.Int) (*models.MarketSummary, er
 	return models.GetMarketSummaryFromContractModel(res, marketID, block.Time), nil
 }
 
+// getMarketSummaryMultiCallNoPyth is used to get market summary using Forwarder contract with no erc7412 wrapper
+func (s *Service) getMarketSummaryMultiCallNoPyth(marketID *big.Int, retry bool) (res perpsMarket.IPerpsMarketModuleMarketSummary, err error) {
+	getMarketSummaryCallData, err := s.rawPerpsContract.GetCallDataMarketSummary(marketID)
+	if err != nil {
+		return res, err
+	}
+
+	callSummary := forwarder.TrustedMulticallForwarderCall3Value{
+		Target:         s.rawPerpsContract.Address(),
+		RequireSuccess: true,
+		Value:          big.NewInt(0),
+		CallData:       getMarketSummaryCallData,
+	}
+
+	call, err := s.rawForwarder.Aggregate3Value(0, []forwarder.TrustedMulticallForwarderCall3Value{callSummary})
+	if err != nil {
+		if retry {
+			logger.Log().WithField("layer", "getMarketSummaryMultiCallNoPyth").Errorf("err call forwarder: %v calling getMarketSummaryMultiCall", err.Error())
+			return s.getMarketSummaryMultiCall(marketID, false)
+		}
+
+		return res, err
+	}
+
+	if len(call) != 1 {
+		logger.Log().WithField("layer", "getMarketSummaryMultiCallNoPyth").Errorf("received %v from rawForwarder contract, expected 1", len(call))
+		return res, errors.GetReadContractErr(fmt.Errorf("invalid call"), "rawForwarder", "Aggregate3Value")
+	}
+
+	if !call[0].Success {
+		logger.Log().WithField("layer", "getMarketSummaryMultiCallNoPyth").Error("call to perps unsuccessful")
+		return res, errors.GetReadContractErr(fmt.Errorf("invalid call to perps"), "rawForwarder", "Aggregate3Value")
+	}
+
+	unpackedSummary, err := s.rawPerpsContract.UnpackGetMarketSummary(call[0].ReturnData)
+	if err != nil {
+		return res, err
+	}
+
+	return *unpackedSummary, nil
+}
+
 // getMarketSummary is used to get market summary using Forwarder contract
-func (s *Service) getMarketSummaryMultiCall(marketID *big.Int) (res perpsMarket.IPerpsMarketModuleMarketSummary, err error) {
+func (s *Service) getMarketSummaryMultiCall(marketID *big.Int, retry bool) (res perpsMarket.IPerpsMarketModuleMarketSummary, err error) {
 	getMarketSummaryCallData, err := s.rawPerpsContract.GetCallDataMarketSummary(marketID)
 	if err != nil {
 		return res, err
@@ -193,6 +250,11 @@ func (s *Service) getMarketSummaryMultiCall(marketID *big.Int) (res perpsMarket.
 
 	call, err := s.rawForwarder.Aggregate3Value(1, []forwarder.TrustedMulticallForwarderCall3Value{callFulfill, callSummary})
 	if err != nil {
+		if retry {
+			logger.Log().WithField("layer", "getMarketSummaryMultiCall").Errorf("err call forwarder: %v calling getMarketSummaryMultiCallNoPyth", err.Error())
+			return s.getMarketSummaryMultiCallNoPyth(marketID, false)
+		}
+
 		return res, err
 	}
 

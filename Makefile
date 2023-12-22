@@ -53,7 +53,7 @@ fetch-cannon-andromeda:
 
 # fetch ABIs from cannon
 fetch-cannon-base:
-	cannon inspect synthetix-omnibus:latest@andromeda --chain-id 8453 -w ./cannon-synthetix/andromeda --sources
+	cannon inspect synthetix-omnibus:latest@andromeda --chain-id 8453 -w ./cannon-synthetix/base --sources
 
 # generate mock for service interface for testing
 mock-service:

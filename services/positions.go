@@ -7,6 +7,7 @@ import (
 	"github.com/gateway-fm/perpsv3-Go/config"
 	"github.com/gateway-fm/perpsv3-Go/contracts/forwarder"
 	"math/big"
+	"time"
 
 	"github.com/ethereum/go-ethereum/accounts/abi/bind"
 
@@ -36,18 +37,70 @@ func (s *Service) GetPosition(accountID *big.Int, marketID *big.Int) (*models.Po
 
 	opts := &bind.CallOpts{BlockNumber: big.NewInt(int64(latest))}
 
-	var res *models.Position
+	return s.getPositionMultiCallRetries(opts, accountID, marketID, block, 0)
+}
 
-	if s.chainID == config.BaseMainnet {
-		res, err = s.getPositionMultiCall(opts, accountID, marketID, block)
-	} else {
+func (s *Service) getPositionMultiCallRetries(opts *bind.CallOpts, accountID *big.Int, marketID *big.Int, block *types.Header, fails int) (res *models.Position, err error) {
+	switch s.chainID {
+	case config.BaseAndromeda:
+		res, err = s.getPositionMultiCallNoPyth(accountID, marketID, block, true)
+		if err != nil && fails <= s.multicallRetries {
+			time.Sleep(s.multicallWait)
+			return s.getPositionMultiCallRetries(opts, accountID, marketID, block, fails+1)
+		}
+	case config.BaseMainnet:
+		res, err = s.getPositionMultiCall(accountID, marketID, block, true)
+		if err != nil && fails <= s.multicallRetries {
+			time.Sleep(s.multicallWait)
+			return s.getPositionMultiCallRetries(opts, accountID, marketID, block, fails+1)
+		}
+	default:
 		res, err = s.getPosition(opts, accountID, marketID, block)
 	}
 
 	return res, err
 }
 
-func (s *Service) getPositionMultiCall(opts *bind.CallOpts, accountID *big.Int, marketID *big.Int, block *types.Header) (res *models.Position, err error) {
+func (s *Service) getPositionMultiCallNoPyth(accountID *big.Int, marketID *big.Int, block *types.Header, retry bool) (res *models.Position, err error) {
+	getOpenPositionCallData, err := s.rawPerpsContract.GetCallDataOpenPosition(marketID, accountID)
+	if err != nil {
+		return res, err
+	}
+
+	callPostion := forwarder.TrustedMulticallForwarderCall3Value{
+		Target:         s.rawPerpsContract.Address(),
+		RequireSuccess: true,
+		Value:          big.NewInt(0),
+		CallData:       getOpenPositionCallData,
+	}
+
+	call, err := s.rawForwarder.Aggregate3Value(0, []forwarder.TrustedMulticallForwarderCall3Value{callPostion})
+	if err != nil {
+		if retry {
+			return s.getPositionMultiCall(accountID, marketID, block, false)
+		}
+		return res, err
+	}
+
+	if len(call) != 1 {
+		logger.Log().WithField("layer", "getPositionMultiCallNoPyth").Errorf("received %v from rawForwarder contract, expected 1", len(call))
+		return res, errors.GetReadContractErr(fmt.Errorf("invalid call"), "rawForwarder", "Aggregate3Value")
+	}
+
+	if !call[0].Success {
+		logger.Log().WithField("layer", "getPositionMultiCallNoPyth").Error("call to perps unsuccessful")
+		return res, errors.GetReadContractErr(fmt.Errorf("invalid call to perps"), "rawForwarder", "Aggregate3Value")
+	}
+
+	positionContract, err := s.rawPerpsContract.UnpackOpenPosition(call[0].ReturnData)
+	if err != nil {
+		return res, err
+	}
+
+	return models.GetPositionFromContract(positionContract, block.Number.Uint64(), block.Time), nil
+}
+
+func (s *Service) getPositionMultiCall(accountID *big.Int, marketID *big.Int, block *types.Header, retry bool) (res *models.Position, err error) {
 	getOpenPositionCallData, err := s.rawPerpsContract.GetCallDataOpenPosition(marketID, accountID)
 	if err != nil {
 		return res, err
@@ -82,6 +135,9 @@ func (s *Service) getPositionMultiCall(opts *bind.CallOpts, accountID *big.Int, 
 
 	call, err := s.rawForwarder.Aggregate3Value(1, []forwarder.TrustedMulticallForwarderCall3Value{callFulfill, callPostion})
 	if err != nil {
+		if retry {
+			return s.getPositionMultiCallNoPyth(accountID, marketID, block, false)
+		}
 		return res, err
 	}
 

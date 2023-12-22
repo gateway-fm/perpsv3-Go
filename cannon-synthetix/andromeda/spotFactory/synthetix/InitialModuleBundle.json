@@ -206,10 +206,10 @@
   ],
   "constructorArgs": [],
   "linkedLibraries": {},
-  "deployTxnHash": "0x66e378fbe5821134ca6e2e7755af2348fcc002ced2939cec8a400dc6cde30231",
+  "deployTxnHash": "",
   "sourceName": "contracts/modules/InitialModuleBundle.sol",
   "contractName": "InitialModuleBundle",
   "deployedOn": "contract.InitialModuleBundle",
-  "gasUsed": 497666,
-  "gasCost": "1500000050"
+  "gasUsed": 0,
+  "gasCost": "0"
 }

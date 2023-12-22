@@ -1,5 +1,5 @@
 {
-  "address": "0x3a650eF07D45133e02A0a412bF653121fF5bFd13",
+  "address": "0x2be22349D30684e433EdCDd636cc8aDAa34Da831",
   "abi": [
     {
       "inputs": [],
@@ -469,10 +469,10 @@
   ],
   "constructorArgs": [],
   "linkedLibraries": {},
-  "deployTxnHash": "0x16ebe8b6124013161e5b7c576095b292ac91e905bb7d80ee583c9d25475dbebb",
+  "deployTxnHash": "0x7232969d4dfc6ed03d6faa5e8e10a265d98a4bba0171f8d081b8d06aac389ce7",
   "sourceName": "contracts/modules/usd/USDTokenModule.sol",
   "contractName": "USDTokenModule",
   "deployedOn": "contract.USDTokenModule",
-  "gasUsed": 1109974,
-  "gasCost": "1500000050"
+  "gasUsed": 1110282,
+  "gasCost": "100000256"
 }

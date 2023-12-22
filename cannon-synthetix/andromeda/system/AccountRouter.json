@@ -1,5 +1,5 @@
 {
-  "address": "0x7e06f2b2199D91f620E6967F1C7D594e77a3AC67",
+  "address": "0x794AFd9B432DE16450fF118f6402cf591E7226b6",
   "abi": [
     {
       "inputs": [
@@ -809,9 +809,9 @@
     }
   ],
   "deployedOn": "router.AccountRouter",
-  "deployTxnHash": "0xae42db6803468b8f166fdf9d761bac0f46181cb00d855a81bdde697de43b9b46",
+  "deployTxnHash": "0xe2a87432d74ba8b49116344cf39905d2fe874e109ebf5389e7772dc62f0f1938",
   "contractName": "AccountRouter",
   "sourceName": "AccountRouter.sol",
-  "gasUsed": 406380,
-  "gasCost": "1500000055"
+  "gasUsed": 406486,
+  "gasCost": "34150296"
 }

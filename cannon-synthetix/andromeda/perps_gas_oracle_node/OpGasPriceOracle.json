@@ -207,10 +207,10 @@
     "0x420000000000000000000000000000000000000F"
   ],
   "linkedLibraries": {},
-  "deployTxnHash": "0x0d8c569ac4705ca3aea4e302ed8640a85864a2359293b9380ab0e06c163c5962",
+  "deployTxnHash": "0x8f5ecffa9f13dd947c37ea8df93289b55e72f1c4318929a86e745691914b3813",
   "sourceName": "contracts/OpGasPriceOracle.sol",
   "contractName": "OpGasPriceOracle",
   "deployedOn": "contract.OpGasPriceOracle",
-  "gasUsed": 887125,
-  "gasCost": "1500000050"
+  "gasUsed": 887377,
+  "gasCost": "1500000254"
 }

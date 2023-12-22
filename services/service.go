@@ -6,6 +6,7 @@ import (
 	"github.com/gateway-fm/perpsv3-Go/config"
 	"github.com/gateway-fm/perpsv3-Go/rawContracts"
 	"math/big"
+	"time"
 
 	"github.com/ethereum/go-ethereum/accounts/abi/bind"
 	"github.com/ethereum/go-ethereum/ethclient"
@@ -110,8 +111,10 @@ type IService interface {
 
 // Service is an implementation of IService interface
 type Service struct {
-	chainID   config.ChainID
-	rpcClient *ethclient.Client
+	chainID          config.ChainID
+	rpcClient        *ethclient.Client
+	multicallRetries int
+	multicallWait    time.Duration
 
 	core           *core.Core
 	coreFirstBlock uint64
@@ -132,8 +135,10 @@ func NewService(
 	perps *perpsMarket.PerpsMarket,
 ) (IService, error) {
 	s := &Service{
-		chainID:   conf.ChainID,
-		rpcClient: rpc,
+		chainID:          conf.ChainID,
+		rpcClient:        rpc,
+		multicallRetries: conf.Multicall.Retries,
+		multicallWait:    conf.Multicall.Wait,
 
 		core:           core,
 		coreFirstBlock: conf.FirstContractBlocks.Core,
@@ -149,7 +154,7 @@ func NewService(
 
 	s.rawPerpsContract = rawPerpsContract
 
-	if conf.ChainID == config.BaseMainnet {
+	if conf.ChainID == config.BaseMainnet || conf.ChainID == config.BaseAndromeda {
 		rawERC7412, err := rawContracts.NewERC7412(common.HexToAddress(conf.ContractAddresses.ERC7412), rpc)
 		if err != nil {
 			return nil, err

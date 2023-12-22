@@ -10,8 +10,14 @@ type PerpsvConfig struct {
 	RPC                 string
 	ContractAddresses   *ContractAddresses
 	FirstContractBlocks *FirstContractBlocks
+	Multicall           *Multicall
 	ConnectionTimeout   time.Duration
 	ReadTimeout         time.Duration
+}
+
+type Multicall struct {
+	Retries int
+	Wait    time.Duration
 }
 
 // ContractAddresses is a part of a PerpsvConfig struct with contract addresses
@@ -53,12 +59,16 @@ func GetOptimismGoerliDefaultConfig(rpcURL string) *PerpsvConfig {
 // GetBaseAndromedaDefaultConfig is used to get default lib config for base andromeda test net
 func GetBaseAndromedaDefaultConfig(rpcURL string) *PerpsvConfig {
 	if rpcURL == "" {
-		rpcURL = "https://base.fastnode.cc/FNGfsgKFzvLlFKHWrNUYOWIgFRTdiAcVrtAxSMbMfZGdKDUDFgagkwnDgxPqgBit/"
+		rpcURL = "https://base-goerli.publicnode.com"
 	}
 
 	return &PerpsvConfig{
 		ChainID: BaseAndromeda,
 		RPC:     rpcURL,
+		Multicall: &Multicall{
+			Retries: 5,
+			Wait:    time.Millisecond * 200,
+		},
 		ContractAddresses: &ContractAddresses{
 			Core:        "0xF4Df9Dd327Fd30695d478c3c8a2fffAddcdD0d31",
 			PerpsMarket: "0x75c43165ea38cB857C45216a37C5405A7656673c",
@@ -77,12 +87,16 @@ func GetBaseAndromedaDefaultConfig(rpcURL string) *PerpsvConfig {
 // GetBaseMainnetDefaultConfig is used to get default lib config for base main net
 func GetBaseMainnetDefaultConfig(rpcURL string) *PerpsvConfig {
 	if rpcURL == "" {
-		rpcURL = "https://rpc.ankr.com/base"
+		rpcURL = "https://base.fastnode.cc/FNqVEtfWuTiChBumceweFPGEbNkZxtDXrAsHaoklAKNmfQhfxhVQBMijfetdNKMV/"
 	}
 
 	return &PerpsvConfig{
 		ChainID: BaseMainnet,
 		RPC:     rpcURL,
+		Multicall: &Multicall{
+			Retries: 5,
+			Wait:    time.Millisecond * 200,
+		},
 		ContractAddresses: &ContractAddresses{
 			Core:        "0x32C222A9A159782aFD7529c87FA34b96CA72C696",
 			PerpsMarket: "0x0A2AF931eFFd34b81ebcc57E3d3c9B1E1dE1C9Ce",
