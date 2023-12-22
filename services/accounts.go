@@ -292,7 +292,7 @@ func (s *Service) getRequiredMaintenanceMarginRetries(accountId *big.Int, fails 
 			return s.getAvailableMarginMulticallRetries(accountId, fails+1)
 		}
 	default:
-		res, err = s.getAvailableMargin(accountId)
+		res, err = s.getRequiredMaintenanceMargin(accountId)
 	}
 
 	return res, err
