@@ -89,6 +89,7 @@ func (p *ERC7412) GetCallFulfillOracleQueryAll(feedIDs []string) ([]byte, error)
 		bodyStrings := []string{}
 
 		if err := json.Unmarshal(body, &bodyStrings); err != nil {
+			logWarn("GetCallFulfillOracleQueryAll", fmt.Sprintf("received response from the oracle: %s", string(body)))
 			logErr("GetCallFulfillOracleQueryAll", fmt.Sprintln("err oracle response unmarshal:", err.Error()))
 			return nil, errors.GetFetchErr(err, "pyth oracle")
 		}
