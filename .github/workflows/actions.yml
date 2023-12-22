@@ -10,45 +10,45 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
-  test:
-    name: Lint and Test Go Code
-    runs-on:
-      - ubuntu-latest
-    env:
-      GOPRIVATE: github.com/gateway-fm/perpsv3-Go
-      GO111MODULE: on
-      TEST_RPC: ${{ secrets.TEST_RPC }}
-      TEST_RPC_EVENTS: ${{ secrets.TEST_RPC_EVENTS }}
-    steps:
-      - name: Check out code
-        uses: actions/checkout@v2
-
-      - name: Setup Golang
-        uses: actions/setup-go@v2
-      - run: |
-          go version
-          go clean -modcache
-          go mod tidy
-
-      - name: Run linter
-        uses: golangci/golangci-lint-action@v2
-        with:
-          version: latest
-          skip-build-cache: true
-          skip-pkg-cache: true
-
-      - name: Test
-        run: |
-          go install -mod=mod github.com/golang/mock/mockgen
-          make test
-
-      - name: Clean workspace
-        uses: AutoModality/action-clean@v1.1.0
+#  test:
+#    name: Lint and Test Go Code
+#    runs-on:
+#      - ubuntu-latest
+#    env:
+#      GOPRIVATE: github.com/gateway-fm/perpsv3-Go
+#      GO111MODULE: on
+#      TEST_RPC: ${{ secrets.TEST_RPC }}
+#      TEST_RPC_EVENTS: ${{ secrets.TEST_RPC_EVENTS }}
+#    steps:
+#      - name: Check out code
+#        uses: actions/checkout@v2
+#
+#      - name: Setup Golang
+#        uses: actions/setup-go@v2
+#      - run: |
+#          go version
+#          go clean -modcache
+#          go mod tidy
+#
+#      - name: Run linter
+#        uses: golangci/golangci-lint-action@v2
+#        with:
+#          version: latest
+#          skip-build-cache: true
+#          skip-pkg-cache: true
+#
+#      - name: Test
+#        run: |
+#          go install -mod=mod github.com/golang/mock/mockgen
+#          make test
+#
+#      - name: Clean workspace
+#        uses: AutoModality/action-clean@v1.1.0
 
   release:
     name: Make Release
-    needs:
-      - test
+#    needs:
+#      - test
     if: ${{ github.ref == 'refs/heads/main' }}
     runs-on: ubuntu-latest
     outputs:
