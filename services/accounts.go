@@ -163,7 +163,6 @@ func (s *Service) getAvailableMarginMulticallNoPyth(accountId *big.Int, retry bo
 	call, err := s.rawForwarder.Aggregate3Value(0, []forwarder.TrustedMulticallForwarderCall3Value{callMargins})
 	if err != nil {
 		if retry {
-			logger.Log().WithField("layer", "getAvailableMarginMulticallNoPyth").Errorf("err call forwarder: %v calling getAvailableMarginMulticall", err.Error())
 			return s.getAvailableMarginMulticall(accountId, false)
 		}
 		return res, err
@@ -220,6 +219,9 @@ func (s *Service) getAvailableMarginMulticall(accountId *big.Int, retry bool) (r
 
 	fulfillOracleQueryCallData, err := s.rawERC7412.GetCallFulfillOracleQueryAll(feedIDs)
 	if err != nil {
+		logger.Log().WithField("layer", "getAvailableMarginMulticall").Errorf(
+			"err GetCallFulfillOracleQueryAll",
+		)
 		return res, err
 	}
 
@@ -233,7 +235,6 @@ func (s *Service) getAvailableMarginMulticall(accountId *big.Int, retry bool) (r
 	call, err := s.rawForwarder.Aggregate3Value(2, []forwarder.TrustedMulticallForwarderCall3Value{callFulfill, callMargins})
 	if err != nil {
 		if retry {
-			logger.Log().WithField("layer", "getAvailableMarginMulticall").Errorf("err call forwarder: %v calling getAvailableMarginMulticallNoPyth", err.Error())
 			return s.getAvailableMarginMulticallNoPyth(accountId, false)
 		}
 		return res, err
@@ -369,9 +370,9 @@ func (s *Service) getRequiredMaintenanceMarginMulticall(accountId *big.Int, retr
 
 	fulfillOracleQueryCallData, err := s.rawERC7412.GetCallFulfillOracleQueryAll(feedIDs)
 	if err != nil {
-		if retries {
-			return s.getRequiredMaintenanceMarginMulticallNoPyth(accountId, false)
-		}
+		logger.Log().WithField("layer", "getRequiredMaintenanceMarginMulticall").Errorf(
+			"err GetCallFulfillOracleQueryAll",
+		)
 		return res, err
 	}
 
@@ -384,6 +385,9 @@ func (s *Service) getRequiredMaintenanceMarginMulticall(accountId *big.Int, retr
 
 	call, err := s.rawForwarder.Aggregate3Value(2, []forwarder.TrustedMulticallForwarderCall3Value{callFulfill, callMargins})
 	if err != nil {
+		if retries {
+			return s.getRequiredMaintenanceMarginMulticallNoPyth(accountId, false)
+		}
 		return res, err
 	}
 
