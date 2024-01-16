@@ -13,7 +13,7 @@ import (
 	"github.com/gateway-fm/perpsv3-Go/pkg/logger"
 )
 
-// USDMintedSubscription is a struct for listening to all 'PositionLiquidated' contract events and return them as models.USDMinted struct
+// USDMintedSubscription is a struct for listening to all 'UsdMinted' contract events and return them as models.USDMinted struct
 type USDMintedSubscription struct {
 	*basicSubscription
 	USDMintedsChan    chan *models.USDMinted
@@ -25,7 +25,7 @@ func (e *Events) ListenUSDMinted() (*USDMintedSubscription, error) {
 
 	contractSub, err := e.core.WatchUsdMinted(nil, contractEventChan, nil, nil, nil)
 	if err != nil {
-		logger.Log().WithField("layer", "Events-ListenUSDMinteds").Errorf("error watch usd minted: %v", err.Error())
+		logger.Log().WithField("layer", "Events-ListenUSDMinted").Errorf("error watch usd minted: %v", err.Error())
 		return nil, errors.GetEventListenErr(err, "USDMinted")
 	}
 
@@ -58,26 +58,26 @@ func (s *USDMintedSubscription) listen(rpcClient *ethclient.Client) {
 			return
 		case err := <-s.eventSub.Err():
 			if err != nil {
-				logger.Log().WithField("layer", "Events-PositionLiquidated").Errorf("error listening position liquidated: %v", err.Error())
+				logger.Log().WithField("layer", "Events-UsdMinted").Errorf("error listening usd minted: %v", err.Error())
 				s.ErrChan <- err
 			}
 			return
-		case positionLiquidated := <-s.contractEventChan:
-			block, err := rpcClient.HeaderByNumber(context.Background(), big.NewInt(int64(positionLiquidated.Raw.BlockNumber)))
+		case eventUsdMinted := <-s.contractEventChan:
+			block, err := rpcClient.HeaderByNumber(context.Background(), big.NewInt(int64(eventUsdMinted.Raw.BlockNumber)))
 			time := uint64(0)
 			if err != nil {
-				logger.Log().WithField("layer", "Events-PositionLiquidated").Warningf(
+				logger.Log().WithField("layer", "Events-UsdMinted").Warningf(
 					"error fetching block number %v: %v; order event time set to 0 ",
-					positionLiquidated.Raw.BlockNumber, err.Error(),
+					eventUsdMinted.Raw.BlockNumber, err.Error(),
 				)
 				s.ErrChan <- err
 			} else {
 				time = block.Time
 			}
 
-			order := models.GetUSDMintedFromEvent(positionLiquidated, time)
+			mint := models.GetUSDMintedFromEvent(eventUsdMinted, time)
 
-			s.USDMintedsChan <- order
+			s.USDMintedsChan <- mint
 		}
 	}
 }

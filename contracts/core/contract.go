@@ -4630,7 +4630,7 @@ func (_Core *CoreFilterer) WatchDelegationUpdated(opts *bind.WatchOpts, sink cha
 		senderRule = append(senderRule, senderItem)
 	}
 
-	logs, sub, err := _Core.contract.WatchLogs(opts, "DelegationUpdated", accountIdRule, poolIdRule, senderRule)
+	logs, sub, err := _Core.contract.WatchLogs(opts, "DelegationUpdated")
 	if err != nil {
 		return nil, err
 	}
@@ -11182,7 +11182,7 @@ func (_Core *CoreFilterer) WatchUsdBurned(opts *bind.WatchOpts, sink chan<- *Cor
 		senderRule = append(senderRule, senderItem)
 	}
 
-	logs, sub, err := _Core.contract.WatchLogs(opts, "UsdBurned", accountIdRule, poolIdRule, senderRule)
+	logs, sub, err := _Core.contract.WatchLogs(opts, "UsdBurned")
 	if err != nil {
 		return nil, err
 	}
@@ -11348,7 +11348,7 @@ func (_Core *CoreFilterer) WatchUsdMinted(opts *bind.WatchOpts, sink chan<- *Cor
 		senderRule = append(senderRule, senderItem)
 	}
 
-	logs, sub, err := _Core.contract.WatchLogs(opts, "UsdMinted", accountIdRule, poolIdRule, senderRule)
+	logs, sub, err := _Core.contract.WatchLogs(opts, "UsdMinted")
 	if err != nil {
 		return nil, err
 	}

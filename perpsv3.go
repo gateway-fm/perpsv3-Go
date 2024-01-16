@@ -75,6 +75,14 @@ type IPerpsv3 interface {
 	// limit. For most public RPC providers the value for limit is 20 000 blocks
 	RetrieveUSDMintedLimit(limit uint64) ([]*models.USDMinted, error)
 
+	// RetrieveUSDBurnedLimit is used to get all `usdBurned` events from the Core contract with given block search
+	// limit. For most public RPC providers the value for limit is 20 000 blocks
+	RetrieveUSDBurnedLimit(limit uint64) ([]*models.USDBurned, error)
+
+	// RetrieveDelegationUpdatedLimit is used to get all `DelegationUpdated` events from the Core contract with given block search
+	// limit. For most public RPC providers the value for limit is 20 000 blocks
+	RetrieveDelegationUpdatedLimit(limit uint64) ([]*models.DelegationUpdated, error)
+
 	// ListenTrades is used to subscribe on the contract "OrderSettled" event. The goroutine will return events on the
 	// TradesChan chanel and errors on the ErrChan chanel.
 	// To close the subscription use events.TradeSubscription `Close` function
@@ -119,6 +127,14 @@ type IPerpsv3 interface {
 	// ListenUSDMinted is used to listen to all 'USDMinted' Core contract events and return them as models.USDMinted
 	// struct and return errors on ErrChan chanel
 	ListenUSDMinted() (*events.USDMintedSubscription, error)
+
+	// ListenUSDBurned is used to listen to all 'USDBurned' Core contract events and return them as models.USDBurned
+	// struct and return errors on ErrChan chanel
+	ListenUSDBurned() (*events.USDBurnedSubscription, error)
+
+	// ListenDelegationUpdated is used to listen to all 'DelegationUpdated' Core contract events and return them as models.DelegationUpdated
+	// struct and return errors on ErrChan chanel
+	ListenDelegationUpdated() (*events.DelegationUpdatedSubscription, error)
 
 	// GetPosition is used to get position data struct from latest block with given params
 	// Function can return contract error if market ID is invalid
@@ -260,6 +276,14 @@ func (p *Perpsv3) RetrieveUSDMintedLimit(limit uint64) ([]*models.USDMinted, err
 	return p.service.RetrieveUSDMintedLimit(limit)
 }
 
+func (p *Perpsv3) RetrieveUSDBurnedLimit(limit uint64) ([]*models.USDBurned, error) {
+	return p.service.RetrieveUSDBurnedLimit(limit)
+}
+
+func (p *Perpsv3) RetrieveDelegationUpdatedLimit(limit uint64) ([]*models.DelegationUpdated, error) {
+	return p.service.RetrieveDelegationUpdatedLimit(limit)
+}
+
 func (p *Perpsv3) ListenTrades() (*events.TradeSubscription, error) {
 	return p.events.ListenTrades()
 }
@@ -298,6 +322,14 @@ func (p *Perpsv3) ListenAccountPermissionGranted() (*events.AccountPermissionGra
 
 func (p *Perpsv3) ListenUSDMinted() (*events.USDMintedSubscription, error) {
 	return p.events.ListenUSDMinted()
+}
+
+func (p *Perpsv3) ListenUSDBurned() (*events.USDBurnedSubscription, error) {
+	return p.events.ListenUSDBurned()
+}
+
+func (p *Perpsv3) ListenDelegationUpdated() (*events.DelegationUpdatedSubscription, error) {
+	return p.events.ListenDelegationUpdated()
 }
 
 func (p *Perpsv3) GetPosition(accountID *big.Int, marketID *big.Int) (*models.Position, error) {
