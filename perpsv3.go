@@ -196,6 +196,10 @@ func GetBaseAndromedaDefaultConfig(rpcURL string) *config.PerpsvConfig {
 	return config.GetBaseAndromedaDefaultConfig(rpcURL)
 }
 
+func GetBaseSepoliaDefaultConfig(rpcURL string) *config.PerpsvConfig {
+	return config.GetBaseSepoliaDefaultConfig(rpcURL)
+}
+
 func GetBaseMainnetDefaultConfig(rpcURL string) *config.PerpsvConfig {
 	return config.GetBaseMainnetDefaultConfig(rpcURL)
 }

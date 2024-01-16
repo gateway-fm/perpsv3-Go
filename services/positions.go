@@ -41,14 +41,14 @@ func (s *Service) GetPosition(accountID *big.Int, marketID *big.Int) (*models.Po
 }
 
 func (s *Service) getPositionMultiCallRetries(opts *bind.CallOpts, accountID *big.Int, marketID *big.Int, block *types.Header, fails int) (res *models.Position, err error) {
-	switch s.chainID {
-	case config.BaseAndromeda:
+	switch {
+	case s.chainID == config.BaseAndromeda || s.chainID == config.BaseSepolia:
 		res, err = s.getPositionMultiCallNoPyth(accountID, marketID, block, true)
 		if err != nil && fails <= s.multicallRetries {
 			time.Sleep(s.multicallWait)
 			return s.getPositionMultiCallRetries(opts, accountID, marketID, block, fails+1)
 		}
-	case config.BaseMainnet:
+	case s.chainID == config.BaseMainnet:
 		res, err = s.getPositionMultiCall(accountID, marketID, block, true)
 		if err != nil && fails <= s.multicallRetries {
 			time.Sleep(s.multicallWait)
