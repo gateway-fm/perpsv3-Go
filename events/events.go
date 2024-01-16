@@ -48,6 +48,10 @@ type IEvents interface {
 	// ListenAccountPermissionGranted is used to listen to all 'PermissionGranted' contract events and return them as models.PermissionChanged
 	// struct and return errors on ErrChan chanel
 	ListenAccountPermissionGranted() (*AccountPermissionGrantedSubscription, error)
+
+	// ListenUSDMinted is used to listen to all 'USDMinted' Core contract events and return them as models.USDMinted
+	// struct and return errors on ErrChan chanel
+	ListenUSDMinted() (*USDMintedSubscription, error)
 }
 
 // Events implements IEvents interface

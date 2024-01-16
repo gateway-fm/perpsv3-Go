@@ -71,6 +71,10 @@ type IPerpsv3 interface {
 	// limit. For most public RPC providers the value for limit is 20 000 blocks
 	RetrieveAccountLiquidationsLimit(limit uint64) ([]*models.AccountLiquidated, error)
 
+	// RetrieveUSDMintedLimit is used to get all `usdMinted` events from the Core contract with given block search
+	// limit. For most public RPC providers the value for limit is 20 000 blocks
+	RetrieveUSDMintedLimit(limit uint64) ([]*models.USDMinted, error)
+
 	// ListenTrades is used to subscribe on the contract "OrderSettled" event. The goroutine will return events on the
 	// TradesChan chanel and errors on the ErrChan chanel.
 	// To close the subscription use events.TradeSubscription `Close` function
@@ -111,6 +115,10 @@ type IPerpsv3 interface {
 	// ListenAccountPermissionGranted is used to listen to all 'PermissionGranted' contract events and return them as models.PermissionChanged
 	// struct and return errors on ErrChan chanel
 	ListenAccountPermissionGranted() (*events.AccountPermissionGrantedSubscription, error)
+
+	// ListenUSDMinted is used to listen to all 'USDMinted' Core contract events and return them as models.USDMinted
+	// struct and return errors on ErrChan chanel
+	ListenUSDMinted() (*events.USDMintedSubscription, error)
 
 	// GetPosition is used to get position data struct from latest block with given params
 	// Function can return contract error if market ID is invalid
@@ -248,6 +256,10 @@ func (p *Perpsv3) RetrieveAccountLiquidationsLimit(limit uint64) ([]*models.Acco
 	return p.service.RetrieveAccountLiquidationsLimit(limit)
 }
 
+func (p *Perpsv3) RetrieveUSDMintedLimit(limit uint64) ([]*models.USDMinted, error) {
+	return p.service.RetrieveUSDMintedLimit(limit)
+}
+
 func (p *Perpsv3) ListenTrades() (*events.TradeSubscription, error) {
 	return p.events.ListenTrades()
 }
@@ -282,6 +294,10 @@ func (p *Perpsv3) ListenAccountPermissionRevoked() (*events.AccountPermissionRev
 
 func (p *Perpsv3) ListenAccountPermissionGranted() (*events.AccountPermissionGrantedSubscription, error) {
 	return p.events.ListenAccountPermissionGranted()
+}
+
+func (p *Perpsv3) ListenUSDMinted() (*events.USDMintedSubscription, error) {
+	return p.events.ListenUSDMinted()
 }
 
 func (p *Perpsv3) GetPosition(accountID *big.Int, marketID *big.Int) (*models.Position, error) {
@@ -449,6 +465,10 @@ func getAddr(addr string, name string) (common.Address, error) {
 //
 //	if err := lib.init(); err != nil {
 //		return nil, err
+//	}
+//
+//	return lib, nil
+//}
 //	}
 //
 //	return lib, nil

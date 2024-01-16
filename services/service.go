@@ -62,6 +62,10 @@ type IService interface {
 	// limit. For most public RPC providers the value for limit is 20 000 blocks
 	RetrieveAccountLiquidationsLimit(limit uint64) ([]*models.AccountLiquidated, error)
 
+	// RetrieveUSDMintedLimit is used to get all `usdMinted` events from the Core contract with given block search
+	// limit. For most public RPC providers the value for limit is 20 000 blocks
+	RetrieveUSDMintedLimit(limit uint64) ([]*models.USDMinted, error)
+
 	// GetPosition is used to get "Position" data struct from the latest block from the perps market with given data
 	GetPosition(accountID *big.Int, marketID *big.Int) (*models.Position, error)
 
@@ -195,6 +199,19 @@ func (s *Service) getIterationsForLimitQuery(limit uint64) (iterations uint64, l
 func (s *Service) getFilterOptsPerpsMarket(fromBlock uint64, toBLock *uint64) *bind.FilterOpts {
 	if fromBlock == 0 {
 		fromBlock = s.perpsMarketFirstBlock
+	}
+
+	return &bind.FilterOpts{
+		Start:   fromBlock,
+		End:     toBLock,
+		Context: context.Background(),
+	}
+}
+
+// getFilterOptsPerpsMarket is used to get options for event filtering on perps market contract
+func (s *Service) getFilterOptsCore(fromBlock uint64, toBLock *uint64) *bind.FilterOpts {
+	if fromBlock == 0 {
+		fromBlock = s.coreFirstBlock
 	}
 
 	return &bind.FilterOpts{
