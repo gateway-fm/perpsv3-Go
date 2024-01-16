@@ -8,6 +8,7 @@ const (
 	BaseMainnet
 	OptimismGoerli
 	BaseAndromeda
+	BaseSepolia
 )
 
 var chainIDStrings = [...]string{
@@ -15,6 +16,7 @@ var chainIDStrings = [...]string{
 	BaseMainnet:    "BaseMainnet",
 	OptimismGoerli: "OptimismGoerli",
 	BaseAndromeda:  "BaseAndromeda",
+	BaseSepolia:    "BaseSepolia",
 }
 
 var chainIDNums = [...]int{
@@ -22,6 +24,7 @@ var chainIDNums = [...]int{
 	BaseMainnet:    8453,
 	OptimismGoerli: 420,
 	BaseAndromeda:  84531,
+	BaseSepolia:    84532,
 }
 
 func (i ChainID) String() string {

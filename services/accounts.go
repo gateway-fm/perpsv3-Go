@@ -127,14 +127,14 @@ func (s *Service) GetAvailableMargin(accountId *big.Int) (*big.Int, error) {
 }
 
 func (s *Service) getAvailableMarginMulticallRetries(accountId *big.Int, fails int) (res *big.Int, err error) {
-	switch s.chainID {
-	case config.BaseAndromeda:
+	switch {
+	case s.chainID == config.BaseAndromeda || s.chainID == config.BaseSepolia:
 		res, err = s.getAvailableMarginMulticallNoPyth(accountId, true)
 		if err != nil && fails <= s.multicallRetries {
 			time.Sleep(s.multicallWait)
 			return s.getAvailableMarginMulticallRetries(accountId, fails+1)
 		}
-	case config.BaseMainnet:
+	case s.chainID == config.BaseMainnet:
 		res, err = s.getAvailableMarginMulticall(accountId, true)
 		if err != nil && fails <= s.multicallRetries {
 			time.Sleep(s.multicallWait)
@@ -278,14 +278,14 @@ func (s *Service) GetRequiredMaintenanceMargin(accountId *big.Int) (*big.Int, er
 }
 
 func (s *Service) getRequiredMaintenanceMarginRetries(accountId *big.Int, fails int) (res *big.Int, err error) {
-	switch s.chainID {
-	case config.BaseAndromeda:
+	switch {
+	case s.chainID == config.BaseAndromeda || s.chainID == config.BaseSepolia:
 		res, err = s.getRequiredMaintenanceMarginMulticallNoPyth(accountId, true)
 		if err != nil && fails <= s.multicallRetries {
 			time.Sleep(s.multicallWait)
 			return s.getRequiredMaintenanceMarginRetries(accountId, fails+1)
 		}
-	case config.BaseMainnet:
+	case s.chainID == config.BaseMainnet:
 		res, err = s.getRequiredMaintenanceMarginMulticall(accountId, true)
 		if err != nil && fails <= s.multicallRetries {
 			time.Sleep(s.multicallWait)

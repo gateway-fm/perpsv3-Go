@@ -56,7 +56,35 @@ func GetOptimismGoerliDefaultConfig(rpcURL string) *PerpsvConfig {
 	}
 }
 
-// GetBaseAndromedaDefaultConfig is used to get default lib config for base andromeda test net
+// GetBaseSepoliaDefaultConfig is used to get default lib config for base sepolia test net
+func GetBaseSepoliaDefaultConfig(rpcURL string) *PerpsvConfig {
+	if rpcURL == "" {
+		rpcURL = "https://base-sepolia.blockpi.network/v1/rpc/public"
+	}
+
+	return &PerpsvConfig{
+		ChainID: BaseAndromeda,
+		RPC:     rpcURL,
+		Multicall: &Multicall{
+			Retries: 5,
+			Wait:    time.Millisecond * 200,
+		},
+		ContractAddresses: &ContractAddresses{
+			Core:        "0xF4Df9Dd327Fd30695d478c3c8a2fffAddcdD0d31",
+			PerpsMarket: "0xE6C5f05C415126E6b81FCc3619f65Db2fCAd58D0",
+			Forwarder:   "0xE2C5658cC5C448B48141168f3e475dF8f65A1e3e",
+			ERC7412:     "0xBf01fE835b3315968bbc094f50AE3164e6d3D969",
+		},
+		FirstContractBlocks: &FirstContractBlocks{
+			Core:        4548696,
+			PerpsMarket: 4548969,
+		},
+		ConnectionTimeout: time.Second * 30,
+		ReadTimeout:       time.Second * 15,
+	}
+}
+
+// GetBaseAndromedaDefaultConfig is used to get default lib config for base goerli test net
 func GetBaseAndromedaDefaultConfig(rpcURL string) *PerpsvConfig {
 	if rpcURL == "" {
 		rpcURL = "https://rpc.ankr.com/base_goerli/6259fa6541ffabb10ca241f7f437c2389ab7dda38c7be817ab0fb76992e73ae5"

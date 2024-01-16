@@ -130,14 +130,14 @@ func (s *Service) GetMarketMetadata(marketID *big.Int) (*models.MarketMetadata, 
 }
 
 func (s *Service) getMarketSummaryRetries(marketID *big.Int, fails int) (res perpsMarket.IPerpsMarketModuleMarketSummary, err error) {
-	switch s.chainID {
-	case config.BaseAndromeda:
+	switch {
+	case s.chainID == config.BaseAndromeda || s.chainID == config.BaseSepolia:
 		res, err = s.getMarketSummaryMultiCallNoPyth(marketID, true)
 		if err != nil && fails <= s.multicallRetries {
 			time.Sleep(s.multicallWait)
 			return s.getMarketSummaryRetries(marketID, fails+1)
 		}
-	case config.BaseMainnet:
+	case s.chainID == config.BaseMainnet:
 		res, err = s.getMarketSummaryMultiCall(marketID, true)
 		if err != nil && fails <= s.multicallRetries {
 			time.Sleep(s.multicallWait)
