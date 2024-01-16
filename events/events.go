@@ -52,6 +52,14 @@ type IEvents interface {
 	// ListenUSDMinted is used to listen to all 'USDMinted' Core contract events and return them as models.USDMinted
 	// struct and return errors on ErrChan chanel
 	ListenUSDMinted() (*USDMintedSubscription, error)
+
+	// ListenUSDBurned is used to listen to all 'USDBurned' Core contract events and return them as models.USDBurned
+	// struct and return errors on ErrChan chanel
+	ListenUSDBurned() (*USDBurnedSubscription, error)
+
+	// ListenDelegationUpdated is used to listen to all 'DelegationUpdated' Core contract events and return them as models.DelegationUpdated
+	// struct and return errors on ErrChan chanel
+	ListenDelegationUpdated() (*DelegationUpdatedSubscription, error)
 }
 
 // Events implements IEvents interface

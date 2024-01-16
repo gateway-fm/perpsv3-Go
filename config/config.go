@@ -87,7 +87,7 @@ func GetBaseSepoliaDefaultConfig(rpcURL string) *PerpsvConfig {
 // GetBaseAndromedaDefaultConfig is used to get default lib config for base goerli test net
 func GetBaseAndromedaDefaultConfig(rpcURL string) *PerpsvConfig {
 	if rpcURL == "" {
-		rpcURL = "https://rpc.ankr.com/base_goerli/6259fa6541ffabb10ca241f7f437c2389ab7dda38c7be817ab0fb76992e73ae5"
+		rpcURL = "https://base.fastnode.cc/FNGfsgKFzvLlFKHWrNUYOWIgFRTdiAcVrtAxSMbMfZGdKDUDFgagkwnDgxPqgBit/"
 	}
 
 	return &PerpsvConfig{
