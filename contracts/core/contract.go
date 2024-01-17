@@ -11669,7 +11669,7 @@ func (_Core *CoreFilterer) WatchWithdrawn(opts *bind.WatchOpts, sink chan<- *Cor
 		senderRule = append(senderRule, senderItem)
 	}
 
-	logs, sub, err := _Core.contract.WatchLogs(opts, "Withdrawn", accountIdRule, collateralTypeRule, senderRule)
+	logs, sub, err := _Core.contract.WatchLogs(opts, "Withdrawn")
 	if err != nil {
 		return nil, err
 	}
