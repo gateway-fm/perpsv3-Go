@@ -1,10 +1,11 @@
 package perpsv3_Go
 
 import (
-	"github.com/ethereum/go-ethereum/ethclient"
 	"math/big"
 
 	"github.com/ethereum/go-ethereum/common"
+	"github.com/ethereum/go-ethereum/ethclient"
+
 	"github.com/gateway-fm/perpsv3-Go/config"
 	"github.com/gateway-fm/perpsv3-Go/contracts/core"
 	"github.com/gateway-fm/perpsv3-Go/contracts/perpsMarket"
@@ -83,6 +84,14 @@ type IPerpsv3 interface {
 	// limit. For most public RPC providers the value for limit is 20 000 blocks
 	RetrieveDelegationUpdatedLimit(limit uint64) ([]*models.DelegationUpdated, error)
 
+	// RetrieveCollateralWithdrawnLimit is used to get all `Withdrawn` events from the Core contract with given block search
+	// limit. For most public RPC providers the value for limit is 20 000 blocks
+	RetrieveCollateralWithdrawnLimit(limit uint64) ([]*models.CollateralWithdrawn, error)
+
+	// RetrieveCollateralDepositedLimit is used to get all `Deposited` events from the Core contract with given block search
+	// limit. For most public RPC providers the value for limit is 20 000 blocks
+	RetrieveCollateralDepositedLimit(limit uint64) ([]*models.CollateralDeposited, error)
+
 	// ListenTrades is used to subscribe on the contract "OrderSettled" event. The goroutine will return events on the
 	// TradesChan chanel and errors on the ErrChan chanel.
 	// To close the subscription use events.TradeSubscription `Close` function
@@ -135,6 +144,14 @@ type IPerpsv3 interface {
 	// ListenDelegationUpdated is used to listen to all 'DelegationUpdated' Core contract events and return them as models.DelegationUpdated
 	// struct and return errors on ErrChan chanel
 	ListenDelegationUpdated() (*events.DelegationUpdatedSubscription, error)
+
+	// ListenCollateralWithdrawn is used to listen to all 'Withdrawn' Core contract events and return them as models.CollateralWithdrawn
+	// struct and return errors on ErrChan chanel
+	ListenCollateralWithdrawn() (*events.CollateralWithdrawnSubscription, error)
+
+	// ListenCollateralDeposited is used to listen to all 'Deposited' Core contract events and return them as models.CollateralDeposited
+	// struct and return errors on ErrChan chanel
+	ListenCollateralDeposited() (*events.CollateralDepositedSubscription, error)
 
 	// GetPosition is used to get position data struct from latest block with given params
 	// Function can return contract error if market ID is invalid
@@ -284,6 +301,14 @@ func (p *Perpsv3) RetrieveDelegationUpdatedLimit(limit uint64) ([]*models.Delega
 	return p.service.RetrieveDelegationUpdatedLimit(limit)
 }
 
+func (p *Perpsv3) RetrieveCollateralWithdrawnLimit(limit uint64) ([]*models.CollateralWithdrawn, error) {
+	return p.service.RetrieveCollateralWithdrawnLimit(limit)
+}
+
+func (p *Perpsv3) RetrieveCollateralDepositedLimit(limit uint64) ([]*models.CollateralDeposited, error) {
+	return p.service.RetrieveCollateralDepositedLimit(limit)
+}
+
 func (p *Perpsv3) ListenTrades() (*events.TradeSubscription, error) {
 	return p.events.ListenTrades()
 }
@@ -330,6 +355,14 @@ func (p *Perpsv3) ListenUSDBurned() (*events.USDBurnedSubscription, error) {
 
 func (p *Perpsv3) ListenDelegationUpdated() (*events.DelegationUpdatedSubscription, error) {
 	return p.events.ListenDelegationUpdated()
+}
+
+func (p *Perpsv3) ListenCollateralWithdrawn() (*events.CollateralWithdrawnSubscription, error) {
+	return p.events.ListenCollateralWithdrawn()
+}
+
+func (p *Perpsv3) ListenCollateralDeposited() (*events.CollateralDepositedSubscription, error) {
+	return p.events.ListenCollateralDeposited()
 }
 
 func (p *Perpsv3) GetPosition(accountID *big.Int, marketID *big.Int) (*models.Position, error) {

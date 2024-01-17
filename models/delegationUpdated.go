@@ -1,10 +1,12 @@
 package models
 
 import (
+	"math/big"
+
 	"github.com/ethereum/go-ethereum/common"
+
 	"github.com/gateway-fm/perpsv3-Go/contracts/core"
 	"github.com/gateway-fm/perpsv3-Go/pkg/logger"
-	"math/big"
 )
 
 // DelegationUpdated is a `DelegationUpdated` Core smart-contract event struct

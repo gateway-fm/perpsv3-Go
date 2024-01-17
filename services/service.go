@@ -2,20 +2,20 @@ package services
 
 import (
 	"context"
-	"github.com/ethereum/go-ethereum/common"
-	"github.com/gateway-fm/perpsv3-Go/config"
-	"github.com/gateway-fm/perpsv3-Go/rawContracts"
 	"math/big"
 	"time"
 
 	"github.com/ethereum/go-ethereum/accounts/abi/bind"
+	"github.com/ethereum/go-ethereum/common"
 	"github.com/ethereum/go-ethereum/ethclient"
 
+	"github.com/gateway-fm/perpsv3-Go/config"
 	"github.com/gateway-fm/perpsv3-Go/contracts/core"
 	"github.com/gateway-fm/perpsv3-Go/contracts/perpsMarket"
 	"github.com/gateway-fm/perpsv3-Go/errors"
 	"github.com/gateway-fm/perpsv3-Go/models"
 	"github.com/gateway-fm/perpsv3-Go/pkg/logger"
+	"github.com/gateway-fm/perpsv3-Go/rawContracts"
 )
 
 // IService is a service layer interface
@@ -73,6 +73,14 @@ type IService interface {
 	// RetrieveDelegationUpdatedLimit is used to get all `DelegationUpdated` events from the Core contract with given block search
 	// limit. For most public RPC providers the value for limit is 20 000 blocks
 	RetrieveDelegationUpdatedLimit(limit uint64) ([]*models.DelegationUpdated, error)
+
+	// RetrieveCollateralWithdrawnLimit is used to get all `Withdrawn` events from the Core contract with given block search
+	// limit. For most public RPC providers the value for limit is 20 000 blocks
+	RetrieveCollateralWithdrawnLimit(limit uint64) ([]*models.CollateralWithdrawn, error)
+
+	// RetrieveCollateralDepositedLimit is used to get all `Deposited` events from the Core contract with given block search
+	// limit. For most public RPC providers the value for limit is 20 000 blocks
+	RetrieveCollateralDepositedLimit(limit uint64) ([]*models.CollateralDeposited, error)
 
 	// GetPosition is used to get "Position" data struct from the latest block from the perps market with given data
 	GetPosition(accountID *big.Int, marketID *big.Int) (*models.Position, error)

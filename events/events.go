@@ -60,6 +60,14 @@ type IEvents interface {
 	// ListenDelegationUpdated is used to listen to all 'DelegationUpdated' Core contract events and return them as models.DelegationUpdated
 	// struct and return errors on ErrChan chanel
 	ListenDelegationUpdated() (*DelegationUpdatedSubscription, error)
+
+	// ListenCollateralWithdrawn is used to listen to all 'Withdrawn' Core contract events and return them as models.CollateralWithdrawn
+	// struct and return errors on ErrChan chanel
+	ListenCollateralWithdrawn() (*CollateralWithdrawnSubscription, error)
+
+	// ListenCollateralDeposited is used to listen to all 'Deposited' Core contract events and return them as models.CollateralDeposited
+	// struct and return errors on ErrChan chanel
+	ListenCollateralDeposited() (*CollateralDepositedSubscription, error)
 }
 
 // Events implements IEvents interface
