@@ -2,6 +2,7 @@ package services
 
 import (
 	"context"
+	"github.com/ethereum/go-ethereum/common"
 	"math/big"
 
 	"github.com/ethereum/go-ethereum/accounts/abi/bind"
@@ -11,6 +12,20 @@ import (
 	"github.com/gateway-fm/perpsv3-Go/models"
 	"github.com/gateway-fm/perpsv3-Go/pkg/logger"
 )
+
+func (s *Service) GetCollateralPrice(blockNumber *big.Int, collateralType common.Address) (*models.CollateralPrice, error) {
+	var opts *bind.CallOpts
+	if blockNumber.Int64() > 0 {
+		opts = &bind.CallOpts{BlockNumber: blockNumber}
+	}
+
+	price, err := s.core.GetCollateralPrice(opts, collateralType)
+	if err != nil {
+		return nil, errors.GetReadContractErr(err, "core", "GetCollateralPrice")
+	}
+
+	return &models.CollateralPrice{Price: price}, nil
+}
 
 func (s *Service) RetrieveCollateralWithdrawnLimit(limit uint64) ([]*models.CollateralWithdrawn, error) {
 	iterations, last, err := s.getIterationsForLimitQuery(limit)

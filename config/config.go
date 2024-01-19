@@ -115,7 +115,7 @@ func GetBaseAndromedaDefaultConfig(rpcURL string) *PerpsvConfig {
 // GetBaseMainnetDefaultConfig is used to get default lib config for base main net
 func GetBaseMainnetDefaultConfig(rpcURL string) *PerpsvConfig {
 	if rpcURL == "" {
-		rpcURL = "https://rpc.ankr.com/base/6259fa6541ffabb10ca241f7f437c2389ab7dda38c7be817ab0fb76992e73ae5"
+		rpcURL = "https://base.fastnode.cc/FNqVEtfWuTiChBumceweFPGEbNkZxtDXrAsHaoklAKNmfQhfxhVQBMijfetdNKMV/"
 	}
 
 	return &PerpsvConfig{

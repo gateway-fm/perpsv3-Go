@@ -191,6 +191,9 @@ type IPerpsv3 interface {
 	// GetRequiredMaintenanceMargin is used to get required maintenance margin for given account ID
 	GetRequiredMaintenanceMargin(accountId *big.Int) (*big.Int, error)
 
+	// GetCollateralPrice is used to get collateral price for given block number and collateralType
+	GetCollateralPrice(blockNumber *big.Int, collateralType common.Address) (*models.CollateralPrice, error)
+
 	// FormatAccount is used to get account, and it's additional data from the contract by given account id
 	FormatAccount(id *big.Int) (*models.Account, error)
 
@@ -411,6 +414,10 @@ func (p *Perpsv3) GetCollateralAmount(accountId *big.Int, marketId *big.Int) (*b
 
 func (p *Perpsv3) GetRequiredMaintenanceMargin(accountId *big.Int) (*big.Int, error) {
 	return p.service.GetRequiredMaintenanceMargin(accountId)
+}
+
+func (p *Perpsv3) GetCollateralPrice(blockNumber *big.Int, collateralType common.Address) (*models.CollateralPrice, error) {
+	return p.service.GetCollateralPrice(blockNumber, collateralType)
 }
 
 func (p *Perpsv3) FormatAccounts() ([]*models.Account, error) {

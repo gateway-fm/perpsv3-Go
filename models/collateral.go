@@ -29,6 +29,11 @@ type CollateralWithdrawn struct {
 	BlockTimestamp uint64
 }
 
+// CollateralPrice is a collateral price data struct
+type CollateralPrice struct {
+	Price *big.Int
+}
+
 // GetCollateralDepositedFromEvent is used to get CollateralDeposited struct from given contract event
 func GetCollateralDepositedFromEvent(event *core.CoreDeposited, time uint64) *CollateralDeposited {
 	if event == nil {
