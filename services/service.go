@@ -118,6 +118,9 @@ type IService interface {
 	// GetRequiredMaintenanceMargin is used to get required maintenance margin for given account ID
 	GetRequiredMaintenanceMargin(accountId *big.Int) (*big.Int, error)
 
+	// GetCollateralPrice is used to get collateral price for given block number and collateralType
+	GetCollateralPrice(blockNumber *big.Int, collateralType common.Address) (*models.CollateralPrice, error)
+
 	// FormatAccount is used to get account, and it's additional data from the contract by given account id
 	FormatAccount(id *big.Int) (*models.Account, error)
 
