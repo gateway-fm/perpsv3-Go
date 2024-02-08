@@ -33,6 +33,7 @@ func GetDelegationUpdatedFromEvent(event *core.CoreDelegationUpdated, time uint6
 		PoolId:         event.PoolId,
 		CollateralType: event.CollateralType,
 		Amount:         event.Amount,
+		Leverage:       event.Leverage,
 		Sender:         event.Sender,
 		BlockNumber:    event.Raw.BlockNumber,
 		BlockTimestamp: time,
