@@ -9787,7 +9787,7 @@ func (_Core *CoreFilterer) FilterRewardsClaimed(opts *bind.FilterOpts, accountId
 		collateralTypeRule = append(collateralTypeRule, collateralTypeItem)
 	}
 
-	logs, sub, err := _Core.contract.FilterLogs(opts, "RewardsClaimed", accountIdRule, poolIdRule, collateralTypeRule)
+	logs, sub, err := _Core.contract.FilterLogs(opts, "RewardsClaimed")
 	if err != nil {
 		return nil, err
 	}
@@ -9812,7 +9812,7 @@ func (_Core *CoreFilterer) WatchRewardsClaimed(opts *bind.WatchOpts, sink chan<-
 		collateralTypeRule = append(collateralTypeRule, collateralTypeItem)
 	}
 
-	logs, sub, err := _Core.contract.WatchLogs(opts, "RewardsClaimed", accountIdRule, poolIdRule, collateralTypeRule)
+	logs, sub, err := _Core.contract.WatchLogs(opts, "RewardsClaimed")
 	if err != nil {
 		return nil, err
 	}
@@ -9948,7 +9948,7 @@ func (_Core *CoreFilterer) FilterRewardsDistributed(opts *bind.FilterOpts, poolI
 		collateralTypeRule = append(collateralTypeRule, collateralTypeItem)
 	}
 
-	logs, sub, err := _Core.contract.FilterLogs(opts, "RewardsDistributed", poolIdRule, collateralTypeRule)
+	logs, sub, err := _Core.contract.FilterLogs(opts, "RewardsDistributed")
 	if err != nil {
 		return nil, err
 	}
@@ -9969,7 +9969,7 @@ func (_Core *CoreFilterer) WatchRewardsDistributed(opts *bind.WatchOpts, sink ch
 		collateralTypeRule = append(collateralTypeRule, collateralTypeItem)
 	}
 
-	logs, sub, err := _Core.contract.WatchLogs(opts, "RewardsDistributed", poolIdRule, collateralTypeRule)
+	logs, sub, err := _Core.contract.WatchLogs(opts, "RewardsDistributed")
 	if err != nil {
 		return nil, err
 	}

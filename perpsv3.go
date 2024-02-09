@@ -92,6 +92,14 @@ type IPerpsv3 interface {
 	// limit. For most public RPC providers the value for limit is 20 000 blocks
 	RetrieveCollateralDepositedLimit(limit uint64) ([]*models.CollateralDeposited, error)
 
+	// RetrieveRewardClaimedLimit is used to get all `RewardClaimed` events from the Core contract with given block search
+	// limit. For most public RPC providers the value for limit is 20 000 blocks
+	RetrieveRewardClaimedLimit(limit uint64) ([]*models.RewardClaimed, error)
+
+	// RetrieveRewardDistributedLimit is used to get all `RewardDistributed` events from the Core contract with given block search
+	// limit. For most public RPC providers the value for limit is 20 000 blocks
+	RetrieveRewardDistributedLimit(limit uint64) ([]*models.RewardDistributed, error)
+
 	// ListenTrades is used to subscribe on the contract "OrderSettled" event. The goroutine will return events on the
 	// TradesChan chanel and errors on the ErrChan chanel.
 	// To close the subscription use events.TradeSubscription `Close` function
@@ -152,6 +160,14 @@ type IPerpsv3 interface {
 	// ListenCollateralDeposited is used to listen to all 'Deposited' Core contract events and return them as models.CollateralDeposited
 	// struct and return errors on ErrChan chanel
 	ListenCollateralDeposited() (*events.CollateralDepositedSubscription, error)
+
+	// ListenRewardDistributed is used to listen to all 'RewardDistributed' Core contract events and return them as models.RewardDistributed
+	// struct and return errors on ErrChan chanel
+	ListenRewardDistributed() (*events.RewardDistributedSubscription, error)
+
+	// ListenRewardClaimed is used to listen to all 'RewardClaimed' Core contract events and return them as models.RewardClaimed
+	// struct and return errors on ErrChan chanel
+	ListenRewardClaimed() (*events.RewardClaimedSubscription, error)
 
 	// GetPosition is used to get position data struct from latest block with given params
 	// Function can return contract error if market ID is invalid
@@ -312,6 +328,14 @@ func (p *Perpsv3) RetrieveCollateralDepositedLimit(limit uint64) ([]*models.Coll
 	return p.service.RetrieveCollateralDepositedLimit(limit)
 }
 
+func (p *Perpsv3) RetrieveRewardClaimedLimit(limit uint64) ([]*models.RewardClaimed, error) {
+	return p.service.RetrieveRewardClaimedLimit(limit)
+}
+
+func (p *Perpsv3) RetrieveRewardDistributedLimit(limit uint64) ([]*models.RewardDistributed, error) {
+	return p.service.RetrieveRewardDistributedLimit(limit)
+}
+
 func (p *Perpsv3) ListenTrades() (*events.TradeSubscription, error) {
 	return p.events.ListenTrades()
 }
@@ -366,6 +390,14 @@ func (p *Perpsv3) ListenCollateralWithdrawn() (*events.CollateralWithdrawnSubscr
 
 func (p *Perpsv3) ListenCollateralDeposited() (*events.CollateralDepositedSubscription, error) {
 	return p.events.ListenCollateralDeposited()
+}
+
+func (p *Perpsv3) ListenRewardDistributed() (*events.RewardDistributedSubscription, error) {
+	return p.events.ListenRewardDistributed()
+}
+
+func (p *Perpsv3) ListenRewardClaimed() (*events.RewardClaimedSubscription, error) {
+	return p.events.ListenRewardClaimed()
 }
 
 func (p *Perpsv3) GetPosition(accountID *big.Int, marketID *big.Int) (*models.Position, error) {
