@@ -82,6 +82,14 @@ type IService interface {
 	// limit. For most public RPC providers the value for limit is 20 000 blocks
 	RetrieveCollateralDepositedLimit(limit uint64) ([]*models.CollateralDeposited, error)
 
+	// RetrieveRewardClaimedLimit is used to get all `RewardClaimed` events from the Core contract with given block search
+	// limit. For most public RPC providers the value for limit is 20 000 blocks
+	RetrieveRewardClaimedLimit(limit uint64) ([]*models.RewardClaimed, error)
+
+	// RetrieveRewardDistributedLimit is used to get all `RewardDistributed` events from the Core contract with given block search
+	// limit. For most public RPC providers the value for limit is 20 000 blocks
+	RetrieveRewardDistributedLimit(limit uint64) ([]*models.RewardDistributed, error)
+
 	// GetPosition is used to get "Position" data struct from the latest block from the perps market with given data
 	GetPosition(accountID *big.Int, marketID *big.Int) (*models.Position, error)
 

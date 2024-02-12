@@ -68,6 +68,14 @@ type IEvents interface {
 	// ListenCollateralDeposited is used to listen to all 'Deposited' Core contract events and return them as models.CollateralDeposited
 	// struct and return errors on ErrChan chanel
 	ListenCollateralDeposited() (*CollateralDepositedSubscription, error)
+
+	// ListenRewardDistributed is used to listen to all 'RewardDistributed' Core contract events and return them as models.RewardDistributed
+	// struct and return errors on ErrChan chanel
+	ListenRewardDistributed() (*RewardDistributedSubscription, error)
+
+	// ListenRewardClaimed is used to listen to all 'RewardClaimed' Core contract events and return them as models.RewardClaimed
+	// struct and return errors on ErrChan chanel
+	ListenRewardClaimed() (*RewardClaimedSubscription, error)
 }
 
 // Events implements IEvents interface
