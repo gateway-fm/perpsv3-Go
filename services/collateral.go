@@ -15,7 +15,7 @@ import (
 
 func (s *Service) GetCollateralPrice(blockNumber *big.Int, collateralType common.Address) (*models.CollateralPrice, error) {
 	var opts *bind.CallOpts
-	if blockNumber.Int64() > 0 {
+	if blockNumber != nil && blockNumber.Int64() > 0 {
 		opts = &bind.CallOpts{BlockNumber: blockNumber}
 	}
 
