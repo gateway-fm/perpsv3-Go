@@ -100,6 +100,14 @@ type IPerpsv3 interface {
 	// limit. For most public RPC providers the value for limit is 20 000 blocks
 	RetrieveRewardDistributedLimit(limit uint64) ([]*models.RewardDistributed, error)
 
+	// RetrieveMarketUSDDepositedLimit is used to get all `MarketUSDDeposited` events from the Core contract with given block search
+	// limit. For most public RPC providers the value for limit is 20 000 blocks
+	RetrieveMarketUSDDepositedLimit(limit uint64) ([]*models.MarketUSDDeposited, error)
+
+	// RetrieveMarketUSDWithdrawnLimit is used to get all `MarketUSDWithdrawn` events from the Core contract with given block search
+	// limit. For most public RPC providers the value for limit is 20 000 blocks
+	RetrieveMarketUSDWithdrawnLimit(limit uint64) ([]*models.MarketUSDWithdrawn, error)
+
 	// ListenTrades is used to subscribe on the contract "OrderSettled" event. The goroutine will return events on the
 	// TradesChan chanel and errors on the ErrChan chanel.
 	// To close the subscription use events.TradeSubscription `Close` function
@@ -169,6 +177,14 @@ type IPerpsv3 interface {
 	// struct and return errors on ErrChan chanel
 	ListenRewardClaimed() (*events.RewardClaimedSubscription, error)
 
+	// ListenMarketUSDWithdrawn is used to listen to all 'MarketUSDWithdrawn' Core contract events and return them as models.MarketUSDWithdrawn
+	// struct and return errors on ErrChan chanel
+	ListenMarketUSDWithdrawn() (*events.MarketUSDWithdrawnSubscription, error)
+
+	// ListenMarketUSDDeposited is used to listen to all 'MarketUSDDeposited' Core contract events and return them as models.MarketUSDDeposited
+	// struct and return errors on ErrChan chanel
+	ListenMarketUSDDeposited() (*events.MarketUSDDepositedSubscription, error)
+
 	// GetPosition is used to get position data struct from latest block with given params
 	// Function can return contract error if market ID is invalid
 	GetPosition(accountID *big.Int, marketID *big.Int) (*models.Position, error)
@@ -209,6 +225,12 @@ type IPerpsv3 interface {
 
 	// GetCollateralPrice is used to get collateral price for given block number and collateralType
 	GetCollateralPrice(blockNumber *big.Int, collateralType common.Address) (*models.CollateralPrice, error)
+
+	// GetVaultDebt is used to get vault debt for given pool ID and collateralType
+	GetVaultDebt(poolID *big.Int, collateralType common.Address) (*big.Int, error)
+
+	// GetVaultCollateral is used to get vault collateral for given pool ID and collateralType
+	GetVaultCollateral(poolID *big.Int, collateralType common.Address) (amount *big.Int, value *big.Int, err error)
 
 	// FormatAccount is used to get account, and it's additional data from the contract by given account id
 	FormatAccount(id *big.Int) (*models.Account, error)
@@ -336,6 +358,14 @@ func (p *Perpsv3) RetrieveRewardDistributedLimit(limit uint64) ([]*models.Reward
 	return p.service.RetrieveRewardDistributedLimit(limit)
 }
 
+func (p *Perpsv3) RetrieveMarketUSDDepositedLimit(limit uint64) ([]*models.MarketUSDDeposited, error) {
+	return p.service.RetrieveMarketUSDDepositedLimit(limit)
+}
+
+func (p *Perpsv3) RetrieveMarketUSDWithdrawnLimit(limit uint64) ([]*models.MarketUSDWithdrawn, error) {
+	return p.service.RetrieveMarketUSDWithdrawnLimit(limit)
+}
+
 func (p *Perpsv3) ListenTrades() (*events.TradeSubscription, error) {
 	return p.events.ListenTrades()
 }
@@ -400,6 +430,14 @@ func (p *Perpsv3) ListenRewardClaimed() (*events.RewardClaimedSubscription, erro
 	return p.events.ListenRewardClaimed()
 }
 
+func (p *Perpsv3) ListenMarketUSDWithdrawn() (*events.MarketUSDWithdrawnSubscription, error) {
+	return p.events.ListenMarketUSDWithdrawn()
+}
+
+func (p *Perpsv3) ListenMarketUSDDeposited() (*events.MarketUSDDepositedSubscription, error) {
+	return p.events.ListenMarketUSDDeposited()
+}
+
 func (p *Perpsv3) GetPosition(accountID *big.Int, marketID *big.Int) (*models.Position, error) {
 	return p.service.GetPosition(accountID, marketID)
 }
@@ -450,6 +488,14 @@ func (p *Perpsv3) GetRequiredMaintenanceMargin(accountId *big.Int) (*big.Int, er
 
 func (p *Perpsv3) GetCollateralPrice(blockNumber *big.Int, collateralType common.Address) (*models.CollateralPrice, error) {
 	return p.service.GetCollateralPrice(blockNumber, collateralType)
+}
+
+func (p *Perpsv3) GetVaultDebt(poolID *big.Int, collateralType common.Address) (*big.Int, error) {
+	return p.service.GetVaultDebt(poolID, collateralType)
+}
+
+func (p *Perpsv3) GetVaultCollateral(poolID *big.Int, collateralType common.Address) (amount *big.Int, value *big.Int, err error) {
+	return p.service.GetVaultCollateral(poolID, collateralType)
 }
 
 func (p *Perpsv3) FormatAccounts() ([]*models.Account, error) {

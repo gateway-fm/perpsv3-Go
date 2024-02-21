@@ -90,6 +90,14 @@ type IService interface {
 	// limit. For most public RPC providers the value for limit is 20 000 blocks
 	RetrieveRewardDistributedLimit(limit uint64) ([]*models.RewardDistributed, error)
 
+	// RetrieveMarketUSDDepositedLimit is used to get all `MarketUSDDeposited` events from the Core contract with given block search
+	// limit. For most public RPC providers the value for limit is 20 000 blocks
+	RetrieveMarketUSDDepositedLimit(limit uint64) ([]*models.MarketUSDDeposited, error)
+
+	// RetrieveMarketUSDWithdrawnLimit is used to get all `MarketUSDWithdrawn` events from the Core contract with given block search
+	// limit. For most public RPC providers the value for limit is 20 000 blocks
+	RetrieveMarketUSDWithdrawnLimit(limit uint64) ([]*models.MarketUSDWithdrawn, error)
+
 	// GetPosition is used to get "Position" data struct from the latest block from the perps market with given data
 	GetPosition(accountID *big.Int, marketID *big.Int) (*models.Position, error)
 
@@ -129,6 +137,12 @@ type IService interface {
 	// GetCollateralPrice is used to get collateral price for given block number and collateralType
 	GetCollateralPrice(blockNumber *big.Int, collateralType common.Address) (*models.CollateralPrice, error)
 
+	// GetVaultDebt is used to get vault debt for given pool ID and collateralType
+	GetVaultDebt(poolID *big.Int, collateralType common.Address) (*big.Int, error)
+
+	// GetVaultCollateral is used to get vault collateral for given pool ID and collateralType
+	GetVaultCollateral(poolID *big.Int, collateralType common.Address) (amount *big.Int, value *big.Int, err error)
+
 	// FormatAccount is used to get account, and it's additional data from the contract by given account id
 	FormatAccount(id *big.Int) (*models.Account, error)
 
@@ -156,6 +170,7 @@ type Service struct {
 
 	rawERC7412   rawContracts.IRawERC7412Contract
 	rawForwarder rawContracts.IRawForwarderContract
+	rawCore      rawContracts.IRawCoreContract
 }
 
 // NewService is used to get instance of Service
@@ -184,6 +199,13 @@ func NewService(
 	}
 
 	s.rawPerpsContract = rawPerpsContract
+
+	rawCoreContract, err := rawContracts.NewCore(common.HexToAddress(conf.ContractAddresses.Core), rpc)
+	if err != nil {
+		return nil, err
+	}
+
+	s.rawCore = rawCoreContract
 
 	if conf.ChainID == config.BaseMainnet || conf.ChainID == config.BaseAndromeda {
 		rawERC7412, err := rawContracts.NewERC7412(common.HexToAddress(conf.ContractAddresses.ERC7412), rpc)

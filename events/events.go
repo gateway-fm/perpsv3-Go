@@ -76,6 +76,14 @@ type IEvents interface {
 	// ListenRewardClaimed is used to listen to all 'RewardClaimed' Core contract events and return them as models.RewardClaimed
 	// struct and return errors on ErrChan chanel
 	ListenRewardClaimed() (*RewardClaimedSubscription, error)
+
+	// ListenMarketUSDWithdrawn is used to listen to all 'MarketUSDWithdrawn' Core contract events and return them as models.MarketUSDWithdrawn
+	// struct and return errors on ErrChan chanel
+	ListenMarketUSDWithdrawn() (*MarketUSDWithdrawnSubscription, error)
+
+	// ListenMarketUSDDeposited is used to listen to all 'MarketUSDDeposited' Core contract events and return them as models.MarketUSDDeposited
+	// struct and return errors on ErrChan chanel
+	ListenMarketUSDDeposited() (*MarketUSDDepositedSubscription, error)
 }
 
 // Events implements IEvents interface
