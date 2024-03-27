@@ -29,11 +29,6 @@
 * [Operating a Market](for-derivatives-market-builders/integrating-synthetix.md)
 * [Registering a Market](for-derivatives-market-builders/registering-a-market.md)
 
-## For Traders
-
-* [Spot Market](for-traders/spot-market.md)
-* [Perps Market](for-traders/perps-market.md)
-
 ## For Governance Participants
 
 * [Synthetix Governance](for-governance-participants/synthetix-governance.md)
@@ -41,10 +36,11 @@
 
 ## FOR PERP INTEGRATORS
 
+* [Base Andromeda](for-perp-integrators/base-andromeda.md)
 * [Perps V3](for-perp-integrators/perps-v3.md)
 * [Sandbox with Perps](for-perp-integrators/sandbox-with-perps.md)
-* [Base Andromeda](for-perp-integrators/base-andromeda.md)
-* [Perps V3 Keeper](for-perp-integrators/perps-v3-keeper.md)
+* [Perps Python SDK](for-perp-integrators/perps-python-sdk.md)
+* [Perps V3 Keepers](for-perp-integrators/perps-v3-keeper.md)
 
 ## For Developers
 
@@ -57,6 +53,17 @@
 * [Data Dictionary](for-developers/data-dictionary.md)
 * [Addresses + ABIs](for-developers/addresses-+-abis.md)
 * [Smart Contract Audits](for-developers/smart-contract-audits.md)
+* [Deployment Info](for-developers/deployment-info.md)
+  * [Mainnet](deployment-info/1-main.md)
+  * [Goerli](deployment-info/5-main.md)
+  * [Sepolia](deployment-info/11155111-main.md)
+  * [Optimism Mainnet](deployment-info/10-main.md)
+  * [Optimism Goerli](deployment-info/420-main.md)
+  * [Base Mainnet Andromeda](deployment-info/8453-andromeda.md)
+  * [Base Goerli Andromeda](deployment-info/84531-andromeda.md)
+  * [Base Sepolia Andromeda](deployment-info/84532-andromeda.md)
+* [Perps Market](for-developers/perps-market.md)
+* [Spot Market](for-developers/spot-market.md)
 
 ## For Designers
 
