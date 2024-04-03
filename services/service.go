@@ -102,6 +102,10 @@ type IService interface {
 	// limit. For most public RPC providers the value for limit is 20 000 blocks
 	RetrieveMarketRegistered(limit uint64) ([]*models.MarketRegistered, error)
 
+	// RetrievePoolCreated is used to get all `PoolCreated` events from the Core contract with given block search
+	// limit. For most public RPC providers the value for limit is 20 000 blocks
+	RetrievePoolCreated(limit uint64) ([]*models.PoolCreated, error)
+
 	// GetPosition is used to get "Position" data struct from the latest block from the perps market with given data
 	GetPosition(accountID *big.Int, marketID *big.Int) (*models.Position, error)
 
@@ -149,6 +153,9 @@ type IService interface {
 
 	// GetPoolConfiguration is used to get MarketConfigurations array
 	GetPoolConfiguration(poolID *big.Int) (*models.PoolConfiguration, error)
+
+	// GetPoolName is used to get pool name from given PoolID
+	GetPoolName(poolID *big.Int) (string, error)
 
 	// FormatAccount is used to get account, and it's additional data from the contract by given account id
 	FormatAccount(id *big.Int) (*models.Account, error)
