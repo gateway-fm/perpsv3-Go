@@ -88,6 +88,10 @@ type IEvents interface {
 	// ListenMarketRegistered is used to listen to all 'MarketRegistered' Core contract events and return them as models.MarketRegistered
 	// struct and return errors on ErrChan chanel
 	ListenMarketRegistered() (*MarketRegisteredSubscription, error)
+
+	// ListenPoolCreated is used to listen to all 'PoolCreated' Core contract events and return them as models.PoolCreated
+	// struct and return errors on ErrChan chanel
+	ListenPoolCreated() (*PoolCreatedSubscription, error)
 }
 
 // Events implements IEvents interface

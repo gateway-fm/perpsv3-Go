@@ -3,14 +3,14 @@ package services
 import (
 	"context"
 	"fmt"
-	"github.com/ethereum/go-ethereum/common"
-	"github.com/gateway-fm/perpsv3-Go/contracts/forwarder"
 	"math/big"
 	"time"
 
 	"github.com/ethereum/go-ethereum/accounts/abi/bind"
+	"github.com/ethereum/go-ethereum/common"
 
 	"github.com/gateway-fm/perpsv3-Go/contracts/core"
+	"github.com/gateway-fm/perpsv3-Go/contracts/forwarder"
 	"github.com/gateway-fm/perpsv3-Go/errors"
 	"github.com/gateway-fm/perpsv3-Go/models"
 	"github.com/gateway-fm/perpsv3-Go/pkg/logger"
@@ -142,6 +142,74 @@ func (s *Service) RetrieveDelegationUpdatedLimit(limit uint64) ([]*models.Delega
 	return delegations, nil
 }
 
+func (s *Service) RetrievePoolCreated(limit uint64) ([]*models.PoolCreated, error) {
+	iterations, last, err := s.getIterationsForLimitQuery(limit)
+	if err != nil {
+		return nil, err
+	}
+
+	var poolCreations []*models.PoolCreated
+
+	logger.Log().WithField("layer", "Service-RetrievePoolCreated").Infof(
+		"fetching PoolCreated with limit: %v to block: %v total iterations: %v...",
+		limit, last, iterations,
+	)
+
+	fromBlock := s.coreFirstBlock
+	toBlock := fromBlock + limit
+	for i := uint64(1); i <= iterations; i++ {
+		if i%10 == 0 || i == iterations {
+			logger.Log().WithField("layer", "Service-RetrievePoolCreated").Infof("-- iteration %v", i)
+		}
+		opts := s.getFilterOptsCore(fromBlock, &toBlock)
+
+		res, err := s.retrieveDPoolCreated(opts)
+		if err != nil {
+			return nil, err
+		}
+
+		poolCreations = append(poolCreations, res...)
+
+		fromBlock = toBlock + 1
+
+		if i == iterations-1 {
+			toBlock = last
+		} else {
+			toBlock = fromBlock + limit
+		}
+	}
+
+	logger.Log().WithField("layer", "Service-RetrieveLiquidationsLimit").Infof("task completed successfully")
+
+	return poolCreations, nil
+}
+
+func (s *Service) retrieveDPoolCreated(opts *bind.FilterOpts) ([]*models.PoolCreated, error) {
+	iterator, err := s.core.FilterPoolCreated(opts, nil, nil, nil)
+	if err != nil {
+		logger.Log().WithField("layer", "Service-RetrieveDelegationUpdatedLimit").Errorf("error get iterator: %v", err.Error())
+		return nil, errors.GetFilterErr(err, "core")
+	}
+
+	var poolCreations []*models.PoolCreated
+
+	for iterator.Next() {
+		if iterator.Error() != nil {
+			logger.Log().WithField("layer", "Service-RetrieveDelegationUpdatedLimit").Errorf("iterator error: %v", iterator.Error().Error())
+			return nil, errors.GetFilterErr(iterator.Error(), "core")
+		}
+
+		mint, err := s.getPoolCreated(iterator.Event, iterator.Event.Raw.BlockNumber)
+		if err != nil {
+			return nil, err
+		}
+
+		poolCreations = append(poolCreations, mint)
+	}
+
+	return poolCreations, nil
+}
+
 func (s *Service) retrieveDelegationUpdated(opts *bind.FilterOpts) ([]*models.DelegationUpdated, error) {
 	iterator, err := s.core.FilterDelegationUpdated(opts, nil, nil, nil)
 	if err != nil {
@@ -257,6 +325,18 @@ func (s *Service) getDelegationUpdated(event *core.CoreDelegationUpdated, blockN
 	return models.GetDelegationUpdatedFromEvent(event, block.Time), nil
 }
 
+func (s *Service) getPoolCreated(event *core.CorePoolCreated, blockN uint64) (*models.PoolCreated, error) {
+	block, err := s.rpcClient.HeaderByNumber(context.Background(), big.NewInt(int64(blockN)))
+	if err != nil {
+		logger.Log().WithField("layer", "Service-getPoolCreated").Errorf(
+			"get block:%v by number error: %v", blockN, err.Error(),
+		)
+		return nil, errors.GetRPCProviderErr(err, "HeaderByNumber")
+	}
+
+	return models.GetPoolCreatedFromEvent(event, block.Time), nil
+}
+
 func (s *Service) GetVaultCollateral(poolID *big.Int, collateralType common.Address) (amount *big.Int, value *big.Int, err error) {
 	res, err := s.core.GetVaultCollateral(nil, poolID, collateralType)
 	if err != nil {
@@ -329,4 +409,14 @@ func (s *Service) GetPoolConfiguration(poolID *big.Int) (*models.PoolConfigurati
 	}
 
 	return models.GetPoolConfigurationFromContractData(res), nil
+}
+
+func (s *Service) GetPoolName(poolID *big.Int) (string, error) {
+	res, err := s.core.GetPoolName(nil, poolID)
+	if err != nil {
+		logger.Log().WithField("layer", "GetPoolName").Errorf("GetPoolName core contract err: %s", err.Error())
+		return "", errors.GetReadContractErr(err, "Core", "GetPoolName")
+	}
+
+	return res, nil
 }

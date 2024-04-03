@@ -8584,7 +8584,7 @@ func (_Core *CoreFilterer) WatchPoolCreated(opts *bind.WatchOpts, sink chan<- *C
 		senderRule = append(senderRule, senderItem)
 	}
 
-	logs, sub, err := _Core.contract.WatchLogs(opts, "PoolCreated", poolIdRule, ownerRule, senderRule)
+	logs, sub, err := _Core.contract.WatchLogs(opts, "PoolCreated")
 	if err != nil {
 		return nil, err
 	}

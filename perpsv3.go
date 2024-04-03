@@ -112,6 +112,10 @@ type IPerpsv3 interface {
 	// limit. For most public RPC providers the value for limit is 20 000 blocks
 	RetrieveMarketRegistered(limit uint64) ([]*models.MarketRegistered, error)
 
+	// RetrievePoolCreated is used to get all `PoolCreated` events from the Core contract with given block search
+	// limit. For most public RPC providers the value for limit is 20 000 blocks
+	RetrievePoolCreated(limit uint64) ([]*models.PoolCreated, error)
+
 	// ListenTrades is used to subscribe on the contract "OrderSettled" event. The goroutine will return events on the
 	// TradesChan chanel and errors on the ErrChan chanel.
 	// To close the subscription use events.TradeSubscription `Close` function
@@ -193,6 +197,10 @@ type IPerpsv3 interface {
 	// struct and return errors on ErrChan chanel
 	ListenMarketRegistered() (*events.MarketRegisteredSubscription, error)
 
+	// ListenPoolCreated is used to listen to all 'PoolCreated' Core contract events and return them as models.PoolCreated
+	// struct and return errors on ErrChan chanel
+	ListenPoolCreated() (*events.PoolCreatedSubscription, error)
+
 	// GetPosition is used to get position data struct from latest block with given params
 	// Function can return contract error if market ID is invalid
 	GetPosition(accountID *big.Int, marketID *big.Int) (*models.Position, error)
@@ -242,6 +250,9 @@ type IPerpsv3 interface {
 
 	// GetPoolConfiguration is used to get MarketConfigurations array
 	GetPoolConfiguration(poolID *big.Int) (*models.PoolConfiguration, error)
+
+	// GetPoolName is used to get pool name from given PoolID
+	GetPoolName(poolID *big.Int) (string, error)
 
 	// FormatAccount is used to get account, and it's additional data from the contract by given account id
 	FormatAccount(id *big.Int) (*models.Account, error)
@@ -381,6 +392,10 @@ func (p *Perpsv3) RetrieveMarketRegistered(limit uint64) ([]*models.MarketRegist
 	return p.service.RetrieveMarketRegistered(limit)
 }
 
+func (p *Perpsv3) RetrievePoolCreated(limit uint64) ([]*models.PoolCreated, error) {
+	return p.service.RetrievePoolCreated(limit)
+}
+
 func (p *Perpsv3) ListenTrades() (*events.TradeSubscription, error) {
 	return p.events.ListenTrades()
 }
@@ -457,6 +472,10 @@ func (p *Perpsv3) ListenMarketRegistered() (*events.MarketRegisteredSubscription
 	return p.events.ListenMarketRegistered()
 }
 
+func (p *Perpsv3) ListenPoolCreated() (*events.PoolCreatedSubscription, error) {
+	return p.events.ListenPoolCreated()
+}
+
 func (p *Perpsv3) GetPosition(accountID *big.Int, marketID *big.Int) (*models.Position, error) {
 	return p.service.GetPosition(accountID, marketID)
 }
@@ -519,6 +538,10 @@ func (p *Perpsv3) GetVaultCollateral(poolID *big.Int, collateralType common.Addr
 
 func (p *Perpsv3) GetPoolConfiguration(poolID *big.Int) (*models.PoolConfiguration, error) {
 	return p.service.GetPoolConfiguration(poolID)
+}
+
+func (p *Perpsv3) GetPoolName(poolID *big.Int) (string, error) {
+	return p.service.GetPoolName(poolID)
 }
 
 func (p *Perpsv3) FormatAccounts() ([]*models.Account, error) {
