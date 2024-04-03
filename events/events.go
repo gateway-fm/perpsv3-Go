@@ -84,6 +84,10 @@ type IEvents interface {
 	// ListenMarketUSDDeposited is used to listen to all 'MarketUSDDeposited' Core contract events and return them as models.MarketUSDDeposited
 	// struct and return errors on ErrChan chanel
 	ListenMarketUSDDeposited() (*MarketUSDDepositedSubscription, error)
+
+	// ListenMarketRegistered is used to listen to all 'MarketRegistered' Core contract events and return them as models.MarketRegistered
+	// struct and return errors on ErrChan chanel
+	ListenMarketRegistered() (*MarketRegisteredSubscription, error)
 }
 
 // Events implements IEvents interface
