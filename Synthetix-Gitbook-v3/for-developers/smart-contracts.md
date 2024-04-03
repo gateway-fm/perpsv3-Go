@@ -1347,7 +1347,7 @@ by limiting the frequency of `delegateCollateral` (or `setPoolConfiguration`) ca
 #### MarketUsdDeposited
 
   ```solidity
-  event MarketUsdDeposited(uint128 marketId, address target, uint256 amount, address market, int128 creditCapacity, int128 netIssuance, uint256 depositedCollateralValue, uint256 reportedDebt)
+  event MarketUsdDeposited(uint128 marketId, address target, uint256 amount, address market, int128 creditCapacity, int128 netIssuance, uint256 depositedCollateralValue)
   ```
 
   Emitted when a market deposits snxUSD in the system.
@@ -1360,12 +1360,11 @@ by limiting the frequency of `delegateCollateral` (or `setPoolConfiguration`) ca
 * `creditCapacity` (*int128*) - Updated credit capacity of the market after depositing.
 * `netIssuance` (*int128*) - Updated net issuance.
 * `depositedCollateralValue` (*uint256*) - Updated deposited collateral value of the market.
-* `reportedDebt` (*uint256*) - Updated reported debt of the market after depositing.
 
 #### MarketUsdWithdrawn
 
   ```solidity
-  event MarketUsdWithdrawn(uint128 marketId, address target, uint256 amount, address market, int128 creditCapacity, int128 netIssuance, uint256 depositedCollateralValue, uint256 reportedDebt)
+  event MarketUsdWithdrawn(uint128 marketId, address target, uint256 amount, address market, int128 creditCapacity, int128 netIssuance, uint256 depositedCollateralValue)
   ```
 
   Emitted when a market withdraws snxUSD from the system.
@@ -1377,8 +1376,7 @@ by limiting the frequency of `delegateCollateral` (or `setPoolConfiguration`) ca
 * `market` (*address*) - The address of the external market that is withdrawing.
 * `creditCapacity` (*int128*) - Updated credit capacity of the market after withdrawing.
 * `netIssuance` (*int128*) - Updated net issuance.
-* `depositedCollateralValue` (*uint256*) - Updated deposited collateral value of the market.
-* `reportedDebt` (*uint256*) - Updated reported debt of the market after withdrawal.
+* `depositedCollateralValue` (*uint256*) - Updated deposited collateral value of the market
 
 #### MarketSystemFeePaid
 
@@ -2847,6 +2845,19 @@ Leftover fees not collected get deposited into the market manager to improve mar
 **Returns**
 * `synthToBurn` (*uint256*) - amount of synth expected from trader
 * `fees` (*struct OrderFees.Data*) - breakdown of all the quoted fees for the txn
+#### getMarketSkew
+
+  ```solidity
+  function getMarketSkew(uint128 marketId) external view returns (int256 marketSkew)
+  ```
+
+  gets the current market skew
+
+**Parameters**
+* `marketId` (*uint128*) - synth market id
+
+**Returns**
+* `marketSkew` (*int256*) - the skew
 
 #### SynthBought
 
@@ -3324,6 +3335,23 @@ This address should not be used directly--use `getSynth` instead
 * `sellFeedId` (*bytes32*) - the oracle manager sell feed node id
 * `strictPriceStalenessTolerance` (*uint256*) - configurable price staleness tolerance used for transacting
 
+#### getPriceData
+
+  ```solidity
+  function getPriceData(uint128 marketId) external view returns (bytes32 buyFeedId, bytes32 sellFeedId, uint256 strictPriceStalenessTolerance)
+  ```
+
+  Gets the price data for a given market.
+
+  Only the market owner can call this function.
+
+**Parameters**
+* `marketId` (*uint128*) - id of the market
+
+**Returns**
+* `buyFeedId` (*bytes32*) - the oracle manager buy feed node id
+* `sellFeedId` (*bytes32*) - the oracle manager sell feed node id
+* `strictPriceStalenessTolerance` (*uint256*) - configurable price staleness tolerance used for transacting
 #### upgradeSynthImpl
 
   ```solidity
@@ -3410,6 +3438,17 @@ Anyone who is willing and able to spend the gas can call this method.
   ```
 
   Returns market owner.
+
+**Parameters**
+* `synthMarketId` (*uint128*) - synth market id value
+
+#### getNominatedMarketOwner
+
+  ```solidity
+  function getNominatedMarketOwner(uint128 synthMarketId) external view returns (address)
+  ```
+
+  Returns nominated market owner.
 
 **Parameters**
 * `synthMarketId` (*uint128*) - synth market id value
@@ -3839,6 +3878,20 @@ There is a synthetix v3 core system supply cap also set. If the current supply b
 * `wrapCollateralType` (*address*) - The collateral being used to wrap the synth.
 * `maxWrappableAmount` (*uint256*) - The maximum amount of collateral that can be wrapped.
 
+#### getWrapper
+
+  ```solidity
+  function getWrapper(uint128 marketId) external view returns (address wrapCollateralType, uint256 maxWrappableAmount)
+  ```
+
+  Used to get the wrapper supply cap for a given market and collateral type.
+
+**Parameters**
+* `marketId` (*uint128*) - Id of the market to enable wrapping for.
+
+**Returns**
+* `wrapCollateralType` (*address*) - The collateral being used to wrap the synth.
+* `maxWrappableAmount` (*uint256*) - The maximum amount of collateral that can be wrapped.
 #### wrap
 
   ```solidity
@@ -4011,6 +4064,38 @@ There is a synthetix v3 core system supply cap also set. If the current supply b
 **Returns**
 * `orderFees` (*uint256*) - incurred fees.
 * `fillPrice` (*uint256*) - price at which the order would be filled.
+#### computeOrderFeesWithPrice
+
+  ```solidity
+  function computeOrderFeesWithPrice(uint128 marketId, int128 sizeDelta, uint256 price) external view returns (uint256 orderFees, uint256 fillPrice)
+  ```
+
+  Simulates what the order fee would be for the given market with the specified size.
+
+  Note that this does not include the settlement reward fee, which is based on the strategy type used
+
+**Parameters**
+* `marketId` (*uint128*) - id of the market.
+* `sizeDelta` (*int128*) - size of position.
+* `price` (*uint256*) - price of the market.
+
+**Returns**
+* `orderFees` (*uint256*) - incurred fees.
+* `fillPrice` (*uint256*) - price at which the order would be filled.
+#### getSettlementRewardCost
+
+  ```solidity
+  function getSettlementRewardCost(uint128 marketId, uint128 settlementStrategyId) external view returns (uint256)
+  ```
+
+  Gets the settlement cost including keeper rewards and keeper costs.
+
+**Parameters**
+* `marketId` (*uint128*) - Id of the market.
+* `settlementStrategyId` (*uint128*) - Order size.
+
+**Returns**
+* `[0]` (*uint256*) - settlement cost.
 #### requiredMarginForOrder
 
   ```solidity
@@ -4025,6 +4110,24 @@ There is a synthetix v3 core system supply cap also set. If the current supply b
 * `marketId` (*uint128*) - id of the market.
 * `accountId` (*uint128*) - id of the trader account.
 * `sizeDelta` (*int128*) - size of position.
+
+**Returns**
+* `requiredMargin` (*uint256*) - margin required for the order to succeed.
+#### requiredMarginForOrderWithPrice
+
+  ```solidity
+  function requiredMarginForOrderWithPrice(uint128 marketId, uint128 accountId, int128 sizeDelta, uint256 price) external view returns (uint256 requiredMargin)
+  ```
+
+  For a given market, account id, and a position size, and expected price returns the required total account margin for this order to succeed
+
+  Useful for integrators to determine if an order will succeed or fail faking different price scenarios
+
+**Parameters**
+* `marketId` (*uint128*) - id of the market.
+* `accountId` (*uint128*) - id of the trader account.
+* `sizeDelta` (*int128*) - size of position.
+* `price` (*uint256*) - price of the market.
 
 **Returns**
 * `requiredMargin` (*uint256*) - margin required for the order to succeed.
@@ -4098,23 +4201,21 @@ There is a synthetix v3 core system supply cap also set. If the current supply b
 * `totalFees` (*uint256*) - Amount of fees collected by the protocol.
 * `referralFees` (*uint256*) - Amount of fees collected by the referrer.
 * `collectedFees` (*uint256*) - Amount of fees collected by fee collector.
-* `settlementReward` (*uint256*) - Amount of fees collected by the settler.
+* `settlementReward` (*uint256*) - reward to sender for settling order.
 * `trackingCode` (*bytes32*) - Optional code for integrator tracking purposes.
 * `settler` (*address*) - address of the settler of the order.
 
-### Collateral Module
-
-#### MaxCollateralSet
+#### InterestCharged
 
   ```solidity
-  event MaxCollateralSet(uint128 synthMarketId, uint256 collateralAmount)
+  event InterestCharged(uint128 accountId, uint256 interest)
   ```
 
-  Gets fired when max collateral amount for synth collateral for the system is set by owner.
+  Gets fired after order settles and includes the interest charged to the account.
 
 **Parameters**
-* `synthMarketId` (*uint128*) - Synth market id, 0 for snxUSD.
-* `collateralAmount` (*uint256*) - max amount that was set for the synth
+* `accountId` (*uint128*) - Id of the account used for the trade.
+* `interest` (*uint256*) - interest charges
 
 ### Global Perps Market Module
 
@@ -4316,6 +4417,55 @@ There is a synthetix v3 core system supply cap also set. If the current supply b
 
 **Returns**
 * `marketIds` (*uint256[]*) - an array of existing market ids
+#### setInterestRateParameters
+
+  ```solidity
+  function setInterestRateParameters(uint128 lowUtilizationInterestRateGradient, uint128 interestRateGradientBreakpoint, uint128 highUtilizationInterestRateGradient) external
+  ```
+
+  Sets the interest rate parameters
+
+**Parameters**
+* `lowUtilizationInterestRateGradient` (*uint128*) - interest rate gradient applied to utilization prior to hitting the gradient breakpoint
+* `interestRateGradientBreakpoint` (*uint128*) - breakpoint at which the interest rate gradient changes from low to high
+* `highUtilizationInterestRateGradient` (*uint128*) - interest rate gradient applied to utilization after hitting the gradient breakpoint
+
+#### getInterestRateParameters
+
+  ```solidity
+  function getInterestRateParameters() external view returns (uint128 lowUtilizationInterestRateGradient, uint128 interestRateGradientBreakpoint, uint128 highUtilizationInterestRateGradient)
+  ```
+
+  Gets the interest rate parameters
+
+**Returns**
+* `lowUtilizationInterestRateGradient` (*uint128*) - 
+* `interestRateGradientBreakpoint` (*uint128*) - 
+* `highUtilizationInterestRateGradient` (*uint128*) - 
+#### updateInterestRate
+
+  ```solidity
+  function updateInterestRate() external
+  ```
+
+  Update the market interest rate based on current utilization of the super market against backing collateral
+
+  this is a convenience method to manually update interest rate if too much time has passed
+     since last update.
+interest rate gets automatically updated when a trade is made or when a position is liquidated
+InterestRateUpdated event is emitted
+
+#### InterestRateUpdated
+
+  ```solidity
+  event InterestRateUpdated(uint128 superMarketId, uint128 interestRate)
+  ```
+
+  Gets fired when the interest rate is updated.
+
+**Parameters**
+* `superMarketId` (*uint128*) - global super market id
+* `interestRate` (*uint128*) - new computed interest rate
 
 #### CollateralConfigurationSet
 
@@ -4376,6 +4526,19 @@ There is a synthetix v3 core system supply cap also set. If the current supply b
 **Parameters**
 * `referrer` (*address*) - The address of the referrer
 * `shareRatioD18` (*uint256*) - The new share ratio for the referrer
+
+#### InterestRateParametersSet
+
+  ```solidity
+  event InterestRateParametersSet(uint256 lowUtilizationInterestRateGradient, uint256 interestRateGradientBreakpoint, uint256 highUtilizationInterestRateGradient)
+  ```
+
+  Emitted when interest rate parameters are set
+
+**Parameters**
+* `lowUtilizationInterestRateGradient` (*uint256*) - interest rate gradient applied to utilization prior to hitting the gradient breakpoint
+* `interestRateGradientBreakpoint` (*uint256*) - breakpoint at which the interest rate gradient changes from low to high
+* `highUtilizationInterestRateGradient` (*uint256*) - interest rate gradient applied to utilization after hitting the gradient breakpoint
 
 #### PerAccountCapsSet
 
@@ -4491,6 +4654,21 @@ There is a synthetix v3 core system supply cap also set. If the current supply b
 * `marketId` (*uint128*) - Id of the position's market.
 * `amountLiquidated` (*uint256*) - amount liquidated.
 * `currentPositionSize` (*int128*) - position size after liquidation.
+
+#### AccountFlaggedForLiquidation
+
+  ```solidity
+  event AccountFlaggedForLiquidation(uint128 accountId, int256 availableMargin, uint256 requiredMaintenanceMargin, uint256 liquidationReward, uint256 flagReward)
+  ```
+
+  Gets fired when an account is flagged for liquidation.
+
+**Parameters**
+* `accountId` (*uint128*) - Id of the account flagged.
+* `availableMargin` (*int256*) - available margin after flagging.
+* `requiredMaintenanceMargin` (*uint256*) - required maintenance margin which caused the flagging.
+* `liquidationReward` (*uint256*) - reward for fully liquidating account paid when liquidation occurs.
+* `flagReward` (*uint256*) - reward to keeper for flagging the account
 
 #### AccountLiquidationAttempt
 
@@ -4609,7 +4787,7 @@ There is a synthetix v3 core system supply cap also set. If the current supply b
 #### setMaxMarketSize
 
   ```solidity
-  function setMaxMarketSize(uint128 marketId, uint256 maxMarketSize) external
+  function setMaxMarketSize(uint128 marketId, uint256 maxMarketSize, uint256 maxMarketValue) external
   ```
 
   Set the max size of an specific market with this function.
@@ -4619,6 +4797,7 @@ There is a synthetix v3 core system supply cap also set. If the current supply b
 **Parameters**
 * `marketId` (*uint128*) - id of the market to set the max market value.
 * `maxMarketSize` (*uint256*) - the max market size in market asset units.
+* `maxMarketValue` (*uint256*) - the max market size in market USD value.
 
 #### setLockedOiRatio
 
@@ -4709,7 +4888,7 @@ There is a synthetix v3 core system supply cap also set. If the current supply b
 #### getMaxMarketSize
 
   ```solidity
-  function getMaxMarketSize(uint128 marketId) external view returns (uint256 maxMarketSize)
+  function getMaxMarketSize(uint128 marketId) external view returns (uint256 maxMarketSize, uint256 maxMarketValue)
   ```
 
   Gets the max size of an specific market.
@@ -4719,6 +4898,7 @@ There is a synthetix v3 core system supply cap also set. If the current supply b
 
 **Returns**
 * `maxMarketSize` (*uint256*) - the max market size in market asset units.
+* `maxMarketValue` (*uint256*) - the max market size in market USD value.
 #### getOrderFees
 
   ```solidity
@@ -4860,14 +5040,15 @@ There is a synthetix v3 core system supply cap also set. If the current supply b
 #### MaxMarketSizeSet
 
   ```solidity
-  event MaxMarketSizeSet(uint128 marketId, uint256 maxMarketSize)
+  event MaxMarketSizeSet(uint128 marketId, uint256 maxMarketSize, uint256 maxMarketValue)
   ```
 
   Gets fired when max market value is updated.
 
 **Parameters**
 * `marketId` (*uint128*) - udpates funding parameters to this specific market.
-* `maxMarketSize` (*uint256*) - the max market value.
+* `maxMarketSize` (*uint256*) - the max market value in units.
+* `maxMarketValue` (*uint256*) - the max market value USD denominated.
 
 #### LockedOiRatioSet
 
@@ -4886,7 +5067,7 @@ There is a synthetix v3 core system supply cap also set. If the current supply b
 #### MarketUpdated
 
   ```solidity
-  event MarketUpdated(uint128 marketId, uint256 price, int256 skew, uint256 size, int256 sizeDelta, int256 currentFundingRate, int256 currentFundingVelocity)
+  event MarketUpdated(uint128 marketId, uint256 price, int256 skew, uint256 size, int256 sizeDelta, int256 currentFundingRate, int256 currentFundingVelocity, uint128 interestRate)
   ```
 
   Gets fired when the size of a market is updated by new orders or liquidations.
@@ -4899,6 +5080,7 @@ There is a synthetix v3 core system supply cap also set. If the current supply b
 * `sizeDelta` (*int256*) - Change in market size during this update.
 * `currentFundingRate` (*int256*) - The current funding rate of this market (0.001 = 0.1% per day)
 * `currentFundingVelocity` (*int256*) - The current rate of change of the funding rate (0.001 = +0.1% per day)
+* `interestRate` (*uint128*) - Current supermarket interest rate based on updated market OI.
 
 ### Perps Account Module
 
@@ -4980,7 +5162,7 @@ There is a synthetix v3 core system supply cap also set. If the current supply b
 #### getOpenPosition
 
   ```solidity
-  function getOpenPosition(uint128 accountId, uint128 marketId) external view returns (int256 totalPnl, int256 accruedFunding, int128 positionSize)
+  function getOpenPosition(uint128 accountId, uint128 marketId) external view returns (int256 totalPnl, int256 accruedFunding, int128 positionSize, uint256 owedInterest)
   ```
 
   Gets the details of an open position.
@@ -4993,6 +5175,20 @@ There is a synthetix v3 core system supply cap also set. If the current supply b
 * `totalPnl` (*int256*) - pnl of the entire position including funding.
 * `accruedFunding` (*int256*) - accrued funding of the position.
 * `positionSize` (*int128*) - size of the position.
+* `owedInterest` (*uint256*) - interest owed due to open position.
+#### getOpenPositionSize
+
+  ```solidity
+  function getOpenPositionSize(uint128 accountId, uint128 marketId) external view returns (int128 positionSize)
+  ```
+
+  Gets an account open position data for a given account id and market id
+this function doesn't have any price staleness requirement
+
+**Parameters**
+* `accountId` (*uint128*) - Id of the account.
+* `marketId` (*uint128*) - Id of the position market.
+
 #### getAvailableMargin
 
   ```solidity
@@ -5056,7 +5252,7 @@ There is a synthetix v3 core system supply cap also set. If the current supply b
 #### initializeFactory
 
   ```solidity
-  function initializeFactory(contract ISynthetixSystem synthetix, contract ISpotMarketSystem spotMarket, string marketName) external returns (uint128)
+  function initializeFactory(contract ISynthetixSystem synthetix, contract ISpotMarketSystem spotMarket) external returns (uint128)
   ```
 
   Initializes the factory.
@@ -5091,6 +5287,32 @@ There is a synthetix v3 core system supply cap also set. If the current supply b
 
 **Returns**
 * `[0]` (*uint128*) - perpsMarketId Id of the created perps market.
+#### interestRate
+
+  ```solidity
+  function interestRate() external view returns (uint128 rate)
+  ```
+
+  Returns the current market interest rate
+
+**Returns**
+* `rate` (*uint128*) - 
+#### utilizationRate
+
+  ```solidity
+  function utilizationRate() external view returns (uint256 rate, uint256 delegatedCollateral, uint256 lockedCredit)
+  ```
+
+  Returns the super market utilization rate
+
+  The rate is the minimumCredit / delegatedCollateral available.
+Locked credit is the sum of all markets open interest * configured lockedOiRatio
+delegatedCollateral is the avaialble collateral value for markets to withdraw, delegated by LPs
+
+**Returns**
+* `rate` (*uint256*) - 
+* `delegatedCollateral` (*uint256*) - 
+* `lockedCredit` (*uint256*) - credit locked based on OI & lockedOiRatio
 #### name
 
   ```solidity

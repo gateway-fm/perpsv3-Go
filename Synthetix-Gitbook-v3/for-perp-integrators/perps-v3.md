@@ -1,7 +1,7 @@
 # Perps V3
 
 {% hint style="info" %}
-Perps V3 is in late stages of development, so internal changes and updates are possible
+Perps V3 is live on Base, but (predominantly internal) updates are planned
 {% endhint %}
 
 ### Perps V3.0 features and updates
@@ -17,15 +17,27 @@ Perps V3 is in late stages of development, so internal changes and updates are p
 
 {% embed url="https://github.com/Synthetixio/synthetix-v3/tree/main/markets/perps-market" %}
 
-### Changes from Perps v2
+### Expected features for v3.1
 
-### Expected features for future versions
+* Changes to funding rates
+
+### Expected features for v3.2
 
 * Multi collateral: accepts any synths configured in the system as margin for an account
+
+## SDK
+
+To better understand how to trade perps, see
+
+[perps-python-sdk.md](perps-python-sdk.md "mention")
 
 ## Workflow
 
 ### Factory Owner
+
+{% hint style="info" %}
+This is permissioned
+{% endhint %}
 
 * Each proxy is considered to be one “supermarket”, and is initialized with the factory owner as the owner of this supermarket. The supermarket consists of a set of markets that it controls for which cross margin is applied. Each account that’s created is scoped to the supermarket and cannot be used on other supermarkets.
 * Supermarkets can only be initialized once which registers them with the Core system using the following call (returns the registered market id with core system):
@@ -104,6 +116,10 @@ function getLockedOiRatio(uint128 marketId) external view returns (uint256 locke
 * A strategy has been added on OP goerli. You can always query `getSettlementStrategy` to get the details.
 
 ## Trader
+
+{% hint style="info" %}
+This is how integrators or front ends
+{% endhint %}
 
 #### Create account:
 
