@@ -4,6 +4,7 @@ import (
 	"context"
 	"fmt"
 	"github.com/gateway-fm/perpsv3-Go/config"
+	"github.com/gateway-fm/perpsv3-Go/contracts/core"
 	"github.com/gateway-fm/perpsv3-Go/contracts/forwarder"
 	"math/big"
 	"time"
@@ -108,6 +109,48 @@ func (s *Service) RetrieveMarketUpdates(fromBlock uint64, toBLock *uint64) ([]*m
 func (s *Service) RetrieveMarketUpdatesBig(fromBlock uint64, toBLock *uint64) ([]*models.MarketUpdateBig, error) {
 	opts := s.getFilterOptsPerpsMarket(fromBlock, toBLock)
 	return s.retrieveMarketUpdatesBig(opts)
+}
+
+func (s *Service) RetrieveMarketRegistered(limit uint64) ([]*models.MarketRegistered, error) {
+	iterations, last, err := s.getIterationsForLimitQuery(limit)
+	if err != nil {
+		return nil, err
+	}
+
+	var marketRegistrations []*models.MarketRegistered
+
+	logger.Log().WithField("layer", "Service-RetrieveMarketRegistered").Infof(
+		"fetching market registrations with limit: %v to block: %v total iterations: %v...",
+		limit, last, iterations,
+	)
+
+	fromBlock := s.coreFirstBlock
+	toBlock := fromBlock + limit
+	for i := uint64(1); i <= iterations; i++ {
+		if i%10 == 0 || i == iterations {
+			logger.Log().WithField("layer", "Service-RetrieveMarketRegistered").Infof("-- iteration %v", i)
+		}
+		opts := s.getFilterOptsCore(fromBlock, &toBlock)
+
+		res, err := s.retrieveMarketRegistrations(opts)
+		if err != nil {
+			return nil, err
+		}
+
+		marketRegistrations = append(marketRegistrations, res...)
+
+		fromBlock = toBlock + 1
+
+		if i == iterations-1 {
+			toBlock = last
+		} else {
+			toBlock = fromBlock + limit
+		}
+	}
+
+	logger.Log().WithField("layer", "Service-RetrieveMarketRegistered").Infof("task completed successfully")
+
+	return marketRegistrations, nil
 }
 
 func (s *Service) GetMarketMetadata(marketID *big.Int) (*models.MarketMetadata, error) {
@@ -385,6 +428,45 @@ func (s *Service) retrieveMarketUpdatesBig(opts *bind.FilterOpts) ([]*models.Mar
 	}
 
 	return marketUpdates, nil
+}
+
+func (s *Service) retrieveMarketRegistrations(opts *bind.FilterOpts) ([]*models.MarketRegistered, error) {
+	iterator, err := s.core.FilterMarketRegistered(opts, nil, nil, nil)
+	if err != nil {
+		logger.Log().WithField("layer", "Service-retrieveMarketRegistrations").Errorf("error get iterator: %v", err.Error())
+		return nil, errors.GetFilterErr(err, "core")
+	}
+
+	var marketRegistrations []*models.MarketRegistered
+
+	for iterator.Next() {
+		if iterator.Error() != nil {
+			logger.Log().WithField("layer", "Service-retrieveMarketRegistrations").Errorf("iterator error: %v", iterator.Error().Error())
+			return nil, errors.GetFilterErr(iterator.Error(), "core")
+		}
+
+		marketUpdate, err := s.getMarketRegistration(iterator.Event, iterator.Event.Raw.BlockNumber)
+		if err != nil {
+			return nil, err
+		}
+
+		marketRegistrations = append(marketRegistrations, marketUpdate)
+	}
+
+	return marketRegistrations, nil
+}
+
+// getMarketUpdate is used to get models.MarketUpdate from given event and block number
+func (s *Service) getMarketRegistration(event *core.CoreMarketRegistered, blockN uint64) (*models.MarketRegistered, error) {
+	block, err := s.rpcClient.HeaderByNumber(context.Background(), big.NewInt(int64(blockN)))
+	if err != nil {
+		logger.Log().WithField("layer", "Service-getMarketRegistration").Errorf(
+			"get block:%v by number error: %v", blockN, err.Error(),
+		)
+		return nil, errors.GetRPCProviderErr(err, "HeaderByNumber")
+	}
+
+	return models.GetMarketRegisteredFromEvent(event, block.Time), nil
 }
 
 // getMarketUpdate is used to get models.MarketUpdate from given event and block number

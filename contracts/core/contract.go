@@ -4630,7 +4630,7 @@ func (_Core *CoreFilterer) WatchDelegationUpdated(opts *bind.WatchOpts, sink cha
 		senderRule = append(senderRule, senderItem)
 	}
 
-	logs, sub, err := _Core.contract.WatchLogs(opts, "DelegationUpdated", accountIdRule, poolIdRule, senderRule)
+	logs, sub, err := _Core.contract.WatchLogs(opts, "DelegationUpdated")
 	if err != nil {
 		return nil, err
 	}
@@ -4795,7 +4795,7 @@ func (_Core *CoreFilterer) WatchDeposited(opts *bind.WatchOpts, sink chan<- *Cor
 		senderRule = append(senderRule, senderItem)
 	}
 
-	logs, sub, err := _Core.contract.WatchLogs(opts, "Deposited", accountIdRule, collateralTypeRule, senderRule)
+	logs, sub, err := _Core.contract.WatchLogs(opts, "Deposited")
 	if err != nil {
 		return nil, err
 	}
@@ -6340,7 +6340,7 @@ func (_Core *CoreFilterer) WatchMarketRegistered(opts *bind.WatchOpts, sink chan
 		senderRule = append(senderRule, senderItem)
 	}
 
-	logs, sub, err := _Core.contract.WatchLogs(opts, "MarketRegistered", marketRule, marketIdRule, senderRule)
+	logs, sub, err := _Core.contract.WatchLogs(opts, "MarketRegistered")
 	if err != nil {
 		return nil, err
 	}
@@ -6654,7 +6654,7 @@ func (_Core *CoreFilterer) WatchMarketUsdDeposited(opts *bind.WatchOpts, sink ch
 		marketRule = append(marketRule, marketItem)
 	}
 
-	logs, sub, err := _Core.contract.WatchLogs(opts, "MarketUsdDeposited", marketIdRule, targetRule, marketRule)
+	logs, sub, err := _Core.contract.WatchLogs(opts, "MarketUsdDeposited")
 	if err != nil {
 		return nil, err
 	}
@@ -6823,7 +6823,7 @@ func (_Core *CoreFilterer) WatchMarketUsdWithdrawn(opts *bind.WatchOpts, sink ch
 		marketRule = append(marketRule, marketItem)
 	}
 
-	logs, sub, err := _Core.contract.WatchLogs(opts, "MarketUsdWithdrawn", marketIdRule, targetRule, marketRule)
+	logs, sub, err := _Core.contract.WatchLogs(opts, "MarketUsdWithdrawn")
 	if err != nil {
 		return nil, err
 	}
@@ -9812,7 +9812,7 @@ func (_Core *CoreFilterer) WatchRewardsClaimed(opts *bind.WatchOpts, sink chan<-
 		collateralTypeRule = append(collateralTypeRule, collateralTypeItem)
 	}
 
-	logs, sub, err := _Core.contract.WatchLogs(opts, "RewardsClaimed", accountIdRule, poolIdRule, collateralTypeRule)
+	logs, sub, err := _Core.contract.WatchLogs(opts, "RewardsClaimed")
 	if err != nil {
 		return nil, err
 	}
@@ -9969,7 +9969,7 @@ func (_Core *CoreFilterer) WatchRewardsDistributed(opts *bind.WatchOpts, sink ch
 		collateralTypeRule = append(collateralTypeRule, collateralTypeItem)
 	}
 
-	logs, sub, err := _Core.contract.WatchLogs(opts, "RewardsDistributed", poolIdRule, collateralTypeRule)
+	logs, sub, err := _Core.contract.WatchLogs(opts, "RewardsDistributed")
 	if err != nil {
 		return nil, err
 	}
@@ -11182,7 +11182,7 @@ func (_Core *CoreFilterer) WatchUsdBurned(opts *bind.WatchOpts, sink chan<- *Cor
 		senderRule = append(senderRule, senderItem)
 	}
 
-	logs, sub, err := _Core.contract.WatchLogs(opts, "UsdBurned", accountIdRule, poolIdRule, senderRule)
+	logs, sub, err := _Core.contract.WatchLogs(opts, "UsdBurned")
 	if err != nil {
 		return nil, err
 	}
@@ -11348,7 +11348,7 @@ func (_Core *CoreFilterer) WatchUsdMinted(opts *bind.WatchOpts, sink chan<- *Cor
 		senderRule = append(senderRule, senderItem)
 	}
 
-	logs, sub, err := _Core.contract.WatchLogs(opts, "UsdMinted", accountIdRule, poolIdRule, senderRule)
+	logs, sub, err := _Core.contract.WatchLogs(opts, "UsdMinted")
 	if err != nil {
 		return nil, err
 	}
@@ -11669,7 +11669,7 @@ func (_Core *CoreFilterer) WatchWithdrawn(opts *bind.WatchOpts, sink chan<- *Cor
 		senderRule = append(senderRule, senderItem)
 	}
 
-	logs, sub, err := _Core.contract.WatchLogs(opts, "Withdrawn", accountIdRule, collateralTypeRule, senderRule)
+	logs, sub, err := _Core.contract.WatchLogs(opts, "Withdrawn")
 	if err != nil {
 		return nil, err
 	}

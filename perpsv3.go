@@ -108,6 +108,10 @@ type IPerpsv3 interface {
 	// limit. For most public RPC providers the value for limit is 20 000 blocks
 	RetrieveMarketUSDWithdrawnLimit(limit uint64) ([]*models.MarketUSDWithdrawn, error)
 
+	// RetrieveMarketRegistered is used to get all `MarketRegistered` events from the Core contract with given block search
+	// limit. For most public RPC providers the value for limit is 20 000 blocks
+	RetrieveMarketRegistered(limit uint64) ([]*models.MarketRegistered, error)
+
 	// ListenTrades is used to subscribe on the contract "OrderSettled" event. The goroutine will return events on the
 	// TradesChan chanel and errors on the ErrChan chanel.
 	// To close the subscription use events.TradeSubscription `Close` function
@@ -184,6 +188,10 @@ type IPerpsv3 interface {
 	// ListenMarketUSDDeposited is used to listen to all 'MarketUSDDeposited' Core contract events and return them as models.MarketUSDDeposited
 	// struct and return errors on ErrChan chanel
 	ListenMarketUSDDeposited() (*events.MarketUSDDepositedSubscription, error)
+
+	// ListenMarketRegistered is used to listen to all 'MarketRegistered' Core contract events and return them as models.MarketRegistered
+	// struct and return errors on ErrChan chanel
+	ListenMarketRegistered() (*events.MarketRegisteredSubscription, error)
 
 	// GetPosition is used to get position data struct from latest block with given params
 	// Function can return contract error if market ID is invalid
@@ -369,6 +377,10 @@ func (p *Perpsv3) RetrieveMarketUSDWithdrawnLimit(limit uint64) ([]*models.Marke
 	return p.service.RetrieveMarketUSDWithdrawnLimit(limit)
 }
 
+func (p *Perpsv3) RetrieveMarketRegistered(limit uint64) ([]*models.MarketRegistered, error) {
+	return p.service.RetrieveMarketRegistered(limit)
+}
+
 func (p *Perpsv3) ListenTrades() (*events.TradeSubscription, error) {
 	return p.events.ListenTrades()
 }
@@ -439,6 +451,10 @@ func (p *Perpsv3) ListenMarketUSDWithdrawn() (*events.MarketUSDWithdrawnSubscrip
 
 func (p *Perpsv3) ListenMarketUSDDeposited() (*events.MarketUSDDepositedSubscription, error) {
 	return p.events.ListenMarketUSDDeposited()
+}
+
+func (p *Perpsv3) ListenMarketRegistered() (*events.MarketRegisteredSubscription, error) {
+	return p.events.ListenMarketRegistered()
 }
 
 func (p *Perpsv3) GetPosition(accountID *big.Int, marketID *big.Int) (*models.Position, error) {
