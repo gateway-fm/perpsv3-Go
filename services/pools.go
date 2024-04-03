@@ -320,3 +320,13 @@ func (s *Service) getVaultDebtMultiCallNoPyth(poolID *big.Int, collateralType co
 
 	return unpackedDebt, nil
 }
+
+func (s *Service) GetPoolConfiguration(poolID *big.Int) (*models.PoolConfiguration, error) {
+	res, err := s.core.GetPoolConfiguration(nil, poolID)
+	if err != nil {
+		logger.Log().WithField("layer", "GetPoolConfiguration").Errorf("GetPoolConfiguration core contract err: %s", err.Error())
+		return nil, errors.GetReadContractErr(err, "Core", "GetPoolConfiguration")
+	}
+
+	return models.GetPoolConfigurationFromContractData(res), nil
+}

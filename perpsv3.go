@@ -232,6 +232,9 @@ type IPerpsv3 interface {
 	// GetVaultCollateral is used to get vault collateral for given pool ID and collateralType
 	GetVaultCollateral(poolID *big.Int, collateralType common.Address) (amount *big.Int, value *big.Int, err error)
 
+	// GetPoolConfiguration is used to get MarketConfigurations array
+	GetPoolConfiguration(poolID *big.Int) (*models.PoolConfiguration, error)
+
 	// FormatAccount is used to get account, and it's additional data from the contract by given account id
 	FormatAccount(id *big.Int) (*models.Account, error)
 
@@ -496,6 +499,10 @@ func (p *Perpsv3) GetVaultDebt(poolID *big.Int, collateralType common.Address) (
 
 func (p *Perpsv3) GetVaultCollateral(poolID *big.Int, collateralType common.Address) (amount *big.Int, value *big.Int, err error) {
 	return p.service.GetVaultCollateral(poolID, collateralType)
+}
+
+func (p *Perpsv3) GetPoolConfiguration(poolID *big.Int) (*models.PoolConfiguration, error) {
+	return p.service.GetPoolConfiguration(poolID)
 }
 
 func (p *Perpsv3) FormatAccounts() ([]*models.Account, error) {
