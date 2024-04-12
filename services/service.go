@@ -148,8 +148,14 @@ type IService interface {
 	// GetVaultDebt is used to get vault debt for given pool ID and collateralType
 	GetVaultDebt(poolID *big.Int, collateralType common.Address) (*big.Int, error)
 
+	// GetVaultDebtHistorical is used to get vault debt for given pool ID, collateralType and block number
+	GetVaultDebtHistorical(poolID *big.Int, collateralType common.Address, blockNumber *big.Int) (*big.Int, error)
+
 	// GetVaultCollateral is used to get vault collateral for given pool ID and collateralType
 	GetVaultCollateral(poolID *big.Int, collateralType common.Address) (amount *big.Int, value *big.Int, err error)
+
+	// GetVaultCollateralHistorical is used to get vault collateral for given pool ID, collateralType and block number
+	GetVaultCollateralHistorical(poolID *big.Int, collateralType common.Address, blockNumber *big.Int) (amount *big.Int, value *big.Int, err error)
 
 	// GetPoolConfiguration is used to get MarketConfigurations array
 	GetPoolConfiguration(poolID *big.Int) (*models.PoolConfiguration, error)

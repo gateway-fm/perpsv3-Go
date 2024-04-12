@@ -347,6 +347,16 @@ func (s *Service) GetVaultCollateral(poolID *big.Int, collateralType common.Addr
 	return res.Amount, res.Value, nil
 }
 
+func (s *Service) GetVaultCollateralHistorical(poolID *big.Int, collateralType common.Address, blockNumber *big.Int) (amount *big.Int, value *big.Int, err error) {
+	res, err := s.core.GetVaultCollateral(&bind.CallOpts{BlockNumber: blockNumber}, poolID, collateralType)
+	if err != nil {
+		logger.Log().WithField("layer", "Service-GetVaultCollateral").Errorf("error from the contract: %v", err.Error())
+		return nil, nil, errors.GetReadContractErr(err, "core", "getVaultCollateral")
+	}
+
+	return res.Amount, res.Value, nil
+}
+
 func (s *Service) GetVaultDebt(poolID *big.Int, collateralType common.Address) (*big.Int, error) {
 	if poolID == nil {
 		logger.Log().WithField("layer", "Service-GetGetVaultDebt").Errorf("received nil pool id")
@@ -379,6 +389,60 @@ func (s *Service) getVaultDebtMultiCallNoPyth(poolID *big.Int, collateralType co
 	}
 
 	call, err := s.rawForwarder.Aggregate3Value(0, []forwarder.TrustedMulticallForwarderCall3Value{callVaultDebt})
+	if err != nil {
+		return res, err
+	}
+
+	if len(call) != 1 {
+		logger.Log().WithField("layer", "getMarketSummaryMultiCallNoPyth").Errorf("received %v from rawForwarder contract, expected 1", len(call))
+		return res, errors.GetReadContractErr(fmt.Errorf("invalid call"), "rawForwarder", "Aggregate3Value")
+	}
+
+	if !call[0].Success {
+		logger.Log().WithField("layer", "getMarketSummaryMultiCallNoPyth").Error("call to perps unsuccessful")
+		return res, errors.GetReadContractErr(fmt.Errorf("invalid call to perps"), "rawForwarder", "Aggregate3Value")
+	}
+
+	unpackedDebt, err := s.rawCore.UnpackVaultDebt(call[0].ReturnData)
+	if err != nil {
+		return res, err
+	}
+
+	return unpackedDebt, nil
+}
+
+func (s *Service) GetVaultDebtHistorical(poolID *big.Int, collateralType common.Address, blockNumber *big.Int) (*big.Int, error) {
+	if poolID == nil {
+		logger.Log().WithField("layer", "Service-GetGetVaultDebt").Errorf("received nil pool id")
+		return nil, errors.GetInvalidArgumentErr("pool id cannot be nil")
+	}
+	return s.getVaultDebtRetriesHistorical(poolID, collateralType, s.multicallRetries, blockNumber)
+}
+
+func (s *Service) getVaultDebtRetriesHistorical(poolID *big.Int, collateralType common.Address, fails int, blockNumber *big.Int) (res *big.Int, err error) {
+	res, err = s.getVaultDebtMultiCallNoPythHistorical(poolID, collateralType, blockNumber)
+	if err != nil && fails <= s.multicallRetries {
+		time.Sleep(s.multicallWait)
+		return s.getVaultDebtRetriesHistorical(poolID, collateralType, fails+1, blockNumber)
+	}
+
+	return res, err
+}
+
+func (s *Service) getVaultDebtMultiCallNoPythHistorical(poolID *big.Int, collateralType common.Address, blockNumber *big.Int) (res *big.Int, err error) {
+	getVaultDebtCallData, err := s.rawCore.GetCallDataVaultDebt(poolID, collateralType)
+	if err != nil {
+		return res, err
+	}
+
+	callVaultDebt := forwarder.TrustedMulticallForwarderCall3Value{
+		Target:         s.rawCore.Address(),
+		RequireSuccess: true,
+		Value:          big.NewInt(0),
+		CallData:       getVaultDebtCallData,
+	}
+
+	call, err := s.rawForwarder.Aggregate3ValueHistorical(0, []forwarder.TrustedMulticallForwarderCall3Value{callVaultDebt}, blockNumber)
 	if err != nil {
 		return res, err
 	}
