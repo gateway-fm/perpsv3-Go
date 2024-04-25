@@ -2,7 +2,7 @@ package services
 
 import (
 	"context"
-	"fmt"
+	"github.com/ethereum/go-ethereum"
 	"math/big"
 	"time"
 
@@ -10,7 +10,6 @@ import (
 	"github.com/ethereum/go-ethereum/common"
 
 	"github.com/gateway-fm/perpsv3-Go/contracts/core"
-	"github.com/gateway-fm/perpsv3-Go/contracts/forwarder"
 	"github.com/gateway-fm/perpsv3-Go/errors"
 	"github.com/gateway-fm/perpsv3-Go/models"
 	"github.com/gateway-fm/perpsv3-Go/pkg/logger"
@@ -357,113 +356,95 @@ func (s *Service) GetVaultCollateralHistorical(poolID *big.Int, collateralType c
 	return res.Amount, res.Value, nil
 }
 
-func (s *Service) GetVaultDebt(poolID *big.Int, collateralType common.Address) (*big.Int, error) {
-	if poolID == nil {
-		logger.Log().WithField("layer", "Service-GetGetVaultDebt").Errorf("received nil pool id")
-		return nil, errors.GetInvalidArgumentErr("pool id cannot be nil")
-	}
-	return s.getVaultDebtRetries(poolID, collateralType, s.multicallRetries)
-}
-
-func (s *Service) getVaultDebtRetries(poolID *big.Int, collateralType common.Address, fails int) (res *big.Int, err error) {
-	res, err = s.getVaultDebtMultiCallNoPyth(poolID, collateralType)
-	if err != nil && fails <= s.multicallRetries {
-		time.Sleep(s.multicallWait)
-		return s.getVaultDebtRetries(poolID, collateralType, fails+1)
-	}
-
-	return res, err
-}
-
-func (s *Service) getVaultDebtMultiCallNoPyth(poolID *big.Int, collateralType common.Address) (res *big.Int, err error) {
-	getVaultDebtCallData, err := s.rawCore.GetCallDataVaultDebt(poolID, collateralType)
-	if err != nil {
-		return res, err
-	}
-
-	callVaultDebt := forwarder.TrustedMulticallForwarderCall3Value{
-		Target:         s.rawCore.Address(),
-		RequireSuccess: true,
-		Value:          big.NewInt(0),
-		CallData:       getVaultDebtCallData,
-	}
-
-	call, err := s.rawForwarder.Aggregate3Value(0, []forwarder.TrustedMulticallForwarderCall3Value{callVaultDebt})
-	if err != nil {
-		return res, err
-	}
-
-	if len(call) != 1 {
-		logger.Log().WithField("layer", "getMarketSummaryMultiCallNoPyth").Errorf("received %v from rawForwarder contract, expected 1", len(call))
-		return res, errors.GetReadContractErr(fmt.Errorf("invalid call"), "rawForwarder", "Aggregate3Value")
-	}
-
-	if !call[0].Success {
-		logger.Log().WithField("layer", "getMarketSummaryMultiCallNoPyth").Error("call to perps unsuccessful")
-		return res, errors.GetReadContractErr(fmt.Errorf("invalid call to perps"), "rawForwarder", "Aggregate3Value")
-	}
-
-	unpackedDebt, err := s.rawCore.UnpackVaultDebt(call[0].ReturnData)
-	if err != nil {
-		return res, err
-	}
-
-	return unpackedDebt, nil
-}
-
 func (s *Service) GetVaultDebtHistorical(poolID *big.Int, collateralType common.Address, blockNumber *big.Int) (*big.Int, error) {
 	if poolID == nil {
 		logger.Log().WithField("layer", "Service-GetGetVaultDebt").Errorf("received nil pool id")
 		return nil, errors.GetInvalidArgumentErr("pool id cannot be nil")
 	}
-	return s.getVaultDebtRetriesHistorical(poolID, collateralType, s.multicallRetries, blockNumber)
+	return s.getVaultDebtRetries(poolID, collateralType, s.multicallRetries, blockNumber)
 }
 
-func (s *Service) getVaultDebtRetriesHistorical(poolID *big.Int, collateralType common.Address, fails int, blockNumber *big.Int) (res *big.Int, err error) {
-	res, err = s.getVaultDebtMultiCallNoPythHistorical(poolID, collateralType, blockNumber)
+func (s *Service) GetVaultDebt(poolID *big.Int, collateralType common.Address) (*big.Int, error) {
+	if poolID == nil {
+		logger.Log().WithField("layer", "Service-GetGetVaultDebt").Errorf("received nil pool id")
+		return nil, errors.GetInvalidArgumentErr("pool id cannot be nil")
+	}
+	return s.getVaultDebtRetries(poolID, collateralType, s.multicallRetries, nil)
+}
+
+func (s *Service) getVaultDebtStaticCall(poolID *big.Int, collateralType common.Address, blockNumber *big.Int) (*big.Int, error) {
+	addr := s.rawCore.Address()
+
+	data, err := s.rawCore.GetCallDataVaultDebt(poolID, collateralType)
+	if err != nil {
+		logger.Log().WithField("layer", "Service-getVaultDebtStaticCall").Errorf("err encode getVaultDebt data: %s", err.Error())
+		return nil, errors.GetReadContractErr(err, "Core", "getVaultDebt")
+	}
+
+	res, err := s.rpcClient.CallContract(context.Background(), ethereum.CallMsg{
+		To:   &addr,
+		Data: data,
+	}, blockNumber)
+	if err != nil {
+		logger.Log().WithField("layer", "Service-getVaultDebtStaticCall").Errorf("err static call getVaultDebt: %s", err.Error())
+		return nil, errors.GetReadContractErr(err, "Core", "getVaultDebt")
+	}
+
+	value, err := s.rawCore.UnpackVaultDebt(res)
+	if err != nil {
+		logger.Log().WithField("layer", "Service-getVaultDebtStaticCall").Errorf("err unpack getVaultDebt call data: %s", err.Error())
+		return nil, errors.GetReadContractErr(err, "Core", "getVaultDebt")
+	}
+
+	return value, nil
+}
+
+func (s *Service) getVaultDebtRetries(poolID *big.Int, collateralType common.Address, fails int, blockNumber *big.Int) (res *big.Int, err error) {
+	res, err = s.getVaultDebtStaticCall(poolID, collateralType, blockNumber)
 	if err != nil && fails <= s.multicallRetries {
 		time.Sleep(s.multicallWait)
-		return s.getVaultDebtRetriesHistorical(poolID, collateralType, fails+1, blockNumber)
+		return s.getVaultDebtRetries(poolID, collateralType, fails+1, blockNumber)
 	}
 
 	return res, err
 }
 
-func (s *Service) getVaultDebtMultiCallNoPythHistorical(poolID *big.Int, collateralType common.Address, blockNumber *big.Int) (res *big.Int, err error) {
-	getVaultDebtCallData, err := s.rawCore.GetCallDataVaultDebt(poolID, collateralType)
-	if err != nil {
-		return res, err
-	}
-
-	callVaultDebt := forwarder.TrustedMulticallForwarderCall3Value{
-		Target:         s.rawCore.Address(),
-		RequireSuccess: true,
-		Value:          big.NewInt(0),
-		CallData:       getVaultDebtCallData,
-	}
-
-	call, err := s.rawForwarder.Aggregate3ValueHistorical(0, []forwarder.TrustedMulticallForwarderCall3Value{callVaultDebt}, blockNumber)
-	if err != nil {
-		return res, err
-	}
-
-	if len(call) != 1 {
-		logger.Log().WithField("layer", "getMarketSummaryMultiCallNoPyth").Errorf("received %v from rawForwarder contract, expected 1", len(call))
-		return res, errors.GetReadContractErr(fmt.Errorf("invalid call"), "rawForwarder", "Aggregate3Value")
-	}
-
-	if !call[0].Success {
-		logger.Log().WithField("layer", "getMarketSummaryMultiCallNoPyth").Error("call to perps unsuccessful")
-		return res, errors.GetReadContractErr(fmt.Errorf("invalid call to perps"), "rawForwarder", "Aggregate3Value")
-	}
-
-	unpackedDebt, err := s.rawCore.UnpackVaultDebt(call[0].ReturnData)
-	if err != nil {
-		return res, err
-	}
-
-	return unpackedDebt, nil
-}
+// deprecated
+//func (s *Service) getVaultDebtMultiCallNoPyth(poolID *big.Int, collateralType common.Address) (res *big.Int, err error) {
+//	getVaultDebtCallData, err := s.rawCore.GetCallDataVaultDebt(poolID, collateralType)
+//	if err != nil {
+//		return res, err
+//	}
+//
+//	callVaultDebt := forwarder.TrustedMulticallForwarderCall3Value{
+//		Target:         s.rawCore.Address(),
+//		RequireSuccess: true,
+//		Value:          big.NewInt(0),
+//		CallData:       getVaultDebtCallData,
+//	}
+//
+//	call, err := s.rawForwarder.Aggregate3Value(0, []forwarder.TrustedMulticallForwarderCall3Value{callVaultDebt})
+//	if err != nil {
+//		return res, err
+//	}
+//
+//	if len(call) != 1 {
+//		logger.Log().WithField("layer", "getMarketSummaryMultiCallNoPyth").Errorf("received %v from rawForwarder contract, expected 1", len(call))
+//		return res, errors.GetReadContractErr(fmt.Errorf("invalid call"), "rawForwarder", "Aggregate3Value")
+//	}
+//
+//	if !call[0].Success {
+//		logger.Log().WithField("layer", "getMarketSummaryMultiCallNoPyth").Error("call to perps unsuccessful")
+//		return res, errors.GetReadContractErr(fmt.Errorf("invalid call to perps"), "rawForwarder", "Aggregate3Value")
+//	}
+//
+//	unpackedDebt, err := s.rawCore.UnpackVaultDebt(call[0].ReturnData)
+//	if err != nil {
+//		return res, err
+//	}
+//
+//	return unpackedDebt, nil
+//}
 
 func (s *Service) GetPoolConfiguration(poolID *big.Int) (*models.PoolConfiguration, error) {
 	res, err := s.core.GetPoolConfiguration(nil, poolID)
