@@ -1,6 +1,7 @@
 package models
 
 import (
+	"github.com/gateway-fm/perpsv3-Go/contracts/core"
 	"strings"
 
 	"github.com/gateway-fm/perpsv3-Go/contracts/perpsMarket"
@@ -52,6 +53,19 @@ func PermissionFromString(s string) (Permission, error) {
 
 // decodePermissions is used to decode given contract permissions to Permission slice
 func decodePermissions(perm perpsMarket.IAccountModuleAccountPermissions) (res []Permission) {
+	for _, b := range perm.Permissions {
+		p, err := PermissionFromString(strings.TrimRight(string(b[:]), string(rune(0))))
+		if err != nil {
+			logger.Log().WithField("layer", "Model-decodePermissions").Warningf("received unsupported bytes value %v", string(b[:]))
+		} else {
+			res = append(res, p)
+		}
+	}
+
+	return res
+}
+
+func decodePermissionsCore(perm core.IAccountModuleAccountPermissions) (res []Permission) {
 	for _, b := range perm.Permissions {
 		p, err := PermissionFromString(strings.TrimRight(string(b[:]), string(rune(0))))
 		if err != nil {

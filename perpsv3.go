@@ -116,6 +116,14 @@ type IPerpsv3 interface {
 	// limit. For most public RPC providers the value for limit is 20 000 blocks
 	RetrievePoolCreated(limit uint64) ([]*models.PoolCreated, error)
 
+	// RetrieveLiquidationsCore is used to get all `Liquidation` events from the Core contract with given block search
+	// limit. For most public RPC providers the value for limit is 20 000 blocks
+	RetrieveLiquidationsCore(limit uint64) ([]*models.CoreLiquidation, error)
+
+	// RetrieveVaultLiquidationsCore is used to get all `VaultLiquidation` events from the Core contract with given block search
+	// limit. For most public RPC providers the value for limit is 20 000 blocks
+	RetrieveVaultLiquidationsCore(limit uint64) ([]*models.CoreVaultLiquidation, error)
+
 	// ListenTrades is used to subscribe on the contract "OrderSettled" event. The goroutine will return events on the
 	// TradesChan chanel and errors on the ErrChan chanel.
 	// To close the subscription use events.TradeSubscription `Close` function
@@ -260,6 +268,15 @@ type IPerpsv3 interface {
 	// GetPoolName is used to get pool name from given PoolID
 	GetPoolName(poolID *big.Int) (string, error)
 
+	// GetAccountCollateralCore is used to get account collateral data for given account ID and collateral type
+	GetAccountCollateralCore(accountId *big.Int, collateralType common.Address) (*models.AccountCollateral, error)
+
+	// GetAccountAvailableCollateral is used to get account available collateral data for given account ID and collateral type
+	GetAccountAvailableCollateral(accountId *big.Int, collateralType common.Address) (*big.Int, error)
+
+	// GetCollateralConfigurations is used to get CollateralConfiguration data
+	GetCollateralConfigurations(hideDisabled bool) ([]*models.CollateralConfiguration, error)
+
 	// FormatAccount is used to get account, and it's additional data from the contract by given account id
 	FormatAccount(id *big.Int) (*models.Account, error)
 
@@ -269,6 +286,10 @@ type IPerpsv3 interface {
 	// FormatAccountsLimit is used to get all accounts and their additional data from the contract with given block search
 	// limit. For most public RPC providers the value for limit is 20 000 blocks
 	FormatAccountsLimit(limit uint64) ([]*models.Account, error)
+
+	// FormatAccountCore is used to get all accounts and their additional data from the core contract with given block search
+	// limit. For most public RPC providers the value for limit is 20 000 blocks
+	FormatAccountCore(id *big.Int) (*models.Account, error)
 
 	// Config is used to get current lib config
 	Config() *config.PerpsvConfig
@@ -400,6 +421,14 @@ func (p *Perpsv3) RetrieveMarketRegistered(limit uint64) ([]*models.MarketRegist
 
 func (p *Perpsv3) RetrievePoolCreated(limit uint64) ([]*models.PoolCreated, error) {
 	return p.service.RetrievePoolCreated(limit)
+}
+
+func (p *Perpsv3) RetrieveLiquidationsCore(limit uint64) ([]*models.CoreLiquidation, error) {
+	return p.service.RetrieveLiquidationsCore(limit)
+}
+
+func (p *Perpsv3) RetrieveVaultLiquidationsCore(limit uint64) ([]*models.CoreVaultLiquidation, error) {
+	return p.service.RetrieveVaultLiquidationsCore(limit)
 }
 
 func (p *Perpsv3) ListenTrades() (*events.TradeSubscription, error) {
@@ -558,6 +587,18 @@ func (p *Perpsv3) GetPoolName(poolID *big.Int) (string, error) {
 	return p.service.GetPoolName(poolID)
 }
 
+func (p *Perpsv3) GetAccountCollateralCore(accountId *big.Int, collateralType common.Address) (*models.AccountCollateral, error) {
+	return p.service.GetAccountCollateralCore(accountId, collateralType)
+}
+
+func (p *Perpsv3) GetAccountAvailableCollateral(accountId *big.Int, collateralType common.Address) (*big.Int, error) {
+	return p.service.GetAccountAvailableCollateral(accountId, collateralType)
+}
+
+func (p *Perpsv3) GetCollateralConfigurations(hideDisabled bool) ([]*models.CollateralConfiguration, error) {
+	return p.service.GetCollateralConfigurations(hideDisabled)
+}
+
 func (p *Perpsv3) FormatAccounts() ([]*models.Account, error) {
 	return p.service.FormatAccounts()
 }
@@ -568,6 +609,10 @@ func (p *Perpsv3) FormatAccount(id *big.Int) (*models.Account, error) {
 
 func (p *Perpsv3) FormatAccountsLimit(limit uint64) ([]*models.Account, error) {
 	return p.service.FormatAccountsLimit(limit)
+}
+
+func (p *Perpsv3) FormatAccountCore(id *big.Int) (*models.Account, error) {
+	return p.service.FormatAccountCore(id)
 }
 
 func (p *Perpsv3) Config() *config.PerpsvConfig {

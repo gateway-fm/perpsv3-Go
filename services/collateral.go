@@ -188,3 +188,13 @@ func (s *Service) getCollateralDeposited(event *core.CoreDeposited, blockN uint6
 
 	return models.GetCollateralDepositedFromEvent(event, block.Time), nil
 }
+
+func (s *Service) GetCollateralConfigurations(hideDisabled bool) ([]*models.CollateralConfiguration, error) {
+	data, err := s.core.GetCollateralConfigurations(nil, hideDisabled)
+	if err != nil {
+		logger.Log().WithField("layer", "Service-GetCollateralConfigurations").Errorf("get collateral configurations error: %v", err.Error())
+		return nil, errors.GetReadContractErr(err, "core", "GetCollateralConfigurations")
+	}
+
+	return models.GetCollateralConfigurations(data), nil
+}
