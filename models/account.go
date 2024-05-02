@@ -1,6 +1,7 @@
 package models
 
 import (
+	"github.com/gateway-fm/perpsv3-Go/contracts/core"
 	"math/big"
 
 	"github.com/ethereum/go-ethereum/common"
@@ -30,6 +31,26 @@ type AccountLiquidated struct {
 	FullLiquidated bool
 }
 
+type AccountCollateral struct {
+	TotalDeposited *big.Int
+	TotalAssigned  *big.Int
+	TotalLocked    *big.Int
+}
+
+func GetAccountCollateralFromContract(res struct {
+	TotalDeposited *big.Int
+	TotalAssigned  *big.Int
+	TotalLocked    *big.Int
+}) *AccountCollateral {
+	ac := &AccountCollateral{}
+
+	ac.TotalLocked = res.TotalLocked
+	ac.TotalAssigned = res.TotalAssigned
+	ac.TotalDeposited = res.TotalDeposited
+
+	return ac
+}
+
 // FormatAccount is used to get account from given data
 func FormatAccount(
 	id *big.Int,
@@ -40,6 +61,20 @@ func FormatAccount(
 	return &Account{
 		ID:              id,
 		Permissions:     getUserPermissions(permissions),
+		Owner:           owner,
+		LastInteraction: lastInteraction,
+	}
+}
+
+func FormatAccountCore(
+	id *big.Int,
+	owner common.Address,
+	lastInteraction uint64,
+	permissions []core.IAccountModuleAccountPermissions,
+) *Account {
+	return &Account{
+		ID:              id,
+		Permissions:     getUserPermissionsCore(permissions),
 		Owner:           owner,
 		LastInteraction: lastInteraction,
 	}

@@ -2,6 +2,7 @@ package services
 
 import (
 	"fmt"
+	"github.com/ethereum/go-ethereum/common"
 	"math/big"
 	"time"
 
@@ -507,4 +508,50 @@ func (s *Service) formatAccount(id *big.Int) (*models.Account, error) {
 	}
 
 	return models.FormatAccount(id, owner, time.Uint64(), permissions), nil
+}
+
+func (s *Service) FormatAccountCore(id *big.Int) (*models.Account, error) {
+	return s.formatAccountCore(id)
+}
+
+func (s *Service) formatAccountCore(id *big.Int) (*models.Account, error) {
+	owner, err := s.core.GetAccountOwner(nil, id)
+	if err != nil {
+		logger.Log().WithField("layer", "Service-formatAccount").Errorf("get account owner error: %v", err.Error())
+		return nil, errors.GetReadContractErr(err, "core", "GetAccountOwner")
+	}
+
+	time, err := s.core.GetAccountLastInteraction(nil, id)
+	if err != nil {
+		logger.Log().WithField("layer", "Service-formatAccount").Errorf("get account last interaction error: %v", err.Error())
+		return nil, errors.GetReadContractErr(err, "core", "GetAccountLastInteraction")
+	}
+
+	permissions, err := s.core.GetAccountPermissions(nil, id)
+	if err != nil {
+		logger.Log().WithField("layer", "Service-formatAccount").Errorf("get account permissions error: %v", err.Error())
+		return nil, errors.GetReadContractErr(err, "core", "GetAccountPermissions")
+	}
+
+	return models.FormatAccountCore(id, owner, time.Uint64(), permissions), nil
+}
+
+func (s *Service) GetAccountCollateralCore(accountId *big.Int, collateralType common.Address) (*models.AccountCollateral, error) {
+	res, err := s.core.GetAccountCollateral(nil, accountId, collateralType)
+	if err != nil {
+		logger.Log().WithField("layer", "Service-GetAccountCollateralCore").Errorf("get account collateral error: %v", err.Error())
+		return nil, errors.GetReadContractErr(err, "core", "GetAccountCollateral")
+	}
+
+	return models.GetAccountCollateralFromContract(res), nil
+}
+
+func (s *Service) GetAccountAvailableCollateral(accountId *big.Int, collateralType common.Address) (*big.Int, error) {
+	res, err := s.core.GetAccountAvailableCollateral(nil, accountId, collateralType)
+	if err != nil {
+		logger.Log().WithField("layer", "Service-GetAccountAvailableCollateral").Errorf("get account available collateral error: %v", err.Error())
+		return nil, errors.GetReadContractErr(err, "core", "GetAccountAvailableCollateral")
+	}
+
+	return res, nil
 }

@@ -1,6 +1,7 @@
 package models
 
 import (
+	"github.com/gateway-fm/perpsv3-Go/contracts/core"
 	"math/big"
 
 	"github.com/ethereum/go-ethereum/common"
@@ -26,6 +27,19 @@ func getUserPermissions(perms []perpsMarket.IAccountModuleAccountPermissions) (r
 		perm := &UserPermissions{
 			User:        p.User,
 			Permissions: decodePermissions(p),
+		}
+
+		res = append(res, perm)
+	}
+
+	return res
+}
+
+func getUserPermissionsCore(perms []core.IAccountModuleAccountPermissions) (res []*UserPermissions) {
+	for _, p := range perms {
+		perm := &UserPermissions{
+			User:        p.User,
+			Permissions: decodePermissionsCore(p),
 		}
 
 		res = append(res, perm)

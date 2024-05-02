@@ -9,6 +9,16 @@ import (
 	"github.com/gateway-fm/perpsv3-Go/pkg/logger"
 )
 
+type CollateralConfiguration struct {
+	DepositingEnabled    bool
+	IssuanceRatioD18     *big.Int
+	LiquidationRatioD18  *big.Int
+	LiquidationRewardD18 *big.Int
+	OracleNodeId         [32]byte
+	TokenAddress         common.Address
+	MinDelegationD18     *big.Int
+}
+
 // CollateralDeposited is a `Deposited` Core smart-contract event struct
 type CollateralDeposited struct {
 	AccountId      *big.Int
@@ -32,6 +42,38 @@ type CollateralWithdrawn struct {
 // CollateralPrice is a collateral price data struct
 type CollateralPrice struct {
 	Price *big.Int
+}
+
+//	DepositingEnabled    bool
+//	IssuanceRatioD18     *big.Int
+//	LiquidationRatioD18  *big.Int
+//	LiquidationRewardD18 *big.Int
+//	OracleNodeId         [32]byte
+//	TokenAddress         common.Address
+//	MinDelegationD18     *big.Int
+
+func GetCollateralConfigurations(data []core.CollateralConfigurationData) []*CollateralConfiguration {
+	cc := make([]*CollateralConfiguration, len(data))
+
+	for i, c := range data {
+		cc[i] = GetCollateralConfiguration(c)
+	}
+
+	return cc
+}
+
+func GetCollateralConfiguration(data core.CollateralConfigurationData) *CollateralConfiguration {
+	c := &CollateralConfiguration{}
+
+	c.DepositingEnabled = data.DepositingEnabled
+	c.IssuanceRatioD18 = data.IssuanceRatioD18
+	c.LiquidationRatioD18 = data.LiquidationRatioD18
+	c.LiquidationRewardD18 = data.LiquidationRewardD18
+	c.OracleNodeId = data.OracleNodeId
+	c.TokenAddress = data.TokenAddress
+	c.MinDelegationD18 = data.MinDelegationD18
+
+	return c
 }
 
 // GetCollateralDepositedFromEvent is used to get CollateralDeposited struct from given contract event
