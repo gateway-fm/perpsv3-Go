@@ -209,6 +209,14 @@ type IPerpsv3 interface {
 	// struct and return errors on ErrChan chanel
 	ListenPoolCreated() (*events.PoolCreatedSubscription, error)
 
+	// ListenVaultLiquidationsCore is used to listen to all 'VaultLiquidations' Core contract events and return them as models.CoreVaultLiquidation
+	// struct and return errors on ErrChan chanel
+	ListenVaultLiquidationsCore() (*events.VaultLiquidationsCoreSubscription, error)
+
+	// ListenLiquidationsCore is used to listen to all 'Liquidations' Core contract events and return them as models.CoreLiquidation
+	// struct and return errors on ErrChan chanel
+	ListenLiquidationsCore() (*events.LiquidationsCoreSubscription, error)
+
 	// GetPosition is used to get position data struct from latest block with given params
 	// Function can return contract error if market ID is invalid
 	GetPosition(accountID *big.Int, marketID *big.Int) (*models.Position, error)
@@ -509,6 +517,14 @@ func (p *Perpsv3) ListenMarketRegistered() (*events.MarketRegisteredSubscription
 
 func (p *Perpsv3) ListenPoolCreated() (*events.PoolCreatedSubscription, error) {
 	return p.events.ListenPoolCreated()
+}
+
+func (p *Perpsv3) ListenVaultLiquidationsCore() (*events.VaultLiquidationsCoreSubscription, error) {
+	return p.events.ListenVaultLiquidationsCore()
+}
+
+func (p *Perpsv3) ListenLiquidationsCore() (*events.LiquidationsCoreSubscription, error) {
+	return p.events.ListenLiquidationsCore()
 }
 
 func (p *Perpsv3) GetPosition(accountID *big.Int, marketID *big.Int) (*models.Position, error) {

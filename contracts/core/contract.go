@@ -5840,7 +5840,7 @@ func (_Core *CoreFilterer) WatchLiquidation(opts *bind.WatchOpts, sink chan<- *C
 		collateralTypeRule = append(collateralTypeRule, collateralTypeItem)
 	}
 
-	logs, sub, err := _Core.contract.WatchLogs(opts, "Liquidation", accountIdRule, poolIdRule, collateralTypeRule)
+	logs, sub, err := _Core.contract.WatchLogs(opts, "Liquidation")
 	if err != nil {
 		return nil, err
 	}
@@ -11504,7 +11504,7 @@ func (_Core *CoreFilterer) WatchVaultLiquidation(opts *bind.WatchOpts, sink chan
 		collateralTypeRule = append(collateralTypeRule, collateralTypeItem)
 	}
 
-	logs, sub, err := _Core.contract.WatchLogs(opts, "VaultLiquidation", poolIdRule, collateralTypeRule)
+	logs, sub, err := _Core.contract.WatchLogs(opts, "VaultLiquidation")
 	if err != nil {
 		return nil, err
 	}

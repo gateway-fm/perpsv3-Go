@@ -92,6 +92,14 @@ type IEvents interface {
 	// ListenPoolCreated is used to listen to all 'PoolCreated' Core contract events and return them as models.PoolCreated
 	// struct and return errors on ErrChan chanel
 	ListenPoolCreated() (*PoolCreatedSubscription, error)
+
+	// ListenVaultLiquidationsCore is used to listen to all 'VaultLiquidations' Core contract events and return them as models.CoreVaultLiquidation
+	// struct and return errors on ErrChan chanel
+	ListenVaultLiquidationsCore() (*VaultLiquidationsCoreSubscription, error)
+
+	// ListenLiquidationsCore is used to listen to all 'Liquidations' Core contract events and return them as models.CoreLiquidation
+	// struct and return errors on ErrChan chanel
+	ListenLiquidationsCore() (*LiquidationsCoreSubscription, error)
 }
 
 // Events implements IEvents interface
