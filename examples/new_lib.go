@@ -20,7 +20,7 @@ func main() {
 		log.Fatal(err)
 	}
 
-	res, err := lib.GetVaultDebtHistorical(big.NewInt(1), common.HexToAddress("0xC74eA762cF06c9151cE074E6a569a5945b6302E7"), big.NewInt(13625311))
+	res, err := lib.GetAccountCollateralCore(big.NewInt(1), common.HexToAddress("0xC74EA762CF06C9151CE074E6A569A5945B6302E7"))
 	if err != nil {
 		log.Fatal(err)
 	}
