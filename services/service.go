@@ -193,6 +193,10 @@ type IService interface {
 	// FormatAccountCore is used to get all accounts and their additional data from the core contract with given block search
 	// limit. For most public RPC providers the value for limit is 20 000 blocks
 	FormatAccountCore(id *big.Int) (*models.Account, error)
+
+	// FormatAccountsCoreLimit is used to get all accounts and their additional data from the contract with given block search
+	// limit. For most public RPC providers the value for limit is 20 000 blocks
+	FormatAccountsCoreLimit(limit uint64) ([]*models.Account, error)
 }
 
 // Service is an implementation of IService interface

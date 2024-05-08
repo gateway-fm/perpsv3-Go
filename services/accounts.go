@@ -487,6 +487,32 @@ func (s *Service) formatAccounts(opts *bind.FilterOpts) ([]*models.Account, erro
 	return accounts, nil
 }
 
+func (s *Service) formatAccountsCore(opts *bind.FilterOpts) ([]*models.Account, error) {
+	iterator, err := s.core.FilterAccountCreated(opts, nil, nil)
+	if err != nil {
+		logger.Log().WithField("layer", "Service-formatAccountsCore").Errorf("error get iterator: %v", err.Error())
+		return nil, errors.GetFilterErr(err, "core")
+	}
+
+	var accounts []*models.Account
+
+	for iterator.Next() {
+		if iterator.Error() != nil {
+			logger.Log().WithField("layer", "Service-formatAccountsCore").Errorf("iterator error: %v", err.Error())
+			return nil, errors.GetFilterErr(iterator.Error(), "core")
+		}
+
+		account, err := s.formatAccountCore(iterator.Event.AccountId)
+		if err != nil {
+			return nil, err
+		}
+
+		accounts = append(accounts, account)
+	}
+
+	return accounts, nil
+}
+
 // formatAccount is used to get models.Account data from given account id
 func (s *Service) formatAccount(id *big.Int) (*models.Account, error) {
 	owner, err := s.perpsMarket.GetAccountOwner(nil, id)
@@ -508,6 +534,49 @@ func (s *Service) formatAccount(id *big.Int) (*models.Account, error) {
 	}
 
 	return models.FormatAccount(id, owner, time.Uint64(), permissions), nil
+}
+
+func (s *Service) FormatAccountsCoreLimit(limit uint64) ([]*models.Account, error) {
+	iterations, last, err := s.getIterationsForLimitQuery(limit)
+	if err != nil {
+		return nil, err
+	}
+
+	var accounts []*models.Account
+
+	logger.Log().WithField("layer", "Service-FormatAccountsCoreLimit").Infof(
+		"fetching accounts with limit: %v to block: %v total iterations: %v...",
+		limit, last, iterations,
+	)
+
+	fromBlock := s.coreFirstBlock
+	toBlock := fromBlock + limit
+	for i := uint64(1); i <= iterations; i++ {
+		if i%10 == 0 || i == iterations {
+			logger.Log().WithField("layer", "Service-FormatAccountsCoreLimit").Infof("-- iteration %v", i)
+		}
+
+		opts := s.getFilterOptsCore(fromBlock, &toBlock)
+
+		res, err := s.formatAccountsCore(opts)
+		if err != nil {
+			return nil, err
+		}
+
+		accounts = append(accounts, res...)
+
+		fromBlock = toBlock + 1
+
+		if i == iterations-1 {
+			toBlock = last
+		} else {
+			toBlock = fromBlock + limit
+		}
+	}
+
+	logger.Log().WithField("layer", "Service-FormatAccountsLimit").Infof("task completed successfully")
+
+	return accounts, nil
 }
 
 func (s *Service) FormatAccountCore(id *big.Int) (*models.Account, error) {
