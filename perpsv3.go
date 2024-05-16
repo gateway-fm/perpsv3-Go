@@ -153,6 +153,10 @@ type IPerpsv3 interface {
 	// struct and return errors on ErrChan chanel
 	ListenAccountCreated() (*events.AccountCreatedSubscription, error)
 
+	// ListenAccountCreatedCore is used to listen to all 'AccountCreated' core contract events and return them as models.Account
+	// struct and return errors on ErrChan chanel
+	ListenAccountCreatedCore() (*events.AccountCreatedCoreSubscription, error)
+
 	// ListenAccountLiquidated is used to listen to all 'AccountLiquidated' contract events and return them as models.AccountLiquidated
 	// struct and return errors on ErrChan chanel
 	ListenAccountLiquidated() (*events.AccountLiquidatedSubscription, error)
@@ -465,6 +469,10 @@ func (p *Perpsv3) ListenLiquidations() (*events.LiquidationSubscription, error) 
 
 func (p *Perpsv3) ListenAccountCreated() (*events.AccountCreatedSubscription, error) {
 	return p.events.ListenAccountCreated()
+}
+
+func (p *Perpsv3) ListenAccountCreatedCore() (*events.AccountCreatedCoreSubscription, error) {
+	return p.events.ListenAccountCreatedCore()
 }
 
 func (p *Perpsv3) ListenAccountLiquidated() (*events.AccountLiquidatedSubscription, error) {

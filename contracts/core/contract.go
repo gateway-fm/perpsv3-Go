@@ -3688,7 +3688,7 @@ func (_Core *CoreFilterer) WatchAccountCreated(opts *bind.WatchOpts, sink chan<-
 		ownerRule = append(ownerRule, ownerItem)
 	}
 
-	logs, sub, err := _Core.contract.WatchLogs(opts, "AccountCreated", accountIdRule, ownerRule)
+	logs, sub, err := _Core.contract.WatchLogs(opts, "AccountCreated")
 	if err != nil {
 		return nil, err
 	}
