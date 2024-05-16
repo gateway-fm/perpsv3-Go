@@ -37,6 +37,10 @@ type IEvents interface {
 	// struct and return errors on ErrChan chanel
 	ListenAccountCreated() (*AccountCreatedSubscription, error)
 
+	// ListenAccountCreatedCore is used to listen to all 'AccountCreated' core contract events and return them as models.Account
+	// struct and return errors on ErrChan chanel
+	ListenAccountCreatedCore() (*AccountCreatedCoreSubscription, error)
+
 	// ListenAccountLiquidated is used to listen to all 'AccountLiquidated' contract events and return them as models.AccountLiquidated
 	// struct and return errors on ErrChan chanel
 	ListenAccountLiquidated() (*AccountLiquidatedSubscription, error)
@@ -153,6 +157,18 @@ func getAccountLastInteraction(id *big.Int, perpsMarket *perpsMarket.PerpsMarket
 	if err != nil {
 		logger.Log().WithField("layer", "Events-Accounts").Errorf(
 			"error query account last interaction: %v, last interaction set to 0", err.Error(),
+		)
+		lastInteraction = big.NewInt(0)
+	}
+
+	return lastInteraction
+}
+
+func getAccountLastInteractionCore(id *big.Int, core *core.Core) *big.Int {
+	lastInteraction, err := core.GetAccountLastInteraction(nil, id)
+	if err != nil {
+		logger.Log().WithField("layer", "Events-Accounts").Errorf(
+			"error query account core last interaction: %v, last interaction set to 0", err.Error(),
 		)
 		lastInteraction = big.NewInt(0)
 	}
