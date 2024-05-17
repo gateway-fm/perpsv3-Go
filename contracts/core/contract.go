@@ -7554,7 +7554,7 @@ func (_Core *CoreFilterer) WatchPermissionGranted(opts *bind.WatchOpts, sink cha
 		userRule = append(userRule, userItem)
 	}
 
-	logs, sub, err := _Core.contract.WatchLogs(opts, "PermissionGranted", accountIdRule, permissionRule, userRule)
+	logs, sub, err := _Core.contract.WatchLogs(opts, "PermissionGranted")
 	if err != nil {
 		return nil, err
 	}
@@ -7717,7 +7717,7 @@ func (_Core *CoreFilterer) WatchPermissionRevoked(opts *bind.WatchOpts, sink cha
 		userRule = append(userRule, userItem)
 	}
 
-	logs, sub, err := _Core.contract.WatchLogs(opts, "PermissionRevoked", accountIdRule, permissionRule, userRule)
+	logs, sub, err := _Core.contract.WatchLogs(opts, "PermissionRevoked")
 	if err != nil {
 		return nil, err
 	}
