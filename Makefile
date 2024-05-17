@@ -43,6 +43,11 @@ generate-erc7412-mainnet-c:
 	go run ./utils/getAbis/get-abis.go --get-mkdir ./cannon-synthetix/base/pyth_erc7412_wrapper/PythERC7412Wrapper.json ./contracts/ERC7412
 	abigen --abi=./contracts/PythERC7412Wrapper.json --pkg=ERC7412 --out=./contracts/ERC7412/contract.go
 
+generate-account-mainnet-c:
+	go run ./utils/getAbis/get-abis.go --get-mkdir ./cannon-synthetix/base/system/AccountProxy.json ./contracts/Account
+	abigen --abi=./contracts/AccountProxy.json --pkg=Account --out=./contracts/Account/contract.go
+
+
 # update Synthetix-Gitbook-v3 subtree
 update-subtree:
 	git subtree pull --prefix Synthetix-Gitbook-v3 git@github.com:Synthetixio/Synthetix-Gitbook-v3.git en --squash

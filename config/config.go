@@ -26,12 +26,14 @@ type ContractAddresses struct {
 	PerpsMarket string
 	ERC7412     string
 	Forwarder   string
+	Account     string
 }
 
 // FirstContractBlocks is a part of a config struct with default first block numbers used to filters contract logs
 type FirstContractBlocks struct {
 	Core        uint64
 	PerpsMarket uint64
+	Account     uint64
 }
 
 // GetOptimismGoerliDefaultConfig is used to get default lib config for goerli optimism test net
@@ -130,10 +132,12 @@ func GetBaseMainnetDefaultConfig(rpcURL string) *PerpsvConfig {
 			PerpsMarket: "0x0A2AF931eFFd34b81ebcc57E3d3c9B1E1dE1C9Ce",
 			Forwarder:   "0xE2C5658cC5C448B48141168f3e475dF8f65A1e3e",
 			ERC7412:     "0xEb38e347F24ea04ffA945a475BdD949E0c383A0F",
+			Account:     "0x63f4Dd0434BEB5baeCD27F3778a909278d8cf5b8",
 		},
 		FirstContractBlocks: &FirstContractBlocks{
 			Core:        7889212,
 			PerpsMarket: 7889389,
+			Account:     8394165,
 		},
 		ConnectionTimeout: time.Second * 30,
 		ReadTimeout:       time.Second * 15,

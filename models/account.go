@@ -1,6 +1,7 @@
 package models
 
 import (
+	AccountContract "github.com/gateway-fm/perpsv3-Go/contracts/Account"
 	"github.com/gateway-fm/perpsv3-Go/contracts/core"
 	"math/big"
 
@@ -35,6 +36,26 @@ type AccountCollateral struct {
 	TotalDeposited *big.Int
 	TotalAssigned  *big.Int
 	TotalLocked    *big.Int
+}
+
+type AccountTransfer struct {
+	From           common.Address
+	To             common.Address
+	TokenID        *big.Int
+	BlockNumber    uint64
+	BlockTimestamp uint64
+}
+
+func GetAccountTransferFromEvent(event *AccountContract.AccountTransfer, time uint64) *AccountTransfer {
+	t := &AccountTransfer{}
+
+	t.From = event.From
+	t.To = event.To
+	t.TokenID = event.TokenId
+	t.BlockNumber = event.Raw.BlockNumber
+	t.BlockTimestamp = time
+
+	return t
 }
 
 func GetAccountCollateralFromContract(res struct {

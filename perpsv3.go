@@ -1,6 +1,7 @@
 package perpsv3_Go
 
 import (
+	"github.com/gateway-fm/perpsv3-Go/contracts/Account"
 	"math/big"
 
 	"github.com/ethereum/go-ethereum/common"
@@ -220,6 +221,18 @@ type IPerpsv3 interface {
 	// ListenLiquidationsCore is used to listen to all 'Liquidations' Core contract events and return them as models.CoreLiquidation
 	// struct and return errors on ErrChan chanel
 	ListenLiquidationsCore() (*events.LiquidationsCoreSubscription, error)
+
+	// ListenAccountTransfer is used to listen to all 'Transfer' Account contract events and return them as models.AccountTransfer
+	// struct and return errors on ErrChan chanel
+	ListenAccountTransfer() (*events.AccountTransferSubscription, error)
+
+	// ListenAccountCorePermissionRevoked is used to listen to all 'PermissionRevoked' Core contract events and return them as models.PermissionChanged
+	// struct and return errors on ErrChan chanel
+	ListenAccountCorePermissionRevoked() (*events.AccountCorePermissionRevokedSubscription, error)
+
+	// ListenAccountCorePermissionGranted is used to listen to all 'PermissionGranted' Core contract events and return them as models.PermissionChanged
+	// struct and return errors on ErrChan chanel
+	ListenAccountCorePermissionGranted() (*events.AccountCorePermissionGrantedSubscription, error)
 
 	// GetPosition is used to get position data struct from latest block with given params
 	// Function can return contract error if market ID is invalid
@@ -539,6 +552,18 @@ func (p *Perpsv3) ListenLiquidationsCore() (*events.LiquidationsCoreSubscription
 	return p.events.ListenLiquidationsCore()
 }
 
+func (p *Perpsv3) ListenAccountTransfer() (*events.AccountTransferSubscription, error) {
+	return p.events.ListenAccountTransfer()
+}
+
+func (p *Perpsv3) ListenAccountCorePermissionRevoked() (*events.AccountCorePermissionRevokedSubscription, error) {
+	return p.events.ListenAccountCorePermissionRevoked()
+}
+
+func (p *Perpsv3) ListenAccountCorePermissionGranted() (*events.AccountCorePermissionGrantedSubscription, error) {
+	return p.events.ListenAccountCorePermissionGranted()
+}
+
 func (p *Perpsv3) GetPosition(accountID *big.Int, marketID *big.Int) (*models.Position, error) {
 	return p.service.GetPosition(accountID, marketID)
 }
@@ -679,13 +704,18 @@ func (p *Perpsv3) init() error {
 		return err
 	}
 
+	accountContract, err := p.getAccountContract()
+	if err != nil {
+		return err
+	}
+
 	srv, err := services.NewService(rpcClient, p.config, coreContact, perpsMarketContract)
 	if err != nil {
 		return err
 	}
 
 	p.service = srv
-	p.events = events.NewEvents(rpcClient, coreContact, perpsMarketContract)
+	p.events = events.NewEvents(rpcClient, coreContact, perpsMarketContract, accountContract)
 
 	return nil
 }
@@ -707,6 +737,26 @@ func (p *Perpsv3) getCoreContract() (*core.Core, error) {
 		return contract, nil
 	} else {
 		logger.Log().WithField("layer", "Init").Errorf("no core contract address")
+		return nil, errors.BlankContractAddrErr
+	}
+}
+
+func (p *Perpsv3) getAccountContract() (*Account.Account, error) {
+	if p.config.ContractAddresses.Account != "" {
+		addr, err := getAddr(p.config.ContractAddresses.Account, "account")
+		if err != nil {
+			return nil, err
+		}
+
+		contract, err := Account.NewAccount(addr, p.rpcClient)
+		if err != nil {
+			logger.Log().WithField("layer", "Init").Errorf("error getting account contract: %v", err.Error())
+			return nil, errors.GetInitContractErr(err)
+		}
+
+		return contract, nil
+	} else {
+		logger.Log().WithField("layer", "Init").Errorf("no account contract address")
 		return nil, errors.BlankContractAddrErr
 	}
 }

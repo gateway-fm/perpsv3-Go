@@ -1,6 +1,7 @@
 package events
 
 import (
+	"github.com/gateway-fm/perpsv3-Go/contracts/Account"
 	"math/big"
 
 	"github.com/ethereum/go-ethereum/ethclient"
@@ -104,6 +105,18 @@ type IEvents interface {
 	// ListenLiquidationsCore is used to listen to all 'Liquidations' Core contract events and return them as models.CoreLiquidation
 	// struct and return errors on ErrChan chanel
 	ListenLiquidationsCore() (*LiquidationsCoreSubscription, error)
+
+	// ListenAccountTransfer is used to listen to all 'Transfer' Account contract events and return them as models.AccountTransfer
+	// struct and return errors on ErrChan chanel
+	ListenAccountTransfer() (*AccountTransferSubscription, error)
+
+	// ListenAccountCorePermissionRevoked is used to listen to all 'PermissionRevoked' Core contract events and return them as models.PermissionChanged
+	// struct and return errors on ErrChan chanel
+	ListenAccountCorePermissionRevoked() (*AccountCorePermissionRevokedSubscription, error)
+
+	// ListenAccountCorePermissionGranted is used to listen to all 'PermissionGranted' Core contract events and return them as models.PermissionChanged
+	// struct and return errors on ErrChan chanel
+	ListenAccountCorePermissionGranted() (*AccountCorePermissionGrantedSubscription, error)
 }
 
 // Events implements IEvents interface
@@ -111,6 +124,7 @@ type Events struct {
 	rpcClient   *ethclient.Client
 	core        *core.Core
 	perpsMarket *perpsMarket.PerpsMarket
+	account     *Account.Account
 }
 
 // NewEvents is used to create new Events instance that implements IEvents interface
@@ -118,11 +132,13 @@ func NewEvents(
 	client *ethclient.Client,
 	core *core.Core,
 	perpsMarket *perpsMarket.PerpsMarket,
+	account *Account.Account,
 ) IEvents {
 	return &Events{
 		rpcClient:   client,
 		core:        core,
 		perpsMarket: perpsMarket,
+		account:     account,
 	}
 }
 
