@@ -132,12 +132,18 @@ func (s *Service) getAvailableMarginMulticallRetries(accountId *big.Int, fails i
 	case s.chainID == config.BaseAndromeda || s.chainID == config.BaseSepolia:
 		res, err = s.getAvailableMarginMulticallNoPyth(accountId, true)
 		if err != nil && fails <= s.multicallRetries {
+			logger.Log().WithField("layer", "GetAvailableMargin").Debugf(
+				"failed multicall no pyth, retry in %v total fails %v ", s.multicallWait, fails,
+			)
 			time.Sleep(s.multicallWait)
 			return s.getAvailableMarginMulticallRetries(accountId, fails+1)
 		}
 	case s.chainID == config.BaseMainnet:
 		res, err = s.getAvailableMarginMulticall(accountId, true)
 		if err != nil && fails <= s.multicallRetries {
+			logger.Log().WithField("layer", "GetAvailableMargin").Debugf(
+				"failed multicall with pyth, retry in %v total fails %v ", s.multicallWait, fails,
+			)
 			time.Sleep(s.multicallWait)
 			return s.getAvailableMarginMulticallRetries(accountId, fails+1)
 		}
@@ -164,6 +170,9 @@ func (s *Service) getAvailableMarginMulticallNoPyth(accountId *big.Int, retry bo
 	call, err := s.rawForwarder.Aggregate3Value(0, []forwarder.TrustedMulticallForwarderCall3Value{callMargins})
 	if err != nil {
 		if retry {
+			logger.Log().WithField("layer", "GetAvailableMargin").Debugf(
+				"failed multicall with no pyth, retry with pyth",
+			)
 			return s.getAvailableMarginMulticall(accountId, false)
 		}
 		return res, err
@@ -236,6 +245,9 @@ func (s *Service) getAvailableMarginMulticall(accountId *big.Int, retry bool) (r
 	call, err := s.rawForwarder.Aggregate3Value(2, []forwarder.TrustedMulticallForwarderCall3Value{callFulfill, callMargins})
 	if err != nil {
 		if retry {
+			logger.Log().WithField("layer", "GetAvailableMargin").Debugf(
+				"failed multicall with pyth, retry with no pyth",
+			)
 			return s.getAvailableMarginMulticallNoPyth(accountId, false)
 		}
 		return res, err
@@ -283,12 +295,18 @@ func (s *Service) getRequiredMaintenanceMarginRetries(accountId *big.Int, fails 
 	case s.chainID == config.BaseAndromeda || s.chainID == config.BaseSepolia:
 		res, err = s.getRequiredMaintenanceMarginMulticallNoPyth(accountId, true)
 		if err != nil && fails <= s.multicallRetries {
+			logger.Log().WithField("layer", "GetRequiredMaintenanceMargin").Debugf(
+				"failed multicall no pyth, retry in %v total fails %v ", s.multicallWait, fails,
+			)
 			time.Sleep(s.multicallWait)
 			return s.getRequiredMaintenanceMarginRetries(accountId, fails+1)
 		}
 	case s.chainID == config.BaseMainnet:
 		res, err = s.getRequiredMaintenanceMarginMulticall(accountId, true)
 		if err != nil && fails <= s.multicallRetries {
+			logger.Log().WithField("layer", "GetRequiredMaintenanceMargin").Debugf(
+				"failed multicall with pyth, retry in %v total fails %v ", s.multicallWait, fails,
+			)
 			time.Sleep(s.multicallWait)
 			return s.getRequiredMaintenanceMarginRetries(accountId, fails+1)
 		}
@@ -315,6 +333,9 @@ func (s *Service) getRequiredMaintenanceMarginMulticallNoPyth(accountId *big.Int
 	call, err := s.rawForwarder.Aggregate3Value(0, []forwarder.TrustedMulticallForwarderCall3Value{callMargins})
 	if err != nil {
 		if retries {
+			logger.Log().WithField("layer", "GetRequiredMaintenanceMargin").Debugf(
+				"failed multicall with no pyth, retry with pyth",
+			)
 			return s.getRequiredMaintenanceMarginMulticall(accountId, false)
 		}
 		return res, err
@@ -387,6 +408,9 @@ func (s *Service) getRequiredMaintenanceMarginMulticall(accountId *big.Int, retr
 	call, err := s.rawForwarder.Aggregate3Value(2, []forwarder.TrustedMulticallForwarderCall3Value{callFulfill, callMargins})
 	if err != nil {
 		if retries {
+			logger.Log().WithField("layer", "GetRequiredMaintenanceMargin").Debugf(
+				"failed multicall with pyth, retry with no pyth",
+			)
 			return s.getRequiredMaintenanceMarginMulticallNoPyth(accountId, false)
 		}
 		return res, err
