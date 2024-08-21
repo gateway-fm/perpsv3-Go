@@ -8,6 +8,7 @@ import (
 
 	"github.com/ethereum/go-ethereum/common"
 	"github.com/ethereum/go-ethereum/ethclient"
+	"github.com/gateway-fm/perpsv3-Go/contracts/Account"
 	"github.com/gateway-fm/perpsv3-Go/contracts/core"
 	"github.com/gateway-fm/perpsv3-Go/contracts/perpsMarket"
 	perps_test "github.com/gateway-fm/perpsv3-Go/utils/testing-contracts/perps-test"
@@ -33,7 +34,7 @@ func TestEvents_ListenOrders_OnChain(t *testing.T) {
 	coreC, _ := core.NewCore(common.HexToAddress("0x76490713314fCEC173f44e99346F54c6e92a8E42"), rpcClient)
 	perps, _ := perpsMarket.NewPerpsMarket(common.HexToAddress("0xf272382cB3BE898A8CdB1A23BE056fA2Fcf4513b"), rpcClient)
 
-	e := NewEvents(rpcClient, coreC, perps)
+	e := NewEvents(rpcClient, coreC, perps, &Account.Account{})
 
 	subs, err := e.ListenOrders()
 	require.NoError(t, err)

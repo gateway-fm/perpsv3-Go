@@ -34,6 +34,36 @@ func (m *MockIEvents) EXPECT() *MockIEventsMockRecorder {
 	return m.recorder
 }
 
+// ListenAccountCorePermissionGranted mocks base method.
+func (m *MockIEvents) ListenAccountCorePermissionGranted() (*events.AccountCorePermissionGrantedSubscription, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "ListenAccountCorePermissionGranted")
+	ret0, _ := ret[0].(*events.AccountCorePermissionGrantedSubscription)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// ListenAccountCorePermissionGranted indicates an expected call of ListenAccountCorePermissionGranted.
+func (mr *MockIEventsMockRecorder) ListenAccountCorePermissionGranted() *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "ListenAccountCorePermissionGranted", reflect.TypeOf((*MockIEvents)(nil).ListenAccountCorePermissionGranted))
+}
+
+// ListenAccountCorePermissionRevoked mocks base method.
+func (m *MockIEvents) ListenAccountCorePermissionRevoked() (*events.AccountCorePermissionRevokedSubscription, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "ListenAccountCorePermissionRevoked")
+	ret0, _ := ret[0].(*events.AccountCorePermissionRevokedSubscription)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// ListenAccountCorePermissionRevoked indicates an expected call of ListenAccountCorePermissionRevoked.
+func (mr *MockIEventsMockRecorder) ListenAccountCorePermissionRevoked() *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "ListenAccountCorePermissionRevoked", reflect.TypeOf((*MockIEvents)(nil).ListenAccountCorePermissionRevoked))
+}
+
 // ListenAccountCreated mocks base method.
 func (m *MockIEvents) ListenAccountCreated() (*events.AccountCreatedSubscription, error) {
 	m.ctrl.T.Helper()
@@ -47,6 +77,21 @@ func (m *MockIEvents) ListenAccountCreated() (*events.AccountCreatedSubscription
 func (mr *MockIEventsMockRecorder) ListenAccountCreated() *gomock.Call {
 	mr.mock.ctrl.T.Helper()
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "ListenAccountCreated", reflect.TypeOf((*MockIEvents)(nil).ListenAccountCreated))
+}
+
+// ListenAccountCreatedCore mocks base method.
+func (m *MockIEvents) ListenAccountCreatedCore() (*events.AccountCreatedCoreSubscription, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "ListenAccountCreatedCore")
+	ret0, _ := ret[0].(*events.AccountCreatedCoreSubscription)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// ListenAccountCreatedCore indicates an expected call of ListenAccountCreatedCore.
+func (mr *MockIEventsMockRecorder) ListenAccountCreatedCore() *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "ListenAccountCreatedCore", reflect.TypeOf((*MockIEvents)(nil).ListenAccountCreatedCore))
 }
 
 // ListenAccountLiquidated mocks base method.
@@ -92,6 +137,21 @@ func (m *MockIEvents) ListenAccountPermissionRevoked() (*events.AccountPermissio
 func (mr *MockIEventsMockRecorder) ListenAccountPermissionRevoked() *gomock.Call {
 	mr.mock.ctrl.T.Helper()
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "ListenAccountPermissionRevoked", reflect.TypeOf((*MockIEvents)(nil).ListenAccountPermissionRevoked))
+}
+
+// ListenAccountTransfer mocks base method.
+func (m *MockIEvents) ListenAccountTransfer() (*events.AccountTransferSubscription, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "ListenAccountTransfer")
+	ret0, _ := ret[0].(*events.AccountTransferSubscription)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// ListenAccountTransfer indicates an expected call of ListenAccountTransfer.
+func (mr *MockIEventsMockRecorder) ListenAccountTransfer() *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "ListenAccountTransfer", reflect.TypeOf((*MockIEvents)(nil).ListenAccountTransfer))
 }
 
 // ListenCollateralDeposited mocks base method.
@@ -154,6 +214,66 @@ func (mr *MockIEventsMockRecorder) ListenLiquidations() *gomock.Call {
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "ListenLiquidations", reflect.TypeOf((*MockIEvents)(nil).ListenLiquidations))
 }
 
+// ListenLiquidationsCore mocks base method.
+func (m *MockIEvents) ListenLiquidationsCore() (*events.LiquidationsCoreSubscription, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "ListenLiquidationsCore")
+	ret0, _ := ret[0].(*events.LiquidationsCoreSubscription)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// ListenLiquidationsCore indicates an expected call of ListenLiquidationsCore.
+func (mr *MockIEventsMockRecorder) ListenLiquidationsCore() *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "ListenLiquidationsCore", reflect.TypeOf((*MockIEvents)(nil).ListenLiquidationsCore))
+}
+
+// ListenMarketRegistered mocks base method.
+func (m *MockIEvents) ListenMarketRegistered() (*events.MarketRegisteredSubscription, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "ListenMarketRegistered")
+	ret0, _ := ret[0].(*events.MarketRegisteredSubscription)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// ListenMarketRegistered indicates an expected call of ListenMarketRegistered.
+func (mr *MockIEventsMockRecorder) ListenMarketRegistered() *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "ListenMarketRegistered", reflect.TypeOf((*MockIEvents)(nil).ListenMarketRegistered))
+}
+
+// ListenMarketUSDDeposited mocks base method.
+func (m *MockIEvents) ListenMarketUSDDeposited() (*events.MarketUSDDepositedSubscription, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "ListenMarketUSDDeposited")
+	ret0, _ := ret[0].(*events.MarketUSDDepositedSubscription)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// ListenMarketUSDDeposited indicates an expected call of ListenMarketUSDDeposited.
+func (mr *MockIEventsMockRecorder) ListenMarketUSDDeposited() *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "ListenMarketUSDDeposited", reflect.TypeOf((*MockIEvents)(nil).ListenMarketUSDDeposited))
+}
+
+// ListenMarketUSDWithdrawn mocks base method.
+func (m *MockIEvents) ListenMarketUSDWithdrawn() (*events.MarketUSDWithdrawnSubscription, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "ListenMarketUSDWithdrawn")
+	ret0, _ := ret[0].(*events.MarketUSDWithdrawnSubscription)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// ListenMarketUSDWithdrawn indicates an expected call of ListenMarketUSDWithdrawn.
+func (mr *MockIEventsMockRecorder) ListenMarketUSDWithdrawn() *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "ListenMarketUSDWithdrawn", reflect.TypeOf((*MockIEvents)(nil).ListenMarketUSDWithdrawn))
+}
+
 // ListenMarketUpdates mocks base method.
 func (m *MockIEvents) ListenMarketUpdates() (*events.MarketUpdateSubscription, error) {
 	m.ctrl.T.Helper()
@@ -197,6 +317,21 @@ func (m *MockIEvents) ListenOrders() (*events.OrderSubscription, error) {
 func (mr *MockIEventsMockRecorder) ListenOrders() *gomock.Call {
 	mr.mock.ctrl.T.Helper()
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "ListenOrders", reflect.TypeOf((*MockIEvents)(nil).ListenOrders))
+}
+
+// ListenPoolCreated mocks base method.
+func (m *MockIEvents) ListenPoolCreated() (*events.PoolCreatedSubscription, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "ListenPoolCreated")
+	ret0, _ := ret[0].(*events.PoolCreatedSubscription)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// ListenPoolCreated indicates an expected call of ListenPoolCreated.
+func (mr *MockIEventsMockRecorder) ListenPoolCreated() *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "ListenPoolCreated", reflect.TypeOf((*MockIEvents)(nil).ListenPoolCreated))
 }
 
 // ListenRewardClaimed mocks base method.
@@ -272,4 +407,19 @@ func (m *MockIEvents) ListenUSDMinted() (*events.USDMintedSubscription, error) {
 func (mr *MockIEventsMockRecorder) ListenUSDMinted() *gomock.Call {
 	mr.mock.ctrl.T.Helper()
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "ListenUSDMinted", reflect.TypeOf((*MockIEvents)(nil).ListenUSDMinted))
+}
+
+// ListenVaultLiquidationsCore mocks base method.
+func (m *MockIEvents) ListenVaultLiquidationsCore() (*events.VaultLiquidationsCoreSubscription, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "ListenVaultLiquidationsCore")
+	ret0, _ := ret[0].(*events.VaultLiquidationsCoreSubscription)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// ListenVaultLiquidationsCore indicates an expected call of ListenVaultLiquidationsCore.
+func (mr *MockIEventsMockRecorder) ListenVaultLiquidationsCore() *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "ListenVaultLiquidationsCore", reflect.TypeOf((*MockIEvents)(nil).ListenVaultLiquidationsCore))
 }

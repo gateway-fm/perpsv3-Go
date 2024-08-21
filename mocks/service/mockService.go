@@ -51,6 +51,21 @@ func (mr *MockIServiceMockRecorder) FormatAccount(id interface{}) *gomock.Call {
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "FormatAccount", reflect.TypeOf((*MockIService)(nil).FormatAccount), id)
 }
 
+// FormatAccountCore mocks base method.
+func (m *MockIService) FormatAccountCore(id *big.Int) (*models.Account, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "FormatAccountCore", id)
+	ret0, _ := ret[0].(*models.Account)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// FormatAccountCore indicates an expected call of FormatAccountCore.
+func (mr *MockIServiceMockRecorder) FormatAccountCore(id interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "FormatAccountCore", reflect.TypeOf((*MockIService)(nil).FormatAccountCore), id)
+}
+
 // FormatAccounts mocks base method.
 func (m *MockIService) FormatAccounts() ([]*models.Account, error) {
 	m.ctrl.T.Helper()
@@ -66,6 +81,21 @@ func (mr *MockIServiceMockRecorder) FormatAccounts() *gomock.Call {
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "FormatAccounts", reflect.TypeOf((*MockIService)(nil).FormatAccounts))
 }
 
+// FormatAccountsCoreLimit mocks base method.
+func (m *MockIService) FormatAccountsCoreLimit(limit uint64) ([]*models.Account, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "FormatAccountsCoreLimit", limit)
+	ret0, _ := ret[0].([]*models.Account)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// FormatAccountsCoreLimit indicates an expected call of FormatAccountsCoreLimit.
+func (mr *MockIServiceMockRecorder) FormatAccountsCoreLimit(limit interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "FormatAccountsCoreLimit", reflect.TypeOf((*MockIService)(nil).FormatAccountsCoreLimit), limit)
+}
+
 // FormatAccountsLimit mocks base method.
 func (m *MockIService) FormatAccountsLimit(limit uint64) ([]*models.Account, error) {
 	m.ctrl.T.Helper()
@@ -79,6 +109,36 @@ func (m *MockIService) FormatAccountsLimit(limit uint64) ([]*models.Account, err
 func (mr *MockIServiceMockRecorder) FormatAccountsLimit(limit interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "FormatAccountsLimit", reflect.TypeOf((*MockIService)(nil).FormatAccountsLimit), limit)
+}
+
+// GetAccountAvailableCollateral mocks base method.
+func (m *MockIService) GetAccountAvailableCollateral(accountId *big.Int, collateralType common.Address) (*big.Int, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "GetAccountAvailableCollateral", accountId, collateralType)
+	ret0, _ := ret[0].(*big.Int)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// GetAccountAvailableCollateral indicates an expected call of GetAccountAvailableCollateral.
+func (mr *MockIServiceMockRecorder) GetAccountAvailableCollateral(accountId, collateralType interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetAccountAvailableCollateral", reflect.TypeOf((*MockIService)(nil).GetAccountAvailableCollateral), accountId, collateralType)
+}
+
+// GetAccountCollateralCore mocks base method.
+func (m *MockIService) GetAccountCollateralCore(accountId *big.Int, collateralType common.Address) (*models.AccountCollateral, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "GetAccountCollateralCore", accountId, collateralType)
+	ret0, _ := ret[0].(*models.AccountCollateral)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// GetAccountCollateralCore indicates an expected call of GetAccountCollateralCore.
+func (mr *MockIServiceMockRecorder) GetAccountCollateralCore(accountId, collateralType interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetAccountCollateralCore", reflect.TypeOf((*MockIService)(nil).GetAccountCollateralCore), accountId, collateralType)
 }
 
 // GetAccountLastInteraction mocks base method.
@@ -139,6 +199,21 @@ func (m *MockIService) GetCollateralAmount(accountId, marketId *big.Int) (*big.I
 func (mr *MockIServiceMockRecorder) GetCollateralAmount(accountId, marketId interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetCollateralAmount", reflect.TypeOf((*MockIService)(nil).GetCollateralAmount), accountId, marketId)
+}
+
+// GetCollateralConfigurations mocks base method.
+func (m *MockIService) GetCollateralConfigurations(hideDisabled bool) ([]*models.CollateralConfiguration, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "GetCollateralConfigurations", hideDisabled)
+	ret0, _ := ret[0].([]*models.CollateralConfiguration)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// GetCollateralConfigurations indicates an expected call of GetCollateralConfigurations.
+func (mr *MockIServiceMockRecorder) GetCollateralConfigurations(hideDisabled interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetCollateralConfigurations", reflect.TypeOf((*MockIService)(nil).GetCollateralConfigurations), hideDisabled)
 }
 
 // GetCollateralPrice mocks base method.
@@ -246,6 +321,36 @@ func (mr *MockIServiceMockRecorder) GetMarketSummary(marketID interface{}) *gomo
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetMarketSummary", reflect.TypeOf((*MockIService)(nil).GetMarketSummary), marketID)
 }
 
+// GetPoolConfiguration mocks base method.
+func (m *MockIService) GetPoolConfiguration(poolID *big.Int) (*models.PoolConfiguration, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "GetPoolConfiguration", poolID)
+	ret0, _ := ret[0].(*models.PoolConfiguration)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// GetPoolConfiguration indicates an expected call of GetPoolConfiguration.
+func (mr *MockIServiceMockRecorder) GetPoolConfiguration(poolID interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetPoolConfiguration", reflect.TypeOf((*MockIService)(nil).GetPoolConfiguration), poolID)
+}
+
+// GetPoolName mocks base method.
+func (m *MockIService) GetPoolName(poolID *big.Int) (string, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "GetPoolName", poolID)
+	ret0, _ := ret[0].(string)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// GetPoolName indicates an expected call of GetPoolName.
+func (mr *MockIServiceMockRecorder) GetPoolName(poolID interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetPoolName", reflect.TypeOf((*MockIService)(nil).GetPoolName), poolID)
+}
+
 // GetPosition mocks base method.
 func (m *MockIService) GetPosition(accountID, marketID *big.Int) (*models.Position, error) {
 	m.ctrl.T.Helper()
@@ -274,6 +379,68 @@ func (m *MockIService) GetRequiredMaintenanceMargin(accountId *big.Int) (*big.In
 func (mr *MockIServiceMockRecorder) GetRequiredMaintenanceMargin(accountId interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetRequiredMaintenanceMargin", reflect.TypeOf((*MockIService)(nil).GetRequiredMaintenanceMargin), accountId)
+}
+
+// GetVaultCollateral mocks base method.
+func (m *MockIService) GetVaultCollateral(poolID *big.Int, collateralType common.Address) (*big.Int, *big.Int, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "GetVaultCollateral", poolID, collateralType)
+	ret0, _ := ret[0].(*big.Int)
+	ret1, _ := ret[1].(*big.Int)
+	ret2, _ := ret[2].(error)
+	return ret0, ret1, ret2
+}
+
+// GetVaultCollateral indicates an expected call of GetVaultCollateral.
+func (mr *MockIServiceMockRecorder) GetVaultCollateral(poolID, collateralType interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetVaultCollateral", reflect.TypeOf((*MockIService)(nil).GetVaultCollateral), poolID, collateralType)
+}
+
+// GetVaultCollateralHistorical mocks base method.
+func (m *MockIService) GetVaultCollateralHistorical(poolID *big.Int, collateralType common.Address, blockNumber *big.Int) (*big.Int, *big.Int, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "GetVaultCollateralHistorical", poolID, collateralType, blockNumber)
+	ret0, _ := ret[0].(*big.Int)
+	ret1, _ := ret[1].(*big.Int)
+	ret2, _ := ret[2].(error)
+	return ret0, ret1, ret2
+}
+
+// GetVaultCollateralHistorical indicates an expected call of GetVaultCollateralHistorical.
+func (mr *MockIServiceMockRecorder) GetVaultCollateralHistorical(poolID, collateralType, blockNumber interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetVaultCollateralHistorical", reflect.TypeOf((*MockIService)(nil).GetVaultCollateralHistorical), poolID, collateralType, blockNumber)
+}
+
+// GetVaultDebt mocks base method.
+func (m *MockIService) GetVaultDebt(poolID *big.Int, collateralType common.Address) (*big.Int, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "GetVaultDebt", poolID, collateralType)
+	ret0, _ := ret[0].(*big.Int)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// GetVaultDebt indicates an expected call of GetVaultDebt.
+func (mr *MockIServiceMockRecorder) GetVaultDebt(poolID, collateralType interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetVaultDebt", reflect.TypeOf((*MockIService)(nil).GetVaultDebt), poolID, collateralType)
+}
+
+// GetVaultDebtHistorical mocks base method.
+func (m *MockIService) GetVaultDebtHistorical(poolID *big.Int, collateralType common.Address, blockNumber *big.Int) (*big.Int, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "GetVaultDebtHistorical", poolID, collateralType, blockNumber)
+	ret0, _ := ret[0].(*big.Int)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// GetVaultDebtHistorical indicates an expected call of GetVaultDebtHistorical.
+func (mr *MockIServiceMockRecorder) GetVaultDebtHistorical(poolID, collateralType, blockNumber interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetVaultDebtHistorical", reflect.TypeOf((*MockIService)(nil).GetVaultDebtHistorical), poolID, collateralType, blockNumber)
 }
 
 // RetrieveAccountLiquidationsLimit mocks base method.
@@ -351,6 +518,21 @@ func (mr *MockIServiceMockRecorder) RetrieveLiquidations(fromBlock, toBLock inte
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "RetrieveLiquidations", reflect.TypeOf((*MockIService)(nil).RetrieveLiquidations), fromBlock, toBLock)
 }
 
+// RetrieveLiquidationsCore mocks base method.
+func (m *MockIService) RetrieveLiquidationsCore(limit uint64) ([]*models.CoreLiquidation, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "RetrieveLiquidationsCore", limit)
+	ret0, _ := ret[0].([]*models.CoreLiquidation)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// RetrieveLiquidationsCore indicates an expected call of RetrieveLiquidationsCore.
+func (mr *MockIServiceMockRecorder) RetrieveLiquidationsCore(limit interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "RetrieveLiquidationsCore", reflect.TypeOf((*MockIService)(nil).RetrieveLiquidationsCore), limit)
+}
+
 // RetrieveLiquidationsLimit mocks base method.
 func (m *MockIService) RetrieveLiquidationsLimit(limit uint64) ([]*models.Liquidation, error) {
 	m.ctrl.T.Helper()
@@ -364,6 +546,51 @@ func (m *MockIService) RetrieveLiquidationsLimit(limit uint64) ([]*models.Liquid
 func (mr *MockIServiceMockRecorder) RetrieveLiquidationsLimit(limit interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "RetrieveLiquidationsLimit", reflect.TypeOf((*MockIService)(nil).RetrieveLiquidationsLimit), limit)
+}
+
+// RetrieveMarketRegistered mocks base method.
+func (m *MockIService) RetrieveMarketRegistered(limit uint64) ([]*models.MarketRegistered, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "RetrieveMarketRegistered", limit)
+	ret0, _ := ret[0].([]*models.MarketRegistered)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// RetrieveMarketRegistered indicates an expected call of RetrieveMarketRegistered.
+func (mr *MockIServiceMockRecorder) RetrieveMarketRegistered(limit interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "RetrieveMarketRegistered", reflect.TypeOf((*MockIService)(nil).RetrieveMarketRegistered), limit)
+}
+
+// RetrieveMarketUSDDepositedLimit mocks base method.
+func (m *MockIService) RetrieveMarketUSDDepositedLimit(limit uint64) ([]*models.MarketUSDDeposited, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "RetrieveMarketUSDDepositedLimit", limit)
+	ret0, _ := ret[0].([]*models.MarketUSDDeposited)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// RetrieveMarketUSDDepositedLimit indicates an expected call of RetrieveMarketUSDDepositedLimit.
+func (mr *MockIServiceMockRecorder) RetrieveMarketUSDDepositedLimit(limit interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "RetrieveMarketUSDDepositedLimit", reflect.TypeOf((*MockIService)(nil).RetrieveMarketUSDDepositedLimit), limit)
+}
+
+// RetrieveMarketUSDWithdrawnLimit mocks base method.
+func (m *MockIService) RetrieveMarketUSDWithdrawnLimit(limit uint64) ([]*models.MarketUSDWithdrawn, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "RetrieveMarketUSDWithdrawnLimit", limit)
+	ret0, _ := ret[0].([]*models.MarketUSDWithdrawn)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// RetrieveMarketUSDWithdrawnLimit indicates an expected call of RetrieveMarketUSDWithdrawnLimit.
+func (mr *MockIServiceMockRecorder) RetrieveMarketUSDWithdrawnLimit(limit interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "RetrieveMarketUSDWithdrawnLimit", reflect.TypeOf((*MockIService)(nil).RetrieveMarketUSDWithdrawnLimit), limit)
 }
 
 // RetrieveMarketUpdates mocks base method.
@@ -456,6 +683,21 @@ func (mr *MockIServiceMockRecorder) RetrieveOrdersLimit(limit interface{}) *gomo
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "RetrieveOrdersLimit", reflect.TypeOf((*MockIService)(nil).RetrieveOrdersLimit), limit)
 }
 
+// RetrievePoolCreated mocks base method.
+func (m *MockIService) RetrievePoolCreated(limit uint64) ([]*models.PoolCreated, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "RetrievePoolCreated", limit)
+	ret0, _ := ret[0].([]*models.PoolCreated)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// RetrievePoolCreated indicates an expected call of RetrievePoolCreated.
+func (mr *MockIServiceMockRecorder) RetrievePoolCreated(limit interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "RetrievePoolCreated", reflect.TypeOf((*MockIService)(nil).RetrievePoolCreated), limit)
+}
+
 // RetrieveRewardClaimedLimit mocks base method.
 func (m *MockIService) RetrieveRewardClaimedLimit(limit uint64) ([]*models.RewardClaimed, error) {
 	m.ctrl.T.Helper()
@@ -544,4 +786,19 @@ func (m *MockIService) RetrieveUSDMintedLimit(limit uint64) ([]*models.USDMinted
 func (mr *MockIServiceMockRecorder) RetrieveUSDMintedLimit(limit interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "RetrieveUSDMintedLimit", reflect.TypeOf((*MockIService)(nil).RetrieveUSDMintedLimit), limit)
+}
+
+// RetrieveVaultLiquidationsCore mocks base method.
+func (m *MockIService) RetrieveVaultLiquidationsCore(limit uint64) ([]*models.CoreVaultLiquidation, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "RetrieveVaultLiquidationsCore", limit)
+	ret0, _ := ret[0].([]*models.CoreVaultLiquidation)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// RetrieveVaultLiquidationsCore indicates an expected call of RetrieveVaultLiquidationsCore.
+func (mr *MockIServiceMockRecorder) RetrieveVaultLiquidationsCore(limit interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "RetrieveVaultLiquidationsCore", reflect.TypeOf((*MockIService)(nil).RetrieveVaultLiquidationsCore), limit)
 }
