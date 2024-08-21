@@ -1,8 +1,9 @@
 package models
 
 import (
-	"github.com/gateway-fm/perpsv3-Go/contracts/core"
 	"strings"
+
+	"github.com/gateway-fm/perpsv3-Go/contracts/core"
 
 	"github.com/gateway-fm/perpsv3-Go/contracts/perpsMarket"
 	"github.com/gateway-fm/perpsv3-Go/errors"
@@ -20,6 +21,7 @@ const (
 	REWARDS
 	PERPS_MODIFY_COLLATERAL
 	PERPS_COMMIT_ASYNC_ORDER
+	BURN
 	unsupported
 )
 
@@ -32,6 +34,7 @@ var permissionsS = [...]string{
 	REWARDS:                  "REWARDS",
 	PERPS_MODIFY_COLLATERAL:  "PERPS_MODIFY_COLLATERAL",
 	PERPS_COMMIT_ASYNC_ORDER: "PERPS_COMMIT_ASYNC_ORDER",
+	BURN:                     "BURN",
 }
 
 // String is used to return Permission string value

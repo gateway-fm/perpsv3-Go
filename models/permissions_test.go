@@ -52,9 +52,15 @@ func TestPermissionFromString(t *testing.T) {
 		{
 			name:     "unsupported error",
 			permName: "unsupported",
-			want:     Permission(7),
+			want:     Permission(8),
 			wantErr:  errors.EnumUnsupportedErr,
 		},
+		{
+			name:     "perps burn",
+			permName: "BURN",
+			want:     Permission(7),
+		},
+
 	}
 
 	for _, tt := range testCases {
