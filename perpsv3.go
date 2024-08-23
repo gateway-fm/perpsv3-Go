@@ -85,6 +85,10 @@ type IPerpsv3 interface {
 	// limit. For most public RPC providers the value for limit is 20 000 blocks
 	RetrieveDelegationUpdatedLimit(limit uint64) ([]*models.DelegationUpdated, error)
 
+	// RetrieveDelegationUpdatedStart is used to get all `DelegationUpdated` events from the Core contract with given start block and block search
+	// limit. For most public RPC providers the value for limit is 20 000 blocks
+	RetrieveDelegationUpdatedStart(start uint64, limit uint64) ([]*models.DelegationUpdated, error)
+
 	// RetrieveCollateralWithdrawnLimit is used to get all `Withdrawn` events from the Core contract with given block search
 	// limit. For most public RPC providers the value for limit is 20 000 blocks
 	RetrieveCollateralWithdrawnLimit(limit uint64) ([]*models.CollateralWithdrawn, error)
@@ -418,6 +422,10 @@ func (p *Perpsv3) RetrieveUSDBurnedLimit(limit uint64) ([]*models.USDBurned, err
 
 func (p *Perpsv3) RetrieveDelegationUpdatedLimit(limit uint64) ([]*models.DelegationUpdated, error) {
 	return p.service.RetrieveDelegationUpdatedLimit(limit)
+}
+
+func (p *Perpsv3) RetrieveDelegationUpdatedStart(start uint64, limit uint64) ([]*models.DelegationUpdated, error) {
+	return p.service.RetrieveDelegationUpdatedStart(start, limit)
 }
 
 func (p *Perpsv3) RetrieveCollateralWithdrawnLimit(limit uint64) ([]*models.CollateralWithdrawn, error) {

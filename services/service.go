@@ -74,6 +74,10 @@ type IService interface {
 	// limit. For most public RPC providers the value for limit is 20 000 blocks
 	RetrieveDelegationUpdatedLimit(limit uint64) ([]*models.DelegationUpdated, error)
 
+	// RetrieveDelegationUpdatedStart is used to get all `DelegationUpdated` events from the Core contract with given start block and block search
+	// limit. For most public RPC providers the value for limit is 20 000 blocks
+	RetrieveDelegationUpdatedStart(start uint64, limit uint64) ([]*models.DelegationUpdated, error)
+
 	// RetrieveCollateralWithdrawnLimit is used to get all `Withdrawn` events from the Core contract with given block search
 	// limit. For most public RPC providers the value for limit is 20 000 blocks
 	RetrieveCollateralWithdrawnLimit(limit uint64) ([]*models.CollateralWithdrawn, error)

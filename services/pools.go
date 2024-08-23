@@ -100,6 +100,10 @@ func (s *Service) RetrieveUSDBurnedLimit(limit uint64) ([]*models.USDBurned, err
 }
 
 func (s *Service) RetrieveDelegationUpdatedLimit(limit uint64) ([]*models.DelegationUpdated, error) {
+	return s.RetrieveDelegationUpdatedStart(s.coreFirstBlock, limit)
+}
+
+func (s *Service) RetrieveDelegationUpdatedStart(start uint64, limit uint64) ([]*models.DelegationUpdated, error) {
 	iterations, last, err := s.getIterationsForLimitQuery(limit)
 	if err != nil {
 		return nil, err
@@ -112,7 +116,7 @@ func (s *Service) RetrieveDelegationUpdatedLimit(limit uint64) ([]*models.Delega
 		limit, last, iterations,
 	)
 
-	fromBlock := s.coreFirstBlock
+	fromBlock := start
 	toBlock := fromBlock + limit
 	for i := uint64(1); i <= iterations; i++ {
 		if i%10 == 0 || i == iterations {
