@@ -18,7 +18,7 @@ func (s *Service) RetrieveTrades(fromBlock uint64, toBLock *uint64) ([]*models.T
 }
 
 func (s *Service) RetrieveTradesLimit(limit uint64) ([]*models.Trade, error) {
-	iterations, last, err := s.getIterationsForLimitQuery(limit)
+	iterations, last, err := s.getIterationsForLimitQueryPerpsMarket(limit)
 	if err != nil {
 		return nil, err
 	}

@@ -12,7 +12,7 @@ import (
 )
 
 func (s *Service) RetrieveRewardClaimedLimit(limit uint64) ([]*models.RewardClaimed, error) {
-	iterations, last, err := s.getIterationsForLimitQuery(limit)
+	iterations, last, err := s.getIterationsForLimitQueryCore(limit)
 	if err != nil {
 		return nil, err
 	}
@@ -93,7 +93,7 @@ func (s *Service) getRewardClaimed(event *core.CoreRewardsClaimed, blockN uint64
 }
 
 func (s *Service) RetrieveRewardDistributedLimit(limit uint64) ([]*models.RewardDistributed, error) {
-	iterations, last, err := s.getIterationsForLimitQuery(limit)
+	iterations, last, err := s.getIterationsForLimitQueryCore(limit)
 	if err != nil {
 		return nil, err
 	}

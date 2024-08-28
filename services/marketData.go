@@ -18,7 +18,7 @@ import (
 )
 
 func (s *Service) RetrieveMarketUpdatesLimit(limit uint64) ([]*models.MarketUpdate, error) {
-	iterations, last, err := s.getIterationsForLimitQuery(limit)
+	iterations, last, err := s.getIterationsForLimitQueryPerpsMarket(limit)
 	if err != nil {
 		return nil, err
 	}
@@ -60,7 +60,7 @@ func (s *Service) RetrieveMarketUpdatesLimit(limit uint64) ([]*models.MarketUpda
 }
 
 func (s *Service) RetrieveMarketUpdatesBigLimit(limit uint64) ([]*models.MarketUpdateBig, error) {
-	iterations, last, err := s.getIterationsForLimitQuery(limit)
+	iterations, last, err := s.getIterationsForLimitQueryPerpsMarket(limit)
 	if err != nil {
 		return nil, err
 	}
@@ -112,7 +112,7 @@ func (s *Service) RetrieveMarketUpdatesBig(fromBlock uint64, toBLock *uint64) ([
 }
 
 func (s *Service) RetrieveMarketRegistered(limit uint64) ([]*models.MarketRegistered, error) {
-	iterations, last, err := s.getIterationsForLimitQuery(limit)
+	iterations, last, err := s.getIterationsForLimitQueryCore(limit)
 	if err != nil {
 		return nil, err
 	}

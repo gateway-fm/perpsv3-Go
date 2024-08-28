@@ -20,7 +20,7 @@ func (s *Service) FormatAccount(id *big.Int) (*models.Account, error) {
 }
 
 func (s *Service) FormatAccountsLimit(limit uint64) ([]*models.Account, error) {
-	iterations, last, err := s.getIterationsForLimitQuery(limit)
+	iterations, last, err := s.getIterationsForLimitQueryPerpsMarket(limit)
 	if err != nil {
 		return nil, err
 	}
@@ -63,7 +63,7 @@ func (s *Service) FormatAccountsLimit(limit uint64) ([]*models.Account, error) {
 }
 
 func (s *Service) RetrieveAccountLiquidationsLimit(limit uint64) ([]*models.AccountLiquidated, error) {
-	iterations, last, err := s.getIterationsForLimitQuery(limit)
+	iterations, last, err := s.getIterationsForLimitQueryPerpsMarket(limit)
 	if err != nil {
 		return nil, err
 	}
@@ -537,7 +537,7 @@ func (s *Service) formatAccount(id *big.Int) (*models.Account, error) {
 }
 
 func (s *Service) FormatAccountsCoreLimit(limit uint64) ([]*models.Account, error) {
-	iterations, last, err := s.getIterationsForLimitQuery(limit)
+	iterations, last, err := s.getIterationsForLimitQueryCore(limit)
 	if err != nil {
 		return nil, err
 	}

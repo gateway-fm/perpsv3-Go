@@ -13,7 +13,7 @@ import (
 )
 
 func (s *Service) RetrieveLiquidationsCore(limit uint64) ([]*models.CoreLiquidation, error) {
-	iterations, last, err := s.getIterationsForLimitQuery(limit)
+	iterations, last, err := s.getIterationsForLimitQueryCore(limit)
 	if err != nil {
 		return nil, err
 	}
@@ -94,7 +94,7 @@ func (s *Service) getLiquidationCore(event *core.CoreLiquidation, blockN uint64)
 }
 
 func (s *Service) RetrieveVaultLiquidationsCore(limit uint64) ([]*models.CoreVaultLiquidation, error) {
-	iterations, last, err := s.getIterationsForLimitQuery(limit)
+	iterations, last, err := s.getIterationsForLimitQueryCore(limit)
 	if err != nil {
 		return nil, err
 	}

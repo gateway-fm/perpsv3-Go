@@ -18,7 +18,7 @@ func (s *Service) RetrieveLiquidations(fromBlock uint64, toBLock *uint64) ([]*mo
 }
 
 func (s *Service) RetrieveLiquidationsLimit(limit uint64) ([]*models.Liquidation, error) {
-	iterations, last, err := s.getIterationsForLimitQuery(limit)
+	iterations, last, err := s.getIterationsForLimitQueryPerpsMarket(limit)
 	if err != nil {
 		return nil, err
 	}
