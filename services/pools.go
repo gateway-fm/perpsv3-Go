@@ -2,9 +2,10 @@ package services
 
 import (
 	"context"
-	"github.com/ethereum/go-ethereum"
 	"math/big"
 	"time"
+
+	"github.com/ethereum/go-ethereum"
 
 	"github.com/ethereum/go-ethereum/accounts/abi/bind"
 	"github.com/ethereum/go-ethereum/common"
@@ -104,7 +105,7 @@ func (s *Service) RetrieveDelegationUpdatedLimit(limit uint64) ([]*models.Delega
 }
 
 func (s *Service) RetrieveDelegationUpdated(fromBlock uint64, toBlock uint64, limit uint64) ([]*models.DelegationUpdated, error) {
-	iterations, lastBlock, err := s.getIterationsForQuery(fromBlock, toBlock, limit)
+	iterations, lastBlock, err := s.getIterationsForQuery(fromBlock, toBlock, limit, ContractCore)
 	if err != nil {
 		return nil, err
 	}
