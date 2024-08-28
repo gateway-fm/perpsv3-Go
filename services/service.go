@@ -299,7 +299,7 @@ func (s *Service) getIterationsForQuery(fromBlock uint64, toBlock uint64, limit 
 		limit = 20000
 	}
 
-	if fromBlock < toBlock {
+	if fromBlock > toBlock {
 		logger.Log().WithField("layer", "Service-getIterationsForLimitQuery").Error("fromBlock > toBlock")
 		return 0, 0, fmt.Errorf("fromBlock > toBlock")
 	}
