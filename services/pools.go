@@ -100,11 +100,11 @@ func (s *Service) RetrieveUSDBurnedLimit(limit uint64) ([]*models.USDBurned, err
 }
 
 func (s *Service) RetrieveDelegationUpdatedLimit(limit uint64) ([]*models.DelegationUpdated, error) {
-	return s.RetrieveDelegationUpdatedStart(s.coreFirstBlock, limit)
+	return s.RetrieveDelegationUpdated(0, 0, limit)
 }
 
-func (s *Service) RetrieveDelegationUpdatedStart(start uint64, limit uint64) ([]*models.DelegationUpdated, error) {
-	iterations, last, err := s.getIterationsForLimitQuery(limit)
+func (s *Service) RetrieveDelegationUpdated(fromBlock uint64, toBlock uint64, limit uint64) ([]*models.DelegationUpdated, error) {
+	iterations, lastBlock, err := s.getIterationsForQuery(fromBlock, toBlock, limit)
 	if err != nil {
 		return nil, err
 	}
@@ -113,16 +113,20 @@ func (s *Service) RetrieveDelegationUpdatedStart(start uint64, limit uint64) ([]
 
 	logger.Log().WithField("layer", "Service-RetrieveDelegationUpdatedLimit").Infof(
 		"fetching DelegationUpdated with limit: %v to block: %v total iterations: %v...",
-		limit, last, iterations,
+		limit, lastBlock, iterations,
 	)
 
-	fromBlock := start
-	toBlock := fromBlock + limit
+	if fromBlock == 0 {
+		fromBlock = s.coreFirstBlock
+	}
+
+	startBlockOfIteration := fromBlock
+	endBlockOfIteration := startBlockOfIteration + limit
 	for i := uint64(1); i <= iterations; i++ {
 		if i%10 == 0 || i == iterations {
 			logger.Log().WithField("layer", "Service-RetrieveUSDMBurnedLimit").Infof("-- iteration %v", i)
 		}
-		opts := s.getFilterOptsCore(fromBlock, &toBlock)
+		opts := s.getFilterOptsCore(startBlockOfIteration, &endBlockOfIteration)
 
 		res, err := s.retrieveDelegationUpdated(opts)
 		if err != nil {
@@ -131,12 +135,12 @@ func (s *Service) RetrieveDelegationUpdatedStart(start uint64, limit uint64) ([]
 
 		delegations = append(delegations, res...)
 
-		fromBlock = toBlock + 1
+		startBlockOfIteration = endBlockOfIteration + 1
 
 		if i == iterations-1 {
-			toBlock = last
+			endBlockOfIteration = lastBlock
 		} else {
-			toBlock = fromBlock + limit
+			endBlockOfIteration = startBlockOfIteration + limit
 		}
 	}
 

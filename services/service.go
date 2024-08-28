@@ -2,6 +2,7 @@ package services
 
 import (
 	"context"
+	"fmt"
 	"math/big"
 	"time"
 
@@ -74,9 +75,9 @@ type IService interface {
 	// limit. For most public RPC providers the value for limit is 20 000 blocks
 	RetrieveDelegationUpdatedLimit(limit uint64) ([]*models.DelegationUpdated, error)
 
-	// RetrieveDelegationUpdatedStart is used to get all `DelegationUpdated` events from the Core contract with given start block and block search
+	// RetrieveDelegationUpdated is used to get all `DelegationUpdated` events with given start block, end block and block search
 	// limit. For most public RPC providers the value for limit is 20 000 blocks
-	RetrieveDelegationUpdatedStart(start uint64, limit uint64) ([]*models.DelegationUpdated, error)
+	RetrieveDelegationUpdated(fromBlock uint64, toBlock uint64, limit uint64) ([]*models.DelegationUpdated, error)
 
 	// RetrieveCollateralWithdrawnLimit is used to get all `Withdrawn` events from the Core contract with given block search
 	// limit. For most public RPC providers the value for limit is 20 000 blocks
@@ -278,17 +279,32 @@ func NewService(
 // getIterationsForLimitQuery is used to get iterations of querying data from the contract with given rpc limit for blocks
 // and latest block number. Limit by default (if given limit is 0) is set to 20 000 blocks
 func (s *Service) getIterationsForLimitQuery(limit uint64) (iterations uint64, lastBlock uint64, err error) {
-	lastBlock, err = s.rpcClient.BlockNumber(context.Background())
-	if err != nil {
-		logger.Log().WithField("layer", "Service-getIterationsForLimitQuery").Errorf("get latest block rpc error: %v", err.Error())
-		return 0, 0, errors.GetRPCProviderErr(err, "BlockNumber")
+	return s.getIterationsForQuery(0, 0, limit)
+}
+
+func (s *Service) getIterationsForQuery(fromBlock uint64, toBlock uint64, limit uint64) (iterations uint64, lastBlock uint64, err error) {
+	if fromBlock == 0 {
+		fromBlock = s.perpsMarketFirstBlock
+	}
+
+	if toBlock == 0 {
+		lastBlock, err = s.rpcClient.BlockNumber(context.Background())
+		if err != nil {
+			logger.Log().WithField("layer", "Service-getIterationsForLimitQuery").Errorf("get latest block rpc error: %v", err.Error())
+			return 0, 0, errors.GetRPCProviderErr(err, "BlockNumber")
+		}
 	}
 
 	if limit == 0 {
 		limit = 20000
 	}
 
-	iterations = (lastBlock-s.perpsMarketFirstBlock)/limit + 1
+	if fromBlock < toBlock {
+		logger.Log().WithField("layer", "Service-getIterationsForLimitQuery").Error("fromBlock > toBlock")
+		return 0, 0, fmt.Errorf("fromBlock > toBlock")
+	}
+
+	iterations = (toBlock-fromBlock)/limit + 1
 
 	return iterations, lastBlock, nil
 }
