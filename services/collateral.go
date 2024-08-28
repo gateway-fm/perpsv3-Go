@@ -28,7 +28,7 @@ func (s *Service) GetCollateralPrice(blockNumber *big.Int, collateralType common
 }
 
 func (s *Service) RetrieveCollateralWithdrawnLimit(limit uint64) ([]*models.CollateralWithdrawn, error) {
-	iterations, last, err := s.getIterationsForLimitQuery(limit)
+	iterations, last, err := s.getIterationsForLimitQueryCore(limit)
 	if err != nil {
 		return nil, err
 	}
@@ -109,7 +109,7 @@ func (s *Service) getCollateralWithdrawn(event *core.CoreWithdrawn, blockN uint6
 }
 
 func (s *Service) RetrieveCollateralDepositedLimit(limit uint64) ([]*models.CollateralDeposited, error) {
-	iterations, last, err := s.getIterationsForLimitQuery(limit)
+	iterations, last, err := s.getIterationsForLimitQueryCore(limit)
 	if err != nil {
 		return nil, err
 	}

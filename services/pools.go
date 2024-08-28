@@ -16,7 +16,7 @@ import (
 )
 
 func (s *Service) RetrieveUSDMintedLimit(limit uint64) ([]*models.USDMinted, error) {
-	iterations, last, err := s.getIterationsForLimitQuery(limit)
+	iterations, last, err := s.getIterationsForLimitQueryCore(limit)
 	if err != nil {
 		return nil, err
 	}
@@ -58,7 +58,7 @@ func (s *Service) RetrieveUSDMintedLimit(limit uint64) ([]*models.USDMinted, err
 }
 
 func (s *Service) RetrieveUSDBurnedLimit(limit uint64) ([]*models.USDBurned, error) {
-	iterations, last, err := s.getIterationsForLimitQuery(limit)
+	iterations, last, err := s.getIterationsForLimitQueryCore(limit)
 	if err != nil {
 		return nil, err
 	}
@@ -115,7 +115,7 @@ func (s *Service) RetrieveDelegationUpdated(fromBlock uint64, toBlock uint64, li
 		fromBlock = s.coreFirstBlock
 	}
 
-	logger.Log().WithField("layer", "Service-RetrieveDelegationUpdatedLimit").Infof(
+	logger.Log().WithField("layer", "Service-RetrieveDelegationUpdated").Infof(
 		"fetching DelegationUpdated with limit: %v from block: %v to block: %v total iterations: %v...",
 		limit, fromBlock, lastBlock, iterations,
 	)
@@ -154,7 +154,7 @@ func (s *Service) RetrieveDelegationUpdated(fromBlock uint64, toBlock uint64, li
 }
 
 func (s *Service) RetrievePoolCreated(limit uint64) ([]*models.PoolCreated, error) {
-	iterations, last, err := s.getIterationsForLimitQuery(limit)
+	iterations, last, err := s.getIterationsForLimitQueryCore(limit)
 	if err != nil {
 		return nil, err
 	}

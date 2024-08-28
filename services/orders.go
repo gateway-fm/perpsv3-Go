@@ -18,7 +18,7 @@ func (s *Service) RetrieveOrders(fromBlock uint64, toBLock *uint64) ([]*models.O
 }
 
 func (s *Service) RetrieveOrdersLimit(limit uint64) ([]*models.Order, error) {
-	iterations, last, err := s.getIterationsForLimitQuery(limit)
+	iterations, last, err := s.getIterationsForLimitQueryPerpsMarket(limit)
 	if err != nil {
 		return nil, err
 	}

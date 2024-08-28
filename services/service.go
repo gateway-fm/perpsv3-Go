@@ -204,6 +204,14 @@ type IService interface {
 	FormatAccountsCoreLimit(limit uint64) ([]*models.Account, error)
 }
 
+type ContractType int
+
+const (
+	ContractPerpsMarket ContractType = iota
+
+	ContractCore
+)
+
 // Service is an implementation of IService interface
 type Service struct {
 	chainID          config.ChainID
@@ -276,21 +284,32 @@ func NewService(
 	return s, nil
 }
 
-// getIterationsForLimitQuery is used to get iterations of querying data from the contract with given rpc limit for blocks
+// getIterationsForLimitQueryPerpsMarket is used to get iterations of querying data from the contract with given rpc limit for blocks
 // and latest block number. Limit by default (if given limit is 0) is set to 20 000 blocks
-func (s *Service) getIterationsForLimitQuery(limit uint64) (iterations uint64, lastBlock uint64, err error) {
-	return s.getIterationsForQuery(0, 0, limit)
+func (s *Service) getIterationsForLimitQueryPerpsMarket(limit uint64) (iterations uint64, lastBlock uint64, err error) {
+	return s.getIterationsForQuery(0, 0, limit, ContractPerpsMarket)
 }
 
-func (s *Service) getIterationsForQuery(fromBlock uint64, toBlock uint64, limit uint64) (iterations uint64, lastBlock uint64, err error) {
+// getIterationsForLimitQueryCore is used to get iterations of querying data from the contract with given rpc limit for blocks
+// and latest block number. Limit by default (if given limit is 0) is set to 20 000 blocks
+func (s *Service) getIterationsForLimitQueryCore(limit uint64) (iterations uint64, lastBlock uint64, err error) {
+	return s.getIterationsForQuery(0, 0, limit, ContractCore)
+}
+
+func (s *Service) getIterationsForQuery(fromBlock uint64, toBlock uint64, limit uint64, contractType ContractType) (iterations uint64, lastBlock uint64, err error) {
 	if fromBlock == 0 {
-		fromBlock = s.perpsMarketFirstBlock
+		switch contractType {
+		case ContractPerpsMarket:
+			fromBlock = s.perpsMarketFirstBlock
+		case ContractCore:
+			fromBlock = s.coreFirstBlock
+		}
 	}
 
 	if toBlock == 0 {
 		lastBlock, err = s.rpcClient.BlockNumber(context.Background())
 		if err != nil {
-			logger.Log().WithField("layer", "Service-getIterationsForLimitQuery").Errorf("get latest block rpc error: %v", err.Error())
+			logger.Log().WithField("layer", "Service-getIterationsForQuery").Errorf("get latest block rpc error: %v", err.Error())
 			return 0, 0, errors.GetRPCProviderErr(err, "BlockNumber")
 		}
 
