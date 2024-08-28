@@ -293,6 +293,8 @@ func (s *Service) getIterationsForQuery(fromBlock uint64, toBlock uint64, limit 
 			logger.Log().WithField("layer", "Service-getIterationsForLimitQuery").Errorf("get latest block rpc error: %v", err.Error())
 			return 0, 0, errors.GetRPCProviderErr(err, "BlockNumber")
 		}
+
+		toBlock = lastBlock
 	}
 
 	if limit == 0 {
@@ -306,7 +308,7 @@ func (s *Service) getIterationsForQuery(fromBlock uint64, toBlock uint64, limit 
 
 	iterations = (toBlock-fromBlock)/limit + 1
 
-	return iterations, lastBlock, nil
+	return iterations, toBlock, nil
 }
 
 // getFilterOptsPerpsMarket is used to get options for event filtering on perps market contract

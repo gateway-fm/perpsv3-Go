@@ -111,14 +111,14 @@ func (s *Service) RetrieveDelegationUpdated(fromBlock uint64, toBlock uint64, li
 
 	var delegations []*models.DelegationUpdated
 
-	logger.Log().WithField("layer", "Service-RetrieveDelegationUpdatedLimit").Infof(
-		"fetching DelegationUpdated with limit: %v to block: %v total iterations: %v...",
-		limit, lastBlock, iterations,
-	)
-
 	if fromBlock == 0 {
 		fromBlock = s.coreFirstBlock
 	}
+
+	logger.Log().WithField("layer", "Service-RetrieveDelegationUpdatedLimit").Infof(
+		"fetching DelegationUpdated with limit: %v from block: %v to block: %v total iterations: %v...",
+		limit, fromBlock, lastBlock, iterations,
+	)
 
 	startBlockOfIteration := fromBlock
 	endBlockOfIteration := startBlockOfIteration + limit
