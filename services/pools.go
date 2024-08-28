@@ -122,6 +122,10 @@ func (s *Service) RetrieveDelegationUpdated(fromBlock uint64, toBlock uint64, li
 
 	startBlockOfIteration := fromBlock
 	endBlockOfIteration := startBlockOfIteration + limit
+	if endBlockOfIteration > toBlock {
+		endBlockOfIteration = toBlock
+	}
+
 	for i := uint64(1); i <= iterations; i++ {
 		if i%10 == 0 || i == iterations {
 			logger.Log().WithField("layer", "Service-RetrieveUSDMBurnedLimit").Infof("-- iteration %v", i)
