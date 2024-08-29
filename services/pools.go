@@ -160,6 +160,9 @@ func (s *Service) RetrievePoolCreated(fromBlock uint64, toBlock1 uint64, limit u
 	if err != nil {
 		return nil, fmt.Errorf("cant getIterationsForQuery: %w", err)
 	}
+	if fromBlock == 0 {
+		fromBlock = s.coreFirstBlock
+	}
 
 	var poolCreations []*models.PoolCreated
 

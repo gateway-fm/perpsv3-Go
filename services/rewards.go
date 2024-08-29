@@ -104,6 +104,9 @@ func (s *Service) RetrieveRewardClaimed(fromBlock uint64, toBlock1 uint64, limit
 	if err != nil {
 		return nil, fmt.Errorf("cant getIterationsForQuery: %w", err)
 	}
+	if fromBlock == 0 {
+		fromBlock = s.coreFirstBlock
+	}
 
 	var claims []*models.RewardClaimed
 
@@ -144,6 +147,9 @@ func (s *Service) RetrieveRewardDistributed(fromBlock uint64, toBlock1 uint64, l
 	iterations, lastBlock, err := s.getIterationsForQuery(fromBlock, toBlock1, limit, ContractCore)
 	if err != nil {
 		return nil, fmt.Errorf("cant getIterationsForQuery: %w", err)
+	}
+	if fromBlock == 0 {
+		fromBlock = s.coreFirstBlock
 	}
 
 	var distributions []*models.RewardDistributed

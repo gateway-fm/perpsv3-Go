@@ -104,6 +104,9 @@ func (s *Service) RetrieveLiquidationsCore(fromBlock uint64, toBlock1 uint64, li
 	if err != nil {
 		return nil, fmt.Errorf("cant getIterationsForQuery: %w", err)
 	}
+	if fromBlock == 0 {
+		fromBlock = s.coreFirstBlock
+	}
 
 	var liquidations []*models.CoreLiquidation
 
@@ -146,6 +149,9 @@ func (s *Service) RetrieveVaultLiquidationsCore(fromBlock uint64, toBlock1 uint6
 	iterations, lastBlock, err := s.getIterationsForQuery(fromBlock, toBlock1, limit, ContractCore)
 	if err != nil {
 		return nil, fmt.Errorf("cant getIterationsForQuery: %w", err)
+	}
+	if fromBlock == 0 {
+		fromBlock = s.coreFirstBlock
 	}
 
 	var liquidations []*models.CoreVaultLiquidation
