@@ -2,9 +2,10 @@ package services
 
 import (
 	"fmt"
-	"github.com/ethereum/go-ethereum/common"
 	"math/big"
 	"time"
+
+	"github.com/ethereum/go-ethereum/common"
 
 	"github.com/ethereum/go-ethereum/accounts/abi/bind"
 
@@ -472,7 +473,7 @@ func (s *Service) formatAccounts(opts *bind.FilterOpts) ([]*models.Account, erro
 
 	for iterator.Next() {
 		if iterator.Error() != nil {
-			logger.Log().WithField("layer", "Service-formatAccounts").Errorf("iterator error: %v", err.Error())
+			logger.Log().WithField("layer", "Service-formatAccounts").Errorf("iterator error: %s", err)
 			return nil, errors.GetFilterErr(iterator.Error(), "perps market")
 		}
 
@@ -498,7 +499,7 @@ func (s *Service) formatAccountsCore(opts *bind.FilterOpts) ([]*models.Account, 
 
 	for iterator.Next() {
 		if iterator.Error() != nil {
-			logger.Log().WithField("layer", "Service-formatAccountsCore").Errorf("iterator error: %v", err.Error())
+			logger.Log().WithField("layer", "Service-formatAccountsCore").Errorf("iterator error: %s", err)
 			return nil, errors.GetFilterErr(iterator.Error(), "core")
 		}
 

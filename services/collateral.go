@@ -2,8 +2,9 @@ package services
 
 import (
 	"context"
-	"github.com/ethereum/go-ethereum/common"
 	"math/big"
+
+	"github.com/ethereum/go-ethereum/common"
 
 	"github.com/ethereum/go-ethereum/accounts/abi/bind"
 
@@ -28,25 +29,39 @@ func (s *Service) GetCollateralPrice(blockNumber *big.Int, collateralType common
 }
 
 func (s *Service) RetrieveCollateralWithdrawnLimit(limit uint64) ([]*models.CollateralWithdrawn, error) {
-	iterations, last, err := s.getIterationsForLimitQueryCore(limit)
+	return s.RetrieveCollateralWithdrawn(0, 0, limit)
+}
+
+func (s *Service) RetrieveCollateralWithdrawn(fromBlock uint64, toBlock uint64, limit uint64) ([]*models.CollateralWithdrawn, error) {
+	iterations, lastBlock, err := s.getIterationsForLimitQueryCore(limit)
 	if err != nil {
 		return nil, err
+	}
+
+	if fromBlock == 0 {
+		fromBlock = s.coreFirstBlock
 	}
 
 	var withdraws []*models.CollateralWithdrawn
 
 	logger.Log().WithField("layer", "Service-RetrieveCollateralWithdrawnLimit").Infof(
 		"fetching CollateralWithdrawn with limit: %v to block: %v total iterations: %v...",
-		limit, last, iterations,
+		limit, lastBlock, iterations,
 	)
 
-	fromBlock := s.coreFirstBlock
-	toBlock := fromBlock + limit
+	startBlockOfIteration := fromBlock
+	endBlockOfIteration := startBlockOfIteration + limit
+
+	if endBlockOfIteration > toBlock {
+		endBlockOfIteration = toBlock
+	}
+
 	for i := uint64(1); i <= iterations; i++ {
 		if i%10 == 0 || i == iterations {
 			logger.Log().WithField("layer", "Service-RetrieveCollateralWithdrawnLimit").Infof("-- iteration %v", i)
 		}
-		opts := s.getFilterOptsCore(fromBlock, &toBlock)
+
+		opts := s.getFilterOptsCore(startBlockOfIteration, &endBlockOfIteration)
 
 		res, err := s.retrieveCollateralWithdrawn(opts)
 		if err != nil {
@@ -55,12 +70,12 @@ func (s *Service) RetrieveCollateralWithdrawnLimit(limit uint64) ([]*models.Coll
 
 		withdraws = append(withdraws, res...)
 
-		fromBlock = toBlock + 1
+		startBlockOfIteration = endBlockOfIteration + 1
 
 		if i == iterations-1 {
-			toBlock = last
+			endBlockOfIteration = lastBlock
 		} else {
-			toBlock = fromBlock + limit
+			endBlockOfIteration = startBlockOfIteration + limit
 		}
 	}
 
@@ -109,25 +124,38 @@ func (s *Service) getCollateralWithdrawn(event *core.CoreWithdrawn, blockN uint6
 }
 
 func (s *Service) RetrieveCollateralDepositedLimit(limit uint64) ([]*models.CollateralDeposited, error) {
-	iterations, last, err := s.getIterationsForLimitQueryCore(limit)
+	return s.RetrieveCollateralDeposited(0, 0, limit)
+}
+
+func (s *Service) RetrieveCollateralDeposited(fromBlock uint64, toBlock uint64, limit uint64) ([]*models.CollateralDeposited, error) {
+	iterations, lastBlock, err := s.getIterationsForLimitQueryCore(limit)
 	if err != nil {
 		return nil, err
+	}
+
+	if fromBlock == 0 {
+		fromBlock = s.coreFirstBlock
 	}
 
 	var deposits []*models.CollateralDeposited
 
 	logger.Log().WithField("layer", "Service-RetrieveCollateralDepositedLimit").Infof(
 		"fetching CollateralDeposited with limit: %v to block: %v total iterations: %v...",
-		limit, last, iterations,
+		limit, lastBlock, iterations,
 	)
 
-	fromBlock := s.coreFirstBlock
-	toBlock := fromBlock + limit
+	startBlockOfIteration := fromBlock
+	endBlockOfIteration := startBlockOfIteration + limit
+
+	if endBlockOfIteration > toBlock {
+		endBlockOfIteration = toBlock
+	}
+
 	for i := uint64(1); i <= iterations; i++ {
 		if i%10 == 0 || i == iterations {
 			logger.Log().WithField("layer", "Service-RetrieveCollateralDepositedLimit").Infof("-- iteration %v", i)
 		}
-		opts := s.getFilterOptsCore(fromBlock, &toBlock)
+		opts := s.getFilterOptsCore(startBlockOfIteration, &endBlockOfIteration)
 
 		res, err := s.retrieveCollateralDeposited(opts)
 		if err != nil {
@@ -136,12 +164,12 @@ func (s *Service) RetrieveCollateralDepositedLimit(limit uint64) ([]*models.Coll
 
 		deposits = append(deposits, res...)
 
-		fromBlock = toBlock + 1
+		startBlockOfIteration = endBlockOfIteration + 1
 
 		if i == iterations-1 {
-			toBlock = last
+			endBlockOfIteration = lastBlock
 		} else {
-			toBlock = fromBlock + limit
+			endBlockOfIteration = startBlockOfIteration + limit
 		}
 	}
 
