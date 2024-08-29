@@ -91,9 +91,17 @@ type IService interface {
 	// limit. For most public RPC providers the value for limit is 20 000 blocks
 	RetrieveRewardClaimedLimit(limit uint64) ([]*models.RewardClaimed, error)
 
+	// RetrieveRewardClaimed is used to get all `DelegationUpdated` events with given start block, end block and block search
+	// limit. For most public RPC providers the value for limit is 20 000 blocks
+	RetrieveRewardClaimed(fromBlock uint64, toBlock uint64, limit uint64) ([]*models.RewardClaimed, error)
+
 	// RetrieveRewardDistributedLimit is used to get all `RewardDistributed` events from the Core contract with given block search
 	// limit. For most public RPC providers the value for limit is 20 000 blocks
 	RetrieveRewardDistributedLimit(limit uint64) ([]*models.RewardDistributed, error)
+
+	// RetrieveRewardDistributed is used to get all `DelegationUpdated` events with given start block, end block and block search
+	// limit. For most public RPC providers the value for limit is 20 000 blocks
+	RetrieveRewardDistributed(fromBlock uint64, toBlock uint64, limit uint64) ([]*models.RewardDistributed, error)
 
 	// RetrieveMarketUSDDepositedLimit is used to get all `MarketUSDDeposited` events from the Core contract with given block search
 	// limit. For most public RPC providers the value for limit is 20 000 blocks
@@ -109,15 +117,27 @@ type IService interface {
 
 	// RetrievePoolCreated is used to get all `PoolCreated` events from the Core contract with given block search
 	// limit. For most public RPC providers the value for limit is 20 000 blocks
-	RetrievePoolCreated(limit uint64) ([]*models.PoolCreated, error)
+	RetrievePoolCreatedLimit(limit uint64) ([]*models.PoolCreated, error)
 
-	// RetrieveLiquidationsCore is used to get all `Liquidation` events from the Core contract with given block search
-	// limit. For most public RPC providers the value for limit is 20 000 blocks
-	RetrieveLiquidationsCore(limit uint64) ([]*models.CoreLiquidation, error)
+	RetrievePoolCreated(fromBlock uint64, toBlock uint64, limit uint64) ([]*models.PoolCreated, error)
 
-	// RetrieveVaultLiquidationsCore is used to get all `VaultLiquidation` events from the Core contract with given block search
+	// RetrieveLiquidationsCoreLimit is used to get all `Liquidation` events from the Core contract with given block search
 	// limit. For most public RPC providers the value for limit is 20 000 blocks
-	RetrieveVaultLiquidationsCore(limit uint64) ([]*models.CoreVaultLiquidation, error)
+	//RetrieveLiquidationsCore(limit uint64) ([]*models.CoreLiquidation, error)
+	RetrieveLiquidationsCoreLimit(limit uint64) ([]*models.CoreLiquidation, error)
+
+	//RetrieveVaultLiquidationsCoreLimit is used to get all `VaultLiquidation` events from the Core contract with given block search
+	// limit. For most public RPC providers the value for limit is 20 000 blocks
+	//RetrieveVaultLiquidationsCore(limit uint64) ([]*models.CoreVaultLiquidation, error)
+	RetrieveVaultLiquidationsCoreLimit(limit uint64) ([]*models.CoreVaultLiquidation, error)
+
+	// RetrieveLiquidationsCore is used to get all `DelegationUpdated` events with given start block, end block and block search
+	// limit. For most public RPC providers the value for limit is 20 000 blocks
+	RetrieveLiquidationsCore(fromBlock uint64, toBlock uint64, limit uint64) ([]*models.CoreLiquidation, error)
+
+	// RetrieveVaultLiquidationsCore is used to get all `DelegationUpdated` events with given start block, end block and block search
+	// limit. For most public RPC providers the value for limit is 20 000 blocks
+	RetrieveVaultLiquidationsCore(fromBlock uint64, toBlock uint64, limit uint64) ([]*models.CoreVaultLiquidation, error)
 
 	// GetPosition is used to get "Position" data struct from the latest block from the perps market with given data
 	GetPosition(accountID *big.Int, marketID *big.Int) (*models.Position, error)
