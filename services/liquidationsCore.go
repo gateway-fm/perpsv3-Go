@@ -12,7 +12,8 @@ import (
 	"github.com/gateway-fm/perpsv3-Go/pkg/logger"
 )
 
-func (s *Service) RetrieveLiquidationsCore(limit uint64) ([]*models.CoreLiquidation, error) {
+func (s *Service) RetrieveLiquidationsCoreLimit(limit uint64) ([]*models.CoreLiquidation, error) {
+	//func (s *Service) RetrieveLiquidationsCore(limit uint64) ([]*models.CoreLiquidation, error) {
 	iterations, last, err := s.getIterationsForLimitQueryCore(limit)
 	if err != nil {
 		return nil, err
@@ -93,7 +94,8 @@ func (s *Service) getLiquidationCore(event *core.CoreLiquidation, blockN uint64)
 	return models.GetCoreLiquidationFromEvent(event, block.Time), nil
 }
 
-func (s *Service) RetrieveVaultLiquidationsCore(limit uint64) ([]*models.CoreVaultLiquidation, error) {
+func (s *Service) RetrieveVaultLiquidationsCoreLimit(limit uint64) ([]*models.CoreVaultLiquidation, error) {
+	//func (s *Service) RetrieveVaultLiquidationsCore(limit uint64) ([]*models.CoreVaultLiquidation, error) {
 	iterations, last, err := s.getIterationsForLimitQueryCore(limit)
 	if err != nil {
 		return nil, err
@@ -172,4 +174,12 @@ func (s *Service) getVaultLiquidationCore(event *core.CoreVaultLiquidation, bloc
 	}
 
 	return models.GetCoreVaultLiquidationFromEvent(event, block.Time), nil
+}
+
+func (s *Service) RetrieveLiquidationsCore(fromBlock uint64, toBlock uint64, limit uint64) ([]*models.CoreLiquidation, error) {
+}
+
+// RetrieveVaultLiquidationsCore is used to get all `DelegationUpdated` events with given start block, end block and block search
+// limit. For most public RPC providers the value for limit is 20 000 blocks
+func (s *Service) RetrieveVaultLiquidationsCore(fromBlock uint64, toBlock uint64, limit uint64) ([]*models.CoreVaultLiquidation, error) {
 }

@@ -5,6 +5,7 @@ import (
 	"math/big"
 
 	"github.com/ethereum/go-ethereum/accounts/abi/bind"
+
 	"github.com/gateway-fm/perpsv3-Go/contracts/core"
 	"github.com/gateway-fm/perpsv3-Go/errors"
 	"github.com/gateway-fm/perpsv3-Go/models"
@@ -171,4 +172,10 @@ func (s *Service) getRewardDistributed(event *core.CoreRewardsDistributed, block
 	}
 
 	return models.GetRewardDistributedFromEvent(event, block.Time), nil
+}
+
+func (s *Service) RetrieveRewardClaimed(fromBlock uint64, toBlock uint64, limit uint64) ([]*models.RewardClaimed, error) {
+}
+
+func (s *Service) RetrieveRewardDistributed(fromBlock uint64, toBlock uint64, limit uint64) ([]*models.RewardClaimed, error) {
 }

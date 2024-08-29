@@ -154,7 +154,10 @@ func (s *Service) RetrieveDelegationUpdated(fromBlock uint64, toBlock uint64, li
 	return delegations, nil
 }
 
-func (s *Service) RetrievePoolCreated(limit uint64) ([]*models.PoolCreated, error) {
+func (s *Service) RetrievePoolCreated(fromBlock uint64, toBlock uint64, limit uint64) ([]*models.PoolCreated, error) {
+}
+
+func (s *Service) RetrievePoolCreatedLimit(limit uint64) ([]*models.PoolCreated, error) {
 	iterations, last, err := s.getIterationsForLimitQueryCore(limit)
 	if err != nil {
 		return nil, err

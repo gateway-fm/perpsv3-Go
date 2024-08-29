@@ -1,8 +1,9 @@
 package perpsv3_Go
 
 import (
-	"github.com/gateway-fm/perpsv3-Go/contracts/Account"
 	"math/big"
+
+	"github.com/gateway-fm/perpsv3-Go/contracts/Account"
 
 	"github.com/ethereum/go-ethereum/common"
 	"github.com/ethereum/go-ethereum/ethclient"
@@ -117,17 +118,20 @@ type IPerpsv3 interface {
 	// limit. For most public RPC providers the value for limit is 20 000 blocks
 	RetrieveMarketRegistered(limit uint64) ([]*models.MarketRegistered, error)
 
-	// RetrievePoolCreated is used to get all `PoolCreated` events from the Core contract with given block search
+	// RetrievePoolCreatedLimit is used to get all `PoolCreated` events from the Core contract with given block search
 	// limit. For most public RPC providers the value for limit is 20 000 blocks
-	RetrievePoolCreated(limit uint64) ([]*models.PoolCreated, error)
+	RetrievePoolCreatedLimit(limit uint64) ([]*models.PoolCreated, error)
+	RetrievePoolCreated(fromBlock uint64, toBlock uint64, limit uint64) ([]*models.PoolCreated, error)
 
-	// RetrieveLiquidationsCore is used to get all `Liquidation` events from the Core contract with given block search
+	// RetrieveLiquidationsCoreLimit is used to get all `Liquidation` events from the Core contract with given block search
 	// limit. For most public RPC providers the value for limit is 20 000 blocks
-	RetrieveLiquidationsCore(limit uint64) ([]*models.CoreLiquidation, error)
+	RetrieveLiquidationsCoreLimit(limit uint64) ([]*models.CoreLiquidation, error)
+	RetrieveLiquidationsCore(fromBlock uint64, toBlock uint64, limit uint64) ([]*models.CoreLiquidation, error)
 
-	// RetrieveVaultLiquidationsCore is used to get all `VaultLiquidation` events from the Core contract with given block search
+	// RetrieveVaultLiquidationsCoreLimit is used to get all `VaultLiquidation` events from the Core contract with given block search
 	// limit. For most public RPC providers the value for limit is 20 000 blocks
-	RetrieveVaultLiquidationsCore(limit uint64) ([]*models.CoreVaultLiquidation, error)
+	RetrieveVaultLiquidationsCoreLimit(limit uint64) ([]*models.CoreVaultLiquidation, error)
+	RetrieveVaultLiquidationsCore(fromBlock uint64, toBlock uint64, limit uint64) ([]*models.CoreVaultLiquidation, error)
 
 	// ListenTrades is used to subscribe on the contract "OrderSettled" event. The goroutine will return events on the
 	// TradesChan chanel and errors on the ErrChan chanel.
@@ -456,18 +460,29 @@ func (p *Perpsv3) RetrieveMarketRegistered(limit uint64) ([]*models.MarketRegist
 	return p.service.RetrieveMarketRegistered(limit)
 }
 
-func (p *Perpsv3) RetrievePoolCreated(limit uint64) ([]*models.PoolCreated, error) {
-	return p.service.RetrievePoolCreated(limit)
+func (p *Perpsv3) RetrievePoolCreated(fromBlock uint64, toBlock uint64, limit uint64) ([]*models.PoolCreated, error) {
+	return p.service.RetrievePoolCreated(fromBlock, toBlock, limit)
 }
 
-func (p *Perpsv3) RetrieveLiquidationsCore(limit uint64) ([]*models.CoreLiquidation, error) {
-	return p.service.RetrieveLiquidationsCore(limit)
+func (p *Perpsv3) RetrievePoolCreatedLimit(limit uint64) ([]*models.PoolCreated, error) {
+	return p.service.RetrievePoolCreatedLimit(limit)
 }
 
-func (p *Perpsv3) RetrieveVaultLiquidationsCore(limit uint64) ([]*models.CoreVaultLiquidation, error) {
-	return p.service.RetrieveVaultLiquidationsCore(limit)
+func (p *Perpsv3) RetrieveLiquidationsCoreLimit(limit uint64) ([]*models.CoreLiquidation, error) {
+	return p.service.RetrieveLiquidationsCoreLimit(limit)
 }
 
+func (p *Perpsv3) RetrieveVaultLiquidationsCoreLimit(limit uint64) ([]*models.CoreVaultLiquidation, error) {
+	return p.service.RetrieveVaultLiquidationsCoreLimit(limit)
+}
+
+func (p *Perpsv3) RetrieveLiquidationsCore(fromBlock uint64, toBlock uint64, limit uint64) ([]*models.CoreLiquidation, error) {
+	return p.service.RetrieveLiquidationsCore(fromBlock, toBlock, limit)
+}
+
+func (p *Perpsv3) RetrieveVaultLiquidationsCore(fromBlock uint64, toBlock uint64, limit uint64) ([]*models.CoreVaultLiquidation, error) {
+	return p.service.RetrieveVaultLiquidationsCore(fromBlock, toBlock, limit)
+}
 func (p *Perpsv3) ListenTrades() (*events.TradeSubscription, error) {
 	return p.events.ListenTrades()
 }
