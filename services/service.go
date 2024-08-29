@@ -101,7 +101,7 @@ type IService interface {
 
 	// RetrieveRewardDistributed is used to get all `DelegationUpdated` events with given start block, end block and block search
 	// limit. For most public RPC providers the value for limit is 20 000 blocks
-	RetrieveRewardDistributed(fromBlock uint64, toBlock uint64, limit uint64) ([]*models.RewardClaimed, error)
+	RetrieveRewardDistributed(fromBlock uint64, toBlock uint64, limit uint64) ([]*models.RewardDistributed, error)
 
 	// RetrieveMarketUSDDepositedLimit is used to get all `MarketUSDDeposited` events from the Core contract with given block search
 	// limit. For most public RPC providers the value for limit is 20 000 blocks

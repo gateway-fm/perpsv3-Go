@@ -2,6 +2,7 @@ package services
 
 import (
 	"context"
+	"fmt"
 	"math/big"
 
 	"github.com/ethereum/go-ethereum/accounts/abi/bind"
@@ -13,46 +14,7 @@ import (
 )
 
 func (s *Service) RetrieveLiquidationsCoreLimit(limit uint64) ([]*models.CoreLiquidation, error) {
-	//func (s *Service) RetrieveLiquidationsCore(limit uint64) ([]*models.CoreLiquidation, error) {
-	iterations, last, err := s.getIterationsForLimitQueryCore(limit)
-	if err != nil {
-		return nil, err
-	}
-
-	var liquidations []*models.CoreLiquidation
-
-	logger.Log().WithField("layer", "Service-RetrieveLiquidationsCoreLimit").Infof(
-		"fetching liquidations with limit: %v to block: %v total iterations: %v...",
-		limit, last, iterations,
-	)
-
-	fromBlock := s.coreFirstBlock
-	toBlock := fromBlock + limit
-	for i := uint64(1); i <= iterations; i++ {
-		if i%10 == 0 || i == iterations {
-			logger.Log().WithField("layer", "Service-RetrieveLiquidationsCoreLimit").Infof("-- iteration %v", i)
-		}
-		opts := s.getFilterOptsCore(fromBlock, &toBlock)
-
-		res, err := s.retrieveLiquidationsCore(opts)
-		if err != nil {
-			return nil, err
-		}
-
-		liquidations = append(liquidations, res...)
-
-		fromBlock = toBlock + 1
-
-		if i == iterations-1 {
-			toBlock = last
-		} else {
-			toBlock = fromBlock + limit
-		}
-	}
-
-	logger.Log().WithField("layer", "Service-RetrieveLiquidationsCoreLimit").Infof("task completed successfully")
-
-	return liquidations, nil
+	return s.RetrieveLiquidationsCore(0, 0, limit)
 }
 
 func (s *Service) retrieveLiquidationsCore(opts *bind.FilterOpts) ([]*models.CoreLiquidation, error) {
@@ -95,46 +57,7 @@ func (s *Service) getLiquidationCore(event *core.CoreLiquidation, blockN uint64)
 }
 
 func (s *Service) RetrieveVaultLiquidationsCoreLimit(limit uint64) ([]*models.CoreVaultLiquidation, error) {
-	//func (s *Service) RetrieveVaultLiquidationsCore(limit uint64) ([]*models.CoreVaultLiquidation, error) {
-	iterations, last, err := s.getIterationsForLimitQueryCore(limit)
-	if err != nil {
-		return nil, err
-	}
-
-	var liquidations []*models.CoreVaultLiquidation
-
-	logger.Log().WithField("layer", "Service-RetrieveVaultLiquidationsCoreLimit").Infof(
-		"fetching liquidations with limit: %v to block: %v total iterations: %v...",
-		limit, last, iterations,
-	)
-
-	fromBlock := s.coreFirstBlock
-	toBlock := fromBlock + limit
-	for i := uint64(1); i <= iterations; i++ {
-		if i%10 == 0 || i == iterations {
-			logger.Log().WithField("layer", "Service-RetrieveVaultLiquidationsCoreLimit").Infof("-- iteration %v", i)
-		}
-		opts := s.getFilterOptsCore(fromBlock, &toBlock)
-
-		res, err := s.retrieveVaultLiquidationsCore(opts)
-		if err != nil {
-			return nil, err
-		}
-
-		liquidations = append(liquidations, res...)
-
-		fromBlock = toBlock + 1
-
-		if i == iterations-1 {
-			toBlock = last
-		} else {
-			toBlock = fromBlock + limit
-		}
-	}
-
-	logger.Log().WithField("layer", "Service-RetrieveVaultLiquidationsCoreLimit").Infof("task completed successfully")
-
-	return liquidations, nil
+	return s.RetrieveVaultLiquidationsCore(0, 0, limit)
 }
 
 func (s *Service) retrieveVaultLiquidationsCore(opts *bind.FilterOpts) ([]*models.CoreVaultLiquidation, error) {
@@ -176,10 +99,86 @@ func (s *Service) getVaultLiquidationCore(event *core.CoreVaultLiquidation, bloc
 	return models.GetCoreVaultLiquidationFromEvent(event, block.Time), nil
 }
 
-func (s *Service) RetrieveLiquidationsCore(fromBlock uint64, toBlock uint64, limit uint64) ([]*models.CoreLiquidation, error) {
+func (s *Service) RetrieveLiquidationsCore(fromBlock uint64, toBlock1 uint64, limit uint64) ([]*models.CoreLiquidation, error) {
+	iterations, lastBlock, err := s.getIterationsForQuery(fromBlock, toBlock1, limit, ContractCore)
+	if err != nil {
+		return nil, fmt.Errorf("cant getIterationsForQuery: %w", err)
+	}
+
+	var liquidations []*models.CoreLiquidation
+
+	logger.Log().WithField("layer", "Service-RetrieveLiquidationsCore").Infof(
+		"fetching liquidations with limit: %v to block: %v total iterations: %v...",
+		limit, lastBlock, iterations,
+	)
+
+	toBlock2 := fromBlock + limit
+	for i := uint64(1); i <= iterations; i++ {
+		if i%10 == 0 || i == iterations {
+			logger.Log().WithField("layer", "Service-RetrieveLiquidationsCore").Infof("-- iteration %v", i)
+		}
+		opts := s.getFilterOptsCore(fromBlock, &toBlock2)
+
+		res, err := s.retrieveLiquidationsCore(opts)
+		if err != nil {
+			return nil, err
+		}
+
+		liquidations = append(liquidations, res...)
+
+		fromBlock = toBlock2 + 1
+
+		if i == iterations-1 {
+			toBlock2 = lastBlock
+		} else {
+			toBlock2 = fromBlock + limit
+		}
+	}
+
+	logger.Log().WithField("layer", "Service-RetrieveLiquidationsCore").Infof("task completed successfully")
+
+	return liquidations, nil
 }
 
 // RetrieveVaultLiquidationsCore is used to get all `DelegationUpdated` events with given start block, end block and block search
 // limit. For most public RPC providers the value for limit is 20 000 blocks
-func (s *Service) RetrieveVaultLiquidationsCore(fromBlock uint64, toBlock uint64, limit uint64) ([]*models.CoreVaultLiquidation, error) {
+func (s *Service) RetrieveVaultLiquidationsCore(fromBlock uint64, toBlock1 uint64, limit uint64) ([]*models.CoreVaultLiquidation, error) {
+	iterations, lastBlock, err := s.getIterationsForQuery(fromBlock, toBlock1, limit, ContractCore)
+	if err != nil {
+		return nil, fmt.Errorf("cant getIterationsForQuery: %w", err)
+	}
+
+	var liquidations []*models.CoreVaultLiquidation
+
+	logger.Log().WithField("layer", "Service-RetrieveVaultLiquidationsCore").Infof(
+		"fetching liquidations with limit: %v to block: %v total iterations: %v...",
+		limit, lastBlock, iterations,
+	)
+
+	toBlock2 := fromBlock + limit
+	for i := uint64(1); i <= iterations; i++ {
+		if i%10 == 0 || i == iterations {
+			logger.Log().WithField("layer", "Service-RetrieveVaultLiquidationsCore").Infof("-- iteration %v", i)
+		}
+		opts := s.getFilterOptsCore(fromBlock, &toBlock2)
+
+		res, err := s.retrieveVaultLiquidationsCore(opts)
+		if err != nil {
+			return nil, err
+		}
+
+		liquidations = append(liquidations, res...)
+
+		fromBlock = toBlock2 + 1
+
+		if i == iterations-1 {
+			toBlock2 = lastBlock
+		} else {
+			toBlock2 = fromBlock + limit
+		}
+	}
+
+	logger.Log().WithField("layer", "Service-RetrieveVaultLiquidationsCore").Infof("task completed successfully")
+
+	return liquidations, nil
 }

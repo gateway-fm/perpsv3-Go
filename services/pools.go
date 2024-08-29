@@ -2,6 +2,7 @@ package services
 
 import (
 	"context"
+	"fmt"
 	"math/big"
 	"time"
 
@@ -154,29 +155,25 @@ func (s *Service) RetrieveDelegationUpdated(fromBlock uint64, toBlock uint64, li
 	return delegations, nil
 }
 
-func (s *Service) RetrievePoolCreated(fromBlock uint64, toBlock uint64, limit uint64) ([]*models.PoolCreated, error) {
-}
-
-func (s *Service) RetrievePoolCreatedLimit(limit uint64) ([]*models.PoolCreated, error) {
-	iterations, last, err := s.getIterationsForLimitQueryCore(limit)
+func (s *Service) RetrievePoolCreated(fromBlock uint64, toBlock1 uint64, limit uint64) ([]*models.PoolCreated, error) {
+	iterations, lastBlock, err := s.getIterationsForQuery(fromBlock, toBlock1, limit, ContractCore)
 	if err != nil {
-		return nil, err
+		return nil, fmt.Errorf("cant getIterationsForQuery: %w", err)
 	}
 
 	var poolCreations []*models.PoolCreated
 
 	logger.Log().WithField("layer", "Service-RetrievePoolCreated").Infof(
 		"fetching PoolCreated with limit: %v to block: %v total iterations: %v...",
-		limit, last, iterations,
+		limit, lastBlock, iterations,
 	)
 
-	fromBlock := s.coreFirstBlock
-	toBlock := fromBlock + limit
+	toBlock2 := fromBlock + limit
 	for i := uint64(1); i <= iterations; i++ {
 		if i%10 == 0 || i == iterations {
 			logger.Log().WithField("layer", "Service-RetrievePoolCreated").Infof("-- iteration %v", i)
 		}
-		opts := s.getFilterOptsCore(fromBlock, &toBlock)
+		opts := s.getFilterOptsCore(fromBlock, &toBlock2)
 
 		res, err := s.retrieveDPoolCreated(opts)
 		if err != nil {
@@ -185,18 +182,22 @@ func (s *Service) RetrievePoolCreatedLimit(limit uint64) ([]*models.PoolCreated,
 
 		poolCreations = append(poolCreations, res...)
 
-		fromBlock = toBlock + 1
+		fromBlock = toBlock2 + 1
 
 		if i == iterations-1 {
-			toBlock = last
+			toBlock2 = lastBlock
 		} else {
-			toBlock = fromBlock + limit
+			toBlock2 = fromBlock + limit
 		}
 	}
 
-	logger.Log().WithField("layer", "Service-RetrieveLiquidationsLimit").Infof("task completed successfully")
+	logger.Log().WithField("layer", "Service-RetrievePoolCreated").Infof("task completed successfully")
 
 	return poolCreations, nil
+}
+
+func (s *Service) RetrievePoolCreatedLimit(limit uint64) ([]*models.PoolCreated, error) {
+	return s.RetrievePoolCreated(0, 0, limit)
 }
 
 func (s *Service) retrieveDPoolCreated(opts *bind.FilterOpts) ([]*models.PoolCreated, error) {
