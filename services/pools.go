@@ -18,7 +18,10 @@ import (
 )
 
 func (s *Service) RetrieveUSDMintedLimit(limit uint64) ([]*models.USDMinted, error) {
-	iterations, last, err := s.getIterationsForLimitQueryCore(limit)
+	return s.RetrieveUSDMinted(0, 0, limit)
+}
+func (s *Service) RetrieveUSDMinted(fromBlock uint64, toBlock uint64, limit uint64) ([]*models.USDMinted, error) {
+	iterations, lastBlock, err := s.getIterationsForLimitQueryCore(limit)
 	if err != nil {
 		return nil, err
 	}
@@ -27,16 +30,25 @@ func (s *Service) RetrieveUSDMintedLimit(limit uint64) ([]*models.USDMinted, err
 
 	logger.Log().WithField("layer", "Service-RetrieveUSDMintedLimit").Infof(
 		"fetching USDMinted with limit: %v to block: %v total iterations: %v...",
-		limit, last, iterations,
+		limit, lastBlock, iterations,
 	)
 
-	fromBlock := s.coreFirstBlock
-	toBlock := fromBlock + limit
+	if fromBlock == 0 {
+		fromBlock = s.coreFirstBlock
+	}
+
+	startBlockOfIteration := fromBlock
+	endBlockOfIteration := startBlockOfIteration + limit
+
+	if endBlockOfIteration > toBlock {
+		endBlockOfIteration = toBlock
+	}
+
 	for i := uint64(1); i <= iterations; i++ {
 		if i%10 == 0 || i == iterations {
 			logger.Log().WithField("layer", "Service-RetrieveUSDMintedLimit").Infof("-- iteration %v", i)
 		}
-		opts := s.getFilterOptsCore(fromBlock, &toBlock)
+		opts := s.getFilterOptsCore(startBlockOfIteration, &endBlockOfIteration)
 
 		res, err := s.retrieveUSDMinted(opts)
 		if err != nil {
@@ -45,12 +57,12 @@ func (s *Service) RetrieveUSDMintedLimit(limit uint64) ([]*models.USDMinted, err
 
 		mints = append(mints, res...)
 
-		fromBlock = toBlock + 1
+		startBlockOfIteration = endBlockOfIteration + 1
 
 		if i == iterations-1 {
-			toBlock = last
+			endBlockOfIteration = lastBlock
 		} else {
-			toBlock = fromBlock + limit
+			endBlockOfIteration = startBlockOfIteration + limit
 		}
 	}
 
@@ -60,7 +72,11 @@ func (s *Service) RetrieveUSDMintedLimit(limit uint64) ([]*models.USDMinted, err
 }
 
 func (s *Service) RetrieveUSDBurnedLimit(limit uint64) ([]*models.USDBurned, error) {
-	iterations, last, err := s.getIterationsForLimitQueryCore(limit)
+	return s.RetrieveUSDBurned(0, 0, limit)
+}
+
+func (s *Service) RetrieveUSDBurned(fromBlock uint64, toBlock uint64, limit uint64) ([]*models.USDBurned, error) {
+	iterations, lastBlock, err := s.getIterationsForLimitQueryCore(limit)
 	if err != nil {
 		return nil, err
 	}
@@ -69,16 +85,24 @@ func (s *Service) RetrieveUSDBurnedLimit(limit uint64) ([]*models.USDBurned, err
 
 	logger.Log().WithField("layer", "Service-RetrieveUSDBurnedLimit").Infof(
 		"fetching USDMBurned with limit: %v to block: %v total iterations: %v...",
-		limit, last, iterations,
+		limit, lastBlock, iterations,
 	)
 
-	fromBlock := s.coreFirstBlock
-	toBlock := fromBlock + limit
+	if fromBlock == 0 {
+		fromBlock = s.coreFirstBlock
+	}
+
+	startBlockOfIteration := fromBlock
+	endBlockOfIteration := startBlockOfIteration + limit
+
+	if endBlockOfIteration > toBlock {
+		endBlockOfIteration = toBlock
+	}
 	for i := uint64(1); i <= iterations; i++ {
 		if i%10 == 0 || i == iterations {
 			logger.Log().WithField("layer", "Service-RetrieveUSDMBurnedLimit").Infof("-- iteration %v", i)
 		}
-		opts := s.getFilterOptsCore(fromBlock, &toBlock)
+		opts := s.getFilterOptsCore(startBlockOfIteration, &endBlockOfIteration)
 
 		res, err := s.retrieveUSDBurned(opts)
 		if err != nil {
@@ -87,12 +111,12 @@ func (s *Service) RetrieveUSDBurnedLimit(limit uint64) ([]*models.USDBurned, err
 
 		burns = append(burns, res...)
 
-		fromBlock = toBlock + 1
+		startBlockOfIteration = endBlockOfIteration + 1
 
 		if i == iterations-1 {
-			toBlock = last
+			endBlockOfIteration = lastBlock
 		} else {
-			toBlock = fromBlock + limit
+			endBlockOfIteration = startBlockOfIteration + limit
 		}
 	}
 

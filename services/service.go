@@ -67,9 +67,17 @@ type IService interface {
 	// limit. For most public RPC providers the value for limit is 20 000 blocks
 	RetrieveUSDMintedLimit(limit uint64) ([]*models.USDMinted, error)
 
+	// RetrieveUSDMintedLimit is used to get all `usdMinted` events from the Core contract with given start block, end block and block search
+	// limit. For most public RPC providers the value for limit is 20 000 blocks
+	RetrieveUSDMinted(fromBlock uint64, toBlock uint64, limit uint64) ([]*models.USDMinted, error)
+
 	// RetrieveUSDBurnedLimit is used to get all `usdBurned` events from the Core contract with given block search
 	// limit. For most public RPC providers the value for limit is 20 000 blocks
 	RetrieveUSDBurnedLimit(limit uint64) ([]*models.USDBurned, error)
+
+	// RetrieveUSDBurnedLimit is used to get all `usdBurned` events from the Core contract with given start block, end block and block search
+	// limit. For most public RPC providers the value for limit is 20 000 blocks
+	RetrieveUSDBurned(fromBlock uint64, toBlock uint64, limit uint64) ([]*models.USDBurned, error)
 
 	// RetrieveDelegationUpdatedLimit is used to get all `DelegationUpdated` events from the Core contract with given block search
 	// limit. For most public RPC providers the value for limit is 20 000 blocks
