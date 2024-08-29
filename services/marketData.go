@@ -177,12 +177,18 @@ func (s *Service) getMarketSummaryRetries(marketID *big.Int, fails int) (res per
 	case s.chainID == config.BaseAndromeda || s.chainID == config.BaseSepolia:
 		res, err = s.getMarketSummaryMultiCallNoPyth(marketID, true)
 		if err != nil && fails <= s.multicallRetries {
+			logger.Log().WithField("layer", "GetMarketMetadata").Debugf(
+				"failed multicall no pyth, retry in %v total fails %v ", s.multicallWait, fails,
+			)
 			time.Sleep(s.multicallWait)
 			return s.getMarketSummaryRetries(marketID, fails+1)
 		}
 	case s.chainID == config.BaseMainnet:
 		res, err = s.getMarketSummaryMultiCall(marketID, true)
 		if err != nil && fails <= s.multicallRetries {
+			logger.Log().WithField("layer", "GetMarketMetadata").Debugf(
+				"failed multicall with pyth, retry in %v total fails %v ", s.multicallWait, fails,
+			)
 			time.Sleep(s.multicallWait)
 			return s.getMarketSummaryRetries(marketID, fails+1)
 		}
@@ -232,6 +238,9 @@ func (s *Service) getMarketSummaryMultiCallNoPyth(marketID *big.Int, retry bool)
 	call, err := s.rawForwarder.Aggregate3Value(0, []forwarder.TrustedMulticallForwarderCall3Value{callSummary})
 	if err != nil {
 		if retry {
+			logger.Log().WithField("layer", "GetMarketSummary").Debugf(
+				"failed multicall no pyth, retry with pyth",
+			)
 			return s.getMarketSummaryMultiCall(marketID, false)
 		}
 
@@ -293,6 +302,9 @@ func (s *Service) getMarketSummaryMultiCall(marketID *big.Int, retry bool) (res 
 	call, err := s.rawForwarder.Aggregate3Value(1, []forwarder.TrustedMulticallForwarderCall3Value{callFulfill, callSummary})
 	if err != nil {
 		if retry {
+			logger.Log().WithField("layer", "GetMarketSummary").Debugf(
+				"failed multicall with pyth, retry with no pyth",
+			)
 			return s.getMarketSummaryMultiCallNoPyth(marketID, false)
 		}
 
