@@ -101,10 +101,12 @@ type IPerpsv3 interface {
 	// RetrieveRewardClaimedLimit is used to get all `RewardClaimed` events from the Core contract with given block search
 	// limit. For most public RPC providers the value for limit is 20 000 blocks
 	RetrieveRewardClaimedLimit(limit uint64) ([]*models.RewardClaimed, error)
+	RetrieveRewardClaimed(fromBlock uint64, toBlock uint64, limit uint64) ([]*models.RewardClaimed, error)
 
 	// RetrieveRewardDistributedLimit is used to get all `RewardDistributed` events from the Core contract with given block search
 	// limit. For most public RPC providers the value for limit is 20 000 blocks
 	RetrieveRewardDistributedLimit(limit uint64) ([]*models.RewardDistributed, error)
+	RetrieveRewardDistributed(fromBlock uint64, toBlock uint64, limit uint64) ([]*models.RewardDistributed, error)
 
 	// RetrieveMarketUSDDepositedLimit is used to get all `MarketUSDDeposited` events from the Core contract with given block search
 	// limit. For most public RPC providers the value for limit is 20 000 blocks
@@ -444,8 +446,16 @@ func (p *Perpsv3) RetrieveRewardClaimedLimit(limit uint64) ([]*models.RewardClai
 	return p.service.RetrieveRewardClaimedLimit(limit)
 }
 
+func (p *Perpsv3) RetrieveRewardClaimed(fromBlock uint64, toBlock uint64, limit uint64) ([]*models.RewardClaimed, error) {
+	return p.service.RetrieveRewardClaimed(fromBlock, toBlock, limit)
+}
+
 func (p *Perpsv3) RetrieveRewardDistributedLimit(limit uint64) ([]*models.RewardDistributed, error) {
 	return p.service.RetrieveRewardDistributedLimit(limit)
+}
+
+func (p *Perpsv3) RetrieveRewardDistributed(fromBlock uint64, toBlock uint64, limit uint64) ([]*models.RewardDistributed, error) {
+	return p.service.RetrieveRewardDistributed(fromBlock, toBlock, limit)
 }
 
 func (p *Perpsv3) RetrieveMarketUSDDepositedLimit(limit uint64) ([]*models.MarketUSDDeposited, error) {
