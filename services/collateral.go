@@ -33,7 +33,7 @@ func (s *Service) RetrieveCollateralWithdrawnLimit(limit uint64) ([]*models.Coll
 }
 
 func (s *Service) RetrieveCollateralWithdrawn(fromBlock uint64, toBlock uint64, limit uint64) ([]*models.CollateralWithdrawn, error) {
-	iterations, lastBlock, err := s.getIterationsForLimitQueryCore(limit)
+	iterations, lastBlock, err := s.getIterationsForQuery(fromBlock, toBlock, limit, ContractCore)
 	if err != nil {
 		return nil, err
 	}
@@ -44,9 +44,9 @@ func (s *Service) RetrieveCollateralWithdrawn(fromBlock uint64, toBlock uint64, 
 
 	var withdraws []*models.CollateralWithdrawn
 
-	logger.Log().WithField("layer", "Service-RetrieveCollateralWithdrawnLimit").Infof(
-		"fetching CollateralWithdrawn with limit: %v to block: %v total iterations: %v...",
-		limit, lastBlock, iterations,
+	logger.Log().WithField("layer", "Service-RetrieveCollateralWithdrawn").Infof(
+		"fetching CollateralWithdrawn with limit: %v from block %v to block: %v total iterations: %v...",
+		limit, fromBlock, lastBlock, iterations,
 	)
 
 	startBlockOfIteration := fromBlock
@@ -58,7 +58,7 @@ func (s *Service) RetrieveCollateralWithdrawn(fromBlock uint64, toBlock uint64, 
 
 	for i := uint64(1); i <= iterations; i++ {
 		if i%10 == 0 || i == iterations {
-			logger.Log().WithField("layer", "Service-RetrieveCollateralWithdrawnLimit").Infof("-- iteration %v", i)
+			logger.Log().WithField("layer", "Service-RetrieveCollateralWithdrawn").Infof("-- iteration %v", i)
 		}
 
 		opts := s.getFilterOptsCore(startBlockOfIteration, &endBlockOfIteration)
@@ -79,7 +79,7 @@ func (s *Service) RetrieveCollateralWithdrawn(fromBlock uint64, toBlock uint64, 
 		}
 	}
 
-	logger.Log().WithField("layer", "Service-RetrieveCollateralWithdrawnLimit").Infof("task completed successfully")
+	logger.Log().WithField("layer", "Service-RetrieveCollateralWithdrawn").Infof("task completed successfully")
 
 	return withdraws, nil
 }
@@ -128,7 +128,7 @@ func (s *Service) RetrieveCollateralDepositedLimit(limit uint64) ([]*models.Coll
 }
 
 func (s *Service) RetrieveCollateralDeposited(fromBlock uint64, toBlock uint64, limit uint64) ([]*models.CollateralDeposited, error) {
-	iterations, lastBlock, err := s.getIterationsForLimitQueryCore(limit)
+	iterations, lastBlock, err := s.getIterationsForQuery(fromBlock, toBlock, limit, ContractCore)
 	if err != nil {
 		return nil, err
 	}
@@ -139,9 +139,9 @@ func (s *Service) RetrieveCollateralDeposited(fromBlock uint64, toBlock uint64, 
 
 	var deposits []*models.CollateralDeposited
 
-	logger.Log().WithField("layer", "Service-RetrieveCollateralDepositedLimit").Infof(
-		"fetching CollateralDeposited with limit: %v to block: %v total iterations: %v...",
-		limit, lastBlock, iterations,
+	logger.Log().WithField("layer", "Service-RetrieveCollateralDeposited").Infof(
+		"fetching CollateralDeposited with limit: %v from block %v to block: %v total iterations: %v...",
+		limit, fromBlock, lastBlock, iterations,
 	)
 
 	startBlockOfIteration := fromBlock
@@ -153,7 +153,7 @@ func (s *Service) RetrieveCollateralDeposited(fromBlock uint64, toBlock uint64, 
 
 	for i := uint64(1); i <= iterations; i++ {
 		if i%10 == 0 || i == iterations {
-			logger.Log().WithField("layer", "Service-RetrieveCollateralDepositedLimit").Infof("-- iteration %v", i)
+			logger.Log().WithField("layer", "Service-RetrieveCollateralDeposited").Infof("-- iteration %v", i)
 		}
 		opts := s.getFilterOptsCore(startBlockOfIteration, &endBlockOfIteration)
 
@@ -173,7 +173,7 @@ func (s *Service) RetrieveCollateralDeposited(fromBlock uint64, toBlock uint64, 
 		}
 	}
 
-	logger.Log().WithField("layer", "Service-RetrieveCollateralDepositedLimit").Infof("task completed successfully")
+	logger.Log().WithField("layer", "Service-RetrieveCollateralDeposited").Infof("task completed successfully")
 
 	return deposits, nil
 }
@@ -181,7 +181,7 @@ func (s *Service) RetrieveCollateralDeposited(fromBlock uint64, toBlock uint64, 
 func (s *Service) retrieveCollateralDeposited(opts *bind.FilterOpts) ([]*models.CollateralDeposited, error) {
 	iterator, err := s.core.FilterDeposited(opts, nil, nil, nil)
 	if err != nil {
-		logger.Log().WithField("layer", "Service-RetrieveCollateralDepositedLimit").Errorf("error get iterator: %v", err.Error())
+		logger.Log().WithField("layer", "Service-RetrieveCollateralDeposited").Errorf("error get iterator: %v", err.Error())
 		return nil, errors.GetFilterErr(err, "core")
 	}
 
@@ -189,7 +189,7 @@ func (s *Service) retrieveCollateralDeposited(opts *bind.FilterOpts) ([]*models.
 
 	for iterator.Next() {
 		if iterator.Error() != nil {
-			logger.Log().WithField("layer", "Service-RetrieveCollateralDepositedLimit").Errorf("iterator error: %v", iterator.Error().Error())
+			logger.Log().WithField("layer", "Service-RetrieveCollateralDeposited").Errorf("iterator error: %v", iterator.Error().Error())
 			return nil, errors.GetFilterErr(iterator.Error(), "core")
 		}
 
@@ -208,7 +208,7 @@ func (s *Service) retrieveCollateralDeposited(opts *bind.FilterOpts) ([]*models.
 func (s *Service) getCollateralDeposited(event *core.CoreDeposited, blockN uint64) (*models.CollateralDeposited, error) {
 	block, err := s.rpcClient.HeaderByNumber(context.Background(), big.NewInt(int64(blockN)))
 	if err != nil {
-		logger.Log().WithField("layer", "Service-RetrieveCollateralDepositedLimit").Errorf(
+		logger.Log().WithField("layer", "Service-RetrieveCollateralDeposited").Errorf(
 			"get block:%v by number error: %v", blockN, err.Error(),
 		)
 		return nil, errors.GetRPCProviderErr(err, "HeaderByNumber")

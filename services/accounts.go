@@ -499,7 +499,7 @@ func (s *Service) formatAccountsCore(opts *bind.FilterOpts) ([]*models.Account, 
 
 	for iterator.Next() {
 		if iterator.Error() != nil {
-			logger.Log().WithField("layer", "Service-formatAccountsCore").Errorf("iterator error: %s", err)
+			logger.Log().WithField("layer", "Service-formatAccountsCore").Errorf("iterator error: %v", iterator.Error())
 			return nil, errors.GetFilterErr(iterator.Error(), "core")
 		}
 
