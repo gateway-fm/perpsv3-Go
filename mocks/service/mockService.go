@@ -458,6 +458,21 @@ func (mr *MockIServiceMockRecorder) RetrieveAccountLiquidationsLimit(limit inter
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "RetrieveAccountLiquidationsLimit", reflect.TypeOf((*MockIService)(nil).RetrieveAccountLiquidationsLimit), limit)
 }
 
+// RetrieveCollateralDeposited mocks base method.
+func (m *MockIService) RetrieveCollateralDeposited(fromBlock, toBlock, limit uint64) ([]*models.CollateralDeposited, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "RetrieveCollateralDeposited", fromBlock, toBlock, limit)
+	ret0, _ := ret[0].([]*models.CollateralDeposited)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// RetrieveCollateralDeposited indicates an expected call of RetrieveCollateralDeposited.
+func (mr *MockIServiceMockRecorder) RetrieveCollateralDeposited(fromBlock, toBlock, limit interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "RetrieveCollateralDeposited", reflect.TypeOf((*MockIService)(nil).RetrieveCollateralDeposited), fromBlock, toBlock, limit)
+}
+
 // RetrieveCollateralDepositedLimit mocks base method.
 func (m *MockIService) RetrieveCollateralDepositedLimit(limit uint64) ([]*models.CollateralDeposited, error) {
 	m.ctrl.T.Helper()
@@ -473,6 +488,21 @@ func (mr *MockIServiceMockRecorder) RetrieveCollateralDepositedLimit(limit inter
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "RetrieveCollateralDepositedLimit", reflect.TypeOf((*MockIService)(nil).RetrieveCollateralDepositedLimit), limit)
 }
 
+// RetrieveCollateralWithdrawn mocks base method.
+func (m *MockIService) RetrieveCollateralWithdrawn(fromBlock, toBlock, limit uint64) ([]*models.CollateralWithdrawn, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "RetrieveCollateralWithdrawn", fromBlock, toBlock, limit)
+	ret0, _ := ret[0].([]*models.CollateralWithdrawn)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// RetrieveCollateralWithdrawn indicates an expected call of RetrieveCollateralWithdrawn.
+func (mr *MockIServiceMockRecorder) RetrieveCollateralWithdrawn(fromBlock, toBlock, limit interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "RetrieveCollateralWithdrawn", reflect.TypeOf((*MockIService)(nil).RetrieveCollateralWithdrawn), fromBlock, toBlock, limit)
+}
+
 // RetrieveCollateralWithdrawnLimit mocks base method.
 func (m *MockIService) RetrieveCollateralWithdrawnLimit(limit uint64) ([]*models.CollateralWithdrawn, error) {
 	m.ctrl.T.Helper()
@@ -486,6 +516,21 @@ func (m *MockIService) RetrieveCollateralWithdrawnLimit(limit uint64) ([]*models
 func (mr *MockIServiceMockRecorder) RetrieveCollateralWithdrawnLimit(limit interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "RetrieveCollateralWithdrawnLimit", reflect.TypeOf((*MockIService)(nil).RetrieveCollateralWithdrawnLimit), limit)
+}
+
+// RetrieveDelegationUpdated mocks base method.
+func (m *MockIService) RetrieveDelegationUpdated(fromBlock, toBlock, limit uint64) ([]*models.DelegationUpdated, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "RetrieveDelegationUpdated", fromBlock, toBlock, limit)
+	ret0, _ := ret[0].([]*models.DelegationUpdated)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// RetrieveDelegationUpdated indicates an expected call of RetrieveDelegationUpdated.
+func (mr *MockIServiceMockRecorder) RetrieveDelegationUpdated(fromBlock, toBlock, limit interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "RetrieveDelegationUpdated", reflect.TypeOf((*MockIService)(nil).RetrieveDelegationUpdated), fromBlock, toBlock, limit)
 }
 
 // RetrieveDelegationUpdatedLimit mocks base method.

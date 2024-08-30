@@ -67,9 +67,17 @@ type IService interface {
 	// limit. For most public RPC providers the value for limit is 20 000 blocks
 	RetrieveUSDMintedLimit(limit uint64) ([]*models.USDMinted, error)
 
+	// RetrieveUSDMintedLimit is used to get all `usdMinted` events from the Core contract with given start block, end block and block search
+	// limit. For most public RPC providers the value for limit is 20 000 blocks
+	RetrieveUSDMinted(fromBlock uint64, toBlock uint64, limit uint64) ([]*models.USDMinted, error)
+
 	// RetrieveUSDBurnedLimit is used to get all `usdBurned` events from the Core contract with given block search
 	// limit. For most public RPC providers the value for limit is 20 000 blocks
 	RetrieveUSDBurnedLimit(limit uint64) ([]*models.USDBurned, error)
+
+	// RetrieveUSDBurnedLimit is used to get all `usdBurned` events from the Core contract with given start block, end block and block search
+	// limit. For most public RPC providers the value for limit is 20 000 blocks
+	RetrieveUSDBurned(fromBlock uint64, toBlock uint64, limit uint64) ([]*models.USDBurned, error)
 
 	// RetrieveDelegationUpdatedLimit is used to get all `DelegationUpdated` events from the Core contract with given block search
 	// limit. For most public RPC providers the value for limit is 20 000 blocks
@@ -83,9 +91,17 @@ type IService interface {
 	// limit. For most public RPC providers the value for limit is 20 000 blocks
 	RetrieveCollateralWithdrawnLimit(limit uint64) ([]*models.CollateralWithdrawn, error)
 
+	// RetrieveCollateralWithdrawn is used to get all `Withdrawn` events from the Core contract with given start block, end block and block search
+	// limit. For most public RPC providers the value for limit is 20 000 blocks
+	RetrieveCollateralWithdrawn(fromBlock uint64, toBlock uint64, limit uint64) ([]*models.CollateralWithdrawn, error)
+
 	// RetrieveCollateralDepositedLimit is used to get all `Deposited` events from the Core contract with given block search
 	// limit. For most public RPC providers the value for limit is 20 000 blocks
 	RetrieveCollateralDepositedLimit(limit uint64) ([]*models.CollateralDeposited, error)
+
+	// RetrieveCollateralDepositedLimit is used to get all `Deposited` events from the Core contract with given start block, end block and block search
+	// limit. For most public RPC providers the value for limit is 20 000 blocks
+	RetrieveCollateralDeposited(fromBlock uint64, toBlock uint64, limit uint64) ([]*models.CollateralDeposited, error)
 
 	// RetrieveRewardClaimedLimit is used to get all `RewardClaimed` events from the Core contract with given block search
 	// limit. For most public RPC providers the value for limit is 20 000 blocks
@@ -222,6 +238,10 @@ type IService interface {
 	// FormatAccountsCoreLimit is used to get all accounts and their additional data from the contract with given block search
 	// limit. For most public RPC providers the value for limit is 20 000 blocks
 	FormatAccountsCoreLimit(limit uint64) ([]*models.Account, error)
+
+	// FormatAccountsCoreLimit is used to get all accounts and their additional data from the contract with given start block, end block and block search
+	// limit. For most public RPC providers the value for limit is 20 000 blocks
+	FormatAccountsCore(fromBlock, toBlock, limit uint64) ([]*models.Account, error)
 }
 
 type ContractType int

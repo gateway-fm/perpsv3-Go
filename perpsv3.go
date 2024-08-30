@@ -78,9 +78,17 @@ type IPerpsv3 interface {
 	// limit. For most public RPC providers the value for limit is 20 000 blocks
 	RetrieveUSDMintedLimit(limit uint64) ([]*models.USDMinted, error)
 
+	// RetrieveUSDMintedLimit is used to get all `usdMinted` events from the Core contract with given start block, end block and block search
+	// limit. For most public RPC providers the value for limit is 20 000 blocks
+	RetrieveUSDMinted(fromBlock uint64, toBlock uint64, limit uint64) ([]*models.USDMinted, error)
+
 	// RetrieveUSDBurnedLimit is used to get all `usdBurned` events from the Core contract with given block search
 	// limit. For most public RPC providers the value for limit is 20 000 blocks
 	RetrieveUSDBurnedLimit(limit uint64) ([]*models.USDBurned, error)
+
+	// RetrieveUSDBurnedLimit is used to get all `usdBurned` events from the Core contract with given start block, end block and block search
+	// limit. For most public RPC providers the value for limit is 20 000 blocks
+	RetrieveUSDBurned(fromBlock uint64, toBlock uint64, limit uint64) ([]*models.USDBurned, error)
 
 	// RetrieveDelegationUpdatedLimit is used to get all `DelegationUpdated` events from the Core contract with given block search
 	// limit. For most public RPC providers the value for limit is 20 000 blocks
@@ -94,9 +102,17 @@ type IPerpsv3 interface {
 	// limit. For most public RPC providers the value for limit is 20 000 blocks
 	RetrieveCollateralWithdrawnLimit(limit uint64) ([]*models.CollateralWithdrawn, error)
 
+	// RetrieveCollateralWithdrawnLimit is used to get all `Withdrawn` events from the Core contract with given start block, end block and block search
+	// limit. For most public RPC providers the value for limit is 20 000 blocks
+	RetrieveCollateralWithdrawn(fromBlock uint64, toBlock uint64, limit uint64) ([]*models.CollateralWithdrawn, error)
+
 	// RetrieveCollateralDepositedLimit is used to get all `Deposited` events from the Core contract with given block search
 	// limit. For most public RPC providers the value for limit is 20 000 blocks
 	RetrieveCollateralDepositedLimit(limit uint64) ([]*models.CollateralDeposited, error)
+
+	// RetrieveCollateralDepositedLimit is used to get all `Deposited` events from the Core contract with given start block, end block and block search
+	// limit. For most public RPC providers the value for limit is 20 000 blocks
+	RetrieveCollateralDeposited(fromBlock uint64, toBlock uint64, limit uint64) ([]*models.CollateralDeposited, error)
 
 	// RetrieveRewardClaimedLimit is used to get all `RewardClaimed` events from the Core contract with given block search
 	// limit. For most public RPC providers the value for limit is 20 000 blocks
@@ -330,6 +346,10 @@ type IPerpsv3 interface {
 	// limit. For most public RPC providers the value for limit is 20 000 blocks
 	FormatAccountsCoreLimit(limit uint64) ([]*models.Account, error)
 
+	// FormatAccountsCoreLimit is used to get all accounts and their additional data from the contract with given start block, end block and block search
+	// limit. For most public RPC providers the value for limit is 20 000 blocks
+	FormatAccountsCore(fromBlock, toBlock, limit uint64) ([]*models.Account, error)
+
 	// Config is used to get current lib config
 	Config() *config.PerpsvConfig
 
@@ -422,8 +442,16 @@ func (p *Perpsv3) RetrieveUSDMintedLimit(limit uint64) ([]*models.USDMinted, err
 	return p.service.RetrieveUSDMintedLimit(limit)
 }
 
+func (p *Perpsv3) RetrieveUSDMinted(fromBlock uint64, toBlock uint64, limit uint64) ([]*models.USDMinted, error) {
+	return p.service.RetrieveUSDMinted(fromBlock, toBlock, limit)
+}
+
 func (p *Perpsv3) RetrieveUSDBurnedLimit(limit uint64) ([]*models.USDBurned, error) {
 	return p.service.RetrieveUSDBurnedLimit(limit)
+}
+
+func (p *Perpsv3) RetrieveUSDBurned(fromBlock uint64, toBlock uint64, limit uint64) ([]*models.USDBurned, error) {
+	return p.service.RetrieveUSDBurned(fromBlock, toBlock, limit)
 }
 
 func (p *Perpsv3) RetrieveDelegationUpdatedLimit(limit uint64) ([]*models.DelegationUpdated, error) {
@@ -438,8 +466,16 @@ func (p *Perpsv3) RetrieveCollateralWithdrawnLimit(limit uint64) ([]*models.Coll
 	return p.service.RetrieveCollateralWithdrawnLimit(limit)
 }
 
+func (p *Perpsv3) RetrieveCollateralWithdrawn(fromBlock uint64, toBlock uint64, limit uint64) ([]*models.CollateralWithdrawn, error) {
+	return p.service.RetrieveCollateralWithdrawn(fromBlock, toBlock, limit)
+}
+
 func (p *Perpsv3) RetrieveCollateralDepositedLimit(limit uint64) ([]*models.CollateralDeposited, error) {
 	return p.service.RetrieveCollateralDepositedLimit(limit)
+}
+
+func (p *Perpsv3) RetrieveCollateralDeposited(fromBlock uint64, toBlock uint64, limit uint64) ([]*models.CollateralDeposited, error) {
+	return p.service.RetrieveCollateralDeposited(fromBlock, toBlock, limit)
 }
 
 func (p *Perpsv3) RetrieveRewardClaimedLimit(limit uint64) ([]*models.RewardClaimed, error) {
@@ -703,6 +739,10 @@ func (p *Perpsv3) FormatAccountsCoreLimit(limit uint64) ([]*models.Account, erro
 
 func (p *Perpsv3) FormatAccountCore(id *big.Int) (*models.Account, error) {
 	return p.service.FormatAccountCore(id)
+}
+
+func (p *Perpsv3) FormatAccountsCore(fromBlock, toBlock, limit uint64) ([]*models.Account, error) {
+	return p.service.FormatAccountsCore(fromBlock, toBlock, limit)
 }
 
 func (p *Perpsv3) Config() *config.PerpsvConfig {
