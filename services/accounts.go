@@ -93,7 +93,7 @@ func (s *Service) RetrieveAccountLiquidationsLimit(limit uint64) ([]*models.Acco
 
 		for iterator.Next() {
 			if iterator.Error() != nil {
-				logger.Log().WithField("layer", "Service-QueryAccountLiquidatedLimit").Errorf("iterator error: %v", err.Error())
+				logger.Log().WithField("layer", "Service-QueryAccountLiquidatedLimit").Errorf("iterator error: %v", iterator.Error())
 				return nil, errors.GetFilterErr(iterator.Error(), "perps market")
 			}
 
@@ -473,7 +473,7 @@ func (s *Service) formatAccounts(opts *bind.FilterOpts) ([]*models.Account, erro
 
 	for iterator.Next() {
 		if iterator.Error() != nil {
-			logger.Log().WithField("layer", "Service-formatAccounts").Errorf("iterator error: %s", err)
+			logger.Log().WithField("layer", "Service-formatAccounts").Errorf("iterator error: %v", iterator.Error())
 			return nil, errors.GetFilterErr(iterator.Error(), "perps market")
 		}
 
@@ -538,26 +538,39 @@ func (s *Service) formatAccount(id *big.Int) (*models.Account, error) {
 }
 
 func (s *Service) FormatAccountsCoreLimit(limit uint64) ([]*models.Account, error) {
-	iterations, last, err := s.getIterationsForLimitQueryCore(limit)
+	return s.FormatAccountsCore(0, 0, limit)
+}
+
+func (s *Service) FormatAccountsCore(fromBlock, toBlock, limit uint64) ([]*models.Account, error) {
+	iterations, lastBlock, err := s.getIterationsForQuery(fromBlock, toBlock, limit, ContractCore)
 	if err != nil {
 		return nil, err
 	}
 
 	var accounts []*models.Account
 
-	logger.Log().WithField("layer", "Service-FormatAccountsCoreLimit").Infof(
-		"fetching accounts with limit: %v to block: %v total iterations: %v...",
-		limit, last, iterations,
+	if fromBlock == 0 {
+		fromBlock = s.coreFirstBlock
+	}
+
+	logger.Log().WithField("layer", "Service-FormatAccountsCore").Infof(
+		"fetching accounts with limit: %v from block: %v to block: %v total iterations: %v...",
+		limit, fromBlock, lastBlock, iterations,
 	)
 
-	fromBlock := s.coreFirstBlock
-	toBlock := fromBlock + limit
+	startBlockOfIteration := fromBlock
+	endBlockOfIteration := startBlockOfIteration + limit
+
+	if endBlockOfIteration > toBlock {
+		endBlockOfIteration = toBlock
+	}
+
 	for i := uint64(1); i <= iterations; i++ {
 		if i%10 == 0 || i == iterations {
-			logger.Log().WithField("layer", "Service-FormatAccountsCoreLimit").Infof("-- iteration %v", i)
+			logger.Log().WithField("layer", "Service-FormatAccountsCore").Infof("-- iteration %v", i)
 		}
 
-		opts := s.getFilterOptsCore(fromBlock, &toBlock)
+		opts := s.getFilterOptsCore(startBlockOfIteration, &endBlockOfIteration)
 
 		res, err := s.formatAccountsCore(opts)
 		if err != nil {
@@ -566,16 +579,16 @@ func (s *Service) FormatAccountsCoreLimit(limit uint64) ([]*models.Account, erro
 
 		accounts = append(accounts, res...)
 
-		fromBlock = toBlock + 1
+		startBlockOfIteration = endBlockOfIteration + 1
 
 		if i == iterations-1 {
-			toBlock = last
+			endBlockOfIteration = lastBlock
 		} else {
-			toBlock = fromBlock + limit
+			endBlockOfIteration = startBlockOfIteration + limit
 		}
 	}
 
-	logger.Log().WithField("layer", "Service-FormatAccountsLimit").Infof("task completed successfully")
+	logger.Log().WithField("layer", "Service-FormatAccounts").Infof("task completed successfully")
 
 	return accounts, nil
 }
