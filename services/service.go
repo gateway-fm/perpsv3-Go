@@ -131,6 +131,10 @@ type IService interface {
 	// limit. For most public RPC providers the value for limit is 20 000 blocks
 	RetrieveMarketRegistered(limit uint64) ([]*models.MarketRegistered, error)
 
+	// RetrieveMarketRegisteredOpts is used to get all `MarketRegistered` events with given start block, end block and block search
+	//	// limit. For most public RPC providers the value for limit is 20 000 blocks
+	RetrieveMarketRegisteredOpts(fromBlock uint64, toBlock uint64, limit uint64) ([]*models.MarketRegistered, error)
+
 	// RetrievePoolCreated is used to get all `PoolCreated` events from the Core contract with given block search
 	// limit. For most public RPC providers the value for limit is 20 000 blocks
 	RetrievePoolCreatedLimit(limit uint64) ([]*models.PoolCreated, error)

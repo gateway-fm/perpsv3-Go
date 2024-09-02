@@ -136,6 +136,10 @@ type IPerpsv3 interface {
 	// limit. For most public RPC providers the value for limit is 20 000 blocks
 	RetrieveMarketRegistered(limit uint64) ([]*models.MarketRegistered, error)
 
+	// RetrieveMarketRegisteredOpts is used to get all `MarketRegistered` events with given start block, end block and block search
+	//	// limit. For most public RPC providers the value for limit is 20 000 blocks
+	RetrieveMarketRegisteredOpts(fromBlock uint64, toBlock uint64, limit uint64) ([]*models.MarketRegistered, error)
+
 	// RetrievePoolCreatedLimit is used to get all `PoolCreated` events from the Core contract with given block search
 	// limit. For most public RPC providers the value for limit is 20 000 blocks
 	RetrievePoolCreatedLimit(limit uint64) ([]*models.PoolCreated, error)
@@ -504,6 +508,10 @@ func (p *Perpsv3) RetrieveMarketUSDWithdrawnLimit(limit uint64) ([]*models.Marke
 
 func (p *Perpsv3) RetrieveMarketRegistered(limit uint64) ([]*models.MarketRegistered, error) {
 	return p.service.RetrieveMarketRegistered(limit)
+}
+
+func (p *Perpsv3) RetrieveMarketRegisteredOpts(fromBlock uint64, toBlock uint64, limit uint64) ([]*models.MarketRegistered, error) {
+	return p.service.RetrieveMarketRegisteredOpts(fromBlock, toBlock, limit)
 }
 
 func (p *Perpsv3) RetrievePoolCreated(fromBlock uint64, toBlock uint64, limit uint64) ([]*models.PoolCreated, error) {
