@@ -1,8 +1,9 @@
 package events
 
 import (
-	"github.com/gateway-fm/perpsv3-Go/contracts/Account"
 	"math/big"
+
+	"github.com/gateway-fm/perpsv3-Go/contracts/Account"
 
 	"github.com/ethereum/go-ethereum/ethclient"
 	"github.com/ethereum/go-ethereum/event"

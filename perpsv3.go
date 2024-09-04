@@ -354,6 +354,18 @@ type IPerpsv3 interface {
 	// limit. For most public RPC providers the value for limit is 20 000 blocks
 	FormatAccountsCore(fromBlock, toBlock, limit uint64) ([]*models.Account, error)
 
+	// RetrieveChangeOwner is used to get all owner changes and additional data from the contract with given start block, end block and block search
+	// limit. For most public RPC providers the value for limit is 20 000 blocks
+	RetrieveChangeOwner(fromBlock, toBlock, limit uint64) ([]*models.AccountTransfer, error)
+
+	// RetrievePermissionRevoked is used to get all the revoked permission and additional data from the contract with given start block, end block and block search
+	// limit. For most public RPC providers the value for limit is 20 000 blocks
+	RetrievePermissionRevoked(fromBlock, toBlock, limit uint64) ([]*models.PermissionChanged, error)
+
+	// RetrievePermissionGranted is used to get all the granted permission and additional data from the contract with given start block, end block and block search
+	// limit. For most public RPC providers the value for limit is 20 000 blocks
+	RetrievePermissionGranted(fromBlock, toBlock, limit uint64) ([]*models.PermissionChanged, error)
+
 	// Config is used to get current lib config
 	Config() *config.PerpsvConfig
 
@@ -536,6 +548,18 @@ func (p *Perpsv3) RetrieveLiquidationsCore(fromBlock uint64, toBlock uint64, lim
 
 func (p *Perpsv3) RetrieveVaultLiquidationsCore(fromBlock uint64, toBlock uint64, limit uint64) ([]*models.CoreVaultLiquidation, error) {
 	return p.service.RetrieveVaultLiquidationsCore(fromBlock, toBlock, limit)
+}
+
+func (p *Perpsv3) RetrieveChangeOwner(fromBlock, toBlock, limit uint64) ([]*models.AccountTransfer, error) {
+	return p.service.RetrieveChangeOwner(fromBlock, toBlock, limit)
+}
+
+func (p *Perpsv3) RetrievePermissionRevoked(fromBlock, toBlock, limit uint64) ([]*models.PermissionChanged, error) {
+	return p.service.RetrievePermissionRevoked(fromBlock, toBlock, limit)
+}
+
+func (p *Perpsv3) RetrievePermissionGranted(fromBlock, toBlock, limit uint64) ([]*models.PermissionChanged, error) {
+	return p.service.RetrievePermissionGranted(fromBlock, toBlock, limit)
 }
 func (p *Perpsv3) ListenTrades() (*events.TradeSubscription, error) {
 	return p.events.ListenTrades()

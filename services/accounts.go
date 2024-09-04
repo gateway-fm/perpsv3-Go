@@ -1,6 +1,7 @@
 package services
 
 import (
+	"context"
 	"fmt"
 	"math/big"
 	"time"
@@ -10,6 +11,7 @@ import (
 	"github.com/ethereum/go-ethereum/accounts/abi/bind"
 
 	"github.com/gateway-fm/perpsv3-Go/config"
+	"github.com/gateway-fm/perpsv3-Go/contracts/core"
 	"github.com/gateway-fm/perpsv3-Go/contracts/forwarder"
 	"github.com/gateway-fm/perpsv3-Go/errors"
 	"github.com/gateway-fm/perpsv3-Go/models"
@@ -637,4 +639,232 @@ func (s *Service) GetAccountAvailableCollateral(accountId *big.Int, collateralTy
 	}
 
 	return res, nil
+}
+
+func (s *Service) RetrievePermissionRevoked(fromBlock, toBlock, limit uint64) ([]*models.PermissionChanged, error) {
+	iterations, lastBlock, err := s.getIterationsForQuery(fromBlock, toBlock, limit, ContractCore)
+	if err != nil {
+		return nil, err
+	}
+
+	var permissions []*models.PermissionChanged
+
+	if fromBlock == 0 {
+		fromBlock = s.coreFirstBlock
+	}
+
+	logger.Log().WithField("layer", "Service-GetPermissionRevoked").Infof(
+		"fetching permission revoke with limit: %v from block: %v to block: %v total iterations: %v...",
+		limit, fromBlock, lastBlock, iterations,
+	)
+
+	startBlockOfIteration := fromBlock
+	endBlockOfIteration := startBlockOfIteration + limit
+
+	if endBlockOfIteration > toBlock {
+		endBlockOfIteration = toBlock
+	}
+
+	for i := uint64(1); i <= iterations; i++ {
+		if i%10 == 0 || i == iterations {
+			logger.Log().WithField("layer", "Service-GetPermissionRevoked").Infof("-- iteration %v", i)
+		}
+
+		opts := s.getFilterOptsCore(startBlockOfIteration, &endBlockOfIteration)
+
+		iterator, err := s.core.FilterPermissionRevoked(opts, nil, nil, nil)
+		if err != nil {
+			return nil, err
+		}
+		for iterator.Next() {
+			if iterator.Error() != nil {
+				logger.Log().WithField("layer", "Service-GetPermissionRevoked").Errorf("iterator error: %v", iterator.Error())
+				return nil, errors.GetFilterErr(iterator.Error(), "core contract")
+			}
+			parsedPermission, err := permissionRevokedToPermissionChanged(iterator.Event)
+			if err != nil {
+				logger.Log().WithField("layer", "GetPermissionRevoked").Errorf("error decoding permission %s", err)
+				continue
+			}
+			permissions = append(permissions, parsedPermission)
+
+		}
+
+		startBlockOfIteration = endBlockOfIteration + 1
+
+		if i == iterations-1 {
+			endBlockOfIteration = lastBlock
+		} else {
+			endBlockOfIteration = startBlockOfIteration + limit
+		}
+	}
+
+	logger.Log().WithField("layer", "Service-FormatAccounts").Infof("task completed successfully")
+
+	return permissions, nil
+}
+
+func (s *Service) RetrievePermissionGranted(fromBlock, toBlock, limit uint64) ([]*models.PermissionChanged, error) {
+	iterations, lastBlock, err := s.getIterationsForQuery(fromBlock, toBlock, limit, ContractCore)
+	if err != nil {
+		return nil, err
+	}
+
+	var permissions []*models.PermissionChanged
+
+	if fromBlock == 0 {
+		fromBlock = s.coreFirstBlock
+	}
+
+	logger.Log().WithField("layer", "Service-GetPermissionGranted").Infof(
+		"fetching permission revoke with limit: %v from block: %v to block: %v total iterations: %v...",
+		limit, fromBlock, lastBlock, iterations,
+	)
+
+	startBlockOfIteration := fromBlock
+	endBlockOfIteration := startBlockOfIteration + limit
+
+	if endBlockOfIteration > toBlock {
+		endBlockOfIteration = toBlock
+	}
+
+	for i := uint64(1); i <= iterations; i++ {
+		if i%10 == 0 || i == iterations {
+			logger.Log().WithField("layer", "Service-GetPermissionGranted").Infof("-- iteration %v", i)
+		}
+
+		opts := s.getFilterOptsCore(startBlockOfIteration, &endBlockOfIteration)
+
+		iterator, err := s.core.FilterPermissionGranted(opts, nil, nil, nil)
+		if err != nil {
+			return nil, err
+		}
+		for iterator.Next() {
+			if iterator.Error() != nil {
+				logger.Log().WithField("layer", "Service-GetPermissionGranted").Errorf("iterator error: %v", iterator.Error())
+				return nil, errors.GetFilterErr(iterator.Error(), "core contract")
+			}
+			parsedPermission, err := permissionGrantedToPermissionChanged(iterator.Event)
+			if err != nil {
+				logger.Log().WithField("layer", "GetPermissionGranted").Errorf("error decoding permission %s", err)
+				continue
+			}
+			permissions = append(permissions, parsedPermission)
+
+		}
+
+		startBlockOfIteration = endBlockOfIteration + 1
+
+		if i == iterations-1 {
+			endBlockOfIteration = lastBlock
+		} else {
+			endBlockOfIteration = startBlockOfIteration + limit
+		}
+	}
+
+	logger.Log().WithField("layer", "Service-FormatAccounts").Infof("task completed successfully")
+
+	return permissions, nil
+}
+
+func (s *Service) RetrieveChangeOwner(fromBlock, toBlock, limit uint64) ([]*models.AccountTransfer, error) {
+	iterations, lastBlock, err := s.getIterationsForQuery(fromBlock, toBlock, limit, ContractCore)
+	if err != nil {
+		return nil, err
+	}
+
+	var transfers []*models.AccountTransfer
+
+	if fromBlock == 0 {
+		fromBlock = s.coreFirstBlock
+	}
+
+	logger.Log().WithField("layer", "Service-RetrieveChangeOwner").Infof(
+		"fetching permission revoke with limit: %v from block: %v to block: %v total iterations: %v...",
+		limit, fromBlock, lastBlock, iterations,
+	)
+
+	startBlockOfIteration := fromBlock
+	endBlockOfIteration := startBlockOfIteration + limit
+
+	if endBlockOfIteration > toBlock {
+		endBlockOfIteration = toBlock
+	}
+
+	for i := uint64(1); i <= iterations; i++ {
+		if i%10 == 0 || i == iterations {
+			logger.Log().WithField("layer", "Service-RetrieveChangeOwner").Infof("-- iteration %v", i)
+		}
+
+		opts := s.getFilterOptsCore(startBlockOfIteration, &endBlockOfIteration)
+
+		iterator, err := s.core.FilterOwnerChanged(opts)
+		if err != nil {
+			return nil, err
+		}
+		for iterator.Next() {
+			if iterator.Error() != nil {
+				logger.Log().WithField("layer", "Service-RetrieveChangeOwner").Errorf("iterator error: %v", iterator.Error())
+				return nil, errors.GetFilterErr(iterator.Error(), "core contract")
+			}
+			transfer, err := s.toOwnerTransfered(iterator.Event)
+			if err != nil {
+				logger.Log().WithField("layer", "RetrieveChangeOwner").Errorf("error decoding CoreOwnerChanged %s", err)
+				continue
+			}
+			transfers = append(transfers, transfer)
+
+		}
+
+		startBlockOfIteration = endBlockOfIteration + 1
+
+		if i == iterations-1 {
+			endBlockOfIteration = lastBlock
+		} else {
+			endBlockOfIteration = startBlockOfIteration + limit
+		}
+	}
+
+	logger.Log().WithField("layer", "Service-FormatAccounts").Infof("task completed successfully")
+
+	return transfers, nil
+}
+
+func permissionRevokedToPermissionChanged(revoked *core.CorePermissionRevoked) (*models.PermissionChanged, error) {
+	permission, err := models.DecodePermissionCore(revoked.Permission)
+	if err != nil {
+		return nil, err
+	}
+	return &models.PermissionChanged{
+		AccountID:  revoked.AccountId,
+		User:       revoked.User,
+		Permission: permission,
+	}, nil
+}
+
+func permissionGrantedToPermissionChanged(revoked *core.CorePermissionGranted) (*models.PermissionChanged, error) {
+	permission, err := models.DecodePermissionCore(revoked.Permission)
+	if err != nil {
+		return nil, err
+	}
+	return &models.PermissionChanged{
+		AccountID:  revoked.AccountId,
+		User:       revoked.User,
+		Permission: permission,
+	}, nil
+}
+
+func (s *Service) toOwnerTransfered(changed *core.CoreOwnerChanged) (*models.AccountTransfer, error) {
+	block, err := s.rpcClient.BlockByHash(context.Background(), changed.Raw.BlockHash)
+	if err != nil {
+		return nil, err
+	}
+	return &models.AccountTransfer{
+		From:           changed.OldOwner,
+		To:             changed.NewOwner,
+		BlockNumber:    changed.Raw.BlockNumber,
+		BlockTimestamp: block.Time(),
+		//! We don't have account address in here
+		//! So we know from and to but do not know what
+	}, nil
 }
