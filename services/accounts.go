@@ -654,7 +654,7 @@ func (s *Service) RetrievePermissionRevoked(fromBlock, toBlock, limit uint64) ([
 		fromBlock = s.coreFirstBlock
 	}
 
-	logger.Log().WithField("layer", "Service-GetPermissionRevoked").Infof(
+	logger.Log().WithField("layer", "Service-RetrievePermissionRevoked").Infof(
 		"fetching permission revoke with limit: %v from block: %v to block: %v total iterations: %v...",
 		limit, fromBlock, lastBlock, iterations,
 	)
