@@ -11,6 +11,7 @@ import (
 	"github.com/ethereum/go-ethereum/accounts/abi/bind"
 
 	"github.com/gateway-fm/perpsv3-Go/config"
+	"github.com/gateway-fm/perpsv3-Go/contracts/Account"
 	"github.com/gateway-fm/perpsv3-Go/contracts/core"
 	"github.com/gateway-fm/perpsv3-Go/contracts/forwarder"
 	"github.com/gateway-fm/perpsv3-Go/errors"
@@ -798,7 +799,7 @@ func (s *Service) RetrieveChangeOwner(fromBlock, toBlock, limit uint64) ([]*mode
 
 		opts := s.getFilterOptsCore(startBlockOfIteration, &endBlockOfIteration)
 
-		iterator, err := s.core.FilterOwnerChanged(opts)
+		iterator, err := s.accountContract.FilterTransfer(opts, nil, nil, nil)
 		if err != nil {
 			return nil, err
 		}
@@ -854,17 +855,16 @@ func permissionGrantedToPermissionChanged(revoked *core.CorePermissionGranted) (
 	}, nil
 }
 
-func (s *Service) toOwnerTransfered(changed *core.CoreOwnerChanged) (*models.AccountTransfer, error) {
+func (s *Service) toOwnerTransfered(changed *Account.AccountTransfer) (*models.AccountTransfer, error) {
 	block, err := s.rpcClient.BlockByHash(context.Background(), changed.Raw.BlockHash)
 	if err != nil {
 		return nil, err
 	}
 	return &models.AccountTransfer{
-		From:           changed.OldOwner,
-		To:             changed.NewOwner,
+		From:           changed.From,
+		To:             changed.To,
 		BlockNumber:    changed.Raw.BlockNumber,
 		BlockTimestamp: block.Time(),
-		//! We don't have account address in here
-		//! So we know from and to but do not know what
+		TokenID:        changed.TokenId,
 	}, nil
 }

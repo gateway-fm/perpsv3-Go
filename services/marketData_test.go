@@ -1,16 +1,18 @@
 package services
 
 import (
-	"github.com/gateway-fm/perpsv3-Go/config"
 	"log"
 	"math/big"
 	"os"
 	"testing"
 
+	"github.com/gateway-fm/perpsv3-Go/config"
+
 	"github.com/ethereum/go-ethereum/common"
 	"github.com/ethereum/go-ethereum/ethclient"
 	"github.com/stretchr/testify/require"
 
+	"github.com/gateway-fm/perpsv3-Go/contracts/Account"
 	"github.com/gateway-fm/perpsv3-Go/contracts/core"
 	"github.com/gateway-fm/perpsv3-Go/contracts/perpsMarket"
 	"github.com/gateway-fm/perpsv3-Go/errors"
@@ -29,6 +31,7 @@ func TestService_RetrieveMarketUpdates_OnChain(t *testing.T) {
 
 	coreC, _ := core.NewCore(common.HexToAddress("0x76490713314fCEC173f44e99346F54c6e92a8E42"), rpcClient)
 	perps, _ := perpsMarket.NewPerpsMarket(common.HexToAddress("0xf272382cB3BE898A8CdB1A23BE056fA2Fcf4513b"), rpcClient)
+	acc, _ := Account.NewAccount(common.HexToAddress("0x63f4Dd0434BEB5baeCD27F3778a909278d8cf5b8"), rpcClient)
 
 	want := &models.MarketUpdate{
 		MarketID:               200,
@@ -66,7 +69,7 @@ func TestService_RetrieveMarketUpdates_OnChain(t *testing.T) {
 	}
 	for _, tt := range testCases {
 		t.Run(tt.name, func(t *testing.T) {
-			s, _ := NewService(rpcClient, conf, coreC, perps)
+			s, _ := NewService(rpcClient, conf, coreC, perps, acc)
 			res, err := s.RetrieveMarketUpdates(tt.startBlock, &tt.endBlock)
 
 			require.NoError(t, err)
@@ -95,6 +98,7 @@ func TestService_RetrieveMarketUpdatesBig_OnChain(t *testing.T) {
 
 	coreC, _ := core.NewCore(common.HexToAddress("0x76490713314fCEC173f44e99346F54c6e92a8E42"), rpcClient)
 	perps, _ := perpsMarket.NewPerpsMarket(common.HexToAddress("0xf272382cB3BE898A8CdB1A23BE056fA2Fcf4513b"), rpcClient)
+	acc, _ := Account.NewAccount(common.HexToAddress("0x63f4Dd0434BEB5baeCD27F3778a909278d8cf5b8"), rpcClient)
 
 	price := new(big.Int)
 	price.SetString("26050583159510000000000", 10)
@@ -135,7 +139,7 @@ func TestService_RetrieveMarketUpdatesBig_OnChain(t *testing.T) {
 	}
 	for _, tt := range testCases {
 		t.Run(tt.name, func(t *testing.T) {
-			s, _ := NewService(rpcClient, conf, coreC, perps)
+			s, _ := NewService(rpcClient, conf, coreC, perps, acc)
 			res, err := s.RetrieveMarketUpdatesBig(tt.startBlock, &tt.endBlock)
 
 			require.NoError(t, err)
@@ -164,8 +168,9 @@ func TestService_RetrieveMarketUpdates_OnChain_Limit(t *testing.T) {
 
 	coreC, _ := core.NewCore(common.HexToAddress("0x76490713314fCEC173f44e99346F54c6e92a8E42"), rpcClient)
 	perps, _ := perpsMarket.NewPerpsMarket(common.HexToAddress("0xf272382cB3BE898A8CdB1A23BE056fA2Fcf4513b"), rpcClient)
+	acc, _ := Account.NewAccount(common.HexToAddress("0x63f4Dd0434BEB5baeCD27F3778a909278d8cf5b8"), rpcClient)
 
-	s, _ := NewService(rpcClient, conf, coreC, perps)
+	s, _ := NewService(rpcClient, conf, coreC, perps, acc)
 
 	_, err := s.RetrieveMarketUpdatesLimit(20000)
 
@@ -184,8 +189,9 @@ func TestService_RetrieveMarketUpdatesBig_OnChain_Limit(t *testing.T) {
 
 	coreC, _ := core.NewCore(common.HexToAddress("0x76490713314fCEC173f44e99346F54c6e92a8E42"), rpcClient)
 	perps, _ := perpsMarket.NewPerpsMarket(common.HexToAddress("0xf272382cB3BE898A8CdB1A23BE056fA2Fcf4513b"), rpcClient)
+	acc, _ := Account.NewAccount(common.HexToAddress("0x63f4Dd0434BEB5baeCD27F3778a909278d8cf5b8"), rpcClient)
 
-	s, _ := NewService(rpcClient, conf, coreC, perps)
+	s, _ := NewService(rpcClient, conf, coreC, perps, acc)
 
 	_, err := s.RetrieveMarketUpdatesBigLimit(20000)
 
@@ -204,6 +210,7 @@ func TestService_GetMarketMetadata_OnChain(t *testing.T) {
 
 	coreC, _ := core.NewCore(common.HexToAddress("0x76490713314fCEC173f44e99346F54c6e92a8E42"), rpcClient)
 	perps, _ := perpsMarket.NewPerpsMarket(common.HexToAddress("0xf272382cB3BE898A8CdB1A23BE056fA2Fcf4513b"), rpcClient)
+	acc, _ := Account.NewAccount(common.HexToAddress("0x63f4Dd0434BEB5baeCD27F3778a909278d8cf5b8"), rpcClient)
 
 	testCases := []struct {
 		name     string
@@ -241,7 +248,7 @@ func TestService_GetMarketMetadata_OnChain(t *testing.T) {
 	}
 	for _, tt := range testCases {
 		t.Run(tt.name, func(t *testing.T) {
-			s, _ := NewService(rpcClient, conf, coreC, perps)
+			s, _ := NewService(rpcClient, conf, coreC, perps, acc)
 
 			res, err := s.GetMarketMetadata(tt.marketID)
 
@@ -268,6 +275,7 @@ func TestService_GetMarketSummary(t *testing.T) {
 
 	coreC, _ := core.NewCore(common.HexToAddress("0x76490713314fCEC173f44e99346F54c6e92a8E42"), rpcClient)
 	perps, _ := perpsMarket.NewPerpsMarket(common.HexToAddress("0xf272382cB3BE898A8CdB1A23BE056fA2Fcf4513b"), rpcClient)
+	acc, _ := Account.NewAccount(common.HexToAddress("0x63f4Dd0434BEB5baeCD27F3778a909278d8cf5b8"), rpcClient)
 
 	testCases := []struct {
 		name     string
@@ -294,7 +302,7 @@ func TestService_GetMarketSummary(t *testing.T) {
 	}
 	for _, tt := range testCases {
 		t.Run(tt.name, func(t *testing.T) {
-			s, _ := NewService(rpcClient, conf, coreC, perps)
+			s, _ := NewService(rpcClient, conf, coreC, perps, acc)
 
 			res, err := s.GetMarketSummary(tt.marketID)
 
@@ -328,6 +336,7 @@ func TestService_GetMarketIDs(t *testing.T) {
 
 	coreC, _ := core.NewCore(common.HexToAddress("0x76490713314fCEC173f44e99346F54c6e92a8E42"), rpcClient)
 	perps, _ := perpsMarket.NewPerpsMarket(common.HexToAddress("0xf272382cB3BE898A8CdB1A23BE056fA2Fcf4513b"), rpcClient)
+	acc, _ := Account.NewAccount(common.HexToAddress("0x63f4Dd0434BEB5baeCD27F3778a909278d8cf5b8"), rpcClient)
 
 	testCases := []struct {
 		name    string
@@ -341,7 +350,7 @@ func TestService_GetMarketIDs(t *testing.T) {
 	}
 	for _, tt := range testCases {
 		t.Run(tt.name, func(t *testing.T) {
-			s, _ := NewService(rpcClient, conf, coreC, perps)
+			s, _ := NewService(rpcClient, conf, coreC, perps, acc)
 
 			res, err := s.GetMarketIDs()
 
@@ -367,6 +376,7 @@ func TestService_GetFoundingRate(t *testing.T) {
 
 	coreC, _ := core.NewCore(common.HexToAddress("0x76490713314fCEC173f44e99346F54c6e92a8E42"), rpcClient)
 	perps, _ := perpsMarket.NewPerpsMarket(common.HexToAddress("0xf272382cB3BE898A8CdB1A23BE056fA2Fcf4513b"), rpcClient)
+	acc, _ := Account.NewAccount(common.HexToAddress("0x63f4Dd0434BEB5baeCD27F3778a909278d8cf5b8"), rpcClient)
 
 	testCases := []struct {
 		name    string
@@ -384,7 +394,7 @@ func TestService_GetFoundingRate(t *testing.T) {
 	}
 	for _, tt := range testCases {
 		t.Run(tt.name, func(t *testing.T) {
-			s, _ := NewService(rpcClient, conf, coreC, perps)
+			s, _ := NewService(rpcClient, conf, coreC, perps, acc)
 
 			res, err := s.GetFoundingRate(tt.id)
 

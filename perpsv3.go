@@ -814,7 +814,7 @@ func (p *Perpsv3) init() error {
 		return err
 	}
 
-	srv, err := services.NewService(rpcClient, p.config, coreContact, perpsMarketContract)
+	srv, err := services.NewService(rpcClient, p.config, coreContact, perpsMarketContract, accountContract)
 	if err != nil {
 		return err
 	}

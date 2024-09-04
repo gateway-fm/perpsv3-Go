@@ -11,6 +11,7 @@ import (
 	"github.com/ethereum/go-ethereum/ethclient"
 
 	"github.com/gateway-fm/perpsv3-Go/config"
+	"github.com/gateway-fm/perpsv3-Go/contracts/Account"
 	"github.com/gateway-fm/perpsv3-Go/contracts/core"
 	"github.com/gateway-fm/perpsv3-Go/contracts/perpsMarket"
 	"github.com/gateway-fm/perpsv3-Go/errors"
@@ -285,6 +286,8 @@ type Service struct {
 	rawERC7412   rawContracts.IRawERC7412Contract
 	rawForwarder rawContracts.IRawForwarderContract
 	rawCore      rawContracts.IRawCoreContract
+
+	accountContract *Account.Account
 }
 
 // NewService is used to get instance of Service
@@ -293,6 +296,7 @@ func NewService(
 	conf *config.PerpsvConfig,
 	core *core.Core,
 	perps *perpsMarket.PerpsMarket,
+	accountContract *Account.Account,
 ) (IService, error) {
 	s := &Service{
 		chainID:          conf.ChainID,
@@ -305,6 +309,7 @@ func NewService(
 
 		perpsMarket:           perps,
 		perpsMarketFirstBlock: conf.FirstContractBlocks.PerpsMarket,
+		accountContract:       accountContract,
 	}
 
 	rawPerpsContract, err := rawContracts.NewPerps(common.HexToAddress(conf.ContractAddresses.PerpsMarket), rpc)

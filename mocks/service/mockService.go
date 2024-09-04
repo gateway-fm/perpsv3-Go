@@ -81,6 +81,21 @@ func (mr *MockIServiceMockRecorder) FormatAccounts() *gomock.Call {
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "FormatAccounts", reflect.TypeOf((*MockIService)(nil).FormatAccounts))
 }
 
+// FormatAccountsCore mocks base method.
+func (m *MockIService) FormatAccountsCore(fromBlock, toBlock, limit uint64) ([]*models.Account, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "FormatAccountsCore", fromBlock, toBlock, limit)
+	ret0, _ := ret[0].([]*models.Account)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// FormatAccountsCore indicates an expected call of FormatAccountsCore.
+func (mr *MockIServiceMockRecorder) FormatAccountsCore(fromBlock, toBlock, limit interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "FormatAccountsCore", reflect.TypeOf((*MockIService)(nil).FormatAccountsCore), fromBlock, toBlock, limit)
+}
+
 // FormatAccountsCoreLimit mocks base method.
 func (m *MockIService) FormatAccountsCoreLimit(limit uint64) ([]*models.Account, error) {
 	m.ctrl.T.Helper()
@@ -458,6 +473,21 @@ func (mr *MockIServiceMockRecorder) RetrieveAccountLiquidationsLimit(limit inter
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "RetrieveAccountLiquidationsLimit", reflect.TypeOf((*MockIService)(nil).RetrieveAccountLiquidationsLimit), limit)
 }
 
+// RetrieveChangeOwner mocks base method.
+func (m *MockIService) RetrieveChangeOwner(fromBlock, toBlock, limit uint64) ([]*models.AccountTransfer, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "RetrieveChangeOwner", fromBlock, toBlock, limit)
+	ret0, _ := ret[0].([]*models.AccountTransfer)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// RetrieveChangeOwner indicates an expected call of RetrieveChangeOwner.
+func (mr *MockIServiceMockRecorder) RetrieveChangeOwner(fromBlock, toBlock, limit interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "RetrieveChangeOwner", reflect.TypeOf((*MockIService)(nil).RetrieveChangeOwner), fromBlock, toBlock, limit)
+}
+
 // RetrieveCollateralDeposited mocks base method.
 func (m *MockIService) RetrieveCollateralDeposited(fromBlock, toBlock, limit uint64) ([]*models.CollateralDeposited, error) {
 	m.ctrl.T.Helper()
@@ -564,18 +594,33 @@ func (mr *MockIServiceMockRecorder) RetrieveLiquidations(fromBlock, toBLock inte
 }
 
 // RetrieveLiquidationsCore mocks base method.
-func (m *MockIService) RetrieveLiquidationsCore(limit uint64) ([]*models.CoreLiquidation, error) {
+func (m *MockIService) RetrieveLiquidationsCore(fromBlock, toBlock, limit uint64) ([]*models.CoreLiquidation, error) {
 	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "RetrieveLiquidationsCore", limit)
+	ret := m.ctrl.Call(m, "RetrieveLiquidationsCore", fromBlock, toBlock, limit)
 	ret0, _ := ret[0].([]*models.CoreLiquidation)
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }
 
 // RetrieveLiquidationsCore indicates an expected call of RetrieveLiquidationsCore.
-func (mr *MockIServiceMockRecorder) RetrieveLiquidationsCore(limit interface{}) *gomock.Call {
+func (mr *MockIServiceMockRecorder) RetrieveLiquidationsCore(fromBlock, toBlock, limit interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "RetrieveLiquidationsCore", reflect.TypeOf((*MockIService)(nil).RetrieveLiquidationsCore), limit)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "RetrieveLiquidationsCore", reflect.TypeOf((*MockIService)(nil).RetrieveLiquidationsCore), fromBlock, toBlock, limit)
+}
+
+// RetrieveLiquidationsCoreLimit mocks base method.
+func (m *MockIService) RetrieveLiquidationsCoreLimit(limit uint64) ([]*models.CoreLiquidation, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "RetrieveLiquidationsCoreLimit", limit)
+	ret0, _ := ret[0].([]*models.CoreLiquidation)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// RetrieveLiquidationsCoreLimit indicates an expected call of RetrieveLiquidationsCoreLimit.
+func (mr *MockIServiceMockRecorder) RetrieveLiquidationsCoreLimit(limit interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "RetrieveLiquidationsCoreLimit", reflect.TypeOf((*MockIService)(nil).RetrieveLiquidationsCoreLimit), limit)
 }
 
 // RetrieveLiquidationsLimit mocks base method.
@@ -606,6 +651,21 @@ func (m *MockIService) RetrieveMarketRegistered(limit uint64) ([]*models.MarketR
 func (mr *MockIServiceMockRecorder) RetrieveMarketRegistered(limit interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "RetrieveMarketRegistered", reflect.TypeOf((*MockIService)(nil).RetrieveMarketRegistered), limit)
+}
+
+// RetrieveMarketRegisteredOpts mocks base method.
+func (m *MockIService) RetrieveMarketRegisteredOpts(fromBlock, toBlock, limit uint64) ([]*models.MarketRegistered, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "RetrieveMarketRegisteredOpts", fromBlock, toBlock, limit)
+	ret0, _ := ret[0].([]*models.MarketRegistered)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// RetrieveMarketRegisteredOpts indicates an expected call of RetrieveMarketRegisteredOpts.
+func (mr *MockIServiceMockRecorder) RetrieveMarketRegisteredOpts(fromBlock, toBlock, limit interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "RetrieveMarketRegisteredOpts", reflect.TypeOf((*MockIService)(nil).RetrieveMarketRegisteredOpts), fromBlock, toBlock, limit)
 }
 
 // RetrieveMarketUSDDepositedLimit mocks base method.
@@ -728,19 +788,79 @@ func (mr *MockIServiceMockRecorder) RetrieveOrdersLimit(limit interface{}) *gomo
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "RetrieveOrdersLimit", reflect.TypeOf((*MockIService)(nil).RetrieveOrdersLimit), limit)
 }
 
-// RetrievePoolCreated mocks base method.
-func (m *MockIService) RetrievePoolCreated(limit uint64) ([]*models.PoolCreated, error) {
+// RetrievePermissionGranted mocks base method.
+func (m *MockIService) RetrievePermissionGranted(fromBlock, toBlock, limit uint64) ([]*models.PermissionChanged, error) {
 	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "RetrievePoolCreated", limit)
+	ret := m.ctrl.Call(m, "RetrievePermissionGranted", fromBlock, toBlock, limit)
+	ret0, _ := ret[0].([]*models.PermissionChanged)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// RetrievePermissionGranted indicates an expected call of RetrievePermissionGranted.
+func (mr *MockIServiceMockRecorder) RetrievePermissionGranted(fromBlock, toBlock, limit interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "RetrievePermissionGranted", reflect.TypeOf((*MockIService)(nil).RetrievePermissionGranted), fromBlock, toBlock, limit)
+}
+
+// RetrievePermissionRevoked mocks base method.
+func (m *MockIService) RetrievePermissionRevoked(fromBlock, toBlock, limit uint64) ([]*models.PermissionChanged, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "RetrievePermissionRevoked", fromBlock, toBlock, limit)
+	ret0, _ := ret[0].([]*models.PermissionChanged)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// RetrievePermissionRevoked indicates an expected call of RetrievePermissionRevoked.
+func (mr *MockIServiceMockRecorder) RetrievePermissionRevoked(fromBlock, toBlock, limit interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "RetrievePermissionRevoked", reflect.TypeOf((*MockIService)(nil).RetrievePermissionRevoked), fromBlock, toBlock, limit)
+}
+
+// RetrievePoolCreated mocks base method.
+func (m *MockIService) RetrievePoolCreated(fromBlock, toBlock, limit uint64) ([]*models.PoolCreated, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "RetrievePoolCreated", fromBlock, toBlock, limit)
 	ret0, _ := ret[0].([]*models.PoolCreated)
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }
 
 // RetrievePoolCreated indicates an expected call of RetrievePoolCreated.
-func (mr *MockIServiceMockRecorder) RetrievePoolCreated(limit interface{}) *gomock.Call {
+func (mr *MockIServiceMockRecorder) RetrievePoolCreated(fromBlock, toBlock, limit interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "RetrievePoolCreated", reflect.TypeOf((*MockIService)(nil).RetrievePoolCreated), limit)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "RetrievePoolCreated", reflect.TypeOf((*MockIService)(nil).RetrievePoolCreated), fromBlock, toBlock, limit)
+}
+
+// RetrievePoolCreatedLimit mocks base method.
+func (m *MockIService) RetrievePoolCreatedLimit(limit uint64) ([]*models.PoolCreated, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "RetrievePoolCreatedLimit", limit)
+	ret0, _ := ret[0].([]*models.PoolCreated)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// RetrievePoolCreatedLimit indicates an expected call of RetrievePoolCreatedLimit.
+func (mr *MockIServiceMockRecorder) RetrievePoolCreatedLimit(limit interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "RetrievePoolCreatedLimit", reflect.TypeOf((*MockIService)(nil).RetrievePoolCreatedLimit), limit)
+}
+
+// RetrieveRewardClaimed mocks base method.
+func (m *MockIService) RetrieveRewardClaimed(fromBlock, toBlock, limit uint64) ([]*models.RewardClaimed, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "RetrieveRewardClaimed", fromBlock, toBlock, limit)
+	ret0, _ := ret[0].([]*models.RewardClaimed)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// RetrieveRewardClaimed indicates an expected call of RetrieveRewardClaimed.
+func (mr *MockIServiceMockRecorder) RetrieveRewardClaimed(fromBlock, toBlock, limit interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "RetrieveRewardClaimed", reflect.TypeOf((*MockIService)(nil).RetrieveRewardClaimed), fromBlock, toBlock, limit)
 }
 
 // RetrieveRewardClaimedLimit mocks base method.
@@ -756,6 +876,21 @@ func (m *MockIService) RetrieveRewardClaimedLimit(limit uint64) ([]*models.Rewar
 func (mr *MockIServiceMockRecorder) RetrieveRewardClaimedLimit(limit interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "RetrieveRewardClaimedLimit", reflect.TypeOf((*MockIService)(nil).RetrieveRewardClaimedLimit), limit)
+}
+
+// RetrieveRewardDistributed mocks base method.
+func (m *MockIService) RetrieveRewardDistributed(fromBlock, toBlock, limit uint64) ([]*models.RewardDistributed, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "RetrieveRewardDistributed", fromBlock, toBlock, limit)
+	ret0, _ := ret[0].([]*models.RewardDistributed)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// RetrieveRewardDistributed indicates an expected call of RetrieveRewardDistributed.
+func (mr *MockIServiceMockRecorder) RetrieveRewardDistributed(fromBlock, toBlock, limit interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "RetrieveRewardDistributed", reflect.TypeOf((*MockIService)(nil).RetrieveRewardDistributed), fromBlock, toBlock, limit)
 }
 
 // RetrieveRewardDistributedLimit mocks base method.
@@ -803,6 +938,21 @@ func (mr *MockIServiceMockRecorder) RetrieveTradesLimit(limit interface{}) *gomo
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "RetrieveTradesLimit", reflect.TypeOf((*MockIService)(nil).RetrieveTradesLimit), limit)
 }
 
+// RetrieveUSDBurned mocks base method.
+func (m *MockIService) RetrieveUSDBurned(fromBlock, toBlock, limit uint64) ([]*models.USDBurned, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "RetrieveUSDBurned", fromBlock, toBlock, limit)
+	ret0, _ := ret[0].([]*models.USDBurned)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// RetrieveUSDBurned indicates an expected call of RetrieveUSDBurned.
+func (mr *MockIServiceMockRecorder) RetrieveUSDBurned(fromBlock, toBlock, limit interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "RetrieveUSDBurned", reflect.TypeOf((*MockIService)(nil).RetrieveUSDBurned), fromBlock, toBlock, limit)
+}
+
 // RetrieveUSDBurnedLimit mocks base method.
 func (m *MockIService) RetrieveUSDBurnedLimit(limit uint64) ([]*models.USDBurned, error) {
 	m.ctrl.T.Helper()
@@ -816,6 +966,21 @@ func (m *MockIService) RetrieveUSDBurnedLimit(limit uint64) ([]*models.USDBurned
 func (mr *MockIServiceMockRecorder) RetrieveUSDBurnedLimit(limit interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "RetrieveUSDBurnedLimit", reflect.TypeOf((*MockIService)(nil).RetrieveUSDBurnedLimit), limit)
+}
+
+// RetrieveUSDMinted mocks base method.
+func (m *MockIService) RetrieveUSDMinted(fromBlock, toBlock, limit uint64) ([]*models.USDMinted, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "RetrieveUSDMinted", fromBlock, toBlock, limit)
+	ret0, _ := ret[0].([]*models.USDMinted)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// RetrieveUSDMinted indicates an expected call of RetrieveUSDMinted.
+func (mr *MockIServiceMockRecorder) RetrieveUSDMinted(fromBlock, toBlock, limit interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "RetrieveUSDMinted", reflect.TypeOf((*MockIService)(nil).RetrieveUSDMinted), fromBlock, toBlock, limit)
 }
 
 // RetrieveUSDMintedLimit mocks base method.
@@ -834,16 +999,31 @@ func (mr *MockIServiceMockRecorder) RetrieveUSDMintedLimit(limit interface{}) *g
 }
 
 // RetrieveVaultLiquidationsCore mocks base method.
-func (m *MockIService) RetrieveVaultLiquidationsCore(limit uint64) ([]*models.CoreVaultLiquidation, error) {
+func (m *MockIService) RetrieveVaultLiquidationsCore(fromBlock, toBlock, limit uint64) ([]*models.CoreVaultLiquidation, error) {
 	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "RetrieveVaultLiquidationsCore", limit)
+	ret := m.ctrl.Call(m, "RetrieveVaultLiquidationsCore", fromBlock, toBlock, limit)
 	ret0, _ := ret[0].([]*models.CoreVaultLiquidation)
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }
 
 // RetrieveVaultLiquidationsCore indicates an expected call of RetrieveVaultLiquidationsCore.
-func (mr *MockIServiceMockRecorder) RetrieveVaultLiquidationsCore(limit interface{}) *gomock.Call {
+func (mr *MockIServiceMockRecorder) RetrieveVaultLiquidationsCore(fromBlock, toBlock, limit interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "RetrieveVaultLiquidationsCore", reflect.TypeOf((*MockIService)(nil).RetrieveVaultLiquidationsCore), limit)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "RetrieveVaultLiquidationsCore", reflect.TypeOf((*MockIService)(nil).RetrieveVaultLiquidationsCore), fromBlock, toBlock, limit)
+}
+
+// RetrieveVaultLiquidationsCoreLimit mocks base method.
+func (m *MockIService) RetrieveVaultLiquidationsCoreLimit(limit uint64) ([]*models.CoreVaultLiquidation, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "RetrieveVaultLiquidationsCoreLimit", limit)
+	ret0, _ := ret[0].([]*models.CoreVaultLiquidation)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// RetrieveVaultLiquidationsCoreLimit indicates an expected call of RetrieveVaultLiquidationsCoreLimit.
+func (mr *MockIServiceMockRecorder) RetrieveVaultLiquidationsCoreLimit(limit interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "RetrieveVaultLiquidationsCoreLimit", reflect.TypeOf((*MockIService)(nil).RetrieveVaultLiquidationsCoreLimit), limit)
 }
