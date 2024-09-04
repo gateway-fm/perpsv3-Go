@@ -80,3 +80,7 @@ func decodePermissionsCore(perm core.IAccountModuleAccountPermissions) (res []Pe
 
 	return res
 }
+
+func DecodePermissionCore(perm [32]byte) (Permission, error) {
+	return PermissionFromString(strings.TrimRight(string(perm[:]), string(rune(0))))
+}

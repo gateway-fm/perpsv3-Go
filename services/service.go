@@ -11,6 +11,7 @@ import (
 	"github.com/ethereum/go-ethereum/ethclient"
 
 	"github.com/gateway-fm/perpsv3-Go/config"
+	"github.com/gateway-fm/perpsv3-Go/contracts/Account"
 	"github.com/gateway-fm/perpsv3-Go/contracts/core"
 	"github.com/gateway-fm/perpsv3-Go/contracts/perpsMarket"
 	"github.com/gateway-fm/perpsv3-Go/errors"
@@ -246,6 +247,18 @@ type IService interface {
 	// FormatAccountsCoreLimit is used to get all accounts and their additional data from the contract with given start block, end block and block search
 	// limit. For most public RPC providers the value for limit is 20 000 blocks
 	FormatAccountsCore(fromBlock, toBlock, limit uint64) ([]*models.Account, error)
+
+	// RetrieveChangeOwner is used to get all owner changes and additional data from the contract with given start block, end block and block search
+	// limit. For most public RPC providers the value for limit is 20 000 blocks
+	RetrieveChangeOwner(fromBlock, toBlock, limit uint64) ([]*models.AccountTransfer, error)
+
+	// RetrievePermissionRevoked is used to get all the revoked permission and additional data from the contract with given start block, end block and block search
+	// limit. For most public RPC providers the value for limit is 20 000 blocks
+	RetrievePermissionRevoked(fromBlock, toBlock, limit uint64) ([]*models.PermissionChanged, error)
+
+	// RetrievePermissionGranted is used to get all the granted permission and additional data from the contract with given start block, end block and block search
+	// limit. For most public RPC providers the value for limit is 20 000 blocks
+	RetrievePermissionGranted(fromBlock, toBlock, limit uint64) ([]*models.PermissionChanged, error)
 }
 
 type ContractType int
@@ -273,6 +286,8 @@ type Service struct {
 	rawERC7412   rawContracts.IRawERC7412Contract
 	rawForwarder rawContracts.IRawForwarderContract
 	rawCore      rawContracts.IRawCoreContract
+
+	accountContract *Account.Account
 }
 
 // NewService is used to get instance of Service
@@ -281,6 +296,7 @@ func NewService(
 	conf *config.PerpsvConfig,
 	core *core.Core,
 	perps *perpsMarket.PerpsMarket,
+	accountContract *Account.Account,
 ) (IService, error) {
 	s := &Service{
 		chainID:          conf.ChainID,
@@ -293,6 +309,7 @@ func NewService(
 
 		perpsMarket:           perps,
 		perpsMarketFirstBlock: conf.FirstContractBlocks.PerpsMarket,
+		accountContract:       accountContract,
 	}
 
 	rawPerpsContract, err := rawContracts.NewPerps(common.HexToAddress(conf.ContractAddresses.PerpsMarket), rpc)
