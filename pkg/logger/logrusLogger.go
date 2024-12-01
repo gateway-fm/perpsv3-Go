@@ -19,7 +19,30 @@ func Log() *logger {
 	once.Do(func() {
 		log := logrus.New()
 
-		log.SetLevel(logrus.InfoLevel)
+		levelEnv := os.Getenv("LOG_LEVEL")
+
+		var logLevel logrus.Level
+
+		switch levelEnv {
+		case "trace":
+			logLevel = logrus.TraceLevel
+		case "debug":
+			logLevel = logrus.DebugLevel
+		case "info":
+			logLevel = logrus.InfoLevel
+		case "warn":
+			logLevel = logrus.WarnLevel
+		case "error":
+			logLevel = logrus.ErrorLevel
+		case "fatal":
+			logLevel = logrus.FatalLevel
+		case "panic":
+			logLevel = logrus.PanicLevel
+		default:
+			logLevel = logrus.InfoLevel
+		}
+
+		log.SetLevel(logLevel)
 
 		log.SetOutput(os.Stdout)
 		log.SetFormatter(&easy.Formatter{

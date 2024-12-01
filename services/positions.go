@@ -45,12 +45,18 @@ func (s *Service) getPositionMultiCallRetries(opts *bind.CallOpts, accountID *bi
 	case s.chainID == config.BaseAndromeda || s.chainID == config.BaseSepolia:
 		res, err = s.getPositionMultiCallNoPyth(accountID, marketID, block, true)
 		if err != nil && fails <= s.multicallRetries {
+			logger.Log().WithField("layer", "GetPosition").Debugf(
+				"failed multicall with no pyth, retry in %v total fails %v ", s.multicallWait, fails,
+			)
 			time.Sleep(s.multicallWait)
 			return s.getPositionMultiCallRetries(opts, accountID, marketID, block, fails+1)
 		}
 	case s.chainID == config.BaseMainnet:
 		res, err = s.getPositionMultiCall(accountID, marketID, block, true)
 		if err != nil && fails <= s.multicallRetries {
+			logger.Log().WithField("layer", "GetPosition").Debugf(
+				"failed multicall with pyth, retry in %v total fails %v ", s.multicallWait, fails,
+			)
 			time.Sleep(s.multicallWait)
 			return s.getPositionMultiCallRetries(opts, accountID, marketID, block, fails+1)
 		}
@@ -77,6 +83,9 @@ func (s *Service) getPositionMultiCallNoPyth(accountID *big.Int, marketID *big.I
 	call, err := s.rawForwarder.Aggregate3Value(0, []forwarder.TrustedMulticallForwarderCall3Value{callPostion})
 	if err != nil {
 		if retry {
+			logger.Log().WithField("layer", "GetPosition").Debugf(
+				"failed multicall no pyth, retry with pyth",
+			)
 			return s.getPositionMultiCall(accountID, marketID, block, false)
 		}
 		return res, err
@@ -136,6 +145,9 @@ func (s *Service) getPositionMultiCall(accountID *big.Int, marketID *big.Int, bl
 	call, err := s.rawForwarder.Aggregate3Value(1, []forwarder.TrustedMulticallForwarderCall3Value{callFulfill, callPostion})
 	if err != nil {
 		if retry {
+			logger.Log().WithField("layer", "GetPosition").Debugf(
+				"failed multicall with pyth, retry with no pyth",
+			)
 			return s.getPositionMultiCallNoPyth(accountID, marketID, block, false)
 		}
 		return res, err
